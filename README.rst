@@ -1,10 +1,10 @@
 Re:Life
 ======
 SSH
-ssh -i "lanwayrelife.pem" centos@ec2-18-179-32-241.ap-northeast-1.compute.amazonaws.com
-======
+- ssh -i "lanwayrelife.pem" centos@ec2-18-179-32-241.ap-northeast-1.compute.amazonaws.com
+
 Build the Stack
-This can take a while, especially the first time you run this particular command on your development system:
+- This can take a while, especially the first time you run this particular command on your development system:
 
 $ docker-compose -f local.yml build
 Generally, if you want to emulate production environment use production.yml instead.
