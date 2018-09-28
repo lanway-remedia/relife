@@ -16,17 +16,17 @@ The first time it is run it might take a while to get started, but subsequent ru
 
 Open a terminal at the project root and run the following for local development:
 
-$ docker-compose -f local.yml up
+- docker-compose -f local.yml up
 
 You can also set the environment variable COMPOSE_FILE pointing to local.yml like this:
 
-$ export COMPOSE_FILE=local.yml
-$ export COMPOSE_FILE=production.yml
+- export COMPOSE_FILE=local.yml
+- export COMPOSE_FILE=production.yml
 
 And then run:
 
-$ docker-compose up
+- docker-compose up
 
 To run in a detached (background) mode, just:
 
-$ docker-compose up -d
+- docker-compose up -d
