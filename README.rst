@@ -21,6 +21,7 @@ $ docker-compose -f local.yml up
 You can also set the environment variable COMPOSE_FILE pointing to local.yml like this:
 
 $ export COMPOSE_FILE=local.yml
+$ export COMPOSE_FILE=production.yml
 
 And then run:
 
