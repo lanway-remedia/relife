@@ -18,8 +18,7 @@ import sys
 import pymysql
 
 try:
-    # pymysql.connect(host='localhost', user='46KTc24KDR', password='9h2rS8Z5ntuLXDSkYdcR', db='mrelife')
-    pass
+    pymysql.connect(host='mysql', user='46KTc24KDR', password='9h2rS8Z5ntuLXDSkYdcR', db='mrelife')
 except Exception:
     sys.exit(-1)
 sys.exit(0)
