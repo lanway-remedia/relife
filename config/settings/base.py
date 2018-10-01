@@ -63,13 +63,31 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_swagger',
 ]
 LOCAL_APPS = [
+    'mrelife.users.apps.UsersAppConfig',
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+# MIGRATIONS
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
+MIGRATION_MODULES = {
+    'sites': 'mrelife.contrib.sites.migrations'
+}
+
+# AUTHENTICATION
+# ------------------------------------------------------------------------------
+ADMIN_URL = 'admincp/'
+# https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
+AUTH_USER_MODEL = 'users.User'
+# https://docs.djangoproject.com/en/dev/ref/settings/#login-url
+LOGIN_URL = 'rest_framework:login'
+LOGOUT_URL = 'rest_framework:logout'
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
@@ -180,6 +198,15 @@ FIXTURE_DIRS = (
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
 
+# ADMIN
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#admins
+ADMINS = [
+    ("""Bin""", 'bin@example.com'),
+]
+# https://docs.djangoproject.com/en/dev/ref/settings/#managers
+MANAGERS = ADMINS
+
 # Celery
 # ------------------------------------------------------------------------------
 INSTALLED_APPS += ['mrelife.taskapp.celery.CeleryAppConfig']
@@ -202,6 +229,49 @@ CELERYD_TASK_TIME_LIMIT = 5 * 60
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#task-soft-time-limit
 # TODO: set to whatever value is adequate in your circumstances
 CELERYD_TASK_SOFT_TIME_LIMIT = 60
+
+# django-compressor
+# ------------------------------------------------------------------------------
+# https://django-compressor.readthedocs.io/en/latest/quickstart/#installation
+INSTALLED_APPS += ['compressor']
+STATICFILES_FINDERS += ['compressor.finders.CompressorFinder']
+
+# Start DRF depenment
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+    ),
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
+    # 'DEFAULT_FILTER_BACKENDS': ('rest_framework_filters.backends.DjangoFilterBackend',),
+    # 'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    # 'DEFAULT_FILTER_BACKENDS': ('url_filter.integrations.drf.DjangoFilterBackend',),
+    # Date input format
+    'DATE_FORMAT': '%d-%m-%Y',
+    'DATETIME_FORMAT': '%H:%M %d-%m-%Y',
+    'DATETIME_INPUT_FORMATS': (
+        '%H:%M %d-%m-%Y',
+        '%d-%m-%Y %H:%M',
+        '%d-%m-%Y',
+    ),
+    'DATE_INPUT_FORMATS': (
+        '%d-%m-%Y',
+    ),
+    'TIME_INPUT_FORMATS': (
+        '%H:%M',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 15,
+    # 'DEFAULT_PARSER_CLASSES': (
+    # 'rest_framework.parsers.JSONParser',
+    # )
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning'
+}
+ANONYMOUS_USER_ID = -1
+# End DRF depenment
 
 # Your stuff...
 # ------------------------------------------------------------------------------
