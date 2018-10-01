@@ -12,7 +12,7 @@ if [ -z "${MYSQL_USER}" ]; then
     export MYSQL_USER="${base_postgres_image_default_user}"
 fi
 
-export DATABASE_URL="mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASES}"
+export DATABASE_URL="mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mysql:3306/${MYSQL_DATABASES}"
 
 mysql_ready() {
 python << END
