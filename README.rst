@@ -11,7 +11,7 @@ Generally, if you want to emulate production environment use production.yml inst
 And this is true for any other actions you might need to perform: whenever a switch is required, just do it!
 
 Run the Stack
-This brings up both Django and PostgreSQL.
+This brings up both Django and MySql.
 The first time it is run it might take a while to get started, but subsequent runs will occur quickly.
 
 Open a terminal at the project root and run the following for local development:

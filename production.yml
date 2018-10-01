@@ -1,0 +1,59 @@
+version: '3'
+
+volumes:
+  mysql_data:
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/production/django/Dockerfile
+    image: mrelife_production_django
+    depends_on:
+      - mysql
+      - redis
+    env_file:
+      - ./.envs/.production/.django
+      - ./.envs/.production/.mysql
+    command: /start
+
+  mysql:
+    image: mysql:5.7
+    depends_on:
+      - redis
+    volumes:
+      - mysql_data:/var/lib/mysql
+    env_file:
+      - ./.envs/.production/.mysql
+    restart: always
+    ports:
+      - "3306:3306"
+
+  nginx:
+    image: nginx:1.15
+    ports:
+      - 8000:80
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - django
+
+  redis:
+    image: redis:3.2
+
+  celeryworker:
+    <<: *django
+    image: mrelife_production_celeryworker
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *django
+    image: mrelife_production_celerybeat
+    command: /start-celerybeat
+
+  flower:
+    <<: *django
+    image: mrelife_production_flower
+    ports:
+      - "5555:5555"
+    command: /start-flower

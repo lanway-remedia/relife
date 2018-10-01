@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+
+export CELERY_BROKER_URL="${REDIS_URL}"
+
+if [ -z "${MYSQL_USER}" ]; then
+    base_postgres_image_default_user='root'
+    export MYSQL_USER="${base_postgres_image_default_user}"
+fi
+
+export DATABASE_URL="mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASES}"
+
+mysql_ready() {
+python << END
+import sys
+
+import pymysql
+
+try:
+    pass
+except Exception:
+    sys.exit(-1)
+sys.exit(0)
+
+END
+}
+until mysql_ready; do
+  >&2 echo 'Waiting for MySQL to become available...'
+  sleep 1
+done
+>&2 echo 'MySQL is available'
+
+exec "$@"
