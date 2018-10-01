@@ -2,6 +2,7 @@ version: '3'
 
 volumes:
   mysql_data:
+  static-volume:
 
 services:
   django: &django
@@ -16,8 +17,6 @@ services:
       - ./.envs/.production/.django
       - ./.envs/.production/.mysql
     command: /start
-    expose:
-        - "8000"
 
   mysql:
     image: mysql:5.7
@@ -32,13 +31,13 @@ services:
       - "3306:3306"
 
   nginx:
-    image: nginx:latest
-    ports:
-      - 80:8000
+    build: ./compose/nginx
     volumes:
-      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - static-volume:/app/static
     depends_on:
       - django
+    ports:
+      - "0.0.0.0:80:80"
 
   redis:
     image: redis:3.2
