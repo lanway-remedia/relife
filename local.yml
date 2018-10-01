@@ -15,17 +15,10 @@ services:
       - .:/app
     env_file:
       - ./.envs/.local/.django
+      - ./.envs/.local/.mysql
     ports:
       - "8000:8000"
     command: /start
-    environment:
-      - MYSQL_DATABASES=mrelife
-      - MYSQL_ROOT_PASSWORD=46KTc24KDR9h2rS8Z5ntuLXDSkYdcR
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3306
-      - MYSQL_USER=46KTc24KDR
-      - MYSQL_PASSWORD=9h2rS8Z5ntuLXDSkYdcR
-      - MYSQL_LOYALTY_DATABASE=mrelife
 
   mysql:
     image: mysql:5.7
@@ -34,16 +27,10 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     restart: always
+    env_file:
+      - ./.envs/.production/.mysql
     ports:
       - "3306:3306"
-    environment:
-      - MYSQL_DATABASES=mrelife
-      - MYSQL_ROOT_PASSWORD=46KTc24KDR9h2rS8Z5ntuLXDSkYdcR
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3306
-      - MYSQL_USER=46KTc24KDR
-      - MYSQL_PASSWORD=9h2rS8Z5ntuLXDSkYdcR
-      - MYSQL_LOYALTY_DATABASE=mrelife
 
   redis:
     image: redis:3.2
