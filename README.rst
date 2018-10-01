@@ -59,3 +59,8 @@ If you need a shell, run:
 To check the logs out, run:
 
 - docker-compose -f production.yml logs
+
+
+
+
+docker exec -it dev_mysql_1 bash -l
