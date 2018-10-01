@@ -31,7 +31,7 @@ services:
       - "3306:3306"
 
   nginx:
-    build: ./compose/nginx
+    build: ./compose/production/nginx
     volumes:
       - static-volume:/app/static
     depends_on:
