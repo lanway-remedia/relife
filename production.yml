@@ -16,7 +16,7 @@ services:
     env_file:
       - ./.envs/.production/.django
     command: /start
-    enviroment:
+    environment:
       - MYSQL_DATABASES=mrelife
       - MYSQL_ROOT_PASSWORD=46KTc24KDR9h2rS8Z5ntuLXDSkYdcR
       - MYSQL_HOST=mysql
@@ -34,7 +34,7 @@ services:
     restart: always
     ports:
       - "3306:3306"
-    enviroment:
+    environment:
       - MYSQL_DATABASES=mrelife
       - MYSQL_ROOT_PASSWORD=46KTc24KDR9h2rS8Z5ntuLXDSkYdcR
       - MYSQL_HOST=mysql
