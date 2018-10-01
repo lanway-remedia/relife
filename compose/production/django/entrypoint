@@ -7,12 +7,9 @@ set -o nounset
 
 export CELERY_BROKER_URL="${REDIS_URL}"
 
-if [ -z "${MYSQL_USER}" ]; then
-    base_postgres_image_default_user='root'
-    export MYSQL_USER="${base_postgres_image_default_user}"
-fi
+export MYSQL_USER="46KTc24KDR"
 
-export DATABASE_URL="mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASES}"
+export DATABASE_URL="mysql://46KTc24KDR:9h2rS8Z5ntuLXDSkYdcR@mysql:3306/mrelife"
 
 mysql_ready() {
 python << END
@@ -21,7 +18,8 @@ import sys
 import pymysql
 
 try:
-    pymysql.connect(host='localhost', user='46KTc24KDR', password='9h2rS8Z5ntuLXDSkYdcR', db='mrelife')
+    # pymysql.connect(host='localhost', user='46KTc24KDR', password='9h2rS8Z5ntuLXDSkYdcR', db='mrelife')
+    pass
 except Exception:
     sys.exit(-1)
 sys.exit(0)

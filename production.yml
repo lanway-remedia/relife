@@ -15,8 +15,15 @@ services:
       - redis
     env_file:
       - ./.envs/.production/.django
-      - ./.envs/.production/.mysql
     command: /start
+    enviroment:
+      - MYSQL_DATABASES=mrelife
+      - MYSQL_ROOT_PASSWORD=46KTc24KDR9h2rS8Z5ntuLXDSkYdcR
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=46KTc24KDR
+      - MYSQL_PASSWORD=9h2rS8Z5ntuLXDSkYdcR
+      - MYSQL_LOYALTY_DATABASE=mrelife
 
   mysql:
     image: mysql:5.7
@@ -24,11 +31,17 @@ services:
       - redis
     volumes:
       - mysql_data:/var/lib/mysql
-    env_file:
-      - ./.envs/.production/.mysql
     restart: always
     ports:
       - "3306:3306"
+    enviroment:
+      - MYSQL_DATABASES=mrelife
+      - MYSQL_ROOT_PASSWORD=46KTc24KDR9h2rS8Z5ntuLXDSkYdcR
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=46KTc24KDR
+      - MYSQL_PASSWORD=9h2rS8Z5ntuLXDSkYdcR
+      - MYSQL_LOYALTY_DATABASE=mrelife
 
   nginx:
     build: ./compose/production/nginx

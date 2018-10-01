@@ -60,7 +60,6 @@ To check the logs out, run:
 
 - docker-compose -f production.yml logs
 
+- docker exec -it dev_mysql_1 bash -l
 
-
-
-docker exec -it dev_mysql_1 bash -l
+- find . -name __pycache__  -type d -exec rm -rf {} \;
