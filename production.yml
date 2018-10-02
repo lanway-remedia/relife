@@ -18,7 +18,7 @@ services:
       - ./.envs/.production/.mysql
     command: /start
     expose:
-      - "8000"
+      - "5000"
 
   mysql:
     image: mysql:5.7
