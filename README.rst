@@ -1,6 +1,7 @@
 Re:Life
 ======
 SSH
+18.179.32.241
 - ssh -i "lanwayrelife.pem" centos@ec2-18-179-32-241.ap-northeast-1.compute.amazonaws.com
 
 Build the Stack
