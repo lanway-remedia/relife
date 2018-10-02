@@ -27,6 +27,7 @@ You can also set the environment variable COMPOSE_FILE pointing to local.yml lik
 And then run:
 
 - docker-compose up
+- docker-compose build
 
 To run in a detached (background) mode, just:
 
