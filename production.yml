@@ -19,6 +19,8 @@ services:
     command: /start
     expose:
       - "5000"
+    volumes:
+      - static-volume:/app/static
 
   mysql:
     image: mysql:5.7
