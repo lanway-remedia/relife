@@ -65,3 +65,10 @@ To check the logs out, run:
 
 - find . -name __pycache__  -type d -exec rm -rf {} \;
 
+- docker ps -aq
+
+- docker stop $(docker ps -aq)
+
+- docker rm $(docker ps -aq)
+
+- docker rmi $(docker images -q)
