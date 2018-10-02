@@ -70,6 +70,8 @@ To check the logs out, run:
 
 - docker stop $(docker ps -aq)
 
-- docker rm $(docker ps -aq)
+- docker rm $(docker ps -aq) -f
 
 - docker rmi $(docker images -q)
+
+- docker restart dev_nginx_1
