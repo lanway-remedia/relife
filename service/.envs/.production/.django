@@ -20,9 +20,9 @@ MAILGUN_DOMAIN=
 
 # AWS
 # ------------------------------------------------------------------------------
-DJANGO_AWS_ACCESS_KEY_ID=
-DJANGO_AWS_SECRET_ACCESS_KEY=
-DJANGO_AWS_STORAGE_BUCKET_NAME=
+DJANGO_AWS_ACCESS_KEY_ID=AKIAIEA2M4GWIZAJCYOA
+DJANGO_AWS_SECRET_ACCESS_KEY=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
+DJANGO_AWS_STORAGE_BUCKET_NAME=mor-dev-assets
 
 # django-compressor
 # ------------------------------------------------------------------------------
