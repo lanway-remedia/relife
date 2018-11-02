@@ -47,7 +47,8 @@ To run the stack and detach the containers, run:
 
 To run a migration, open up a second terminal and run:
 
-- docker-compose -f production.yml run --rm django python manage.py migrate
+- docker-compose run --rm django python manage.py makemigrations
+- docker-compose run --rm django python manage.py migrate
 
 To create a superuser, run:
 
