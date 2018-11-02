@@ -52,9 +52,9 @@ RUN chmod +x /start-flower
 
 COPY . /app
 
-RUN chown -R django /app
+RUN chown -R root /app
 
-USER django
+USER root
 
 WORKDIR /app
 
