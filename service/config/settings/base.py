@@ -69,7 +69,7 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     'mrelife.users.apps.UsersAppConfig',
-    'mrelife.outletstores.apps.OutletstoresConfig',
+    # 'mrelife.outletstores.apps.OutletstoresConfig',
 
     # Your stuff: custom apps go here
 ]
