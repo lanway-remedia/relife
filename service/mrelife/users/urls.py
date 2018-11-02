@@ -1,17 +1,15 @@
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
+from .views import custom_obtain_jwt_token
 
-from mrelife.users.views import CustomAuthToken, UserVs
+from mrelife.users import views
 
 router = SimpleRouter(trailing_slash=False)
-router.register(r'users', UserVs)
+router.register(r'users', views.UserVs)
 
 version_one = [
-    path(
-        'api-token-auth/',
-        CustomAuthToken.as_view(),
-        name="api-token-auth"
-    ),
+    path('login/', custom_obtain_jwt_token),
+    path('test/', views.example_view),
 ]
 
 urlpatterns = [

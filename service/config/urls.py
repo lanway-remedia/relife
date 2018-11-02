@@ -11,11 +11,10 @@ schema_view = get_swagger_view(title='Pastebin API')
 
 urlpatterns = [
     path("", schema_view, name="home"),
-    path("api-auth/", include("rest_framework.urls")),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/outletstores/', include('mrelife.outletstores.urls')),
     # Your stuff: custom urls includes go here
-    path("users/", include("mrelife.users.urls"), name="User"),
-
-
+    path("api/users/", include("mrelife.users.urls"), name="User"),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )

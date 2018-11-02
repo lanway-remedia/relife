@@ -63,11 +63,14 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'rest_framework_jwt',
     'rest_framework.authtoken',
     'rest_framework_swagger',
 ]
 LOCAL_APPS = [
     'mrelife.users.apps.UsersAppConfig',
+    'mrelife.outletstores.apps.OutletstoresConfig',
+
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -239,13 +242,11 @@ STATICFILES_FINDERS += ['compressor.finders.CompressorFinder']
 # Start DRF depenment
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ),
+    'EXCEPTION_HANDLER': 'mrelife.utils.exceptionhanders.custom_exception_handler',
     # 'DEFAULT_FILTER_BACKENDS': ('rest_framework_filters.backends.DjangoFilterBackend',),
     # 'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
     # 'DEFAULT_FILTER_BACKENDS': ('url_filter.integrations.drf.DjangoFilterBackend',),
@@ -275,3 +276,6 @@ ANONYMOUS_USER_ID = -1
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+IS_ACTIVE = 1
+IS_INACTIVE = 0
