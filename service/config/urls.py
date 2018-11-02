@@ -15,6 +15,7 @@ urlpatterns = [
     # path('api/outletstores/', include('mrelife.outletstores.urls')),
     # Your stuff: custom urls includes go here
     path("api/users/", include("mrelife.users.urls"), name="User"),
+    path("api/file-managements/", include("mrelife.file_managements.urls"), name="FileManagements"),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )
