@@ -20,9 +20,15 @@ class OutletStoreSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        return Tag.objects.create(
-            tag_name='Test'
+        tag = Tag.objects.create(
+            name=self.initial_data['tag_name'],
+            is_active=True,
+            created=validated_data['created'],
+            updated=validated_data['updated']
         )
+        outletstore = OutletStore.objects.create(**validated_data)
+        return outletstore
+
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag

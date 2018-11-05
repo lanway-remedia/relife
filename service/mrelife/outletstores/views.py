@@ -1,6 +1,6 @@
 
-from outletstores.models import OutletStore
-from outletstores.serializers import OutletStoreSerializer, TagSerializer
+from mrelife.outletstores.models import OutletStore
+from mrelife.outletstores.serializers import OutletStoreSerializer, TagSerializer
 from django.http import Http404
 from rest_framework.views import APIView
 
@@ -20,7 +20,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from mrelife.outletstores.models import OutletStore
-from mrelife.outletstores.response import ResultOutputResponse
 from mrelife.outletstores.serializers import OutletStoreSerializer
 
 
