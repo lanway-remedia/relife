@@ -4,7 +4,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 
 from outletstores.response import ResultOutputResponse
-
+from commons.pagination import LargeResultsSetPagination
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
@@ -14,6 +14,7 @@ from rest_framework.decorators import action
 
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
+
 
 class OutletStoreList(APIView):
 
@@ -84,14 +85,32 @@ class OutletStoreDelete(APIView):
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.all()
     serializer_class = OutletStoreSerializer
-
+    pagination_class = LargeResultsSetPagination
     def get_object(self, pk):
         try:
             return OutletStore.objects.get(pk=pk)
         except OutletStore.DoesNotExist:
             raise Http404
 
-
+    
+    def list(self, request):
+        queryset = OutletStore.objects.all()
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = OutletStoreSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = OutletStoreSerializer(queryset, many=True)
+        return Response(serializer.data)
+    def create(self, request):
+        queryset=""
+        return queryset
+    def retrieve(self,request,pk=None):
+        queryset=OutletStore.objects.all().filter(id=self.kwargs['pk'])
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = OutletStoreSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = OutletStoreSerializer(queryset, many=True)
     @action(detail=False, methods=['put'])
     def custom_edit(self, request, pk=None):
         outletstore = self.get_object(pk)

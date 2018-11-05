@@ -70,7 +70,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'mrelife.users.apps.UsersAppConfig',
     'mrelife.outletstores.apps.OutletstoresConfig',
-
+    'mrelife.modernhouses.apps.ModernhousesConfig',
+    
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

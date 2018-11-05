@@ -13,6 +13,7 @@ urlpatterns = [
     path("", schema_view, name="home"),
     path('api-auth/', include('rest_framework.urls')),
     path('api/outletstores/', include('mrelife.outletstores.urls')),
+    path('api/modernhouses/', include('mrelife.modernhouses.urls')),
     # Your stuff: custom urls includes go here
     path("api/users/", include("mrelife.users.urls"), name="User"),
     path("api/file-managements/", include("mrelife.file_managements.urls"), name="FileManagements"),
