@@ -1,18 +1,19 @@
 from django.urls import include, path
+
+from mrelife.users.views import UserVs, custom_obtain_jwt_token
 from rest_framework.routers import SimpleRouter
-from .views import custom_obtain_jwt_token
+from rest_framework.urlpatterns import format_suffix_patterns
 
-from mrelife.users import views
-
-router = SimpleRouter(trailing_slash=False)
-router.register(r'users', views.UserVs)
+router = SimpleRouter()
+router.register(r'', UserVs)
 
 version_one = [
     path('login/', custom_obtain_jwt_token),
-    path('test/', views.example_view),
+    path('users/', include(router.urls)),
 ]
 
 urlpatterns = [
     path('v1/', include(version_one)),
-    path('v1/', include(router.urls)),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

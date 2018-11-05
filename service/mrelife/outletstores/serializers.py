@@ -1,17 +1,23 @@
 from rest_framework import serializers
+<<<<<<< HEAD
 from outletstores.models import OutletStore
 from outletstores.models import Tag
+=======
+
+from mrelife.outletstores.models import OutletStore
+>>>>>>> origin/dev
 
 
 class OutletStoreSerializer(serializers.ModelSerializer):
 
-    thumbnail = serializers.ImageField(max_length= None, use_url=True)
+    thumbnail = serializers.ImageField(max_length=None, use_url=True)
+
     class Meta:
         model = OutletStore
         fields = ('id', 'title', 'content', 'category', 'thumbnail', 'latitude', 'longitude', 'address',
-        'tel', 'email', 'zipcode', 'area_of_premises', 'start_time', 'end_time', 'is_active', )
+                  'tel', 'email', 'zipcode', 'area_of_premises', 'start_time', 'end_time', 'is_active', )
         #fields ='__all__'
-    
+
     def validate(self, data):
         """
         Check that the start time, end time.
@@ -19,6 +25,7 @@ class OutletStoreSerializer(serializers.ModelSerializer):
         if data['end_time'] < data['start_time']:
             raise serializers.ValidationError("Start time must be greater than end time")
         return data
+<<<<<<< HEAD
     def create(self, validated_data):
         return Tag.objects.create(
             tag_name='ssssss'
@@ -27,3 +34,5 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ('name')
+=======
+>>>>>>> origin/dev

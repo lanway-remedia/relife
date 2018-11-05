@@ -22,3 +22,8 @@ djangorestframework-jwt==1.11.0
 djangorestframework==3.8.2  # https://github.com/encode/django-rest-framework
 coreapi==2.3.3  # https://github.com/core-api/python-client
 django-rest-swagger # https://django-rest-swagger.readthedocs.io/en/latest/
+
+
+# Advanced Filter
+django-filter
+django-url-filter # http://django-url-filter.readthedocs.io/

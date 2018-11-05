@@ -2,4 +2,5 @@ from django.apps import AppConfig
 
 
 class OutletstoresConfig(AppConfig):
-    name = 'outletstores'
+    name = 'mrelife.outletstores'
+    verbose_name = "Users"

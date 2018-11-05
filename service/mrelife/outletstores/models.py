@@ -1,95 +1,118 @@
-from django.db.models import CharField
+from django.db.models import (
+    CASCADE,
+    BooleanField,
+    CharField,
+    DateTimeField,
+    ForeignKey,
+    ImageField,
+    IntegerField,
+    Model,
+    TextField
+)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.db import models
 
-class Category(models.Model):
 
-    name = models.CharField(max_length = 255)
-    is_active = models.BooleanField(default = True)
-    created = models.DateTimeField(auto_now_add = False, blank = True)
-    updated = models.DateTimeField(auto_now_add = False, blank = True)
+class Category(Model):
+
+    name = CharField(max_length=255)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
     class Meta:
         db_table = 'category'
-        ordering = ['created',]
+        ordering = ['created', ]
 
-class Tag(models.Model):
 
-    name = models.CharField(max_length = 255)
-    is_active = models.BooleanField(default = True)
-    created = models.DateTimeField(auto_now_add = False, blank = True)
-    updated = models.DateTimeField(auto_now_add = False, blank = True)
+class Tag(Model):
+
+    name = CharField(max_length=255)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
     class Meta:
         db_table = 'tag'
-        ordering = ['created',]
+        ordering = ['created', ]
 
-class OutletStore(models.Model):
 
-    title = models.CharField(max_length = 255)
-    content = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    thumbnail = models.ImageField(upload_to='Images/outletstore/', default='')
-    latitude = models.TextField()
-    longitude = models.TextField()
-    address = models.CharField(max_length =800)
-    tel = models.CharField(max_length = 13)
-    email = models.CharField(max_length = 100)
-    zipcode = models.CharField(max_length = 8)
-    area_of_premises = models.CharField(max_length = 50)
-    start_time = models.DateTimeField(auto_now_add = False)
-    end_time = models.DateTimeField(auto_now_add = False)
-    is_active = models.BooleanField(default = True)
-    created = models.DateTimeField(auto_now_add = False)
-    updated = models.DateTimeField(auto_now_add = False)
+class OutletStore(Model):
+
+    title = CharField(max_length=255)
+    content = TextField()
+    category = ForeignKey(Category, on_delete=CASCADE)
+    thumbnail = ImageField(upload_to='Images/outletstore/', default='')
+    latitude = TextField()
+    longitude = TextField()
+    address = CharField(max_length=800)
+    tel = CharField(max_length=13)
+    email = CharField(max_length=100)
+    zipcode = CharField(max_length=8)
+    area_of_premises = CharField(max_length=50)
+    start_time = DateTimeField(auto_now_add=False)
+    end_time = DateTimeField(auto_now_add=False)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False)
+    updated = DateTimeField(auto_now_add=False)
+
     class Meta:
         db_table = 'outlet_store'
-        ordering = ['created',]
+        ordering = ['created', ]
 
-class OutletStoreTag(models.Model):
 
-    outlet_store = models.ForeignKey(OutletStore, on_delete = models.CASCADE)
-    tag = models.ForeignKey(Tag, on_delete = models.CASCADE)
-    is_active = models.BooleanField(default = True)
-    created = models.DateTimeField(auto_now_add = False, blank = True)
-    updated = models.DateTimeField(auto_now_add = False, blank = True)
+class OutletStoreTag(Model):
+
+    outlet_store = ForeignKey(OutletStore, on_delete=CASCADE)
+    tag = ForeignKey(Tag, on_delete=CASCADE)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
     class Meta:
         db_table = 'outlet_store_tag'
-        ordering = ['created',]
+        ordering = ['created', ]
 
-class OutletStoreMedia(models.Model):
 
-    outlet_store = models.ForeignKey(OutletStore, on_delete = models.CASCADE)
-    type_media = models.BooleanField()
-    title = models.CharField(max_length = 255)
-    description = models.TextField()
-    url = models.CharField(max_length = 800)
-    is_active = models.BooleanField(default = True)
-    created = models.DateTimeField(auto_now_add = False, blank = True)
-    updated = models.DateTimeField(auto_now_add = False, blank = True)
+class OutletStoreMedia(Model):
+
+    outlet_store = ForeignKey(OutletStore, on_delete=CASCADE)
+    type_media = BooleanField()
+    title = CharField(max_length=255)
+    description = TextField()
+    url = CharField(max_length=800)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
     class Meta:
         db_table = 'outlet_store_media'
-        ordering = ['created',]
+        ordering = ['created', ]
 
-class OutletStoreComment(models.Model):
 
-    outlet_store = models.ForeignKey(OutletStore, on_delete = models.CASCADE)
-    user = models.ForeignKey('users.User', on_delete= models.CASCADE)
-    comment = models.CharField(max_length = 255)
-    is_active = models.BooleanField(default = True)
-    created = models.DateTimeField(auto_now_add = False, blank = True)
-    updated = models.DateTimeField(auto_now_add = False, blank = True) 
+class OutletStoreComment(Model):
+
+    outlet_store = ForeignKey(OutletStore, on_delete=CASCADE)
+    user = ForeignKey('users.User', on_delete=CASCADE)
+    comment = CharField(max_length=255)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
     class Meta:
         db_table = 'outlet_store_comment'
-        ordering = ['created',]
+        ordering = ['created', ]
 
-class OutletStoreCommentReply(models.Model):
 
-    os_comment = models.ForeignKey(OutletStoreComment, on_delete = models.CASCADE)
-    user = models.ForeignKey('users.User', on_delete= models.CASCADE)
-    comment = models.CharField(max_length = 255)
-    is_active = models.BooleanField(default = True)
-    created = models.DateTimeField(auto_now_add = False, blank = True)
-    updated = models.DateTimeField(auto_now_add = False, blank = True) 
+class OutletStoreCommentReply(Model):
+
+    os_comment = ForeignKey(OutletStoreComment, on_delete=CASCADE)
+    user = ForeignKey('users.User', on_delete=CASCADE)
+    comment = CharField(max_length=255)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
     class Meta:
         db_table = 'outlet_store_comment_reply'
-        ordering = ['created',]
+        ordering = ['created', ]
