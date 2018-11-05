@@ -1,26 +1,31 @@
-from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField
+from django.contrib.auth.models import AbstractUser, Group
+from django.db.models import (SET_NULL, BooleanField, CharField, DateTimeField,
+                              ForeignKey, ImageField, IntegerField, Model)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.db import models
+
 
 class User(AbstractUser):
 
-    birth_date = models.DateTimeField(auto_now_add = False, null= True, blank = True)
-    address = models.CharField(max_length = 800, null= True, blank = True)
-    tel = models.CharField(max_length = 13, null = True, blank = True)
-    zipcode = models.CharField(max_length = 8, null = True, blank = True)
+    birth_date = DateTimeField(auto_now_add=False, null=True, blank=True)
+    address = CharField(max_length=800, null=True, blank=True)
+    tel = CharField(max_length=13, null=True, blank=True)
+    zipcode = CharField(max_length=8, null=True, blank=True)
+    group = ForeignKey(Group, related_name='users', null=True, on_delete=SET_NULL)
+    profile_image = ImageField(null=True, blank=True)
+
     class Meta:
-        ordering = ['date_joined',]
+        ordering = ['date_joined', ]
 
-class RepresentSubAcc(models.Model):
 
-    represent_user_id = models.IntegerField()
-    sub_user_id = models.IntegerField()
-    is_active = models.BooleanField(default = True)
-    created = models.DateTimeField(auto_now_add = False, blank = True)
-    updated = models.DateTimeField(auto_now_add = False, blank = True)
+class RepresentSubAcc(Model):
+
+    represent_user_id = IntegerField()
+    sub_user_id = IntegerField()
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
     class Meta:
         db_table = 'represent_sub_acc'
-        ordering = ['created',]
-
+        ordering = ['created', ]
