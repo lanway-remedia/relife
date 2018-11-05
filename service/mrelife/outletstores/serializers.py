@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from outletstores.models import OutletStore
+from outletstores.models import Tag
 
 
 class OutletStoreSerializer(serializers.ModelSerializer):
@@ -18,3 +19,11 @@ class OutletStoreSerializer(serializers.ModelSerializer):
         if data['end_time'] < data['start_time']:
             raise serializers.ValidationError("Start time must be greater than end time")
         return data
+    def create(self, validated_data):
+        return Tag.objects.create(
+            tag_name='ssssss'
+        )
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ('name')

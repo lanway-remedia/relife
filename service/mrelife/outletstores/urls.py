@@ -11,7 +11,7 @@ router.register(r'', views.OutletStoreViewSet)
 
 urlpatterns = [
     #path('get/', csrf_exempt(views.OutletStoreList.as_view())),
-    #path('create/', csrf_exempt(views.OutletStoreCreate.as_view())),
+    path('add/', csrf_exempt(views.OutletStoreCreate.as_view())),
     #path('update/<int:pk>/', csrf_exempt(views.OutletStoreUpdate.as_view())),
     path('', include(router.urls)),
     #path('delete/<int:pk>/', csrf_exempt(views.OutletStoreDelete.as_view())),
