@@ -11,12 +11,10 @@ router = routers.SimpleRouter()
 router.register(r'', views.OutletStoreViewSet)
 
 urlpatterns = [
-<<<<<<< HEAD
     #path('get/', csrf_exempt(views.OutletStoreList.as_view())),
     path('add/', csrf_exempt(views.OutletStoreCreate.as_view())),
     #path('update/<int:pk>/', csrf_exempt(views.OutletStoreUpdate.as_view())),
-=======
->>>>>>> origin/dev
+
     path('', include(router.urls)),
 ]
 
