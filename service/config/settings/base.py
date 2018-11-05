@@ -66,6 +66,8 @@ THIRD_PARTY_APPS = [
     'rest_framework_jwt',
     'rest_framework.authtoken',
     'rest_framework_swagger',
+    # Filter on URL
+    'url_filter',
 ]
 LOCAL_APPS = [
     'mrelife.users.apps.UsersAppConfig',
