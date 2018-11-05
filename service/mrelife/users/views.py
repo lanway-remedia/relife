@@ -71,9 +71,14 @@ def example_view(request, format=None):
     return Response(reponse)
 
 class UserVs(ModelViewSet):
+    """
+    User Management
+    Can filter group_id, username by adding parameter on url ?group_id=ID&username=STRING
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (SuperUserPermission, )
+    # user
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['group_id', 'username']
 
