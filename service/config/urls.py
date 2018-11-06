@@ -8,15 +8,17 @@ from rest_framework_swagger.views import get_swagger_view
 
 schema_view = get_swagger_view(title='Pastebin API')
 
+api_patterns = [
+    path('outletstores/', include('mrelife.outletstores.urls')),
+    path("users/", include("mrelife.users.urls")),
+    path("file-managements/", include("mrelife.file_managements.urls"), name="FileManagements"),
+]
 
 urlpatterns = [
     path("", schema_view, name="home"),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/outletstores/', include('mrelife.outletstores.urls')),
-    path('api/modernhouses/', include('mrelife.modernhouses.urls')),
     # Your stuff: custom urls includes go here
-    path("api/users/", include("mrelife.users.urls"), name="User"),
-    path("api/file-managements/", include("mrelife.file_managements.urls"), name="FileManagements"),
+    path('api/', include(api_patterns))
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )

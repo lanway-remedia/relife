@@ -1,12 +1,14 @@
-from rest_framework.pagination import  PageNumberPagination
+from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.pagination import LimitOffsetPagination
+
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 10
+
     def get_paginated_response(self, data):
+
             return Response({
             'status': data['status'],
             'links': {
@@ -16,5 +18,3 @@ class LargeResultsSetPagination(PageNumberPagination):
             'count': self.page.paginator.count,
             'data': data['data']
         })
-
-

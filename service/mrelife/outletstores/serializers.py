@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from mrelife.outletstores.models import OutletStore, Category
-
-
+from mrelife.outletstores.models import OutletStore
 
 class OutletStoreSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
@@ -19,12 +18,13 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     start_time =serializers.DateTimeField(input_formats=['%Y-%m-%d',],format="%d-%m-%Y",required=True)
     end_time = serializers.DateTimeField(input_formats=['%Y-%m-%d',],format="%d-%m-%Y",required=True)
     is_active =  serializers.BooleanField(default=True)
+
     class Meta:
         model = OutletStore
         fields = ('id', 'title', 'content', 'category', 'thumbnail', 'latitude', 'longitude', 'address',
-        'tel', 'email', 'zipcode', 'area_of_premises', 'start_time', 'end_time', 'is_active', )
+                  'tel', 'email', 'zipcode', 'area_of_premises', 'start_time', 'end_time', 'is_active', )
         #fields ='__all__'
-    
+
     def validate(self, data):
         """
         Check that the start time, end time.
