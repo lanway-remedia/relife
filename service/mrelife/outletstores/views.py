@@ -1,3 +1,13 @@
+
+from mrelife.outletstores.models import OutletStore
+from mrelife.outletstores.serializers import OutletStoreSerializer, TagSerializer
+from django.http import Http404
+from rest_framework.views import APIView
+
+
+from rest_framework.response import Response
+from rest_framework import status
+
 from datetime import datetime
 
 from django.conf import settings
@@ -10,7 +20,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from mrelife.outletstores.models import OutletStore
-from mrelife.outletstores.response import ResultOutputResponse
 from mrelife.outletstores.serializers import OutletStoreSerializer
 
 
@@ -104,10 +113,16 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def create(self, request, *args, **kwargs):
+    """action(detail=False, methods=['post'])
+    def add(self, request, *args, **kwargs):
         serializer = OutletStoreSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
             return Response(serializer.data, status=status.HTTP_200_OK)
-        output = {"status": False, 'messageCode': 'MSG01', "errors": serializer.errors, "data": []}
-        return Response(output, status=status.HTTP_200_OK)
+        output = {"status": False, 'messageCode': 'MSG01', "errors": serializer.errors,"data":[]}
+        return Response(output, status=status.HTTP_200_OK) """
+
+
+
+    
+
