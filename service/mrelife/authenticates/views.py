@@ -2,7 +2,7 @@
 from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
-from django.utils.http import base36_to_int, int_to_base36
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 from mrelife.authenticates.serializers import (PasswordSerializer,
                                                ResetPasswordSerializer)
@@ -18,20 +18,25 @@ class PasswordResetRequest(APIView):
     parser_classes = (JSONParser,)
 
     def post(self, request):
-        if request.user.is_authenticated():
+
+        if request.user.is_authenticated:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         # init form with POST data
         serializer = self.serializer_class(data=request.data)
         # validate
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        email = serializer.object.get('email')
-        domain = serializer.object.get('domain')
+        email = serializer.data['mail']
+        domain = serializer.data['domain']
         # Get user by email
         user = email_exist(email)
         if not user:
-            return Response({'detail': ''}, status=status.HTTP_404_NOT_FOUND)
+            return Response({
+                'status': False,
+                'messageCode': None,
+                'messageParams': None,
+                'data': []
+            }, status=status.HTTP_404_NOT_FOUND)
 
         # Generate token
         token_key = default_token_generator.make_token(user)
@@ -40,17 +45,27 @@ class PasswordResetRequest(APIView):
         # email
         subject = "Reset Password"
         # Encode user id
-        uidb36 = int_to_base36(user.id)
+        uuid = str(urlsafe_base64_encode(force_bytes(user.pk))).replace("b'", "").replace("'", "")
         # Url will be send to user, this will be replaced by real link
-        url = domain + '/' + uidb36 + '/' + token_key
+        url = domain + '/' + uuid + '/' + token_key
         # Send email
-        mail_status = send_email(subject, url, settings.DEFAULT_FROM_EMAIL, [user.email])
+        mail_status = send_mail(subject, url, settings.DEFAULT_FROM_EMAIL, [user.email])
 
         # Check ok
         if mail_status:
-            return Response({'detail': ''}, status=status.HTTP_200_OK)
+            return Response({
+                'status': False,
+                'messageCode': None,
+                'messageParams': None,
+                'data': []
+            }, status=status.HTTP_200_OK)
 
-        return Response({'detail': ''}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({
+            'status': False,
+            'messageCode': None,
+            'messageParams': None,
+            'data': []
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PasswordResetFromKey(APIView):
@@ -58,12 +73,17 @@ class PasswordResetFromKey(APIView):
     parser_classes = (JSONParser,)
 
     @staticmethod
-    def post(request, uidb36, token_key):
+    def post(request, uidb64, token_key):
         """
             New password
         """
-        if request.user.is_authenticated():
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        if request.user.is_authenticated:
+            return Response({
+                'status': False,
+                'messageCode': None,
+                'messageParams': None,
+                'data': []
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         # init form with POST data
         serializer = self.serializer_class(data=request.data)
@@ -72,38 +92,73 @@ class PasswordResetFromKey(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         # Decode user id
-        uid_int = base36_to_int(uidb36)
+        uid_int = urlsafe_base64_decode(uidb64)
         # get user
         user = User.objects.filter(pk=uid_int).first()
-        if not user.exists():
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        if not user:
+            return Response({
+                'status': False,
+                'messageCode': None,
+                'messageParams': None,
+                'data': []
+            }, status=status.HTTP_400_BAD_REQUEST)
         # Validate token
         # False if wrong or expire
         token_key = default_token_generator.check_token(user, token_key)
         if not token_key:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                'status': False,
+                'messageCode': None,
+                'messageParams': None,
+                'data': []
+            }, status=status.HTTP_400_BAD_REQUEST)
         # set new password
-        user.set_password(serializer.object.get('password1'))
+        user.set_password(serializer.data['password1'])
         user.save()
-        return Response({'detail': ''}, status=status.HTTP_200_OK)
+        return Response({
+            'status': False,
+            'messageCode': None,
+            'messageParams': None,
+            'data': []
+        }, status=status.HTTP_200_OK)
 
     @staticmethod
-    def get(request, uidb36, token_key):
+    def get(request, uidb64, token_key):
         """
             Verify token_key before allow user create new password
         """
-        if request.user.is_authenticated():
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        if request.user.is_authenticated:
+            return Response({
+                'status': False,
+                'messageCode': None,
+                'messageParams': None,
+                'data': []
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         # Decode user id
-        uid_int = base36_to_int(uidb36)
+        uid_int = urlsafe_base64_decode(uidb64)
         try:
             user = User.objects.get(pk=uid_int)
             # Validate token
             # False if wrong or expire
             token_key = default_token_generator.check_token(user, token_key)
             if token_key:
-                return Response(status=status.HTTP_200_OK)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+                return Response({
+                    'status': False,
+                    'messageCode': None,
+                    'messageParams': None,
+                    'data': []
+                }, status=status.HTTP_200_OK)
+            return Response({
+                'status': False,
+                'messageCode': None,
+                'messageParams': None,
+                'data': []
+            }, status=status.HTTP_400_BAD_REQUEST)
         except Exception:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                'status': False,
+                'messageCode': None,
+                'messageParams': None,
+                'data': []
+            }, status=status.HTTP_400_BAD_REQUEST)

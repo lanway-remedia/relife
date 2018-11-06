@@ -249,7 +249,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    'EXCEPTION_HANDLER': 'mrelife.utils.exceptionhanders.custom_exception_handler',
+    # 'EXCEPTION_HANDLER': 'mrelife.utils.exceptionhanders.custom_exception_handler',
     # 'DEFAULT_FILTER_BACKENDS': ('rest_framework_filters.backends.DjangoFilterBackend',),
     # 'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
     # 'DEFAULT_FILTER_BACKENDS': ('url_filter.integrations.drf.DjangoFilterBackend',),

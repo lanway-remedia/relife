@@ -4,8 +4,8 @@ from mrelife.authenticates.views import PasswordResetRequest, PasswordResetFromK
 from rest_framework.urlpatterns import format_suffix_patterns
 
 version_one = [
-    path('reset-request', PasswordResetRequest.as_view()),
-    path('reset-with-key/(?P<uidb36>[0-9A-Za-z]+)/(?P<token_key>.+)', PasswordResetFromKey.as_view()),
+    path('reset-request/', PasswordResetRequest.as_view()),
+    path('reset-with-key/<str:uidb64>/<str:token_key>/', PasswordResetFromKey.as_view()),
 ]
 
 urlpatterns = [
