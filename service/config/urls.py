@@ -12,6 +12,7 @@ api_patterns = [
     path('outletstores/', include('mrelife.outletstores.urls')),
     path("users/", include("mrelife.users.urls")),
     path("file-managements/", include("mrelife.file_managements.urls"), name="FileManagements"),
+    path("auths/", include("mrelife.authenticates.urls"), name="Authenticates"),
 ]
 
 urlpatterns = [

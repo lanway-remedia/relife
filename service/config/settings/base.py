@@ -71,9 +71,10 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     'mrelife.users.apps.UsersAppConfig',
-    'mrelife.outletstores.apps.OutletstoresConfig',
-
     # Your stuff: custom apps go here
+    'mrelife.outletstores.apps.OutletstoresConfig',
+    'mrelife.file_managements.apps.FileManagementsAppConfig',
+    'mrelife.authenticates.apps.AuthenticatesAppConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

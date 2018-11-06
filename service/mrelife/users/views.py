@@ -1,11 +1,6 @@
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
-
-from mrelife.users.serializers import UserSerializer
-from mrelife.utils.relifeenum import MessageCode
-from mrelife.utils.relifepermissions import (AdminPermission,
-                                             SuperUserPermission)
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -14,6 +9,10 @@ from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import JSONWebTokenAPIView
 from url_filter.integrations.drf import DjangoFilterBackend
+
+from mrelife.users.serializers import UserSerializer
+from mrelife.utils.relifeenum import MessageCode
+from mrelife.utils.relifepermissions import AdminPermission, SuperUserPermission
 
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
