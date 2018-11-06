@@ -1,6 +1,11 @@
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
+
+from mrelife.users.serializers import UserSerializer
+from mrelife.utils.relifeenum import MessageCode
+from mrelife.utils.relifepermissions import (AdminPermission,
+                                             SuperUserPermission)
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -8,10 +13,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import JSONWebTokenAPIView
-
-from mrelife.users.serializers import UserSerializer
-from mrelife.utils.relifeenum import MessageCode
-from mrelife.utils.relifepermissions import AdminPermission, SuperUserPermission
+from url_filter.integrations.drf import DjangoFilterBackend
 
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
@@ -69,9 +71,16 @@ def example_view(request, format=None):
     return Response(reponse)
 
 class UserVs(ModelViewSet):
+    """
+    User Management
+    Can filter group_id, username by adding parameter on url ?group_id=ID&username=STRING
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (SuperUserPermission, )
+    # user
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['group_id', 'username']
 
     def list(self, request, *args, **kwargs):
         return super(UserVs, self).list(request, *args, **kwargs)
