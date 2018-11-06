@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
-from modernhouses import views
+from mrelife.modernhouses import views
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import routers
 from django.conf.urls.static import static

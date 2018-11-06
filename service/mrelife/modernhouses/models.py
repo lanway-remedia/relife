@@ -10,7 +10,7 @@ class ModernHouse(models.Model):
     category = models.ForeignKey('outletstores.Category', on_delete=models.CASCADE)
     thumbnail = models.ImageField(upload_to='Images/ModernHouses/', default='')
     area_of_premises = models.CharField(max_length = 50)
-    num_attend=models.IntegerField(max_length=5)
+    num_attend=models.IntegerField()
     price=models.FloatField()
     start_time = models.DateTimeField(auto_now_add = False)
     end_time = models.DateTimeField(auto_now_add = False)

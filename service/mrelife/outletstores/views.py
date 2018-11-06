@@ -1,10 +1,10 @@
-from outletstores.models import OutletStore
-from outletstores.serializers import OutletStoreSerializer
+from mrelife.outletstores.models import OutletStore
+from mrelife.outletstores.serializers import OutletStoreSerializer
 from django.http import Http404
 from rest_framework.views import APIView
 
-from outletstores.response import ResultOutputResponse
-from commons.pagination import LargeResultsSetPagination
+from mrelife.outletstores.response import ResultOutputResponse
+from mrelife.commons.pagination import LargeResultsSetPagination
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import datetime
@@ -98,19 +98,26 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = OutletStoreSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+            data={'status':status.HTTP_200_OK,'data':serializer.data}
+            return self.get_paginated_response(data)
         serializer = OutletStoreSerializer(queryset, many=True)
         return Response(serializer.data)
-    def create(self, request):
-        queryset=""
-        return queryset
+       
     def retrieve(self,request,pk=None):
         queryset=OutletStore.objects.all().filter(id=self.kwargs['pk'])
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = OutletStoreSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+            data={'status':status.HTTP_200_OK,'data':serializer.data}
+            return self.get_paginated_response(data)
         serializer = OutletStoreSerializer(queryset, many=True)
+    def create(self, request):
+        serializer = OutletStoreSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(is_active = settings.IS_ACTIVE, created = datetime.now(), updated = datetime.now())
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        output = {"status": False, 'messageCode': 'MSG01', "errors": serializer.errors,"data":[]}
+        return Response(output, status=status.HTTP_200_OK)
     @action(detail=False, methods=['put'])
     def custom_edit(self, request, pk=None):
         outletstore = self.get_object(pk)
@@ -119,14 +126,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             serializer.save(is_active = settings.IS_ACTIVE, created = datetime.now(), updated = datetime.now())
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def create(self, request, *args, **kwargs):
-        serializer = OutletStoreSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(is_active = settings.IS_ACTIVE, created = datetime.now(), updated = datetime.now())
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        output = {"status": False, 'messageCode': 'MSG01', "errors": serializer.errors,"data":[]}
-        return Response(output, status=status.HTTP_200_OK)
+   
 
 
 
