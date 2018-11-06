@@ -111,6 +111,7 @@ SERVER_EMAIL = env('DJANGO_SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
 EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[mrelife]')
 
+
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL regex.
@@ -122,10 +123,13 @@ ADMIN_URL = env('DJANGO_ADMIN_URL')
 INSTALLED_APPS += ['anymail']  # noqa F405
 EMAIL_BACKEND = 'anymail.backends.amazon_ses.EmailBackend'
 # https://anymail.readthedocs.io/en/stable/installation/#anymail-settings-reference
-# ANYMAIL = {
-#     'MAILGUN_API_KEY': env('MAILGUN_API_KEY'),
-#     'MAILGUN_SENDER_DOMAIN': env('MAILGUN_DOMAIN')
-# }
+ANYMAIL = {
+    "AMAZON_SES_CLIENT_PARAMS": {
+        "aws_access_key_id": env('DJANGO_AWS_ACCESS_KEY_ID'),
+        "aws_secret_access_key": env('DJANGO_AWS_SECRET_ACCESS_KEY'),
+        "region_name": "us-east-1",
+    },
+}
 
 # Gunicorn
 # ------------------------------------------------------------------------------
