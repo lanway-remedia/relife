@@ -1,8 +1,13 @@
+import os
+
 from django.contrib.auth.models import AbstractUser, Group
+from django.core.files.storage import default_storage as storage
 from django.db.models import (SET_NULL, BooleanField, CharField, DateTimeField,
                               ForeignKey, ImageField, IntegerField, Model)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+
+from PIL import Image
 
 
 class User(AbstractUser):
@@ -13,9 +18,43 @@ class User(AbstractUser):
     zipcode = CharField(max_length=8, null=True, blank=True)
     group = ForeignKey(Group, related_name='users', null=True, on_delete=SET_NULL)
     profile_image = ImageField(null=True, blank=True)
+    profile_image_thumb = CharField(max_length=800, null=True, blank=True)
 
     class Meta:
         ordering = ['date_joined', ]
+
+    def save(self, *args, **kwargs):
+        super(User, self).save(*args, **kwargs)
+        self.create_avatar_thumb()
+
+    def create_avatar_thumb(self):
+        if not self.profile_image:
+            return ""
+        file_path = self.profile_image.name
+        filename_base, filename_ext = os.path.splitext(file_path)
+        thumb_file_path = "%s_thumb.jpg" % filename_base
+        if storage.exists(thumb_file_path):
+            return "exists"
+        try:
+            # resize the original image and return url path of the thumbnail
+            f = storage.open(file_path, 'r')
+            image = Image.open(f)
+            width, height = image.size
+            basewidth = 300
+
+            wpercent = (basewidth/float(width))
+            hsize = int((float(height)*float(wpercent)))
+            image = image.resize((basewidth, hsize), Image.ANTIALIAS)
+
+            f_thumb = storage.open(thumb_file_path, "w")
+            image.save(f_thumb, "JPEG")
+            f_thumb.close()
+            self.profile_image_thumb = thumb_file_path
+            self.save()
+            return "success"
+        except:
+            return "error"
+
 
 
 class RepresentSubAcc(Model):

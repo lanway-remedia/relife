@@ -20,7 +20,12 @@ class PasswordResetRequest(APIView):
     def post(self, request):
 
         if request.user.is_authenticated:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                'status': False,
+                'messageCode': 'AU002',
+                'messageParams': {},
+                'data': []
+            }, status=status.HTTP_400_BAD_REQUEST)
         # init form with POST data
         serializer = self.serializer_class(data=request.data)
         # validate
@@ -33,8 +38,8 @@ class PasswordResetRequest(APIView):
         if not user:
             return Response({
                 'status': False,
-                'messageCode': None,
-                'messageParams': None,
+                'messageCode': 'US001',
+                'messageParams': {},
                 'data': []
             }, status=status.HTTP_404_NOT_FOUND)
 
@@ -54,18 +59,18 @@ class PasswordResetRequest(APIView):
         # Check ok
         if mail_status:
             return Response({
-                'status': False,
-                'messageCode': None,
-                'messageParams': None,
-                'data': []
+                'status': True,
+                'messageCode': 'RP001',
+                'messageParams': {},
+                'data': {'uuid': uuid, 'token': token_key}
             }, status=status.HTTP_200_OK)
 
         return Response({
             'status': False,
-            'messageCode': None,
-            'messageParams': None,
+            'messageCode': 'MS001',
+            'messageParams': {},
             'data': []
-        }, status=status.HTTP_400_BAD_REQUEST)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class PasswordResetFromKey(APIView):
@@ -80,8 +85,8 @@ class PasswordResetFromKey(APIView):
         if request.user.is_authenticated:
             return Response({
                 'status': False,
-                'messageCode': None,
-                'messageParams': None,
+                'messageCode': 'AU002',
+                'messageParams': {},
                 'data': []
             }, status=status.HTTP_400_BAD_REQUEST)
 
@@ -98,27 +103,27 @@ class PasswordResetFromKey(APIView):
         if not user:
             return Response({
                 'status': False,
-                'messageCode': None,
-                'messageParams': None,
+                'messageCode': 'US001',
+                'messageParams': {},
                 'data': []
-            }, status=status.HTTP_400_BAD_REQUEST)
+            }, status=status.HTTP_404_NOT_FOUND)
         # Validate token
         # False if wrong or expire
         token_key = default_token_generator.check_token(user, token_key)
         if not token_key:
             return Response({
                 'status': False,
-                'messageCode': None,
-                'messageParams': None,
+                'messageCode': 'RP002',
+                'messageParams': {},
                 'data': []
             }, status=status.HTTP_400_BAD_REQUEST)
         # set new password
         user.set_password(serializer.data['password1'])
         user.save()
         return Response({
-            'status': False,
-            'messageCode': None,
-            'messageParams': None,
+            'status': True,
+            'messageCode': 'RP003',
+            'messageParams': {},
             'data': []
         }, status=status.HTTP_200_OK)
 
@@ -130,8 +135,8 @@ class PasswordResetFromKey(APIView):
         if request.user.is_authenticated:
             return Response({
                 'status': False,
-                'messageCode': None,
-                'messageParams': None,
+                'messageCode': 'AU002',
+                'messageParams': {},
                 'data': []
             }, status=status.HTTP_400_BAD_REQUEST)
 
@@ -144,21 +149,21 @@ class PasswordResetFromKey(APIView):
             token_key = default_token_generator.check_token(user, token_key)
             if token_key:
                 return Response({
-                    'status': False,
-                    'messageCode': None,
-                    'messageParams': None,
+                    'status': True,
+                    'messageCode': 'RP004',
+                    'messageParams': {},
                     'data': []
                 }, status=status.HTTP_200_OK)
             return Response({
                 'status': False,
-                'messageCode': None,
-                'messageParams': None,
+                'messageCode': 'RP002',
+                'messageParams': {},
                 'data': []
             }, status=status.HTTP_400_BAD_REQUEST)
         except Exception:
             return Response({
                 'status': False,
-                'messageCode': None,
-                'messageParams': None,
+                'messageCode': 'US001',
+                'messageParams': {},
                 'data': []
-            }, status=status.HTTP_400_BAD_REQUEST)
+            }, status=status.HTTP_404_NOT_FOUND)
