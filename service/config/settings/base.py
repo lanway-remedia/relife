@@ -76,7 +76,6 @@ LOCAL_APPS = [
     'mrelife.modernhouses.apps.ModernhousesConfig',
 
     # Your stuff: custom apps go here
-    'mrelife.outletstores.apps.OutletstoresConfig',
     'mrelife.file_managements.apps.FileManagementsAppConfig',
     'mrelife.authenticates.apps.AuthenticatesAppConfig',
 ]

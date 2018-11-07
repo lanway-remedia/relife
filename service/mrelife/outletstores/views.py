@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from mrelife.outletstores.response import ResultOutputResponse
 from mrelife.commons.pagination import LargeResultsSetPagination
-=======
+
 from mrelife.outletstores.serializers import OutletStoreSerializer, TagSerializer
 from django.http import Http404
 from rest_framework.views import APIView
@@ -149,26 +149,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-<<<<<<< HEAD
-    def create(self, request):
-=======
-    """action(detail=False, methods=['post'])
-    def add(self, request, *args, **kwargs):
->>>>>>> dev
-        serializer = OutletStoreSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(is_active = settings.IS_ACTIVE, created = datetime.now(), updated = datetime.now())
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        output = {"status": False, 'messageCode': 'MSG01', "errors": serializer.errors,"data":[]}
-<<<<<<< HEAD
-        return Response(output, status=status.HTTP_200_OK)
+  
+ 
 
 
-=======
-        return Response(output, status=status.HTTP_200_OK) """
-
-
-
-    
-
->>>>>>> dev
