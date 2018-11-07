@@ -1,46 +1,29 @@
-
-from mrelife.outletstores.models import OutletStore
-<<<<<<< HEAD
-from mrelife.outletstores.serializers import OutletStoreSerializer
-from django.http import Http404
-from rest_framework.views import APIView
-
-from mrelife.outletstores.response import ResultOutputResponse
-from mrelife.commons.pagination import LargeResultsSetPagination
-
-from mrelife.outletstores.serializers import OutletStoreSerializer, TagSerializer
-from django.http import Http404
-from rest_framework.views import APIView
-
-
->>>>>>> dev
-from rest_framework.response import Response
-from rest_framework import status
-
 from datetime import datetime
 
 from django.conf import settings
 from django.http import Http404
-from rest_framework import status, viewsets
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+
 from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework import status, viewsets
 from rest_framework.views import APIView
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.authentication import  SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from mrelife.outletstores.models import OutletStore
+from mrelife.outletstores.response import ResultOutputResponse
+from mrelife.commons.pagination import LargeResultsSetPagination
+from mrelife.outletstores.serializers import TagSerializer
 from mrelife.outletstores.serializers import OutletStoreSerializer
-
 
 
 class OutletStoreList(APIView):
 
     authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = (IsAuthenticated,)
-    """
-    List all snippets, or create a new snippet.
-    """
-
+    #List all snippets, or create a new snippet.
     def get(self, request, format=None):
         outletstores = OutletStore.objects.all()
         serializer = OutletStoreSerializer(outletstores, many=True)
@@ -119,19 +102,17 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = OutletStoreSerializer(page, many=True)
-            data={'status':status.HTTP_200_OK,'data':serializer.data}
+            data={'status':status.HTTP_200_OK,'result':serializer.data}
             return self.get_paginated_response(data)
         serializer = OutletStoreSerializer(queryset, many=True)
         return Response(serializer.data)
        
     def retrieve(self,request,pk=None):
         queryset=OutletStore.objects.all().filter(id=self.kwargs['pk'])
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = OutletStoreSerializer(page, many=True)
-            data={'status':status.HTTP_200_OK,'data':serializer.data}
-            return self.get_paginated_response(data)
-        serializer = OutletStoreSerializer(queryset, many=True)
+        serializer =  OutletStoreSerializer(queryset, many=True)
+        output = {"status": True, 'messageCode': 'MSG01',"data":serializer.data}
+        return Response(output, status=status.HTTP_200_OK)
+
     def create(self, request):
         serializer = OutletStoreSerializer(data=request.data)
         if serializer.is_valid():
@@ -149,7 +130,13 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-  
- 
 
+    def add(self, request, *args, **kwargs):
+        serializer = OutletStoreSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(is_active = settings.IS_ACTIVE, created = datetime.now(), updated = datetime.now())
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        output = {"status": False, 'messageCode': 'MSG01', "errors": serializer.errors,"data":[]}
+
+        return Response(output, status=status.HTTP_200_OK)
 
