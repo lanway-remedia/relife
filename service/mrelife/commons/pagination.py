@@ -1,4 +1,4 @@
-from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 
@@ -16,5 +16,5 @@ class LargeResultsSetPagination(PageNumberPagination):
                 'previous': self.get_previous_link()
             },
             'count': self.page.paginator.count,
-            'data': data['data']
+            'data': data['result']
         })
