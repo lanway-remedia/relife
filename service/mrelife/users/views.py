@@ -1,73 +1,26 @@
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+
+from mrelife.authenticates.mails import auth_mail
+from mrelife.authenticates.serializers import ResetPasswordSerializer
+from mrelife.users.serializers import UserSerializer
+from mrelife.utils.querys import get_or_none
+from mrelife.utils.relifeenum import MessageCode
+from mrelife.utils.relifepermissions import (AdminPermission,
+                                             SuperUserPermission)
+from mrelife.utils.validates import email_exist
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework_jwt.serializers import JSONWebTokenSerializer
-from rest_framework_jwt.settings import api_settings
-from rest_framework_jwt.views import JSONWebTokenAPIView
 from url_filter.integrations.drf import DjangoFilterBackend
-
-from mrelife.users.serializers import UserSerializer
-from mrelife.utils.relifeenum import MessageCode
-from mrelife.utils.relifepermissions import AdminPermission, SuperUserPermission
-
-jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
 User = get_user_model()
 
-# Create your views here.
-class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-
-        if serializer.is_valid():
-            user = serializer.object.get('user') or request.user
-            token = serializer.object.get('token')
-            response_data = jwt_response_payload_handler(token, user, request)
-            formated_response = {
-                'status': False,
-                'messageCode': None,
-                'messageParams': None,
-                'data': response_data
-            }
-            response = Response(formated_response)
-            if api_settings.JWT_AUTH_COOKIE:
-                expiration = (datetime.utcnow() +
-                              api_settings.JWT_EXPIRATION_DELTA)
-                response.set_cookie(api_settings.JWT_AUTH_COOKIE,
-                                    token,
-                                    expires=expiration,
-                                    httponly=True)
-            return response
-        formated_errors = {
-            'status': False,
-            'messageCode': MessageCode.AU001.value,
-            'messageParams': None,
-            'data': serializer.errors
-        }
-        return Response(formated_errors, status=status.HTTP_400_BAD_REQUEST)
-
-class RelifeObtainJSONWebToken(RelifeJSONWebTokenAPIView):
-    """
-    API View that receives a POST with a user's username and password.
-
-    Returns a JSON Web Token that can be used for authenticated requests.
-    """
-    serializer_class = JSONWebTokenSerializer
-
-custom_obtain_jwt_token = RelifeObtainJSONWebToken.as_view()
-
-@api_view(('GET',))
-@permission_classes((AdminPermission, ))
-def example_view(request, format=None):
-    reponse = {
-        'data': 'something'
-    }
-    return Response(reponse)
 
 class UserVs(ModelViewSet):
     """
@@ -81,5 +34,45 @@ class UserVs(ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['group_id', 'username']
 
-    def list(self, request, *args, **kwargs):
-        return super(UserVs, self).list(request, *args, **kwargs)
+    @list_route(methods=['post'])
+    def update_email(self, request, *args, **kwargs):
+        # validate data
+        serializer = ResetPasswordSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        email = serializer.data['mail']
+        domain = serializer.data['domain']
+        if email_exist(email):
+            return Response({
+                'status': False,
+                'messageCode': 'US004',
+                'messageParams': {},
+                'data': []
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Generate token
+        token_key = default_token_generator.make_token(request.user)
+
+        # Information for email, include: subject, link, from email and to
+        # Encode user id
+        uuid = str(urlsafe_base64_encode(force_bytes(request.user.pk))).replace("b'", "").replace("'", "")
+        encode_mail = str(urlsafe_base64_encode(force_bytes(email))).replace("b'", "").replace("'", "")
+        # Url will be send to user, this will be replaced by real link
+        detail = domain + 'new-email-confirm/' + uuid + '/' + encode_mail + '/' + token_key
+        # Send email
+        mail_status = auth_mail('Change email', detail, email)
+
+        # Check mail sending ok
+        if not mail_status:
+            return Response({
+                'status': False,
+                'messageCode': 'MS001',
+                'messageParams': {},
+                'data': []
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({
+            'status': True,
+            'messageCode': 'US005',
+            'messageParams': {},
+            'data': {}
+        }, status=status.HTTP_200_OK)
