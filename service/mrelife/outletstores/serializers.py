@@ -49,9 +49,11 @@ class OutletStoreSerializer(serializers.ModelSerializer):
         return outletstore
 
 class TagSerializer(serializers.ModelSerializer):
+    name = serializers.CharField()
+
     class Meta:
         model = Tag
-        fields = ('name', )
+        fields = ('id', 'name', )
 class OutletStoreTagSerializer(serializers.ModelSerializer):
     outlet_store = OutletStoreSerializer(many=True)
     tag = TagSerializer(many=True)
