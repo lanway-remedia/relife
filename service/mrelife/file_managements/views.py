@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.files.storage import default_storage
 
 from rest_framework import status
@@ -32,5 +33,5 @@ class MyUploadView(APIView):
             'status': True,
             'messageCode': 'FM001',
             'messageParams': {},
-            'data': {"url": file}
+            'data': {"url": settings.MEDIA_URL + file}
         }, status=status.HTTP_201_CREATED)
