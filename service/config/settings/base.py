@@ -68,6 +68,7 @@ THIRD_PARTY_APPS = [
     'rest_framework_swagger',
     # Filter on URL
     'url_filter',
+    'corsheaders'
 ]
 LOCAL_APPS = [
     'mrelife.users.apps.UsersAppConfig',
@@ -78,6 +79,7 @@ LOCAL_APPS = [
     # Your stuff: custom apps go here
     'mrelife.file_managements.apps.FileManagementsAppConfig',
     'mrelife.authenticates.apps.AuthenticatesAppConfig',
+    'mrelife.tags.apps.TagsConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -131,6 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -285,3 +288,6 @@ ANONYMOUS_USER_ID = -1
 
 IS_ACTIVE = 1
 IS_INACTIVE = 0
+
+
+CORS_ORIGIN_ALLOW_ALL = True

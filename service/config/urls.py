@@ -14,6 +14,7 @@ api_patterns = [
     path("file-managements/", include("mrelife.file_managements.urls"), name="FileManagements"),
     path('modernhouses/', include('mrelife.modernhouses.urls')),
     path("auths/", include("mrelife.authenticates.urls"), name="Authenticates"),
+    path('tags/', include('mrelife.tags.urls')),
 ]
 
 urlpatterns = [

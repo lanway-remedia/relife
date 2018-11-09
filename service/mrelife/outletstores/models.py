@@ -27,7 +27,7 @@ class Category(Model):
 
 class Tag(Model):
 
-    name = CharField(max_length=255)
+    name = CharField(unique=True, max_length=255)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)
     updated = DateTimeField(auto_now_add=False, blank=True)
