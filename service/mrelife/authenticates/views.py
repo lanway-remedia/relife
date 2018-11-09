@@ -19,11 +19,11 @@ from rest_framework.views import APIView
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import JSONWebTokenAPIView
+from mrelife.utils.relifeenum import MessageCode
 
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
 User = get_user_model()
-
 
 class PasswordResetRequest(APIView):
     serializer_class = ResetPasswordSerializer
@@ -210,15 +210,11 @@ class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
             return response
         formated_errors = {
             'status': False,
-            'messageCode': 'AU001',
+            'messageCode': MessageCode.AU003.value,
             'messageParams': None,
             'data': serializer.errors
         }
         return Response(formated_errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-custom_obtain_jwt_token = RelifeJSONWebTokenAPIView.as_view()
-
 
 class RegisterView(APIView):
     serializer_class = RegisterSerializer

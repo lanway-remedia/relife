@@ -4,12 +4,13 @@ from mrelife.authenticates.views import (PasswordResetFromKey,
                                          PasswordResetRequest,
                                          RegisterView,
                                          RegisterConfirmView,
+                                         RelifeJSONWebTokenAPIView,
                                          ReactiveView,
                                          NewMailConfirmView)
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework_jwt.views import obtain_jwt_token
 version_one = [
-    path('login/', obtain_jwt_token),
+    path('login/', RelifeJSONWebTokenAPIView.as_view()),
     path('reset-request/', PasswordResetRequest.as_view()),
     path('reset-with-key/<str:uidb64>/<str:token_key>/', PasswordResetFromKey.as_view()),
     path('reactive/', ReactiveView.as_view()),
