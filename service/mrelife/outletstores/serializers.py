@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from mrelife.outletstores.models import OutletStore,Category,Tag,OutletStoreTag
+from rest_framework.validators import UniqueValidator
 
 
 class OutletStoreSerializer(serializers.ModelSerializer):
@@ -49,7 +50,11 @@ class OutletStoreSerializer(serializers.ModelSerializer):
         return outletstore
 
 class TagSerializer(serializers.ModelSerializer):
-    name = serializers.CharField()
+    # validate name is unique
+    name = serializers.CharField(
+        max_length=100,
+        validators=[UniqueValidator(queryset=Tag.objects.all())]
+    )
 
     class Meta:
         model = Tag
