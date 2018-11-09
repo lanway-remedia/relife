@@ -239,6 +239,7 @@ class RegisterView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         email = serializer.data['mail']
         username = serializer.data['username']
+        domain = serializer.data['domain']
         user = User.objects.create(username=username, email=email, group=GroupUser())
         user.set_password(serializer.data['password1'])
         # Generate token
