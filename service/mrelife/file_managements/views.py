@@ -28,5 +28,5 @@ class MyUploadView(APIView):
             'status': True,
             'messageCode': 'FM001',
             'messageParams': {},
-            'data': {"url": file}
+            'data': {"url": default_storage.path(file)}
         }, status=status.HTTP_201_CREATED)
