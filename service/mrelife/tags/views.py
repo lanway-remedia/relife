@@ -7,6 +7,7 @@ from datetime import datetime
 from rest_framework import status
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
+from django.conf import settings
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -22,12 +23,7 @@ class TagViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
-            resultSuccess = {
-                'status': True,
-                'messageCode': None,
-                'messageParams': None,
-                'data': serializer.data
-            }
+           
             return Response(result.resultResponse(True,serializer.data, MessageCode.SU001.value))
         return Response(result.resultResponse(False,serializer.errors, MessageCode.FA001.value))
 
@@ -58,7 +54,7 @@ class TagViewSet(viewsets.ModelViewSet):
     List a queryset.
     """
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
+        queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -67,3 +63,15 @@ class TagViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True,serializer.data, MessageCode.SU001.value))
+
+    """
+    Destroy a model instance.
+    """
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.is_active = settings.IS_INACTIVE
+        instance.save()
+        queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(result.resultResponse(True,serializer.data, MessageCode.SU001.value))
+
