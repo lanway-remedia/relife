@@ -5,6 +5,9 @@ from mrelife.outletstores.models import Tag
 from mrelife.outletstores.serializers  import TagSerializer
 from datetime import datetime
 from rest_framework import status
+from mrelife.utils import result
+from mrelife.utils.relifeenum import MessageCode
+
 
 class TagViewSet(viewsets.ModelViewSet):
 
@@ -25,14 +28,8 @@ class TagViewSet(viewsets.ModelViewSet):
                 'messageParams': None,
                 'data': serializer.data
             }
-            return Response(resultSuccess, status=status.HTTP_201_CREATED, headers=headers)
-        resultError = {
-            "status": False,
-             'messageCode': 'MSG01',
-              "errors": serializer.errors,
-              "data":[]
-        }
-        return Response(resultError, status=status.HTTP_200_OK)
+            return Response(result.resultResponse(True,serializer.data, MessageCode.SU001.value))
+        return Response(result.resultResponse(False,serializer.errors, MessageCode.FA001.value))
 
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now() )
@@ -51,21 +48,9 @@ class TagViewSet(viewsets.ModelViewSet):
                 # If 'prefetch_related' has been applied to a queryset, we need to
                 # forcibly invalidate the prefetch cache on the instance.
                 instance._prefetched_objects_cache = {}
-            resultSuccess = {
-                'status': True,
-                'messageCode': None,
-                'messageParams': None,
-                'data': serializer.data
-            }
-            return Response(resultSuccess)
-        resultError = {
-            "status": False,
-             'messageCode': 'MSG01',
-              "errors": serializer.errors,
-              "data":[]
-        }
-        return Response(resultError, status=status.HTTP_200_OK)
-
+        
+            return Response(result.resultResponse(True,serializer.data, MessageCode.SU001.value))
+        return Response(result.resultResponse(False,serializer.errors, MessageCode.FA001.value))
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now() )
     
@@ -81,10 +66,4 @@ class TagViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        resultSuccess = {
-                'status': True,
-                'messageCode': None,
-                'messageParams': None,
-                'data': serializer.data
-            }
-        return Response(resultSuccess)
+        return Response(result.resultResponse(True,serializer.data, MessageCode.SU001.value))
