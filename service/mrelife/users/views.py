@@ -1,9 +1,14 @@
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from rest_framework import status
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
@@ -13,14 +18,9 @@ from mrelife.utils.relifeenum import MessageCode
 from mrelife.utils.relifepermissions import (AdminPermission,
                                              SuperUserPermission)
 from mrelife.utils.validates import email_exist
-from rest_framework import status
-from rest_framework.decorators import detail_route, list_route
-from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
 from url_filter.integrations.drf import DjangoFilterBackend
 
 User = get_user_model()
-
 
 class UserVs(ModelViewSet):
     """
@@ -33,6 +33,17 @@ class UserVs(ModelViewSet):
     # user
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['group_id', 'username']
+
+    def create(self, request, *args, **kwargs):
+        obj = super(UserVs, self).create(request, *args, **kwargs)
+        group = request.data.get('group')
+        if group is not None:
+            group = Group.objects.get(pk=int(group))
+            user = User.objects.get(pk=obj.data['id'])
+            user.group = group
+            user.save()
+            obj.data['group'] = group.id
+        return obj
 
     @list_route(methods=['post'])
     def update_email(self, request, *args, **kwargs):

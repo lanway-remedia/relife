@@ -27,3 +27,6 @@ django-rest-swagger # https://django-rest-swagger.readthedocs.io/en/latest/
 # Advanced Filter
 django-filter
 django-url-filter # http://django-url-filter.readthedocs.io/
+
+
+django-cors-headers # https://pypi.org/project/django-cors-headers/
