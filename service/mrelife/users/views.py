@@ -1,22 +1,26 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
+from django.core.files.storage import default_storage
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from mrelife.authenticates.mails import auth_mail
-from mrelife.authenticates.serializers import ResetPasswordSerializer
-from mrelife.users.serializers import UserSerializer
-from mrelife.utils.relifepermissions import (SuperUserPermission)
-from mrelife.utils.validates import email_exist
 from rest_framework import status
 from rest_framework.decorators import list_route
+from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
+
+from mrelife.authenticates.mails import auth_mail
+from mrelife.authenticates.serializers import ResetPasswordSerializer
+from mrelife.file_managements.serializers import FileSerializer
+from mrelife.users.serializers import UserSerializer
+from mrelife.utils.relifepermissions import SuperUserPermission
+from mrelife.utils.validates import email_exist
 from url_filter.integrations.drf import DjangoFilterBackend
 
 User = get_user_model()
-
-
 class UserVs(ModelViewSet):
     """
     User Management
@@ -39,6 +43,45 @@ class UserVs(ModelViewSet):
             user.save()
             obj.data['group'] = group.id
         return obj
+
+
+class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
+    """
+    User Management
+    Update profile only
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def create(self, request, *args, **kwargs):
+        user = User.objects.get(pk=request.user.id)
+        serializer = UserSerializer(user, data=request.data)
+        if not serializer.is_valid():
+            return Response({
+                'status': False,
+                'messageCode': 'US010',
+                'messageParams': {},
+                'data': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response({
+            'status': True,
+            'messageCode': 'US011',
+            'messageParams': {},
+            'data': serializer.data
+        }, status.HTTP_200_OK)
+
+    def list(self, request, *args, **kwargs):
+        user = User.objects.get(pk=request.user.id)
+        serializer = UserSerializer(user)
+
+        return Response({
+            'status': True,
+            'messageCode': 'US007',
+            'messageParams': {},
+            'data': serializer.data
+        }, status.HTTP_200_OK)
+
 
     @list_route(methods=['post'])
     def update_email(self, request, *args, **kwargs):
@@ -82,3 +125,31 @@ class UserVs(ModelViewSet):
             'messageParams': {},
             'data': {}
         }, status=status.HTTP_200_OK)
+
+
+    @list_route(methods=['post'])
+    def update_avatar(self, request, *args, **kwargs):
+        user = User.objects.get(pk=request.user.id)
+        self.parser_class = (FormParser, MultiPartParser)
+        self.serializer_class = FileSerializer
+
+        file_serializer = FileSerializer(data=request.data)
+        if not file_serializer.is_valid():
+            return Response({
+                'status': False,
+                'messageCode': 'FM002',
+                'messageParams': {},
+                'data': file_serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+        f = request.data['file']
+        file = default_storage.save(f.name, f)
+        user.profile_image = settings.MEDIA_URL + file
+        user.save()
+        serializer = UserSerializer(user)
+
+        return Response({
+            'status': True,
+            'messageCode': 'US009',
+            'messageParams': {},
+            'data': serializer.data
+        }, status.HTTP_200_OK)
