@@ -6,18 +6,32 @@ from django.db.models import (
     ForeignKey,
     ImageField,
     Model,
-    TextField
+    TextField,
+    IntegerField
 )
 
 
 class Category(Model):
     name = CharField(max_length=255)
+    order = IntegerField(default=1)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)
     updated = DateTimeField(auto_now_add=False, blank=True)
 
     class Meta:
         db_table = 'category'
+        ordering = ['created', ]
+
+class SubCategory(Model):
+    category = ForeignKey(Category, on_delete=CASCADE)
+    name = CharField(max_length=255)
+    order = IntegerField(default=1)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
+    class Meta:
+        db_table = 'sub_category'
         ordering = ['created', ]
 
 
