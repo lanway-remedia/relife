@@ -1,17 +1,13 @@
 import os
 
+from PIL import Image
 from django.contrib.auth.models import AbstractUser, Group
 from django.core.files.storage import default_storage as storage
 from django.db.models import (SET_NULL, BooleanField, CharField, DateTimeField,
                               ForeignKey, ImageField, IntegerField, Model)
-from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
-
-from PIL import Image
 
 
 class User(AbstractUser):
-
     birth_date = DateTimeField(auto_now_add=False, null=True, blank=True)
     address = CharField(max_length=800, null=True, blank=True)
     tel = CharField(max_length=13, null=True, blank=True)
@@ -42,8 +38,8 @@ class User(AbstractUser):
             width, height = image.size
             basewidth = 300
 
-            wpercent = (basewidth/float(width))
-            hsize = int((float(height)*float(wpercent)))
+            wpercent = (basewidth / float(width))
+            hsize = int((float(height) * float(wpercent)))
             image = image.resize((basewidth, hsize), Image.ANTIALIAS)
 
             f_thumb = storage.open(thumb_file_path, "w")
@@ -56,9 +52,7 @@ class User(AbstractUser):
             return "error"
 
 
-
 class RepresentSubAcc(Model):
-
     represent_user_id = IntegerField()
     sub_user_id = IntegerField()
     is_active = BooleanField(default=True)

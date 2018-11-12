@@ -5,16 +5,12 @@ from django.db.models import (
     DateTimeField,
     ForeignKey,
     ImageField,
-    IntegerField,
     Model,
     TextField
 )
-from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
 
 
 class Category(Model):
-
     name = CharField(max_length=255)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)
@@ -26,7 +22,6 @@ class Category(Model):
 
 
 class Tag(Model):
-
     name = CharField(unique=True, max_length=255)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)
@@ -38,7 +33,6 @@ class Tag(Model):
 
 
 class OutletStore(Model):
-
     title = CharField(max_length=255)
     content = TextField()
     category = ForeignKey(Category, on_delete=CASCADE)
@@ -62,7 +56,6 @@ class OutletStore(Model):
 
 
 class OutletStoreTag(Model):
-
     outlet_store = ForeignKey(OutletStore, on_delete=CASCADE)
     tag = ForeignKey(Tag, on_delete=CASCADE)
     is_active = BooleanField(default=True)
@@ -75,7 +68,6 @@ class OutletStoreTag(Model):
 
 
 class OutletStoreMedia(Model):
-
     outlet_store = ForeignKey(OutletStore, on_delete=CASCADE)
     type_media = BooleanField()
     title = CharField(max_length=255)
@@ -91,7 +83,6 @@ class OutletStoreMedia(Model):
 
 
 class OutletStoreComment(Model):
-
     outlet_store = ForeignKey(OutletStore, on_delete=CASCADE)
     user = ForeignKey('users.User', on_delete=CASCADE)
     comment = CharField(max_length=255)
@@ -105,7 +96,6 @@ class OutletStoreComment(Model):
 
 
 class OutletStoreCommentReply(Model):
-
     os_comment = ForeignKey(OutletStoreComment, on_delete=CASCADE)
     user = ForeignKey('users.User', on_delete=CASCADE)
     comment = CharField(max_length=255)

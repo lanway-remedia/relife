@@ -1,26 +1,21 @@
-from datetime import datetime
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from rest_framework import status
-from rest_framework.decorators import detail_route, list_route
-from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
-
+from django.utils.http import urlsafe_base64_encode
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
 from mrelife.users.serializers import UserSerializer
-from mrelife.utils.querys import get_or_none
-from mrelife.utils.relifeenum import MessageCode
-from mrelife.utils.relifepermissions import (AdminPermission,
-                                             SuperUserPermission)
+from mrelife.utils.relifepermissions import (SuperUserPermission)
 from mrelife.utils.validates import email_exist
+from rest_framework import status
+from rest_framework.decorators import list_route
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 from url_filter.integrations.drf import DjangoFilterBackend
 
 User = get_user_model()
+
 
 class UserVs(ModelViewSet):
     """
@@ -29,7 +24,7 @@ class UserVs(ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (SuperUserPermission, )
+    permission_classes = (SuperUserPermission,)
     # user
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['group_id', 'username']

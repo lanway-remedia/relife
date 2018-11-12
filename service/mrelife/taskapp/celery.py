@@ -1,14 +1,12 @@
-
 import os
+
 from celery import Celery
 from django.apps import apps, AppConfig
 from django.conf import settings
 
-
 if not settings.configured:
     # set the default Django settings module for the 'celery' program.
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')  # pragma: no cover
-
 
 app = Celery('mrelife')
 
@@ -25,8 +23,6 @@ class CeleryAppConfig(AppConfig):
         app.config_from_object('django.conf:settings', namespace='CELERY')
         installed_apps = [app_config.name for app_config in apps.get_app_configs()]
         app.autodiscover_tasks(lambda: installed_apps, force=True)
-
-        
 
 
 @app.task(bind=True)

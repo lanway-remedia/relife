@@ -8,8 +8,7 @@ class LargeResultsSetPagination(PageNumberPagination):
     max_page_size = 10
 
     def get_paginated_response(self, data):
-
-            return Response({
+        return Response({
             'status': data['status'],
             'links': {
                 'next': self.get_next_link(),

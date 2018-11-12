@@ -1,9 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
 from django.urls import include, path
 from django.views import defaults as default_views
-from django.views.generic import TemplateView
 from rest_framework_swagger.views import get_swagger_view
 
 schema_view = get_swagger_view(title='Pastebin API')
@@ -18,11 +16,11 @@ api_patterns = [
 ]
 
 urlpatterns = [
-    path("", schema_view, name="home"),
-    path('api-auth/', include('rest_framework.urls')),
-    # Your stuff: custom urls includes go here
-    path('api/', include(api_patterns))
-] + static(
+                  path("", schema_view, name="home"),
+                  path('api-auth/', include('rest_framework.urls')),
+                  # Your stuff: custom urls includes go here
+                  path('api/', include(api_patterns))
+              ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )
 

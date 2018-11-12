@@ -9,7 +9,6 @@ class ResultOutputResponse():
     # @api_view(['GET','POST'])
 
     def OutputResponse(self, data, statusCode, messageCode):
-
         output = {
             "status": statusCode,
             "messageCode": messageCode,

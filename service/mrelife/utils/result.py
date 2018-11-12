@@ -1,5 +1,5 @@
 def resultResponse(success, data, messageCode):
-    if (success==True):
+    if (success == True):
         result = {
             'status': True,
             'messageCode': messageCode,

@@ -1,19 +1,17 @@
 from django.conf import settings
 from django.core.files.storage import default_storage
-
+from mrelife.file_managements.serializers import FileSerializer
 from rest_framework import status
-from rest_framework.decorators import permission_classes
-from rest_framework.parsers import (FileUploadParser, FormParser,
+from rest_framework.parsers import (FormParser,
                                     MultiPartParser)
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from mrelife.file_managements.serializers import FileSerializer
 
 
 class MyUploadView(APIView):
     parser_class = (FormParser, MultiPartParser)
     serializer_class = FileSerializer
+
     # permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):

@@ -1,16 +1,14 @@
-
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import (PasswordSerializer,
                                                RegisterSerializer,
                                                ResetPasswordSerializer)
 from mrelife.utils.groups import GroupUser
 from mrelife.utils.querys import get_or_none
+from mrelife.utils.relifeenum import MessageCode
 from mrelife.utils.validates import email_exist
 from rest_framework import status
 from rest_framework.parsers import JSONParser
@@ -19,11 +17,11 @@ from rest_framework.views import APIView
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import JSONWebTokenAPIView
-from mrelife.utils.relifeenum import MessageCode
 
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
 User = get_user_model()
+
 
 class PasswordResetRequest(APIView):
     serializer_class = ResetPasswordSerializer
@@ -215,6 +213,7 @@ class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
             'data': serializer.errors
         }
         return Response(formated_errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class RegisterView(APIView):
     serializer_class = RegisterSerializer
