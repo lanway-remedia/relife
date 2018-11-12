@@ -16,7 +16,7 @@ from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
 from mrelife.file_managements.serializers import FileSerializer
 from mrelife.users.serializers import UserSerializer
-from mrelife.utils.relifepermissions import SuperUserPermission
+from mrelife.utils.relifepermissions import AdminPermission
 from mrelife.utils.validates import email_exist
 from url_filter.integrations.drf import DjangoFilterBackend
 
@@ -28,7 +28,7 @@ class UserVs(ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (SuperUserPermission,)
+    permission_classes = (AdminPermission,)
     # user
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['group_id', 'username']
