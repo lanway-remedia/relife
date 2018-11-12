@@ -7,6 +7,7 @@ from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework import serializers
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -18,14 +19,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
 
     def create(self, request, *args, **kwargs):
-        if (request.data['type'] == '2'):
-            
+        if (int(request.data.get('type')) == settings.SUB_CATEGORY):
             serializer = SubCategorySerializer(data=request.data)
         else:
             serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             self.perform_create(serializer)
-
             return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
         return Response(result.resultResponse(False, serializer.errors, MessageCode.FA001.value))
 
@@ -39,7 +38,13 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+
+        if (int(request.data.get('type')) == settings.SUB_CATEGORY):
+            subCatID = kwargs['pk']
+            subCat = SubCategory.objects.get(pk=subCatID)
+            serializer = SubCategorySerializer(subCat, data=request.data, partial=partial)
+        else:
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
         if serializer.is_valid():
             self.perform_update(serializer)
 
@@ -59,7 +64,14 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
 
     def list(self, request, *args, **kwargs):
-        queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
+        #type = request.query_params.get('type')
+        #if(type is None):
+            #return Response(result.resultResponse(False, serializers.ValidationError("ok error"), MessageCode.SU001.value))
+           
+        if (int(request.query_params.get('type')) == settings.SUB_CATEGORY):
+            queryset = SubCategory.objects.filter(is_active=settings.IS_ACTIVE)
+        else:
+            queryset = Category.objects.filter(is_active=settings.IS_ACTIVE)
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -74,9 +86,18 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
 
     def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.is_active = settings.IS_INACTIVE
-        instance.save()
-        queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
+        if(int(request.data.get('type'))== settings.SUB_CATEGORY):
+            subCatID = kwargs['pk']
+            subCat = SubCategory.objects.get(pk=subCatID)
+            subCat.is_active = settings.IS_INACTIVE
+            subCat.updated = datetime.now()
+            subCat.save()
+            queryset = SubCategory.objects.filter(is_active=settings.IS_ACTIVE)
+        else:
+            instance = self.get_object()
+            instance.is_active = settings.IS_INACTIVE
+            instance.updated = datetime.now()
+            instance.save()
+            queryset = Category.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
