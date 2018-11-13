@@ -23,6 +23,6 @@ class UserSerializer(ModelSerializer):
 class ProfileSerializer(ModelSerializer):
     class Meta:
         model = User
-        exclude = ('password')
+        exclude = ('password',)
 
 
