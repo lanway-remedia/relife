@@ -23,7 +23,7 @@ class Category(Model):
         ordering = ['created', ]
 
 class SubCategory(Model):
-    category = ForeignKey(Category, on_delete=CASCADE)
+    category = ForeignKey(Category, related_name='sub_categories', on_delete=CASCADE)
     name = CharField(max_length=255)
     order = IntegerField(default=1)
     is_active = BooleanField(default=True)
@@ -33,6 +33,9 @@ class SubCategory(Model):
     class Meta:
         db_table = 'sub_category'
         ordering = ['created', ]
+        
+    def __unicode__(self):
+        return '%d: %s' % (self.id, self.name)
 
 
 class Tag(Model):
