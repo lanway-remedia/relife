@@ -10,10 +10,13 @@ api_patterns = [
     path('outletstores/', include('mrelife.outletstores.urls')),
     path("users/", include("mrelife.users.urls")),
     path("file-managements/", include("mrelife.file_managements.urls"), name="FileManagements"),
-    path('modernhouses/', include('mrelife.modernhouses.urls')),
     path("auths/", include("mrelife.authenticates.urls"), name="Authenticates"),
     path('tags/', include('mrelife.tags.urls')),
     path('categories/', include('mrelife.categories.urls')),
+    path('modelhouses/', include('mrelife.modelhouses.urls')),
+    path('events/', include('mrelife.events.urls')),
+    path('exhibitions/', include('mrelife.exhibitions.urls')),
+
 ]
 
 urlpatterns = [
