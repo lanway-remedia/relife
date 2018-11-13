@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from mrelife.utils.groups import GroupAdmin, GroupStore, GroupSub, GroupUser
 
 
 class SuperUserPermission(permissions.BasePermission):
@@ -10,22 +11,22 @@ class SuperUserPermission(permissions.BasePermission):
 class AdminPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return request.user.groups.filter(name='admin').exists()
+        return request.user.group == GroupAdmin()
 
 
 class StoreManagerPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return request.user.groups.filter(name='store_manager').exists()
+        return request.user.group == GroupStore()
 
 
 class SubStoreManagerPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return request.user.groups.filter(name='sub_store_manager').exists()
+        return request.user.group == GroupSub()
 
 
 class UserPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return request.user.groups.filter(name='user').exists()
+        return request.user.group == GroupUser()

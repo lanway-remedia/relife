@@ -1,5 +1,6 @@
+from rest_framework.serializers import CharField, EmailField, Serializer, ValidationError
+
 from mrelife.utils.validates import email_exist, username_exist
-from rest_framework.serializers import CharField, Serializer, ValidationError, EmailField
 
 
 class ResetPasswordSerializer(Serializer):

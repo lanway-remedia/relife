@@ -9,6 +9,7 @@ from rest_framework import status
 from rest_framework.decorators import list_route
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.parsers import FormParser, MultiPartParser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
@@ -16,7 +17,6 @@ from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
 from mrelife.file_managements.serializers import FileSerializer
 from mrelife.users.serializers import UserSerializer
-from mrelife.utils.relifepermissions import SuperUserPermission
 from mrelife.utils.validates import email_exist
 from url_filter.integrations.drf import DjangoFilterBackend
 
@@ -28,10 +28,16 @@ class UserVs(ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (SuperUserPermission,)
+    permission_classes = (IsAuthenticated,)
     # user
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['group_id', 'username']
+
+    # def list(self, request, *args, **kwargs):
+    #     group = request.user.group
+    #     if group.id == 2:
+    #         self.queryset = 
+    #     return super(UserVs, self).list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         obj = super(UserVs, self).create(request, *args, **kwargs)

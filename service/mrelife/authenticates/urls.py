@@ -1,13 +1,15 @@
 from django.urls import include, path
-
-from mrelife.authenticates.views import (PasswordResetFromKey,
-                                         PasswordResetRequest,
-                                         RegisterView,
-                                         RegisterConfirmView,
-                                         RelifeJSONWebTokenAPIView,
-                                         ReactiveView,
-                                         NewMailConfirmView)
 from rest_framework.urlpatterns import format_suffix_patterns
+
+from mrelife.authenticates.views import (
+    NewMailConfirmView,
+    PasswordResetFromKey,
+    PasswordResetRequest,
+    ReactiveView,
+    RegisterConfirmView,
+    RegisterView,
+    RelifeJSONWebTokenAPIView
+)
 
 version_one = [
     path('login/', RelifeJSONWebTokenAPIView.as_view()),
