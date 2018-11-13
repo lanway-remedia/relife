@@ -18,3 +18,11 @@ class UserSerializer(ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+
+class ProfileSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        exclude = ('password')
+
+
