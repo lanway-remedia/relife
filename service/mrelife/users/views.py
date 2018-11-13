@@ -36,10 +36,10 @@ class UserVs(ModelViewSet):
     filter_fields = ['group_id', 'username']
 
     # def list(self, request, *args, **kwargs):
-        # group = request.user.group
-        # if group.id == 2: # group store admin
-        #     self.queryset = 
-        # return super(UserVs, self).list(request, *args, **kwargs)
+    #     group = request.user.group
+    #     if group.id == 2: # group store admin
+    #         self.queryset = User.objects.filter()
+    #     return super(UserVs, self).list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         obj = super(UserVs, self).create(request, *args, **kwargs)
