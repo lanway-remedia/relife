@@ -8,6 +8,7 @@ from mrelife.utils.relifeenum import MessageCode
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import serializers
+from django.core.exceptions import ValidationError
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -19,7 +20,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
 
     def create(self, request, *args, **kwargs):
-        if (int(request.data.get('type')) == settings.SUB_CATEGORY):
+        type = int(request.data.get('type'))
+        if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
+            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
+        if (type == settings.SUB_CATEGORY):
             serializer = SubCategorySerializer(data=request.data)
         else:
             serializer = self.get_serializer(data=request.data)
@@ -38,8 +42,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-
-        if (int(request.data.get('type')) == settings.SUB_CATEGORY):
+        type = int(request.data.get('type'))
+        if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
+            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
+        if (type == settings.SUB_CATEGORY):
             subCatID = kwargs['pk']
             subCat = SubCategory.objects.get(pk=subCatID)
             serializer = SubCategorySerializer(subCat, data=request.data, partial=partial)
@@ -64,11 +70,11 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
 
     def list(self, request, *args, **kwargs):
-        #type = request.query_params.get('type')
-        #if(type is None):
-            #return Response(result.resultResponse(False, serializers.ValidationError("ok error"), MessageCode.SU001.value))
+        type = int(request.query_params.get('type'))
+        if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
+            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
            
-        if (int(request.query_params.get('type')) == settings.SUB_CATEGORY):
+        if (type == settings.SUB_CATEGORY):
             queryset = SubCategory.objects.filter(is_active=settings.IS_ACTIVE)
         else:
             queryset = Category.objects.filter(is_active=settings.IS_ACTIVE)
@@ -86,7 +92,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
 
     def destroy(self, request, *args, **kwargs):
-        if(int(request.data.get('type'))== settings.SUB_CATEGORY):
+        type = int(request.data.get('type'))
+        if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
+            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
+        if(type== settings.SUB_CATEGORY):
             subCatID = kwargs['pk']
             subCat = SubCategory.objects.get(pk=subCatID)
             subCat.is_active = settings.IS_INACTIVE
