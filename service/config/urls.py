@@ -13,6 +13,7 @@ api_patterns = [
     path('modernhouses/', include('mrelife.modernhouses.urls')),
     path("auths/", include("mrelife.authenticates.urls"), name="Authenticates"),
     path('tags/', include('mrelife.tags.urls')),
+    path('categories/', include('mrelife.categories.urls')),
 ]
 
 urlpatterns = [
