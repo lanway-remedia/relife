@@ -12,15 +12,17 @@ from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from url_filter.integrations.drf import DjangoFilterBackend
 
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
 from mrelife.file_managements.serializers import FileSerializer
-from mrelife.users.serializers import UserSerializer
+from mrelife.users.serializers import ProfileSerializer, UserSerializer
 from mrelife.utils.validates import email_exist
-from url_filter.integrations.drf import DjangoFilterBackend
 
 User = get_user_model()
+
+
 class UserVs(ModelViewSet):
     """
     User Management
@@ -34,10 +36,10 @@ class UserVs(ModelViewSet):
     filter_fields = ['group_id', 'username']
 
     # def list(self, request, *args, **kwargs):
-    #     group = request.user.group
-    #     if group.id == 2:
-    #         self.queryset = 
-    #     return super(UserVs, self).list(request, *args, **kwargs)
+        # group = request.user.group
+        # if group.id == 2: # group store admin
+        #     self.queryset = 
+        # return super(UserVs, self).list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         obj = super(UserVs, self).create(request, *args, **kwargs)
@@ -57,7 +59,8 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
     Update profile only
     """
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = ProfileSerializer
+    permission_classes = (IsAuthenticated,)
 
     def create(self, request, *args, **kwargs):
         user = User.objects.get(pk=request.user.id)
@@ -87,7 +90,6 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
             'messageParams': {},
             'data': serializer.data
         }, status.HTTP_200_OK)
-
 
     @list_route(methods=['post'])
     def update_email(self, request, *args, **kwargs):
@@ -131,7 +133,6 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
             'messageParams': {},
             'data': {}
         }, status=status.HTTP_200_OK)
-
 
     @list_route(methods=['post'])
     def update_avatar(self, request, *args, **kwargs):
