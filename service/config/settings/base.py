@@ -72,7 +72,6 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     'mrelife.users.apps.UsersAppConfig',
-    'mrelife.districts.apps.DistConfig',
     'mrelife.exhibitions.apps.ExhibitionsConfig',
     'mrelife.outletstores.apps.OutletstoresConfig',
     'mrelife.modelhouses.apps.ModelhousesConfig',

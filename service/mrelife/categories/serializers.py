@@ -1,4 +1,4 @@
-from mrelife.outletstores.models import SubCategory, Category
+from mrelife.categories.models import SubCategory, Category
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 

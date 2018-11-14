@@ -3,7 +3,8 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 #from mrelife.tags.models import Tag
-from mrelife.outletstores.models import OutletStore, Tag
+from mrelife.outletstores.models import OutletStore
+from mrelife.tags.models import Tag
 
 
 class ModelHouse(Model):
@@ -16,7 +17,7 @@ class ModelHouse(Model):
     structure = CharField(max_length=255, null=True)
     floor_map = CharField(max_length=255, null=True)
     img_thumbnail = CharField(max_length=800, null=True)
-    img_large = CharField(max_length=800, null=True)
+    img_large = ImageField(null=True, blank=True)
     land_area = CharField(max_length=255, null=True)
     construction_area = CharField(max_length=255, null=True)
     outlet_store = ForeignKey(OutletStore, on_delete=CASCADE)

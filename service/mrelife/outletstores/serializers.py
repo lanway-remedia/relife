@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from mrelife.exhibitions.models import District
-from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreMedia,Tag
+from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreMedia
 from mrelife.users.models import User
 
 
@@ -56,18 +56,6 @@ class OutletStoreSerializer(serializers.ModelSerializer):
         if data['end_time'] < data['start_time']:
             raise serializers.ValidationError("Start time must be greater than end time")
         return data
-
-
-class TagSerializer(serializers.ModelSerializer):
-    # validate name is unique
-    name = serializers.CharField(
-        max_length=100,
-        validators=[UniqueValidator(queryset=Tag.objects.all())]
-    )
-
-    class Meta:
-        model = Tag
-        fields = ('id', 'name',)
 
 
 

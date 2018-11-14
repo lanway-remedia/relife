@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.conf import settings
 from mrelife.tags.models import Tag
-from mrelife.outletstores.serializers import TagSerializer
+from mrelife.tags.serializers import TagSerializer
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
 from rest_framework import viewsets

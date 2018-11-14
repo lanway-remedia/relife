@@ -13,35 +13,33 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='City',
+            name='Category',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('name_en', models.CharField(max_length=255)),
                 ('order', models.IntegerField(default=1)),
                 ('is_active', models.BooleanField(default=True)),
                 ('created', models.DateTimeField(blank=True)),
                 ('updated', models.DateTimeField(blank=True)),
             ],
             options={
-                'db_table': 'city',
+                'db_table': 'category',
                 'ordering': ['created'],
             },
         ),
         migrations.CreateModel(
-            name='District',
+            name='SubCategory',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('name_en', models.CharField(max_length=255)),
                 ('order', models.IntegerField(default=1)),
                 ('is_active', models.BooleanField(default=True)),
                 ('created', models.DateTimeField(blank=True)),
                 ('updated', models.DateTimeField(blank=True)),
-                ('city', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='districts', to='locations.City')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sub_categories', to='categories.Category')),
             ],
             options={
-                'db_table': 'district',
+                'db_table': 'sub_category',
                 'ordering': ['created'],
             },
         ),
