@@ -1,10 +1,10 @@
 from django.urls import include, path
-from mrelife.modernhouses import views
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
+from mrelife.modelhouses import views
 
 router = routers.SimpleRouter()
-router.register(r'', views.ModernHouseViewSet)
+router.register(r'', views.ModelHouseViewSet)
 
 urlpatterns = [
     path('', include(router.urls))

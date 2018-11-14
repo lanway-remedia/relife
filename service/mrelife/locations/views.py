@@ -1,8 +1,8 @@
 from datetime import datetime
 
 from django.conf import settings
-from mrelife.categories.models import Category, SubCategory
-from mrelife.categories.serializers import CategorySerializer, SubCategorySerializer
+from mrelife.locations.models import City, District
+from mrelife.locations.serializers import CitySerializer, DistrictSerializer
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
 from rest_framework import viewsets
@@ -11,9 +11,9 @@ from rest_framework import serializers
 from django.core.exceptions import ValidationError
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+class LocationViewSet(viewsets.ModelViewSet):
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
 
     """
     Create a model instance.
@@ -21,10 +21,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         type = request.data.get('type')
-        if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
-            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
-        if (int(type) == settings.SUB_CATEGORY):
-            serializer = SubCategorySerializer(data=request.data)
+        if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
+            return Response(result.resultResponse(False, ValidationError("Type location is required"), MessageCode.FA001.value))
+        if (int(type) == settings.DISTRICT):
+            serializer = DistrictSerializer(data=request.data)
         else:
             serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
@@ -43,12 +43,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         type = request.data.get('type')
-        if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
-            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
-        if (int(type) == settings.SUB_CATEGORY):
-            subCatID = kwargs['pk']
-            subCat = SubCategory.objects.get(pk=subCatID)
-            serializer = SubCategorySerializer(subCat, data=request.data, partial=partial)
+        if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
+            return Response(result.resultResponse(False, ValidationError("Type location is required"), MessageCode.FA001.value))
+        if (int(type) == settings.DISTRICT):
+            districtID = kwargs['pk']
+            district = District.objects.get(pk=districtID)
+            serializer = DistrictSerializer(district, data=request.data, partial=partial)
         else:
             serializer = self.get_serializer(instance, data=request.data, partial=partial)
         if serializer.is_valid():
@@ -71,13 +71,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         type = request.query_params.get('type')
-        if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
-            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
-           
-        if (int(type) == settings.SUB_CATEGORY):
-            queryset = SubCategory.objects.filter(is_active=settings.IS_ACTIVE)
+        if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
+            return Response(result.resultResponse(False, ValidationError("Type location is required"), MessageCode.FA001.value))
+        if (int(type) == settings.DISTRICT):
+            queryset = District.objects.filter(is_active=settings.IS_ACTIVE)
         else:
-            queryset = Category.objects.filter(is_active=settings.IS_ACTIVE)
+            queryset = City.objects.filter(is_active=settings.IS_ACTIVE)
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -93,20 +92,21 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         type = request.data.get('type')
-        if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
-            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
-        if(int(type)== settings.SUB_CATEGORY):
-            subCatID = kwargs['pk']
-            subCat = SubCategory.objects.get(pk=subCatID)
-            subCat.is_active = settings.IS_INACTIVE
-            subCat.updated = datetime.now()
-            subCat.save()
-            queryset = SubCategory.objects.filter(is_active=settings.IS_ACTIVE)
+        if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
+            return Response(result.resultResponse(False, ValidationError("Type location is required"), MessageCode.FA001.value))
+        if(int(type)== settings.DISTRICT):
+            districtID = kwargs['pk']
+            district = District.objects.get(pk=districtID)
+            district.is_active = settings.IS_INACTIVE
+            district.updated = datetime.now()
+            district.save()
+            queryset = District.objects.filter(is_active=settings.IS_ACTIVE)
+
         else:
             instance = self.get_object()
             instance.is_active = settings.IS_INACTIVE
             instance.updated = datetime.now()
             instance.save()
-            queryset = Category.objects.filter(is_active=settings.IS_ACTIVE)
+            queryset = City.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
