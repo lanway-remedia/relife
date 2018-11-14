@@ -18,47 +18,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image
 
-from mrelife.exhibitions.models import District
-
-
-class Category(Model):
-    name = CharField(max_length=255)
-    order = IntegerField(default=1)
-    is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
-
-    class Meta:
-        db_table = 'category'
-        ordering = ['created', ]
-
-
-class SubCategory(Model):
-    category = ForeignKey(Category, related_name='sub_categories', on_delete=CASCADE)
-    name = CharField(max_length=255)
-    order = IntegerField(default=1)
-    is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
-
-    class Meta:
-        db_table = 'sub_category'
-        ordering = ['created', ]
-        
-    def __unicode__(self):
-        return '%d: %s' % (self.id, self.name)
-
-
-class Tag(Model):
-    name = CharField(unique=True, max_length=255)
-    is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
-
-    class Meta:
-        db_table = 'tag'
-        ordering = ['created', ]
-
+from mrelife.locations.models import District
 
 class OutletStore(Model):
     title = CharField(max_length=255)

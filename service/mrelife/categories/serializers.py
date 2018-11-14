@@ -1,4 +1,4 @@
-from mrelife.outletstores.models import SubCategory, Category
+from mrelife.categories.models import SubCategory, Category
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
@@ -9,7 +9,7 @@ from rest_framework.validators import UniqueValidator
 class SubCategorySerializer(serializers.ModelSerializer):
     # validate name is unique
     name = serializers.CharField(
-        max_length=100,
+        max_length=255,
         validators=[UniqueValidator(queryset=SubCategory.objects.all())]
     )
     
@@ -29,7 +29,7 @@ class SubCategorySerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     # validate name is unique
     name = serializers.CharField(
-        max_length=100,
+        max_length=255,
         validators=[UniqueValidator(queryset=Category.objects.all())]
     )
     sub_categories = SubCategorySerializer(many=True, read_only=True)

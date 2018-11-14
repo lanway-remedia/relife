@@ -13,9 +13,11 @@ api_patterns = [
     path("auths/", include("mrelife.authenticates.urls"), name="Authenticates"),
     path('tags/', include('mrelife.tags.urls')),
     path('categories/', include('mrelife.categories.urls')),
+    path('locations/', include('mrelife.locations.urls')),
     path('modelhouses/', include('mrelife.modelhouses.urls')),
     path('events/', include('mrelife.events.urls')),
     path('exhibitions/', include('mrelife.exhibitions.urls')),
+
 
 ]
 

@@ -5,7 +5,7 @@ from mrelife.tags.models import Tag
 class TagSerializer(serializers.ModelSerializer):
     # validate name is unique
     name = serializers.CharField(
-        max_length=100,
+        max_length=255,
         validators=[UniqueValidator(queryset=Tag.objects.all())]
     )
 
