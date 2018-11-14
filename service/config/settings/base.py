@@ -72,7 +72,6 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     'mrelife.users.apps.UsersAppConfig',
-    'mrelife.tags.apps.TagsConfig',
     'mrelife.districts.apps.DistConfig',
     'mrelife.exhibitions.apps.ExhibitionsConfig',
     'mrelife.outletstores.apps.OutletstoresConfig',
@@ -83,6 +82,7 @@ LOCAL_APPS = [
     'mrelife.authenticates.apps.AuthenticatesAppConfig',
     
     'mrelife.events.apps.EventsConfig',
+    'mrelife.tags.apps.TagsConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

@@ -115,17 +115,6 @@ class OutletStore(Model):
             return "error"
 
 
-class OutletStoreTag(Model):
-    outlet_store = ForeignKey(OutletStore, on_delete=CASCADE)
-    tag = ForeignKey(Tag, on_delete=CASCADE)
-    is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
-
-    class Meta:
-        db_table = 'outlet_store_tag'
-        ordering = ['created', ]
-
 
 class OutletStoreMedia(Model):
     outlet_store = ForeignKey(OutletStore, related_name='outlet_store_media', on_delete=CASCADE)
@@ -139,32 +128,6 @@ class OutletStoreMedia(Model):
 
     class Meta:
         db_table = 'outlet_store_media'
-        ordering = ['created', ]
-
-
-class OutletStoreComment(Model):
-    outlet_store = ForeignKey(OutletStore, on_delete=CASCADE)
-    user = ForeignKey('users.User', on_delete=CASCADE)
-    comment = CharField(max_length=255)
-    is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
-
-    class Meta:
-        db_table = 'outlet_store_comment'
-        ordering = ['created', ]
-
-
-class OutletStoreCommentReply(Model):
-    os_comment = ForeignKey(OutletStoreComment, on_delete=CASCADE)
-    user = ForeignKey('users.User', on_delete=CASCADE)
-    comment = CharField(max_length=255)
-    is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
-
-    class Meta:
-        db_table = 'outlet_store_comment_reply'
         ordering = ['created', ]
 
 
