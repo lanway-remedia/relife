@@ -10,7 +10,7 @@ from django.db.models import (
     TextField
 )
 
-from mrelife.districts.models import District
+from mrelife.locations.models import District
 
 
 class Exhibition(Model):

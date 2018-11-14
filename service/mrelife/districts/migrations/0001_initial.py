@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ('is_active', models.BooleanField(default=True)),
                 ('created', models.DateTimeField()),
                 ('updated', models.DateTimeField()),
-                ('City', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='districts.City')),
+                ('city', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='districts.City')),
             ],
             options={
                 'db_table': 'district',

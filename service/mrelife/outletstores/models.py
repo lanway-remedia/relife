@@ -18,7 +18,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image
 
-from mrelife.exhibitions.models import District
+from mrelife.locations.models import District
 
 
 class Category(Model):
