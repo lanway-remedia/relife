@@ -1,7 +1,7 @@
 from django.urls import include, path
-from mrelife.outletstores import views
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
+from mrelife.outletstores import views
 
 router = routers.SimpleRouter()
 router.register(r'', views.OutletStoreViewSet)
