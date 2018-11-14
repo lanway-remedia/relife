@@ -12,13 +12,16 @@ from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
-from url_filter.integrations.drf import DjangoFilterBackend
 
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
 from mrelife.file_managements.serializers import FileSerializer
 from mrelife.users.serializers import ProfileSerializer, UserSerializer
+from mrelife.utils.groups import GroupStore, GroupUser
+from mrelife.utils.querys import get_or_none
+from mrelife.utils.relifepermissions import AdminOrStoreOrDenyPermission
 from mrelife.utils.validates import email_exist
+from url_filter.integrations.drf import DjangoFilterBackend
 
 User = get_user_model()
 
@@ -30,26 +33,31 @@ class UserVs(ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, AdminOrStoreOrDenyPermission,)
     # user
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['group_id', 'username']
 
-    # def list(self, request, *args, **kwargs):
-    #     group = request.user.group
-    #     if group.id == 2: # group store admin
-    #         self.queryset = User.objects.filter()
-    #     return super(UserVs, self).list(request, *args, **kwargs)
+    def list(self, request, *args, **kwargs):
+        group = request.user.group
+        if group == GroupStore():  # group store admin
+            self.queryset = User.objects.filter(group=group)
+        return super(UserVs, self).list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         obj = super(UserVs, self).create(request, *args, **kwargs)
-        group = request.data.get('group')
-        if group is not None:
-            group = Group.objects.get(pk=int(group))
-            user = User.objects.get(pk=obj.data['id'])
-            user.group = group
-            user.save()
-            obj.data['group'] = group.id
+        user = User.objects.get(pk=obj.data['id'])
+        group = request.user.group
+        if group != GroupStore():
+            try:
+                group = Group.objects.get(pk=int(request.data.get('group')))
+            except Exception:
+                group = GroupUser()
+        else:
+            user.store = request.user.store
+        user.group = group
+        user.save()
+        obj.data['group'] = group.id
         return obj
 
 

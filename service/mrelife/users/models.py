@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser, Group
 from django.core.files.storage import default_storage as storage
 from django.db.models import (SET_NULL, BooleanField, CharField, DateTimeField,
                               ForeignKey, ImageField, IntegerField, Model)
+from mrelife.outletstores.models import OutletStore
 
 
 class User(AbstractUser):
@@ -15,6 +16,8 @@ class User(AbstractUser):
     group = ForeignKey(Group, related_name='users', null=True, on_delete=SET_NULL)
     profile_image = ImageField(null=True, blank=True)
     profile_image_thumb = CharField(max_length=800, null=True, blank=True)
+
+    store = ForeignKey(OutletStore, related_name='users', null=True, on_delete=SET_NULL)
 
     class Meta:
         ordering = ['date_joined', ]
