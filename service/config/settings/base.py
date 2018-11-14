@@ -71,19 +71,18 @@ THIRD_PARTY_APPS = [
     'corsheaders'
 ]
 LOCAL_APPS = [
-    'mrelife.users.apps.UsersAppConfig',
-    'mrelife.exhibitions.apps.ExhibitionsConfig',
-    'mrelife.outletstores.apps.OutletstoresConfig',
-    'mrelife.modelhouses.apps.ModelhousesConfig',
-
     # Your stuff: custom apps go here
-    'mrelife.file_managements.apps.FileManagementsAppConfig',
-    'mrelife.authenticates.apps.AuthenticatesAppConfig',
-    
-    'mrelife.events.apps.EventsConfig',
+    'mrelife.users.apps.UsersAppConfig',
     'mrelife.tags.apps.TagsConfig',
     'mrelife.categories.apps.CategoriesConfig',
     'mrelife.locations.apps.LocationsConfig',
+    'mrelife.exhibitions.apps.ExhibitionsConfig',
+    'mrelife.outletstores.apps.OutletstoresConfig',
+    'mrelife.modelhouses.apps.ModelhousesConfig',
+    'mrelife.file_managements.apps.FileManagementsAppConfig',
+    'mrelife.authenticates.apps.AuthenticatesAppConfig',
+    'mrelife.events.apps.EventsConfig',
+    
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
