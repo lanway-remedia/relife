@@ -2,7 +2,8 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from mrelife.exhibitions.models import District
-from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreMedia
+from mrelife.outletstores.models import (OutletStore, OutletStoreContact,
+                                         OutletStoreMedia)
 from mrelife.users.models import User
 
 
@@ -41,21 +42,10 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     is_active = serializers.BooleanField(default=True)
     outlet_store_media = OutletStoreMediaSerializer(many=True, read_only=True, required=False)
     outlet_store_contact = OutletStoreContactSerializer(many=True, read_only=True, required=False)
-    #created =serializers.DateTimeField(input_formats=['%Y-%m-%d',],format="%d-%m-%Y",required=True)
-    #updated =serializers.DateTimeField(input_formats=['%Y-%m-%d',],format="%d-%m-%Y",required=True)
-
+    
     class Meta:
         model = OutletStore
 
         fields = ('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'longitude', 'address', 'district',
                   'tel', 'email', 'zipcode', 'home_page', 'traffic', 'time_serving', 'regular_holiday', 'create_user',
                   'is_active', 'outlet_store_media', 'outlet_store_contact')
-
-    def validate(self, data):
-        # Check that the start time, end time.
-        if data['end_time'] < data['start_time']:
-            raise serializers.ValidationError("Start time must be greater than end time")
-        return data
-
-
-
