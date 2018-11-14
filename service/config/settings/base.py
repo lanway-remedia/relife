@@ -72,13 +72,16 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     'mrelife.users.apps.UsersAppConfig',
-
+    'mrelife.districts.apps.DistConfig',
+    'mrelife.exhibitions.apps.ExhibitionsConfig',
     'mrelife.outletstores.apps.OutletstoresConfig',
-    'mrelife.modernhouses.apps.ModernhousesConfig',
+    'mrelife.modelhouses.apps.ModelhousesConfig',
 
     # Your stuff: custom apps go here
     'mrelife.file_managements.apps.FileManagementsAppConfig',
     'mrelife.authenticates.apps.AuthenticatesAppConfig',
+    
+    'mrelife.events.apps.EventsConfig',
     'mrelife.tags.apps.TagsConfig',
     'mrelife.categories.apps.CategoriesConfig',
     'mrelife.locations.apps.LocationsConfig',
