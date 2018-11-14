@@ -51,11 +51,11 @@ class OutletStoreSerializer(serializers.ModelSerializer):
                   'tel', 'email', 'zipcode', 'home_page', 'traffic', 'time_serving', 'regular_holiday', 'create_user',
                   'is_active', 'outlet_store_media', 'outlet_store_contact')
 
-    def validate(self, data):
+   ''' def validate(self, data):
         # Check that the start time, end time.
         if data['end_time'] < data['start_time']:
             raise serializers.ValidationError("Start time must be greater than end time")
-        return data
+        return data'''
 
 
 class TagSerializer(serializers.ModelSerializer):
