@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.conf import settings
-from mrelife.outletstores.models import Category, SubCategory
+from mrelife.categories.models import Category, SubCategory
 from mrelife.categories.serializers import CategorySerializer, SubCategorySerializer
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
