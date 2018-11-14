@@ -80,6 +80,8 @@ LOCAL_APPS = [
     'mrelife.file_managements.apps.FileManagementsAppConfig',
     'mrelife.authenticates.apps.AuthenticatesAppConfig',
     'mrelife.tags.apps.TagsConfig',
+    'mrelife.categories.apps.CategoriesConfig',
+    'mrelife.locations.apps.LocationsConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -290,4 +292,6 @@ IS_ACTIVE = 1
 IS_INACTIVE = 0
 SUB_CATEGORY = 2
 ROOT_CATEGORY = 1
+DISTRICT = 2
+CITY = 1
 CORS_ORIGIN_ALLOW_ALL = True
