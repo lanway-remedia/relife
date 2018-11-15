@@ -94,16 +94,22 @@ class LocationViewSet(viewsets.ModelViewSet):
         if(int(type) == settings.DISTRICT):
             districtID = kwargs['pk']
             district = District.objects.get(pk=districtID)
-            district.is_active = settings.IS_INACTIVE
-            district.updated = datetime.now()
-            district.save()
+            self.perform_delete(district)            
             queryset = District.objects.filter(is_active=settings.IS_ACTIVE)
 
         else:
             instance = self.get_object()
+            # delete relation
+            district = District.objects.get(pk=instance.pk)
+            self.perform_delete(district)  
             instance.is_active = settings.IS_INACTIVE
             instance.updated = datetime.now()
             instance.save()
             queryset = City.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+
+    def perform_delete(self, instance):
+        instance.is_active = settings.IS_INACTIVE
+        instance.updated = datetime.now()
+        instance.save()

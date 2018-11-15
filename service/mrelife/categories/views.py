@@ -98,15 +98,21 @@ class CategoryViewSet(viewsets.ModelViewSet):
         if(int(type) == settings.SUB_CATEGORY):
             subCatID = kwargs['pk']
             subCat = SubCategory.objects.get(pk=subCatID)
-            subCat.is_active = settings.IS_INACTIVE
-            subCat.updated = datetime.now()
-            subCat.save()
+            self.perform_delete(subCat)
             queryset = SubCategory.objects.filter(is_active=settings.IS_ACTIVE)
         else:
             instance = self.get_object()
+            # delete relation
+            subCat = SubCategory.objects.get(pk=instance.pk)
+            self.perform_delete(subCat)
             instance.is_active = settings.IS_INACTIVE
             instance.updated = datetime.now()
             instance.save()
             queryset = Category.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+
+    def perform_delete(self, instance):
+        instance.is_active = settings.IS_INACTIVE
+        instance.updated = datetime.now()
+        instance.save()
