@@ -172,7 +172,8 @@ UserProfile.propTypes = {
   history: PropTypes.object,
   maxFileSize: PropTypes.number,
   onChange: PropTypes.func,
-  profileRequest: PropTypes.func
+  profileRequest: PropTypes.func,
+  data: PropTypes.object
 }
 
 const mapStateToProps = state => {

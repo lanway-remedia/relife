@@ -16,7 +16,10 @@ import AppUtils from '../utils/AppUtils'
 class LoginPage extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      username: '',
+      password: ''
+    }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }

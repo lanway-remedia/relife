@@ -13,8 +13,6 @@ import {
   Button,
   FormGroup,
   FormText,
-  InputGroupAddon,
-  InputGroup,
   Label
 } from 'reactstrap'
 
@@ -64,7 +62,7 @@ class ForgotPasswordPage extends React.Component {
   render() {
     return (
       <div className="login-page forgotpassword-page">
-        {/* <div className="login-header">
+        <div className="login-header">
           <span>Re:Style</span>
         </div>
         <div className="login-content">
@@ -73,10 +71,8 @@ class ForgotPasswordPage extends React.Component {
               <h3>{I18nUtils.t('forgotpassword-page-title')}</h3>
             </div>
             <div className="form-body">
-              <FormWithConstraints
-                ref={form => (this.form = form)}
+              <ValidationForm
                 onSubmit={this.handleSubmit}
-                noValidate
               >
                 <FormGroup>
                   <FormText color="muted">
@@ -85,31 +81,16 @@ class ForgotPasswordPage extends React.Component {
                 </FormGroup>
                 <FormGroup>
                   <Label for="forgotEmail">{I18nUtils.t('email')}</Label>
-                  <InputGroup>
-                    <InputGroupAddon addonType="prepend">
-                      <span className="input-group-text">
-                        <i className="fa fa-envelope" aria-hidden="true" />
-                      </span>
-                    </InputGroupAddon>
-                    <Input
-                      type="email"
-                      name="forgotEmail"
-                      id="forgotEmail"
-                      placeholder={I18nUtils.t('all-place-email')}
-                      onChange={this.handleChange}
-                      required
-                      minLength={3}
-                      className="form-control"
-                    />
-                  </InputGroup>
-                  <FieldFeedbacks for="forgotEmail">
-                    <FieldFeedback when={value => value.length === 0}>
-                      {I18nUtils.t('validate-field-0')}
-                    </FieldFeedback>
-                    <FieldFeedback when={value => !/\S+@\S+/.test(value)}>
-                      {I18nUtils.t('validate-email')}
-                    </FieldFeedback>
-                  </FieldFeedbacks>
+                  <TextInput
+                    type="email"
+                    name="forgotEmail"
+                    id="forgotEmail"
+                    placeholder={I18nUtils.t('all-place-email')}
+                    onChange={this.handleChange}
+                    required
+                    minLength={3}
+                    className="form-control"
+                  />
                 </FormGroup>
                 <FormGroup>
                   <Link to="/login" title={I18nUtils.t('forgot-back-login')}>
@@ -119,10 +100,10 @@ class ForgotPasswordPage extends React.Component {
                 <FormGroup className="btns-group">
                   <Button color="primary">{I18nUtils.t('send')}</Button>
                 </FormGroup>
-              </FormWithConstraints>
+              </ValidationForm>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     )
   }
