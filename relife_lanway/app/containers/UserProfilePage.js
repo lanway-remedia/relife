@@ -7,6 +7,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import ProfileActions from '../redux/wrapper/UserProfileRedux'
 import ProfileImage from '../components/ProfileImage'
 import {
   Container,
@@ -22,7 +23,7 @@ import I18nUtils from '../utils/I18nUtils'
 
 import avatarUser from '../images/admin.jpeg'
 
-class UserDashboardPage extends React.Component {
+class UserProfile extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -32,6 +33,12 @@ class UserDashboardPage extends React.Component {
 
   componentDidMount() {
     document.title = `${I18nUtils.t('ud-page-title')}`
+    let data = {}
+    this.props.profileRequest(data)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.data)
   }
 
   handleProfileChange = image => {
@@ -161,10 +168,25 @@ class UserDashboardPage extends React.Component {
   }
 }
 
-UserDashboardPage.propTypes = {
+UserProfile.propTypes = {
   history: PropTypes.object,
   maxFileSize: PropTypes.number,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  profileRequest: PropTypes.func
 }
 
-export default connect()(withRouter(UserDashboardPage))
+const mapStateToProps = state => {
+  return {
+    processing: state.userProfile.processing,
+    data: state.userProfile.data
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  profileRequest: data => dispatch(ProfileActions.profileRequest(data))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(UserProfile))

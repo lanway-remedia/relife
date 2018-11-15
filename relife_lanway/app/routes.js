@@ -11,7 +11,7 @@ import { ToastContainer } from 'react-toastify'
 import LoginPage from './containers/LoginPage'
 import HomePage from './containers/HomePage'
 import ArticlePage from './containers/ArticlePage'
-import UserDashboardPage from './containers/UserDashboardPage'
+import UserProfilePage from './containers/UserProfilePage'
 import UserEditPage from './containers/UserEditPage'
 import ListAccountPage from './containers/ListAccountPage'
 import ForgotPasswordPage from './containers/ForgotPasswordPage'
@@ -70,7 +70,7 @@ class Routes extends React.Component {
       <Header.UserMenu
         name="Relife Admin"
         image={admin}
-        profileAction={() => this.props.history.push('/profile')}
+        profileAction={() => this.props.history.push('/user-profile')}
         signOutAction={() => AppUtils.logout(this.props.history)}
         key="2"
       />
@@ -97,9 +97,9 @@ class Routes extends React.Component {
             icon={{ className: 'fa-address-card' }}
           >
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/user-dashboard'}
+              active={this.props.location.pathname === '/user-profile'}
               title={I18nUtils.t('ud-page-title')}
-              onClick={() => this.props.history.push('/user-dashboard')}
+              onClick={() => this.props.history.push('/user-profile')}
             />
             <Sidebar.Menu.Item
               active={this.props.location.pathname === '/list-account'}
@@ -151,8 +151,8 @@ class Routes extends React.Component {
                 <Route exact path="/" component={requireLogin(HomePage)} />
                 <Route path="/article" component={requireLogin(ArticlePage)} />
                 <Route
-                  path="/user-dashboard"
-                  component={requireLogin(UserDashboardPage)}
+                  path="/user-profile"
+                  component={requireLogin(UserProfilePage)}
                 />
                 <Route
                   path="/user-edit"

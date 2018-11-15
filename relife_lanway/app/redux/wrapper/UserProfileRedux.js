@@ -1,18 +1,17 @@
 /**
- * @author Cuonglb
- * Task Confirmation
+ * @author HaPV
  */
 
 import { createReducer, createActions } from 'reduxsauce'
 
 /* ------------- Types and Action Creators ------------- */
 const { Types, Creators } = createActions({
-  loginRequest: ['data'],
-  authsSuccess: ['data'],
-  authsFailure: ['error']
+  profileRequest: ['data'],
+  profileSuccess: ['data'],
+  profileFailure: ['error']
 })
 
-export const AuthsTypes = Types
+export const UserProfileTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
@@ -37,7 +36,7 @@ export const failure = (state, { error }) => {
 
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.LOGIN_REQUEST]: request,
-  [Types.AUTHS_SUCCESS]: success,
-  [Types.AUTHS_FAILURE]: failure
+  [Types.PROFILE_REQUEST]: request,
+  [Types.PROFILE_SUCCESS]: success,
+  [Types.PROFILE_FAILURE]: failure
 })

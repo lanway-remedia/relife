@@ -9,13 +9,13 @@
   "ja_JP": "Japanese",
   "search-lbl": "Search",
 
-  "ud-page-title": "User Dashboard",
+  "ud-page-title": "User Profile",
 
   "default-modal-name": "RE:life notification",
   "ud-info": "User Info",
   "ud-change": "Change Password",
   "ud-hi": "Hi, {name}",
-  "ud-change-avatar":"Click to change avatar",
+  "ud-change-avatar": "Click to change avatar",
   "ud-welcome": "Welcome to user dashboard. In here, you can view account info and edit account profile, etc...",
 
   "la-page-title": "List Account",
@@ -69,7 +69,6 @@
   "validate-field-0": "Please fill out this field.",
   "validate-field-3": "Username more than 3 characters.",
   "validate-pass": "Password should be at least 8 characters and contains at least one upper case letter.",
-
 
   "CM001": "Something wrong.",
   "AU001": "Sorry, you are not allowed to access this function.",

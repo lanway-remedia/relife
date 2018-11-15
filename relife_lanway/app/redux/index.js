@@ -14,7 +14,8 @@ export default () => {
     listLanguages: require('./wrapper/ListLanguagesRedux').reducer,
     setLanguage: require('./wrapper/SetLanguageRedux').reducer,
     auths: require('./wrapper/AuthsRedux').reducer,
-    users: require('./wrapper/UsersRedux').reducer
+    users: require('./wrapper/UsersRedux').reducer,
+    userProfile: require('./wrapper/UserProfileRedux').reducer
   })
 
   return configureStore(rootReducer, rootSaga)
