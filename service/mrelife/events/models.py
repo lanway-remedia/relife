@@ -33,9 +33,8 @@ class Event(Model):
 
 class EventModelHouse(Model):
 
-    name = CharField(max_length=255)
-    event = ForeignKey(Event, on_delete=CASCADE)
-    modelhouse = ForeignKey(ModelHouse, on_delete=CASCADE)
+    event = ForeignKey(Event, related_name="model_houses", on_delete=CASCADE)
+    modelhouse = ForeignKey(ModelHouse, related_name="events", on_delete=CASCADE)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)
     updated = DateTimeField(auto_now_add=False, blank=True)
