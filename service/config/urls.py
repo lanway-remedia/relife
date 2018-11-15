@@ -17,6 +17,7 @@ api_patterns = [
     path('modelhouses/', include('mrelife.modelhouses.urls')),
     path('events/', include('mrelife.events.urls')),
     path('exhibitions/', include('mrelife.exhibitions.urls')),
+    path('attributes/', include('mrelife.attributes.urls')),
 
 
 ]
