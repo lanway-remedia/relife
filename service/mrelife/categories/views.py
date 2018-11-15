@@ -103,8 +103,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         else:
             instance = self.get_object()
             # delete relation
-            subCat = SubCategory.objects.get(pk=instance.pk)
-            self.perform_delete(subCat)
+            SubCategory.objects.select_related().filter(category=instance).update(is_active=settings.IS_INACTIVE)
             instance.is_active = settings.IS_INACTIVE
             instance.updated = datetime.now()
             instance.save()

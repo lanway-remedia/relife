@@ -94,14 +94,13 @@ class LocationViewSet(viewsets.ModelViewSet):
         if(int(type) == settings.DISTRICT):
             districtID = kwargs['pk']
             district = District.objects.get(pk=districtID)
-            self.perform_delete(district)            
+            self.perform_delete(district)
             queryset = District.objects.filter(is_active=settings.IS_ACTIVE)
 
         else:
             instance = self.get_object()
             # delete relation
-            district = District.objects.get(pk=instance.pk)
-            self.perform_delete(district)  
+            District.objects.select_related().filter(city=instance).update(is_active=settings.IS_INACTIVE)
             instance.is_active = settings.IS_INACTIVE
             instance.updated = datetime.now()
             instance.save()
