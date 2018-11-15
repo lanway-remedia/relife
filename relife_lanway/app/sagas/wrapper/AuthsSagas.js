@@ -16,6 +16,15 @@ const AuthsSagas = {
     } catch (err) {
       yield put(AuthsActions.authsFailure(err))
     }
+  },
+
+  *forgotPassword({ data }) {
+    try {
+      let response = yield call(authsService.forgotPassword, data)
+      yield put(AuthsActions.authsSuccess(response.data))
+    } catch (err) {
+      yield put(AuthsActions.authsFailure(err))
+    }
   }
 }
 
