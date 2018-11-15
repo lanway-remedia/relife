@@ -13,8 +13,6 @@ import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import {
   Button,
   FormGroup,
-  InputGroupAddon,
-  InputGroup,
   Label
 } from 'reactstrap'
 import AppUtils from '../utils/AppUtils'
