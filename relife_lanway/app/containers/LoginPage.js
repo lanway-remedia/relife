@@ -7,6 +7,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 import AuthsActions from '../redux/wrapper/AuthsRedux'
 import I18nUtils from '../utils/I18nUtils'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
@@ -30,7 +31,6 @@ class LoginPage extends React.Component {
 
   componentDidMount() {
     document.body.classList.add('cms-login-index')
-    document.title = `${I18nUtils.t('login-page-title')}`
   }
 
   componentWillUnmount() {
@@ -64,6 +64,9 @@ class LoginPage extends React.Component {
   render() {
     return (
       <div className="login-page">
+        <Helmet>
+          <title>{I18nUtils.t('login-page-title')}</title>
+        </Helmet>
         <div className="login-header">
           <span>Re:Style</span>
         </div>

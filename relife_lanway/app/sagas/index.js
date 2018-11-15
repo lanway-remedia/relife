@@ -26,6 +26,7 @@ export default function * root () {
 
     //authentication
     takeLatest(AuthsTypes.LOGIN_REQUEST, AuthsSagas.login),
+    takeLatest(AuthsTypes.FORGOT_PASSWORD_REQUEST, AuthsSagas.forgotPassword),
     takeLatest(AuthsTypes.AUTHS_FAILURE, ErrorSagas.handleError),
 
     //user
