@@ -75,5 +75,6 @@
   "CM001": "Something wrong.",
   "AU001": "Sorry, you are not allowed to access this function.",
   "AU002": "Bạn đã đăng nhập nên không thể thực hiện thao tác này",
-  "AU003": "Username or password incorrect"
+  "AU003": "Username or password incorrect",
+  "RP001": "yêu cầu tìm lại mật khẩu thành công, vui lòng kiểm tra email"
 }

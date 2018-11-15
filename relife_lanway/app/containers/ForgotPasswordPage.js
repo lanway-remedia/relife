@@ -8,6 +8,10 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { show, hide } from 'redux-modal'
+import { bindActionCreators } from 'redux'
+import { ModalName } from '../constants'
+import AuthsActions from '../redux/wrapper/AuthsRedux'
 import I18nUtils from '../utils/I18nUtils'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import validator from 'validator'
@@ -22,7 +26,7 @@ class ForgotPasswordPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: ''
+      mail: ''
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -37,6 +41,20 @@ class ForgotPasswordPage extends React.Component {
     document.body.classList.remove('cms-forgotpassword-index')
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.response != nextProps.response) {
+      let response = nextProps.response
+      if (response.forgotPassword) {
+        this.props.show(ModalName.COMMON, { message: I18nUtils.t(response.messageCode), okFunc: () => this.okFunc()})
+      }
+    }
+  }
+
+  okFunc() {
+    this.props.history.push('/login')
+    this.props.hide(ModalName.COMMON)
+  }
+
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
@@ -45,7 +63,11 @@ class ForgotPasswordPage extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    alert(1)
+    let data = {
+      mail: this.state.mail,
+      domain: window.location.origin + '/'
+    }
+    this.props.forgotPasswordRequest(data)
   }
 
   render() {
@@ -72,11 +94,11 @@ class ForgotPasswordPage extends React.Component {
                   </FormText>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="forgotEmail">{I18nUtils.t('email')}</Label>
+                  <Label for="mail">{I18nUtils.t('email')}</Label>
                   <TextInput
                     type="email"
-                    name="forgotEmail"
-                    id="forgotEmail"
+                    name="mail"
+                    id="mail"
                     placeholder={I18nUtils.t('all-place-email')}
                     onChange={this.handleChange}
                     validator={validator.isEmail} 
@@ -102,7 +124,28 @@ class ForgotPasswordPage extends React.Component {
 }
 
 ForgotPasswordPage.propTypes = {
-  history: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object,
+  processing: PropTypes.bool,
+  response: PropTypes.object,
+  show: PropTypes.func,
+  hide: PropTypes.func,
+  forgotPasswordRequest: PropTypes.func
 }
 
-export default connect()(withRouter(ForgotPasswordPage))
+const mapStateToProps = state => {
+  return {
+    processing: state.auths.processing,
+    response: state.auths.data
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ show, hide }, dispatch),
+  forgotPasswordRequest: data => dispatch(AuthsActions.forgotPasswordRequest(data))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ForgotPasswordPage))

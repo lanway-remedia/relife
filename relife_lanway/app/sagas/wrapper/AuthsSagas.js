@@ -12,6 +12,7 @@ const AuthsSagas = {
   *login({ data }) {
     try {
       let response = yield call(authsService.login, data)
+      response.data.login = true
       yield put(AuthsActions.authsSuccess(response.data))
     } catch (err) {
       yield put(AuthsActions.authsFailure(err))
@@ -21,6 +22,7 @@ const AuthsSagas = {
   *forgotPassword({ data }) {
     try {
       let response = yield call(authsService.forgotPassword, data)
+      response.data.forgotPassword = true
       yield put(AuthsActions.authsSuccess(response.data))
     } catch (err) {
       yield put(AuthsActions.authsFailure(err))

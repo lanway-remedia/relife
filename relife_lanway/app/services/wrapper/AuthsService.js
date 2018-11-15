@@ -11,6 +11,6 @@ export default class AuthsService {
   }
 
   forgotPassword(data) {
-    return apiClient.post(`/auths/v1/forget_password/`, data)
+    return apiClient.post(`/auths/v1/reset-request/`, data)
   }
 }

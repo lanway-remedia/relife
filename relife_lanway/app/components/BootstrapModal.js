@@ -11,11 +11,11 @@ class BootstrapModal extends Component {
     title: PropTypes.string,
     message: PropTypes.string.isRequired,
     handleHide: PropTypes.func.isRequired,
-    okFunction: PropTypes.func,
+    okFunc: PropTypes.func,
   }
 
   render() {
-    let { show, title, message, handleHide, okFunction } = this.props
+    let { show, title, message, handleHide, okFunc } = this.props
     title = !title ? I18nUtils.t(DefaultValue.MODAL_NAME) : title
     return (
       <Modal isOpen={show}>
@@ -23,7 +23,7 @@ class BootstrapModal extends Component {
         <ModalBody>{message}</ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={handleHide}>Close</Button>
-          {okFunction && <Button color="danger" onClick={okFunction}>Save changes</Button>}
+          {okFunc && <Button color="danger" onClick={okFunc}>OK</Button>}
         </ModalFooter>
       </Modal>
     )

@@ -39,9 +39,9 @@ class LoginPage extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
-      let data = nextProps.data.data
-      if (data.token) {
-        AppUtils.login(this.props.history, data.token, '/user-dashboard')
+      let data = nextProps.data
+      if (data.login) {
+        AppUtils.login(this.props.history, data.data.token, '/user-dashboard')
       }
     }
   }
