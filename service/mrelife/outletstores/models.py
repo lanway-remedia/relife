@@ -78,7 +78,6 @@ class OutletStore(Model):
             return "error"
 
 
-
 class OutletStoreMedia(Model):
     outlet_store = ForeignKey(OutletStore, related_name='outlet_store_media', on_delete=CASCADE)
     type_media = BooleanField()
@@ -108,7 +107,7 @@ class OutletStoreContact(Model):
 
 
 class OutletStoreContactReply(Model):
-    outlet_store_contact = ForeignKey(OutletStoreContact, on_delete=CASCADE)
+    outlet_store_contact = ForeignKey(OutletStoreContact,related_name='outlet_store_contact_relpy', on_delete=CASCADE)
     user = ForeignKey('users.User', on_delete=CASCADE)
     comment = CharField(max_length=255)
     is_active = BooleanField(default=True)
