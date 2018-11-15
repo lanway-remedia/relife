@@ -82,6 +82,7 @@ LOCAL_APPS = [
     'mrelife.file_managements.apps.FileManagementsAppConfig',
     'mrelife.authenticates.apps.AuthenticatesAppConfig',
     'mrelife.events.apps.EventsConfig',
+    'mrelife.attributes.apps.AttributesConfig',
     
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
