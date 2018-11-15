@@ -15,10 +15,9 @@ category_update = views.CategoryViewSet.as_view({
     'delete': 'destroy'
 })
 urlpatterns = [
-    path('<int:type>', category_create, ),
+    path('<int:type>', category_create, name='create' ),
     path('<int:pk>/<int:type>', category_update, name='update'),
     #path('', include(router.urls)),
 ]
 
-#urlpatterns = format_suffix_patterns(urlpatterns)
-urlpatterns = urlpatterns
+urlpatterns = format_suffix_patterns(urlpatterns)
