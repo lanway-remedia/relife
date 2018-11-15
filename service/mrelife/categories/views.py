@@ -9,19 +9,20 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import serializers
 from django.core.exceptions import ValidationError
+from rest_framework.decorators import action
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
-    """
-    Create a model instance.
-    """
-
-    def create(self, request, *args, **kwargs):
-        type = request.data.get('type')
+    def create(self, request, type=None):
+        """
+        Create new a Category.
+        """
+        # type = request.data.get('type')
         if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
+
             return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
         if (int(type) == settings.SUB_CATEGORY):
             serializer = SubCategorySerializer(data=request.data)
@@ -30,19 +31,19 @@ class CategoryViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             self.perform_create(serializer)
             return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+
         return Response(result.resultResponse(False, serializer.errors, MessageCode.FA001.value))
 
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now())
 
-    """
-    Update a model instance.
-    """
-
-    def update(self, request, *args, **kwargs):
+    def update(self, request, pk=None, type=None, *args, **kwargs):
+        """
+        Update a Category.
+        """
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        type = request.data.get('type')
+        # type = request.data.get('type')
         if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
             return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
         if (int(type) == settings.SUB_CATEGORY):
@@ -65,15 +66,15 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now())
 
-    """
-    List a queryset.
-    """
+    def list(self, request, type=None, *args, **kwargs):
+        """
+        Get list Category.
+        """
+        # type = request.query_params.get('type')
 
-    def list(self, request, *args, **kwargs):
-        type = request.query_params.get('type')
         if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
             return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
-           
+
         if (int(type) == settings.SUB_CATEGORY):
             queryset = SubCategory.objects.filter(is_active=settings.IS_ACTIVE)
         else:
@@ -87,15 +88,14 @@ class CategoryViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
-    """
-    Destroy a model instance.
-    """
-
-    def destroy(self, request, *args, **kwargs):
-        type = request.data.get('type')
+    def destroy(self, request, type=None, *args, **kwargs):
+        """
+        Delete a Category.
+        """
+        # type = request.data.get('type')
         if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
             return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
-        if(int(type)== settings.SUB_CATEGORY):
+        if(int(type) == settings.SUB_CATEGORY):
             subCatID = kwargs['pk']
             subCat = SubCategory.objects.get(pk=subCatID)
             subCat.is_active = settings.IS_INACTIVE
