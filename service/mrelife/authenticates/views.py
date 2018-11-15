@@ -200,8 +200,7 @@ class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
             }
             response = Response(formated_response)
             if api_settings.JWT_AUTH_COOKIE:
-                expiration = (datetime.utcnow() +
-                              api_settings.JWT_EXPIRATION_DELTA)
+                expiration = (datetime.utcnow() + datetime.timedelta(days=1))
                 response.set_cookie(api_settings.JWT_AUTH_COOKIE,
                                     token,
                                     expires=expiration,
