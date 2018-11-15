@@ -1,0 +1,79 @@
+{
+  "app-title": "Re:スタイル",
+  "app-title-acronym": "Re",
+  "nav-main-lbl": "メインナビゲーション",
+  "nav-home-lbl": "ホーム",
+  "nav-article-lbl": "記事",
+
+  "en_US": "英語",
+  "ja_JP": "日本語",
+
+  "search-lbl": "検索",
+
+  "user-dashboard-page-title": "User Dashboard",
+
+  "default-modal-name": "RE:life 通知",
+  "ud-page-title": "User Dashboard",
+  "ud-info": "User Info",
+  "ud-change": "Change Password",
+  "ud-hi": "Hi, {name}",
+  "ud-change-avatar": "Click to change avatar",
+  "ud-welcome": "Welcome to user dashboard. In here, you can view account info and edit account profile, etc...",
+
+  "la-page-title": "List Account",
+
+  "all-place-name": "Please input name here",
+  "all-place-username": "Please input username here",
+  "all-place-email": "Please input email here",
+  "all-place-phone": "Please input phone here",
+  "all-place-address": "Please input address here",
+  "all-place-password": "Please input password here",
+  "all-place-currentPassword": "Please input current password here",
+  "all-place-changePassword": "Please input want password change here",
+  "all-place-oldPassword": "Please input old password here",
+  "all-place-confirmPassword": "Please input confirm password here",
+  "all-place-newPassword": "Please input new password here",
+
+  "name": "Name",
+  "email": "Email",
+  "address": "Address",
+  "phone": "Phone",
+  "username": "Username",
+  "created-date": "Created Date(From - To)",
+  "password": "Password",
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "oldPassword": "Old Password",
+  "changePassword": "Change Password",
+  "confirmPassword": "Confirm Password",
+  "forgotPassword": "Forgotten Password",
+  "submit": "Submit",
+  "reset": "Reset",
+  "send": "Send",
+  "cancel": "Cancel",
+  "update": "Update",
+  "save": "Save",
+  "search": "Search",
+  "edit": "Edit",
+  "delete": "Delete",
+  "login": "Login",
+
+  "toolbar-totalRecords": "Showing {limit} in {total} records",
+  "toolbar-limit": "Visible",
+
+  "login-page-title": "RE:STYLE SYSTEM LOGIN PAGE",
+
+  "forgotpassword-page-title": "RE:STYLE SYSTEM FORGOT PASSWORD PAGE",
+  "forgot-back-login": "Back to Login Page",
+  "forgot-text": "In here, you can get your forgotten password if you provide email...",
+
+  "validate-email": "Invalid email address.",
+  "validate-field-0": "Please fill out this field.",
+  "validate-field-3": "Username more than 3 characters.",
+  "validate-pass": "Password should be at least 8 characters and contains at least one upper case letter.",
+
+  "CM001": "Something wrong.",
+  "AU001": "Sorry, you are not allowed to access this function.",
+  "AU002": "Bạn đã đăng nhập nên không thể thực hiện thao tác này",
+  "AU003": "Username or password incorrect"
+}
