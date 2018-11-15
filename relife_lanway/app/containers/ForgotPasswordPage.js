@@ -7,8 +7,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 import I18nUtils from '../utils/I18nUtils'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
+import validator from 'validator'
 import {
   Button,
   FormGroup,
@@ -29,39 +31,29 @@ class ForgotPasswordPage extends React.Component {
 
   componentDidMount() {
     document.body.classList.add('cms-forgotpassword-index')
-    document.title = `${I18nUtils.t('forgotpassword-page-title')}`
   }
 
   componentWillUnmount() {
     document.body.classList.remove('cms-forgotpassword-index')
   }
 
-  handleChange = async e => {
-    const target = e.target
-
+  handleChange = e => {
     this.setState({
-      [target.name]: target.value
+      [e.target.name]: e.target.value
     })
-
-    await this.form.validateFields(target)
   }
 
-  handleSubmit = async e => {
+  handleSubmit = e => {
     e.preventDefault()
-
-    await this.form.validateForm()
-    const formIsValid = this.form.isValid()
-
-    if (formIsValid) {
-      alert(
-        `Valid form\n\nthis.state =\n${JSON.stringify(this.state, null, 2)}`
-      )
-    }
+    alert(1)
   }
 
   render() {
     return (
       <div className="login-page forgotpassword-page">
+        <Helmet>
+          <title>{I18nUtils.t('forgotpassword-page-title')}</title>
+        </Helmet>
         <div className="login-header">
           <span>Re:Style</span>
         </div>
@@ -87,8 +79,8 @@ class ForgotPasswordPage extends React.Component {
                     id="forgotEmail"
                     placeholder={I18nUtils.t('all-place-email')}
                     onChange={this.handleChange}
-                    required
-                    minLength={3}
+                    validator={validator.isEmail} 
+                    errorMessage={{validator:'Please enter a valid email'}}
                     className="form-control"
                   />
                 </FormGroup>
