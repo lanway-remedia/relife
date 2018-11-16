@@ -40,7 +40,7 @@ class UserVs(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         group = request.user.group
-        if group == GroupStore():  # group store admin
+        if IsStore(request.user):  # group store admin
             self.queryset = User.objects.filter(group=group)
         return super(UserVs, self).list(request, *args, **kwargs)
 
