@@ -71,6 +71,12 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def update_active(self, objectM):
+        for item in objectM:
+            item.is_active = settings.IS_INACTIVE
+            item.updated = datetime.now()
+            item.save()
+
     def destroy(self, request, pk=None):
         queryset = OutletStore.objects.all()
         outletstoreObject = get_object_or_404(queryset, pk=pk)
@@ -79,27 +85,19 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save(updated=datetime.now())
             outletContact = OutletStoreContact.objects.filter(is_active=1, outlet_store_id=outletstoreObject.id)
-            for item in outletContact:
-                item.is_active = settings.IS_INACTIVE
-                item.updated=datetime.now()
-                item.save()
+            self.update_active(outletContact)
             outletMedia = OutletStoreMedia.objects.filter(is_active=1, outlet_store_id=outletstoreObject.id)
-            for item in outletMedia:
-                item.is_active = settings.IS_INACTIVE
-                item.updated=datetime.now()
-                item.save()
+            self.update_active(outletMedia)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=['put'])
+    @action(detail=True, methods=['post'], url_path='update_name', url_name='update_name',permission_classes=[IsAuthenticated])
     def update_name(self, request, pk=None):
-        queryset = OutletStore.objects.all()
+        "update tilte to outletstore"
+        queryset = OutletStore.objects.all().filter(is_active=1)
         outletstoreObject = get_object_or_404(queryset, pk=pk)
-        data = {"title": "titlepatical"}
-        serializer = OutletStoreSerializer(outletstoreObject, data=data, partial=True)
+        serializer = OutletStoreSerializer(outletstoreObject, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(updated=datetime.now())
             return Response(serializer.data)
-        # return a meaningful error response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
