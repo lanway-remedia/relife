@@ -71,12 +71,6 @@ module.exports = function(options) {
           AUTOAPI: JSON.stringify(process.env.AUTOAPI)
         }
       }),
-      new CopyWebpackPlugin([
-        {
-          from: 'app/assets',
-          to: 'assets'
-        }
-      ]),
       new webpack.ProvidePlugin({
         $: 'jquery',
         jQuery: 'jquery'

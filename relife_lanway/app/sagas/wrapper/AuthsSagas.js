@@ -27,6 +27,16 @@ const AuthsSagas = {
     } catch (err) {
       yield put(AuthsActions.authsFailure(err))
     }
+  },
+
+  *resetPassword({ data }) {
+    try {
+      let response = yield call(authsService.resetPassword, data)
+      response.data.resetPassword = true
+      yield put(AuthsActions.authsSuccess(response.data))
+    } catch (err) {
+      yield put(AuthsActions.authsFailure(err))
+    }
   }
 }
 
