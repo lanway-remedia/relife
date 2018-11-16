@@ -28,6 +28,7 @@ class ModelHouseViewSet(ModelViewSet):
     parser_class = (FormParser, MultiPartParser, JSONParser)
 
     def create(self, request, *args, **kwargs):
+        request.data['create_user'] = request.user.id
         obj = super(ModelHouseViewSet, self).create(request, *args, **kwargs)
         house = ModelHouse.objects.get(pk=obj.data['id'])
         if not (IsStore(request.user) or IsSub(request.user)):
@@ -65,6 +66,8 @@ class ModelHouseViewSet(ModelViewSet):
 
         ModelHouseOutletStore.objects.create(outlet_store=store, model_house=house)
 
+        medias = request.data.getlist('medias')
+        
         return obj
 
     def retrieve(self, request, *args, **kwargs):

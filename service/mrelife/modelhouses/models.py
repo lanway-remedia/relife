@@ -25,11 +25,11 @@ class ModelHouse(Model):
     img_large = ImageField(null=True, blank=True)
     land_area = CharField(max_length=255, null=True)
     construction_area = CharField(max_length=255, null=True)
-    create_user = ForeignKey('users.User', related_name= "creating_model_houses", on_delete=CASCADE)
+    create_user = ForeignKey('users.User', related_name= "creating_model_houses", on_delete=CASCADE, blank=True, null=True)
     is_active = BooleanField(default=True)
     is_free = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False)
-    updated = DateTimeField(auto_now_add=False)
+    created = DateTimeField(auto_now_add=True)
+    updated = DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'model_house'
