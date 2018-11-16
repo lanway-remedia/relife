@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.conf import settings
+from django.core.files.storage import default_storage
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import detail_route
@@ -10,8 +11,9 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from mrelife.events.models import Event, EventModelHouse
-from mrelife.modelhouses.models import (ModelHouse, ModelHouseOutletStore,
-                                        ModelHouseTag, ModelHouseUser)
+from mrelife.modelhouses.models import (ModelHouse, ModelHouseMedia,
+                                        ModelHouseOutletStore, ModelHouseTag,
+                                        ModelHouseUser)
 from mrelife.modelhouses.serializers import (ModelHouseNestedSerializer,
                                              ModelHouseSerializer)
 from mrelife.outletstores.models import OutletStore
@@ -67,15 +69,26 @@ class ModelHouseViewSet(ModelViewSet):
         ModelHouseOutletStore.objects.create(outlet_store=store, model_house=house)
 
         medias = request.data.getlist('medias')
-
+        count = 0
+        for media in medias:
+            if count < 5:
+                file = default_storage.save(media.name, media)
+                ModelHouseMedia.objects.create(model_house=house, url=settings.MEDIA_URL + file)
+                count += 1
         return obj
 
     def retrieve(self, request, *args, **kwargs):
         self.serializer_class = ModelHouseNestedSerializer
         return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
 
+    def update(self, request, *args, **kwargs):
+        obj = super(ModelHouseViewSet, self).update(request, *args, **kwargs)
+        return obj
+
     @detail_route(methods=['post'])
     def add_event(self, request, *args, **kwargs):
+        print(kwargs['pk'])
+        print(request.data)
         pass
 
     @detail_route(methods=['post'])

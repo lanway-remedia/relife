@@ -97,8 +97,6 @@ class ModelHouseTag(Model):
 class ModelHouseMedia(Model):
 
     modern_house = ForeignKey(ModelHouse, related_name="medias", on_delete=CASCADE)
-    type_media = SmallIntegerField()
-    img_type = SmallIntegerField()
     url = CharField(max_length=800)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)
