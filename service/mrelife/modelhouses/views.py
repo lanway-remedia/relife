@@ -87,38 +87,102 @@ class ModelHouseViewSet(ModelViewSet):
 
     @detail_route(methods=['post'])
     def add_event(self, request, *args, **kwargs):
-        print(kwargs['pk'])
-        print(request.data)
-        pass
+        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        events = request.data.get('events')
+        if events is not None:
+            for event in events:
+                try:
+                    if not house.events.filter(event_id=event).exists():
+                        EventModelHouse.objects.create(event_id=event, model_house=house)
+                except Exception:
+                    pass
+        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
 
     @detail_route(methods=['post'])
     def remove_event(self, request, *args, **kwargs):
-        pass
+        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        events = request.data.get('events')
+        if events is not None:
+            for event in events:
+                try:
+                    _event = EventModelHouse.objects.filter(event_id=event, model_house=house)
+                    _event.delete()
+                except Exception:
+                    pass
+        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
 
     @detail_route(methods=['post'])
     def add_tag(self, request, *args, **kwargs):
-        pass
+        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        tags = request.data.get('tags')
+        if tags is not None:
+            for tag_name in tags:
+                if not (tag_name == '' or tag_name is None):
+                    tag, created = Tag.objects.get_or_create(name=tag_name)
+                    if created or not house.tags.filter(tag=tag).exists():
+                        ModelHouseTag.objects.create(tag=tag, model_house=house)
+        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
 
     @detail_route(methods=['post'])
     def remove_tag(self, request, *args, **kwargs):
-        pass
+        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        tags = request.data.get('tags')
+        if tags is not None:
+            for tag in tags:
+                try:
+                    _tag = ModelHouseTag.objects.filter(tag_id=tag, model_house=house)
+                    _tag.delete()
+                except Exception:
+                    pass
+        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
 
     @detail_route(methods=['post'])
     def add_media(self, request, *args, **kwargs):
-        pass
+        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        medias = request.data.getlist('medias')
+        count = 0
+        for media in medias:
+            if count < 5:
+                file = default_storage.save(media.name, media)
+                ModelHouseMedia.objects.create(model_house=house, url=settings.MEDIA_URL + file)
+                count += 1
+        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
 
     @detail_route(methods=['post'])
     def remove_media(self, request, *args, **kwargs):
-        pass
+        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        medias = request.data.get('medias')
+        if medias is not None:
+            for media in medias:
+                try:
+                    _media = ModelHouseMedia.objects.get(pk=media)
+                    _media.delete()
+                except Exception:
+                    pass
+        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
 
     @detail_route(methods=['post'])
     def add_user(self, request, *args, **kwargs):
-        pass
+        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        users = request.data.get('users')
+        if users is not None:
+            for user in users:
+                try:
+                    if not house.users.filter(user_id=user).exists():
+                        ModelHouseUser.objects.create(user_id=request.user.id, model_house=house)
+                except Exception:
+                    pass
+        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
 
     @detail_route(methods=['post'])
     def remove_user(self, request, *args, **kwargs):
-        pass
-
-    @detail_route(methods=['post'])
-    def create_user(self, request, *args, **kwargs):
-        pass
+        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        users = request.data.get('users')
+        if users is not None:
+            for user in users:
+                try:
+                    _user = ModelHouseUser.objects.filter(user_id=user, model_house=house)
+                    _user.delete()
+                except Exception:
+                    pass
+        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
