@@ -1,9 +1,11 @@
+from datetime import datetime
+
+from django.conf import settings
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from mrelife.exhibitions.models import District
-from mrelife.outletstores.models import (OutletStore, OutletStoreContact,
-                                         OutletStoreMedia)
+from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreMedia
 from mrelife.users.models import User
 
 
@@ -42,7 +44,7 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     is_active = serializers.BooleanField(default=True)
     outlet_store_media = OutletStoreMediaSerializer(many=True, read_only=True, required=False)
     outlet_store_contact = OutletStoreContactSerializer(many=True, read_only=True, required=False)
-    
+
     class Meta:
         model = OutletStore
 

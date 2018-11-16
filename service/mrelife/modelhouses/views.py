@@ -67,7 +67,7 @@ class ModelHouseViewSet(ModelViewSet):
         ModelHouseOutletStore.objects.create(outlet_store=store, model_house=house)
 
         medias = request.data.getlist('medias')
-        
+
         return obj
 
     def retrieve(self, request, *args, **kwargs):

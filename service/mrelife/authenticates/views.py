@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -200,7 +200,7 @@ class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
             }
             response = Response(formated_response)
             if api_settings.JWT_AUTH_COOKIE:
-                expiration = (datetime.utcnow() + datetime.timedelta(days=1))
+                expiration = (datetime.utcnow() + timedelta(hours=2))
                 response.set_cookie(api_settings.JWT_AUTH_COOKIE,
                                     token,
                                     expires=expiration,
