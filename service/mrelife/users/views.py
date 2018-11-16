@@ -72,7 +72,7 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
 
     def create(self, request, *args, **kwargs):
         user = User.objects.get(pk=request.user.id)
-        serializer = UserSerializer(user, data=request.data)
+        serializer = ProfileSerializer(user, data=request.data)
         if not serializer.is_valid():
             return Response({
                 'status': False,
