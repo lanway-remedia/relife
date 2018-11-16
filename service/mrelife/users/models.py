@@ -17,7 +17,7 @@ class User(AbstractUser):
     profile_image = ImageField(null=True, blank=True)
     profile_image_thumb = CharField(max_length=800, null=True, blank=True)
 
-    store = ForeignKey(OutletStore, related_name='users', null=True, on_delete=SET_NULL)
+    store = ForeignKey(OutletStore, related_name='users', null=True, blank=True, on_delete=SET_NULL)
 
     class Meta:
         ordering = ['date_joined', ]
