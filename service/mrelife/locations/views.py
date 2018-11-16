@@ -15,12 +15,11 @@ class LocationViewSet(viewsets.ModelViewSet):
     queryset = City.objects.all()
     serializer_class = CitySerializer
 
-    """
-    Create a model instance.
-    """
-
-    def create(self, request, *args, **kwargs):
-        type = request.data.get('type')
+    def create(self, request, type=None):
+        """
+        Create a location.
+        """
+        #type = request.data.get('type')
         if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
             return Response(result.resultResponse(False, ValidationError("Type location is required"), MessageCode.FA001.value))
         if (int(type) == settings.DISTRICT):
@@ -35,14 +34,13 @@ class LocationViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now())
 
-    """
-    Update a model instance.
-    """
-
-    def update(self, request, *args, **kwargs):
+    def update(self, request, type=None, *args, **kwargs):
+        """
+        Update a location.
+        """
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        type = request.data.get('type')
+        #type = request.data.get('type')
         if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
             return Response(result.resultResponse(False, ValidationError("Type location is required"), MessageCode.FA001.value))
         if (int(type) == settings.DISTRICT):
@@ -65,12 +63,11 @@ class LocationViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now())
 
-    """
-    List a queryset.
-    """
-
-    def list(self, request, *args, **kwargs):
-        type = request.query_params.get('type')
+    def list(self, request, type=None, *args, **kwargs):
+        """
+        Get list Location.
+        """
+        #type = request.query_params.get('type')
         if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
             return Response(result.resultResponse(False, ValidationError("Type location is required"), MessageCode.FA001.value))
         if (int(type) == settings.DISTRICT):
@@ -86,27 +83,32 @@ class LocationViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
-    """
-    Destroy a model instance.
-    """
+    def destroy(self, request, type=None, *args, **kwargs):
+        """
+        Delete a Location.
+        """
 
-    def destroy(self, request, *args, **kwargs):
-        type = request.data.get('type')
+        #type = request.data.get('type')
         if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
             return Response(result.resultResponse(False, ValidationError("Type location is required"), MessageCode.FA001.value))
-        if(int(type)== settings.DISTRICT):
+        if(int(type) == settings.DISTRICT):
             districtID = kwargs['pk']
             district = District.objects.get(pk=districtID)
-            district.is_active = settings.IS_INACTIVE
-            district.updated = datetime.now()
-            district.save()
+            self.perform_delete(district)
             queryset = District.objects.filter(is_active=settings.IS_ACTIVE)
 
         else:
             instance = self.get_object()
+            # delete relation
+            District.objects.select_related().filter(city=instance).update(is_active=settings.IS_INACTIVE)
             instance.is_active = settings.IS_INACTIVE
             instance.updated = datetime.now()
             instance.save()
             queryset = City.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+
+    def perform_delete(self, instance):
+        instance.is_active = settings.IS_INACTIVE
+        instance.updated = datetime.now()
+        instance.save()

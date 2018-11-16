@@ -6,12 +6,18 @@ from rest_framework.urlpatterns import format_suffix_patterns
 router = routers.SimpleRouter()
 router.register(r'', views.LocationViewSet)
 
+location_create = views.LocationViewSet.as_view({
+    'post': 'create',
+    'get': 'list'
+})
+location_update = views.LocationViewSet.as_view({
+    'put': 'update',
+    'delete': 'destroy'
+})
 urlpatterns = [
-    # path('get/', csrf_exempt(views.OutletStoreList.as_view())),
-    # path('add/', csrf_exempt(views.OutletStoreCreate.as_view())),
-    # path('update/<int:pk>/', csrf_exempt(views.OutletStoreUpdate.as_view())),
-
-    path('', include(router.urls)),
+    path('<int:type>', location_create, name='create'),
+    path('<int:pk>/<int:type>', location_update, name='update')
+    #path('', include(router.urls)),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
