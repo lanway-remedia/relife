@@ -1,8 +1,13 @@
-from django.db.models import CASCADE, BooleanField, CharField, DateTimeField, ForeignKey, ImageField, Model, TextField
+import os
+
+from django.core.files.storage import default_storage as storage
+from django.db.models import (CASCADE, BooleanField, CharField, DateTimeField,
+                              ForeignKey, ImageField, Model, SmallIntegerField,
+                              TextField)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from PIL import Image
 
-#from mrelife.tags.models import Tag
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
 
@@ -16,25 +21,57 @@ class ModelHouse(Model):
     manufacturer_name = CharField(max_length=255, null=True)
     structure = CharField(max_length=255, null=True)
     floor_map = CharField(max_length=255, null=True)
-    img_thumbnail = CharField(max_length=800, null=True)
+    img_thumbnail = CharField(max_length=800, null=True, blank=True)
     img_large = ImageField(null=True, blank=True)
     land_area = CharField(max_length=255, null=True)
     construction_area = CharField(max_length=255, null=True)
-    outlet_store = ForeignKey(OutletStore, on_delete=CASCADE)
-    create_user = ForeignKey('users.User', on_delete=CASCADE)
+    create_user = ForeignKey('users.User', related_name= "creating_model_houses", on_delete=CASCADE, blank=True, null=True)
     is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False)
-    updated = DateTimeField(auto_now_add=False)
+    is_free = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=True)
+    updated = DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'model_house'
         ordering = ['created', ]
 
+    def save(self, *args, **kwargs):
+        super(ModelHouse, self).save(*args, **kwargs)
+        self.create_thumb()
+
+    def create_thumb(self):
+        if not self.img_large:
+            return ""
+        file_path = self.img_large.name
+        filename_base, filename_ext = os.path.splitext(file_path)
+        thumb_file_path = "%s_thumb.jpg" % filename_base
+        if storage.exists(thumb_file_path):
+            return "exists"
+        try:
+            # resize the original image and return url path of the thumbnail
+            f = storage.open(file_path, 'r')
+            image = Image.open(f)
+            width, height = image.size
+            basewidth = 300
+
+            wpercent = (basewidth / float(width))
+            hsize = int((float(height) * float(wpercent)))
+            image = image.resize((basewidth, hsize), Image.ANTIALIAS)
+
+            f_thumb = storage.open(thumb_file_path, "w")
+            image.save(f_thumb, "JPEG")
+            f_thumb.close()
+            self.img_thumbnail = thumb_file_path
+            self.save()
+            return "success"
+        except:
+            return "error"
+
 
 class ModelHouseUser(Model):
 
-    user = ForeignKey('users.User', on_delete=CASCADE)
-    model_house = ForeignKey(ModelHouse, on_delete=CASCADE)
+    user = ForeignKey('users.User', related_name="own_model_house", on_delete=CASCADE)
+    model_house = ForeignKey(ModelHouse, related_name="users", on_delete=CASCADE)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False)
     updated = DateTimeField(auto_now_add=False)
@@ -46,8 +83,8 @@ class ModelHouseUser(Model):
 
 class ModelHouseTag(Model):
 
-    model_house = ForeignKey(ModelHouse, on_delete=CASCADE)
-    tag = ForeignKey(Tag, on_delete=CASCADE)
+    model_house = ForeignKey(ModelHouse, related_name="tags", on_delete=CASCADE)
+    tag = ForeignKey(Tag, related_name="model_houses", on_delete=CASCADE)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)
     updated = DateTimeField(auto_now_add=False, blank=True)
@@ -59,11 +96,9 @@ class ModelHouseTag(Model):
 
 class ModelHouseMedia(Model):
 
-    modern_house = ForeignKey(ModelHouse, on_delete=CASCADE)
-    type_media = BooleanField()
-    img_type = BooleanField()
-    title = CharField(max_length=255)
-    description = TextField(null=True)
+    modern_house = ForeignKey(ModelHouse, related_name="medias", on_delete=CASCADE)
+    type_media = SmallIntegerField()
+    img_type = SmallIntegerField()
     url = CharField(max_length=800)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)
@@ -76,8 +111,8 @@ class ModelHouseMedia(Model):
 
 class ModelHouseOutletStore(Model):
 
-    model_house = ForeignKey(ModelHouse, on_delete=CASCADE)
-    outlet_store = ForeignKey('outletstores.OutletStore', on_delete=CASCADE)
+    model_house = ForeignKey(ModelHouse, related_name="stores", on_delete=CASCADE)
+    outlet_store = ForeignKey('outletstores.OutletStore', related_name="model_houses", on_delete=CASCADE)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False)
     updated = DateTimeField(auto_now_add=False)
@@ -88,8 +123,8 @@ class ModelHouseOutletStore(Model):
 
 
 class ModelHouseContact(Model):
-    modern_house = ForeignKey(ModelHouse, related_name='model_house_contact', on_delete=CASCADE)
-    create_user = ForeignKey('users.User', on_delete=CASCADE)
+    modern_house = ForeignKey(ModelHouse, related_name='contacts', on_delete=CASCADE)
+    create_user = ForeignKey('users.User', related_name="model_house_contacts", on_delete=CASCADE)
     comment = CharField(max_length=255)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)
@@ -101,8 +136,8 @@ class ModelHouseContact(Model):
 
 
 class ModelHouseContactReply(Model):
-    modern_house_contact = ForeignKey(ModelHouseContact, on_delete=CASCADE)
-    user = ForeignKey('users.User', on_delete=CASCADE)
+    modern_house_contact = ForeignKey(ModelHouseContact, related_name="replies", on_delete=CASCADE)
+    user = ForeignKey('users.User', related_name="model_house_contact_replies", on_delete=CASCADE)
     comment = CharField(max_length=255)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)

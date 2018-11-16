@@ -193,7 +193,7 @@ class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
             token = serializer.object.get('token')
             response_data = jwt_response_payload_handler(token, user, request)
             formated_response = {
-                'status': False,
+                'status': True,
                 'messageCode': None,
                 'messageParams': None,
                 'data': response_data

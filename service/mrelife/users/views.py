@@ -17,7 +17,7 @@ from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
 from mrelife.file_managements.serializers import FileSerializer
 from mrelife.users.serializers import ProfileSerializer, UserSerializer
-from mrelife.utils.groups import GroupStore, GroupUser
+from mrelife.utils.groups import GroupUser, IsStore
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.relifepermissions import AdminOrStoreOrDenyPermission
 from mrelife.utils.validates import email_exist
@@ -48,7 +48,7 @@ class UserVs(ModelViewSet):
         obj = super(UserVs, self).create(request, *args, **kwargs)
         user = User.objects.get(pk=obj.data['id'])
         group = request.user.group
-        if group != GroupStore():
+        if not IsStore(request.user):
             try:
                 group = Group.objects.get(pk=int(request.data.get('group')))
             except Exception:
