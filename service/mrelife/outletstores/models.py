@@ -20,6 +20,7 @@ from PIL import Image
 
 from mrelife.locations.models import District
 
+
 class OutletStore(Model):
     title = CharField(max_length=255)
     content = TextField()
@@ -48,7 +49,7 @@ class OutletStore(Model):
     def save(self, *args, **kwargs):
         self.create_img_thumbnail()
         super(OutletStore, self).save(*args, **kwargs)
-
+    
     def create_img_thumbnail(self):
         if not self.img_large:
             return ""
@@ -107,7 +108,7 @@ class OutletStoreContact(Model):
 
 
 class OutletStoreContactReply(Model):
-    outlet_store_contact = ForeignKey(OutletStoreContact,related_name='outlet_store_contact_relpy', on_delete=CASCADE)
+    outlet_store_contact = ForeignKey(OutletStoreContact, related_name='outlet_store_contact_relpy', on_delete=CASCADE)
     user = ForeignKey('users.User', on_delete=CASCADE)
     comment = CharField(max_length=255)
     is_active = BooleanField(default=True)
