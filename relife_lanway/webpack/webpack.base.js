@@ -5,10 +5,10 @@
 
 'use strict'
 
-var webpack = require('webpack')
-var _ = require('lodash')
-var autoprefixer = require('autoprefixer')
-var CopyWebpackPlugin = require('copy-webpack-plugin')
+let webpack = require('webpack')
+let _ = require('lodash')
+let autoprefixer = require('autoprefixer')
+let CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = function(options) {
   return {
