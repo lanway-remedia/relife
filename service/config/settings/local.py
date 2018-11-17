@@ -13,7 +13,7 @@ ALLOWED_HOSTS = [
     "0.0.0.0",
     "127.0.0.1",
     "192.168.99.100",
-    "d2qla8p7uh1mg1.cloudfront.net"
+    "relife-staging-937994825.ap-northeast-1.elb.amazonaws.com"
 ]
 
 # CACHES
