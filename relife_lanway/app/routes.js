@@ -9,6 +9,7 @@ import { Route, Redirect, withRouter, Switch } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 
 import LoginPage from './containers/LoginPage'
+import ResetPasswordPage from './containers/ResetPasswordPage'
 import HomePage from './containers/HomePage'
 import ArticlePage from './containers/ArticlePage'
 import UserDashboardPage from './containers/UserDashboardPage'
@@ -131,7 +132,8 @@ class Routes extends React.Component {
 
     let hideMenu =
       this.props.location.pathname.includes('/login') ||
-      this.props.location.pathname.includes('/forgot-password')
+      this.props.location.pathname.includes('/forgot-password') ||
+      this.props.location.pathname.includes('/email-confirm')
 
     return (
       <div className="wrapper">
@@ -171,6 +173,7 @@ class Routes extends React.Component {
             <Switch>
               <Route exact path="/login" component={LoginPage} />
               <Route path="/forgot-password" component={ForgotPasswordPage} />
+              <Route path="/email-confirm/:uidb64/:token_key" component={ResetPasswordPage} />
             </Switch>
           </React.Fragment>
         )}
