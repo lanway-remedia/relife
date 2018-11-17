@@ -12,7 +12,8 @@ ALLOWED_HOSTS = [
     "localhost",
     "0.0.0.0",
     "127.0.0.1",
-    "192.168.99.100"
+    "192.168.99.100",
+    "relife-staging-937994825.ap-northeast-1.elb.amazonaws.com"
 ]
 
 # CACHES
