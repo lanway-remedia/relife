@@ -12,7 +12,8 @@ ALLOWED_HOSTS = [
     "localhost",
     "0.0.0.0",
     "127.0.0.1",
-    "192.168.99.100"
+    "192.168.99.100",
+    "d2qla8p7uh1mg1.cloudfront.net"
 ]
 
 # CACHES
