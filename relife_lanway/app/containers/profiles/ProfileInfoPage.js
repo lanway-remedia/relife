@@ -13,7 +13,7 @@ import I18nUtils from '../../utils/I18nUtils'
 
 import avatarUser from '../../images/admin.jpeg'
 
-class UserProfile extends React.Component {
+class ProfileInfoPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -43,12 +43,12 @@ class UserProfile extends React.Component {
   }
 
   redirectToEditPage = data => {
-    this.props.history.push('/user-edit')
+    this.props.history.push('/profile-edit')
     this.setState({ data })
   }
 
   redirectToChangePass = () => {
-    this.props.history.push('user-change-password')
+    this.props.history.push('profile-change-password')
   }
 
   render() {
@@ -121,7 +121,7 @@ class UserProfile extends React.Component {
   }
 }
 
-UserProfile.propTypes = {
+ProfileInfoPage.propTypes = {
   history: PropTypes.object,
   maxFileSize: PropTypes.number,
   onChange: PropTypes.func,
@@ -143,4 +143,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(UserProfile))
+)(withRouter(ProfileInfoPage))
