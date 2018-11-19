@@ -16,6 +16,11 @@ class OutletStoreMediaSerializer(serializers.ModelSerializer):
 
 
 class OutletStoreContactSerializer(serializers.ModelSerializer):
+    outlet_store = serializers.PrimaryKeyRelatedField(queryset=OutletStore.objects.filter(is_active=1))
+    create_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_active=1))
+    comment = serializers.CharField(max_length=255)
+    is_active = serializers.BooleanField(default=True)
+
     class Meta:
         model = OutletStoreContact
         fields = '__all__'
@@ -27,7 +32,6 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     content = serializers.CharField(style={'base_template': 'textarea.html'})
     img_thumbnail = serializers.CharField(max_length=800, allow_blank=True, allow_null=True, read_only=True)
-    #img_large = serializers.CharField(max_length=800,allow_blank=True, allow_null=True,read_only=True)
     img_large = serializers.FileField(required=True)
     latitude = serializers.CharField(style={'base_template': 'textarea.html'}, allow_blank=True, allow_null=True)
     longitude = serializers.CharField(style={'base_template': 'textarea.html'}, allow_blank=True, allow_null=True)
@@ -40,7 +44,7 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     traffic = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     time_serving = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     regular_holiday = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
-    create_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    create_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_active=1))
     is_active = serializers.BooleanField(default=True)
     outlet_store_media = OutletStoreMediaSerializer(many=True, read_only=True, required=False)
     outlet_store_contact = OutletStoreContactSerializer(many=True, read_only=True, required=False)

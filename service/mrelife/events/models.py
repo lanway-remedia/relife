@@ -46,8 +46,8 @@ class EventModelHouse(Model):
 
 class EventExhibition(Model):
 
-    event = ForeignKey(Event, on_delete=CASCADE)
-    exhibition = ForeignKey(Exhibition, on_delete=CASCADE)
+    event = ForeignKey(Event,related_name="event_exhibition", on_delete=CASCADE)
+    exhibition = ForeignKey(Exhibition,related_name="exhibition_event", on_delete=CASCADE)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)
     updated = DateTimeField(auto_now_add=False, blank=True)
@@ -59,7 +59,7 @@ class EventExhibition(Model):
 
 class EventContact(Model):
 
-    event = ForeignKey(Event, on_delete=CASCADE)
+    event = ForeignKey(Event,related_name="event_contact", on_delete=CASCADE)
     create_user = ForeignKey('users.User', on_delete=CASCADE)
     comment = CharField(max_length=255)
     is_active = BooleanField(default=True)
@@ -73,7 +73,7 @@ class EventContact(Model):
 
 class EventContactReply(Model):
 
-    event_contact = ForeignKey(EventContact, related_name='outlet_store_tag', on_delete=CASCADE)
+    event_contact = ForeignKey(EventContact, related_name='event_contact_reply', on_delete=CASCADE)
     create_user = ForeignKey('users.User', on_delete=CASCADE)
     comment = CharField(max_length=255)
     is_active = BooleanField(default=True)

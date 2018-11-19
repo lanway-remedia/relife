@@ -1,31 +1,49 @@
 from rest_framework import serializers
 
-from mrelife.exhibitions.models import Exhibition,District
+from mrelife.events.serializers import EventExhibitionSerializer
+from mrelife.exhibitions.models import Exhibition, ExhibitionContact, ExhibitionContactReply
 from mrelife.users.models import User
 
+from mrelife.locations.models import District
+
+
+class ExhibitionContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExhibitionContact
+        fields = '__all__'
+
+
+class ExhibitionContactReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExhibitionContactReply
+        fields = '__all__'
 
 
 class ExhibitionSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only= True)
-    title = serializers.CharField(max_length = 255)
+    id = serializers.IntegerField(read_only=True)
+    title = serializers.CharField(max_length=255)
     content = serializers.CharField()
-    img_thumbnail =serializers.CharField(max_length=800,allow_blank=True, allow_null=True,read_only=True)
-    img_large=serializers.ImageField()
-    latitude=serializers.CharField()
-    longtitude=serializers.CharField()
-    address=serializers.CharField(max_length=800)
-    district=serializers.PrimaryKeyRelatedField(queryset=District.objects.all())
-    zipcode= serializers.CharField(max_length = 255,allow_blank=True)
-    num_attend=serializers.IntegerField()
-    start_time = serializers.DateTimeField(input_formats=['%Y-%m-%d',],format="%d-%m-%Y",required=True)
-    end_time = serializers.DateTimeField(input_formats=['%Y-%m-%d',],format="%d-%m-%Y",required=True)
+    img_thumbnail = serializers.CharField(max_length=800, allow_blank=True, allow_null=True, read_only=True)
+    img_large = serializers.ImageField()
+    latitude = serializers.CharField()
+    longtitude = serializers.CharField()
+    address = serializers.CharField(max_length=800)
+    district = serializers.PrimaryKeyRelatedField(queryset=District.objects.all())
+    zipcode = serializers.CharField(max_length=255, allow_blank=True)
+    num_attend = serializers.IntegerField()
+    start_time = serializers.DateTimeField(input_formats=['%Y-%m-%d', ], format="%d-%m-%Y", required=True)
+    end_time = serializers.DateTimeField(input_formats=['%Y-%m-%d', ], format="%d-%m-%Y", required=True)
     create_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    is_active = serializers.BooleanField(default = True)
+    is_active = serializers.BooleanField(default=True)
+    exhibition_contact = ExhibitionContactSerializer(many=True, read_only=True, required=False)
+    exhibition_contact_reply = ExhibitionContactReplySerializer(many=True, read_only=True, required=False)
+    exhibition_event = EventExhibitionSerializer(many=True, read_only=True, required=False)
 
     class Meta:
         model = Exhibition
-        fields = ('id', 'title', 'content','img_thumbnail','img_large', 'latitude','longtitude','address','district','zipcode','num_attend', 'start_time', 'end_time', 
-                    'create_user','is_active' )
+        fields = ('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'longtitude', 'address', 'district', 'zipcode', 'num_attend', 'start_time', 'end_time',
+                  'create_user', 'is_active','exhibition_contact','exhibition_contact_reply','exhibition_event')
+
     def validate(self, data):
         # Check that the start time, end time.
         if data['end_time'] < data['start_time']:
