@@ -24,7 +24,7 @@ export const INITIAL_STATE = {
 }
 
 /* ------------- Reducers ------------- */
-export const request = (state) => {
+export const request = state => {
   return { ...state, processing: true }
 }
 
