@@ -4,33 +4,24 @@ from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.authentication import (BasicAuthentication,
+                                           SessionAuthentication)
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from mrelife.commons.pagination import LargeResultsSetPagination
-from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreMedia
-from mrelife.outletstores.serializers import OutletStoreSerializer
+from mrelife.outletstores.models import (OutletStore, OutletStoreContact,
+                                         OutletStoreMedia)
+from mrelife.outletstores.serializers import (OutletStoreContactSerializer,
+                                              OutletStoreSerializer)
 
 
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.filter(is_active=1)
-    serializer_class = OutletStoreSerializer
+    serializer_class = OutletStoreContactSerializer
     pagination_class = LargeResultsSetPagination
-
-    """ def update_related_field(obj, value, field):
-        # Collect all related objects.
-        related_objs = CollectedObjects()
-        obj._collect_sub_objects(related_objs)
-        classes = related_objs.keys()
-        # Bulk update the objects for performance
-        for cls in classes:
-            items = related_objs[cls].items()
-            pk_list = [pk for pk, instance in items]
-            cls._default_manager.filter(id__in=pk_list).update(**{field: value})
-    """
 
     def get_object(self, pk):
         try:
@@ -55,6 +46,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         return Response(output, status=status.HTTP_200_OK)
 
     def create(self, request):
+
         serializer = OutletStoreSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
@@ -91,7 +83,8 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['post'], url_path='update_name', url_name='update_name',permission_classes=[IsAuthenticated])
+    # , permission_classes=[IsAuthenticated])
+    @action(detail=True, methods=['post'], url_path='update_name', url_name='update_name')
     def update_name(self, request, pk=None):
         "update tilte to outletstore"
         queryset = OutletStore.objects.all().filter(is_active=1)
@@ -101,3 +94,16 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             serializer.save(updated=datetime.now())
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['post'])
+    def createOutletContact(self, request):
+        serializer = OutletStoreContactSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        output = {"status": False, 'messageCode': 'MSG01', "errors": serializer.errors, "data": []}
+        return Response(output, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['put'])
+    def updateOutletContact(self, request):
+        pass
