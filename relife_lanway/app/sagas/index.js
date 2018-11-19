@@ -32,6 +32,7 @@ export default function * root () {
 
     //user
     takeLatest(UsersTypes.USER_LIST_REQUEST, UsersSagas.listUser),
+    takeLatest(UsersTypes.ADD_USER_REQUEST, UsersSagas.addUser),
     takeLatest(UsersTypes.USERS_FAILURE, ErrorSagas.handleError)
   ]
 }

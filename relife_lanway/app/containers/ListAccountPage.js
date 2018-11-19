@@ -34,11 +34,11 @@ class ListAccountsPage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.data != nextProps.data) {
-      let data = nextProps.data
-      if (data.listUser) {
+    if (this.props.response != nextProps.response) {
+      let response = nextProps.response
+      if (response.listUser) {
         this.setState({
-          users: data
+          users: response.data
         })
       }
     }
@@ -115,7 +115,7 @@ class ListAccountsPage extends React.Component {
 ListAccountsPage.propTypes = {
   history: PropTypes.object,
   processing: PropTypes.bool,
-  data: PropTypes.object,
+  response: PropTypes.object,
   totalCount: PropTypes.string,
   pageSize: PropTypes.string,
   currentPage: PropTypes.string,
@@ -125,7 +125,7 @@ ListAccountsPage.propTypes = {
 const mapStateToProps = state => {
   return {
     processing: state.users.processing,
-    data: state.users.data
+    response: state.users.data
   }
 }
 
