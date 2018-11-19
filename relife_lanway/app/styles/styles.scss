@@ -5,12 +5,14 @@
 //Components
 @import './components/language';
 @import './components/paginationComponent';
+@import './components/profileImage';
 
 //Containers
 @import './containers/loginPage';
 @import './containers/forgotPasswordPage';
 @import './containers/listAccountPage';
 @import './containers/userDashboardPage';
+@import './containers/userEditProfile';
 
 //Common
 @import 'common';

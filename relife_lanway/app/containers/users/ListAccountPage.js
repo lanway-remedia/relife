@@ -11,11 +11,11 @@ import { Container, Table } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import { Button } from 'reactstrap'
-import UsersActions from '../redux/wrapper/UsersRedux'
-import I18nUtils from '../utils/I18nUtils'
-import FilterGroupComponent from './../components/FilterGroupComponent'
-import TableHeadComponent from './../components/TableHeadComponent'
-import PaginationComponent from './../components/PaginationComponent'
+import UsersActions from '../../redux/wrapper/UsersRedux'
+import I18nUtils from '../../utils/I18nUtils'
+import FilterGroupComponent from '../../components/FilterGroupComponent'
+import TableHeadComponent from '../../components/TableHeadComponent'
+import PaginationComponent from '../../components/PaginationComponent'
 
 class ListAccountsPage extends React.Component {
   constructor(props) {
@@ -131,7 +131,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ show, hide }, dispatch),
-  userListRequest: (data) => dispatch(UsersActions.userListRequest(data))
+  userListRequest: data => dispatch(UsersActions.userListRequest(data))
 })
 
 export default connect(

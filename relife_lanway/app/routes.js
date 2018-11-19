@@ -12,10 +12,11 @@ import LoginPage from './containers/LoginPage'
 import ResetPasswordPage from './containers/ResetPasswordPage'
 import HomePage from './containers/HomePage'
 import ArticlePage from './containers/ArticlePage'
-import UserDashboardPage from './containers/UserDashboardPage'
-import UserEditPage from './containers/UserEditPage'
-import ListAccountPage from './containers/ListAccountPage'
+import ProfileInfoPage from './containers/profiles/ProfileInfoPage'
+import ProfileEditPage from './containers/profiles/ProfileEditPage'
+import ListAccountPage from './containers/users/ListAccountPage'
 import ForgotPasswordPage from './containers/ForgotPasswordPage'
+import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
 
 import Language from './components/Language'
 
@@ -71,7 +72,7 @@ class Routes extends React.Component {
       <Header.UserMenu
         name="Relife Admin"
         image={admin}
-        profileAction={() => this.props.history.push('/profile')}
+        profileAction={() => this.props.history.push('/profile-info')}
         signOutAction={() => AppUtils.logout(this.props.history)}
         key="2"
       />
@@ -98,9 +99,9 @@ class Routes extends React.Component {
             icon={{ className: 'fa-address-card' }}
           >
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/user-dashboard'}
+              active={this.props.location.pathname === '/profile-info'}
               title={I18nUtils.t('ud-page-title')}
-              onClick={() => this.props.history.push('/user-dashboard')}
+              onClick={() => this.props.history.push('profile-info')}
             />
             <Sidebar.Menu.Item
               active={this.props.location.pathname === '/list-account'}
@@ -153,12 +154,16 @@ class Routes extends React.Component {
                 <Route exact path="/" component={requireLogin(HomePage)} />
                 <Route path="/article" component={requireLogin(ArticlePage)} />
                 <Route
-                  path="/user-dashboard"
-                  component={requireLogin(UserDashboardPage)}
+                  path="/profile-info"
+                  component={requireLogin(ProfileInfoPage)}
                 />
                 <Route
-                  path="/user-edit"
-                  component={requireLogin(UserEditPage)}
+                  path="/profile-edit"
+                  component={requireLogin(ProfileEditPage)}
+                />
+                <Route
+                  path="/profile-change-password"
+                  component={requireLogin(ProfileChangePassPage)}
                 />
                 <Route
                   path="/list-account"

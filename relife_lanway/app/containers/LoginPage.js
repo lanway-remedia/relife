@@ -11,11 +11,7 @@ import { Helmet } from 'react-helmet'
 import AuthsActions from '../redux/wrapper/AuthsRedux'
 import I18nUtils from '../utils/I18nUtils'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
-import {
-  Button,
-  FormGroup,
-  Label
-} from 'reactstrap'
+import { Button, FormGroup, Label } from 'reactstrap'
 import AppUtils from '../utils/AppUtils'
 
 class LoginPage extends React.Component {
@@ -39,20 +35,20 @@ class LoginPage extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
-      let data = nextProps.data
-      if (data.login) {
-        AppUtils.login(this.props.history, data.data.token, '/user-dashboard')
+      let data = nextProps.data.data
+      if (data.token) {
+        AppUtils.login(this.props.history, data.token, '/user-profile')
       }
     }
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault()
     let data = {
       username: this.state.username,
@@ -79,40 +75,40 @@ class LoginPage extends React.Component {
               <ValidationForm onSubmit={this.handleSubmit}>
                 <FormGroup>
                   <Label for="username">{I18nUtils.t('username')}</Label>
-                    <TextInput
-                      className="form-control"
-                      type="text"
-                      name="username"
-                      id="username"
-                      placeholder={I18nUtils.t('all-place-username')}
-                      required
-                      pattern=".{3,}"
-                      errorMessage={{
-                        required: I18nUtils.t('validate-field-0'),
-                        pattern: I18nUtils.t('validate-field-3')
-                      }}
-                      onChange={this.handleChange}
-                      value={this.state.username}
-                    />
+                  <TextInput
+                    className="form-control"
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder={I18nUtils.t('all-place-username')}
+                    required
+                    pattern=".{3,}"
+                    errorMessage={{
+                      required: I18nUtils.t('validate-field-0'),
+                      pattern: I18nUtils.t('validate-field-3')
+                    }}
+                    onChange={this.handleChange}
+                    value={this.state.username}
+                  />
                 </FormGroup>
                 <FormGroup>
                   <Label for="password">{I18nUtils.t('password')}</Label>
-                    <TextInput
-                      type="password"
-                      name="password"
-                      id="password"
-                      placeholder={I18nUtils.t('all-place-password')}
-                      className="form-control"
-                      required
-                      pattern="(?=.*[A-Z]).{8,}"
-                      errorMessage={{
-                        required: I18nUtils.t('validate-field-0'),
-                        pattern: I18nUtils.t('validate-pass')
-                      }}
-                      onChange={this.handleChange}
-                      autoComplete="new-password"
-                      value={this.state.password}
-                    />
+                  <TextInput
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder={I18nUtils.t('all-place-password')}
+                    className="form-control"
+                    required
+                    pattern="(?=.*[A-Z]).{8,}"
+                    errorMessage={{
+                      required: I18nUtils.t('validate-field-0'),
+                      pattern: I18nUtils.t('validate-pass')
+                    }}
+                    onChange={this.handleChange}
+                    autoComplete="new-password"
+                    value={this.state.password}
+                  />
                 </FormGroup>
                 <FormGroup>
                   <Link
