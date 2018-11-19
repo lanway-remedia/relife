@@ -7,6 +7,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Container } from 'reactstrap'
+// import { Helmet } from 'react-helmet'
+// import I18nUtils from '../utils/I18nUtils'
 
 class ManageOutletStoreList extends React.Component {
   constructor(props) {
@@ -15,7 +17,11 @@ class ManageOutletStoreList extends React.Component {
   }
 
   render() {
-    return <Container fluid className="manage-outletstore-list" />
+    return (
+      <Container fluid className="manage-outletstore-list">
+        test
+      </Container>
+    )
   }
 }
 
