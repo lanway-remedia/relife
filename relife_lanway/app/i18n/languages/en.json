@@ -12,6 +12,7 @@
   "ud-page-title": "User Profile",
 
   "default-modal-name": "RE:life notification",
+  "um-parent-title": "User Management",
   "ud-info": "User Info",
   "ud-change": "Change Password",
   "ud-hi": "Hi, {name}",
@@ -28,6 +29,9 @@
   "ucp-welcome": "In here, you can change your password",
 
   "la-page-title": "List Account",
+
+  "ots-parent-title": "Outlet Store Management",
+  "otsl-page-title": "Manage Outlet Store List",
 
   "all-place-name": "Please input name here",
   "all-place-username": "Please input username here",

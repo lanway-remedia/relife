@@ -121,9 +121,7 @@ class FilterGroupComponent extends Component {
 }
 
 FilterGroupComponent.propTypes = {
-  formClass: PropTypes.string
-}
-InputGroup.propTypes = {
+  formClass: PropTypes.string,
   tag: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   size: PropTypes.string,
   className: PropTypes.string

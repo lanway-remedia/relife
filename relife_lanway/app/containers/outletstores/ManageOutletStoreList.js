@@ -6,6 +6,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { Container } from 'reactstrap'
 
 class ManageOutletStoreList extends React.Component {
   constructor(props) {
@@ -14,11 +15,7 @@ class ManageOutletStoreList extends React.Component {
   }
 
   render() {
-    return (
-      <div className="app">
-        <div className="home-page">home page</div>
-      </div>
-    )
+    return <Container fluid className="manage-outletstore-list" />
   }
 }
 

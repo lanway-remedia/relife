@@ -17,6 +17,8 @@ import ListAccountPage from './containers/users/ListAccountPage'
 import ForgotPasswordPage from './containers/ForgotPasswordPage'
 import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
 
+import ManageOutletStoreList from './containers/outletstores/ManageOutletStoreList'
+
 import Language from './components/Language'
 
 import AppUtils from './utils/AppUtils'
@@ -94,7 +96,7 @@ class Routes extends React.Component {
             title={I18nUtils.t('nav-home-lbl')}
           />
           <Sidebar.Menu.Item
-            title="User Management"
+            title={I18nUtils.t('um-parent-title')}
             icon={{ className: 'fa-address-card' }}
           >
             <Sidebar.Menu.Item
@@ -108,6 +110,21 @@ class Routes extends React.Component {
               onClick={() => this.props.history.push('/list-account')}
             />
           </Sidebar.Menu.Item>
+          <Sidebar.Menu.Item
+            title={I18nUtils.t('ots-parent-title')}
+            icon={{ className: 'fa-trello' }}
+          >
+            <Sidebar.Menu.Item
+              active={
+                this.props.location.pathname === '/manage-outlet-store-list'
+              }
+              title={I18nUtils.t('otsl-page-title')}
+              onClick={() =>
+                this.props.history.push('manage-outlet-store-list')
+              }
+            />
+          </Sidebar.Menu.Item>
+
           <Sidebar.Menu.Item
             active={this.props.location.pathname == '/article'}
             onClick={() => this.props.history.push('/article')}
@@ -166,6 +183,10 @@ class Routes extends React.Component {
                 <Route
                   path="/list-account"
                   component={requireLogin(ListAccountPage)}
+                />
+                <Route
+                  path="/manage-outlet-store-list"
+                  component={requireLogin(ManageOutletStoreList)}
                 />
               </Switch>
             </div>

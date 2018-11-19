@@ -11,8 +11,9 @@
 @import './containers/loginPage';
 @import './containers/forgotPasswordPage';
 @import './containers/listAccountPage';
-@import './containers/userDashboardPage';
-@import './containers/userEditProfile';
+@import './containers/profiles/userDashboardPage';
+@import './containers/profiles/userEditProfile';
+@import './containers/outletstores/manageOutletStoreList';
 
 //Common
 @import 'common';
