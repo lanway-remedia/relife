@@ -12,7 +12,7 @@ import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Container, Row, Col, Button, FormGroup, Label } from 'reactstrap'
 import I18nUtils from '../../utils/I18nUtils'
 
-class UserEditPage extends React.Component {
+class ProfileEditPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -94,7 +94,7 @@ class UserEditPage extends React.Component {
   }
 
   redirectToProfile = () => {
-    this.props.history.push('user-profile')
+    this.props.history.push('profile-info')
   }
 
   render() {
@@ -213,7 +213,7 @@ class UserEditPage extends React.Component {
   }
 }
 
-UserEditPage.propTypes = {
+ProfileEditPage.propTypes = {
   history: PropTypes.object,
   maxFileSize: PropTypes.number,
   onChange: PropTypes.func,
@@ -240,4 +240,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(UserEditPage))
+)(withRouter(ProfileEditPage))

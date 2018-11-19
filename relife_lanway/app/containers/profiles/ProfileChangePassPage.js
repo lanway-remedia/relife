@@ -11,7 +11,7 @@ import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Container, Row, Col, Button, FormGroup, Label } from 'reactstrap'
 import I18nUtils from '../../utils/I18nUtils'
 
-class UserChangePassPage extends React.Component {
+class ProfileChangePassPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -50,7 +50,7 @@ class UserChangePassPage extends React.Component {
   }
 
   redirectToProfile = () => {
-    this.props.history.push('user-profile')
+    this.props.history.push('profile-info')
   }
 
   render() {
@@ -147,7 +147,7 @@ class UserChangePassPage extends React.Component {
   }
 }
 
-UserChangePassPage.propTypes = {
+ProfileChangePassPage.propTypes = {
   history: PropTypes.object,
   profileRequest: PropTypes.func,
   editProfileRequest: PropTypes.func,
@@ -168,4 +168,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(UserChangePassPage))
+)(withRouter(ProfileChangePassPage))
