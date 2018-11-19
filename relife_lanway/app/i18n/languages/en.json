@@ -69,12 +69,21 @@
   "update": "Update",
   "save": "Save",
   "search": "Search",
+  "add": "Add",
   "edit": "Edit",
   "delete": "Delete",
   "login": "Login",
   "back": "Back",
 
   "btn-change-avatar": "Change Avatar",
+  "add-user": "Add User",
+  "store-selection": "Select Store",
+  "group-selection": "Select Group",
+
+  "group-system-admin": "System Admin",
+  "group-store-admin": "Store Admin",
+  "group-sub-store": "Sub store",
+  "group-user": "User",
 
   "toolbar-totalRecords": "Showing {limit} in {total} records",
   "toolbar-limit": "Visible",

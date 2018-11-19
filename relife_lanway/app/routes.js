@@ -14,7 +14,8 @@ import HomePage from './containers/HomePage'
 import ArticlePage from './containers/ArticlePage'
 import ProfileInfoPage from './containers/profiles/ProfileInfoPage'
 import ProfileEditPage from './containers/profiles/ProfileEditPage'
-import ListAccountPage from './containers/users/ListAccountPage'
+import UserListPage from './containers/users/UserListPage'
+import UserDetailPage from './containers/users/UserDetailPage'
 import ForgotPasswordPage from './containers/ForgotPasswordPage'
 import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
 
@@ -167,8 +168,13 @@ class Routes extends React.Component {
                 />
                 <Route
                   path="/list-account"
-                  component={requireLogin(ListAccountPage)}
+                  component={requireLogin(UserListPage)}
                 />
+                <Route
+                  path="/add-user"
+                  component={requireLogin(UserDetailPage)}
+                />
+
               </Switch>
             </div>
           </Dashboard>

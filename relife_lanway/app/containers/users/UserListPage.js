@@ -13,7 +13,6 @@ import { show, hide } from 'redux-modal'
 import { Button } from 'reactstrap'
 import UsersActions from '../../redux/wrapper/UsersRedux'
 import I18nUtils from '../../utils/I18nUtils'
-import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
 
@@ -44,6 +43,10 @@ class ListAccountsPage extends React.Component {
     }
   }
 
+  addUser = () => {
+    this.props.history.push('add-user')
+  }
+
   render() {
     let { pageSize, currentPage, sortColumn, users } = this.state
     let totalCount = users.length
@@ -53,14 +56,11 @@ class ListAccountsPage extends React.Component {
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />
             {I18nUtils.t('la-page-title')}
+            <Button className="add-button" color="success" onClick={this.addUser}>
+              {I18nUtils.t('add-user')}
+            </Button>
           </h1>
         </div>
-        <FilterGroupComponent
-          formClass="test"
-          formAction="test"
-          inputTitle="Name,Phone,Email"
-          calendarName="Created Date"
-        />
         <div className="formTable">
           <PaginationComponent
             itemsCount={totalCount}
@@ -71,7 +71,7 @@ class ListAccountsPage extends React.Component {
             <TableHeadComponent
               sortColumn={sortColumn}
               onSort={this.handleSort}
-              theadTitle="#,Name,Email,Group,Action"
+              theadTitle="#,Name,Email,Store,Group,Action"
             />
             <tbody>
               {users.map((user, key) => {
@@ -80,7 +80,8 @@ class ListAccountsPage extends React.Component {
                     <td>{user.id}</td>
                     <td>{user.username}</td>
                     <td>{user.email}</td>
-                    <td>{user.groups[0]}</td>
+                    <td>{user.store}</td>
+                    <td>{user.group}</td>
                     <td>
                       <Button
                         title={I18nUtils.t('edit')}
