@@ -8,7 +8,13 @@ import { createReducer, createActions } from 'reduxsauce'
 const { Types, Creators } = createActions({
   profileRequest: ['data'],
   profileSuccess: ['data'],
-  profileFailure: ['error']
+  editProfileRequest: ['data'],
+  editProfileSuccess: ['data'],
+  editProfileAvatarRequest: ['data'],
+  editProfileAvatarSuccess: ['data'],
+  profileFailure: ['error'],
+  editProfileFailure: ['error'],
+  editProfileAvatarFailure: ['error']
 })
 
 export const UserProfileTypes = Types
@@ -34,9 +40,39 @@ export const failure = (state, { error }) => {
   return { ...state, processing: false, error }
 }
 
+export const editProfileRequest = state => {
+  return { ...state, processing: true }
+}
+
+export const editProfileSuccess = (state, { data }) => {
+  return { ...state, processing: false, data, error: null }
+}
+
+export const editProfilefailure = (state, { error }) => {
+  return { ...state, processing: false, error }
+}
+
+export const editProfileAvatarRequest = state => {
+  return { ...state, processing: true }
+}
+
+export const editProfileAvatarSuccess = (state, { data }) => {
+  return { ...state, processing: false, data, error: null }
+}
+
+export const editProfileAvatarfailure = (state, { error }) => {
+  return { ...state, processing: false, error }
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.PROFILE_REQUEST]: request,
   [Types.PROFILE_SUCCESS]: success,
-  [Types.PROFILE_FAILURE]: failure
+  [Types.PROFILE_FAILURE]: failure,
+  [Types.EDIT_PROFILE_REQUEST]: editProfileRequest,
+  [Types.EDIT_PROFILE_SUCCESS]: editProfileSuccess,
+  [Types.EDIT_PROFILE_FAILURE]: editProfilefailure,
+  [Types.EDIT_PROFILE_AVATAR_REQUEST]: editProfileAvatarRequest,
+  [Types.EDIT_PROFILE_AVATAR_SUCCESS]: editProfileAvatarSuccess,
+  [Types.EDIT_PROFILE_AVATAR_FAILURE]: editProfileAvatarfailure
 })

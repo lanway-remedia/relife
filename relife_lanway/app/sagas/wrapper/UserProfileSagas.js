@@ -16,6 +16,22 @@ const UserProfileSagas = {
     } catch (err) {
       yield put(UserProfileActions.profileFailure(err))
     }
+  },
+  *editProfile({ data }) {
+    try {
+      let response = yield call(userProfileService.editUserProfile, data)
+      yield put(UserProfileActions.editProfileSuccess(response.data))
+    } catch (err) {
+      yield put(UserProfileActions.editProfileFailure(err))
+    }
+  },
+  *editProfileAvatar({ data }) {
+    try {
+      let response = yield call(userProfileService.editAvatarProfile, data)
+      yield put(UserProfileActions.editProfileAvatarSuccess(response.data))
+    } catch (err) {
+      yield put(UserProfileActions.editProfileAvatarFailure(err))
+    }
   }
 }
 

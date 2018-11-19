@@ -36,6 +36,19 @@ export default function* root() {
     //user profile
     takeLatest(UserProfileTypes.PROFILE_REQUEST, UserProfileSagas.userProfile),
     takeLatest(UserProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
+    takeLatest(
+      UserProfileTypes.EDIT_PROFILE_REQUEST,
+      UserProfileSagas.editProfile
+    ),
+    takeLatest(UserProfileTypes.EDIT_PROFILE_FAILURE, ErrorSagas.handleError),
+    takeLatest(
+      UserProfileTypes.EDIT_PROFILE_AVATAR_REQUEST,
+      UserProfileSagas.editProfileAvatar
+    ),
+    takeLatest(
+      UserProfileTypes.EDIT_PROFILE_AVATAR_FAILURE,
+      ErrorSagas.handleError
+    ),
 
     //user
     takeLatest(UsersTypes.USER_LIST_REQUEST, UsersSagas.listUser),

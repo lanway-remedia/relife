@@ -11,10 +11,11 @@ import { ToastContainer } from 'react-toastify'
 import LoginPage from './containers/LoginPage'
 import HomePage from './containers/HomePage'
 import ArticlePage from './containers/ArticlePage'
-import UserProfilePage from './containers/UserProfilePage'
-import UserEditPage from './containers/UserEditPage'
-import ListAccountPage from './containers/ListAccountPage'
+import UserProfilePage from './containers/users/UserProfilePage'
+import UserEditPage from './containers/users/UserEditPage'
+import ListAccountPage from './containers/users/ListAccountPage'
 import ForgotPasswordPage from './containers/ForgotPasswordPage'
+import UserChangePassPage from './containers/users/UserChangePassPage'
 
 import Language from './components/Language'
 
@@ -157,6 +158,10 @@ class Routes extends React.Component {
                 <Route
                   path="/user-edit"
                   component={requireLogin(UserEditPage)}
+                />
+                <Route
+                  path="/user-change-password"
+                  component={requireLogin(UserChangePassPage)}
                 />
                 <Route
                   path="/list-account"
