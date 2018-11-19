@@ -4,8 +4,7 @@ from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.authentication import (BasicAuthentication,
-                                           SessionAuthentication)
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -22,14 +21,8 @@ class EventViewSet(viewsets.ModelViewSet):
     pagination_class = LargeResultsSetPagination
 
     def list(self, request):
-        queryset = Event.objects.all()
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = EventSerializer(page, many=True)
-            data = {'status': status.HTTP_200_OK, 'result': serializer.data}
-            return self.get_paginated_response(data)
+        queryset = Event.objects.filter(is_active=1)
         serializer = EventSerializer(queryset, many=True)
-
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):

@@ -24,14 +24,8 @@ class EhibitionViewSet(viewsets.ModelViewSet):
     
     
     def list(self, request):
-        queryset = Exhibition.objects.all()
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = ExhibitionSerializer(page, many=True)
-            data={'status':status.HTTP_200_OK,'result':serializer.data}
-            return self.get_paginated_response(data)
+        queryset = Exhibition.objects.filter(is_active=1)
         serializer = ExhibitionSerializer(queryset, many=True)
-        
         return Response(serializer.data)
 
     def retrieve(self,request,pk=None):

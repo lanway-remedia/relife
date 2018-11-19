@@ -20,7 +20,7 @@ from mrelife.outletstores.serializers import (OutletStoreContactSerializer,
 
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.filter(is_active=1)
-    serializer_class = OutletStoreContactSerializer
+    serializer_class = OutletStoreSerializer
     pagination_class = LargeResultsSetPagination
 
     def get_object(self, pk):
@@ -31,11 +31,6 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         queryset = OutletStore.objects.filter(is_active=1)
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = OutletStoreSerializer(page, many=True)
-            data = {'status': status.HTTP_200_OK, 'result': serializer.data}
-            return self.get_paginated_response(data)
         serializer = OutletStoreSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -94,6 +89,16 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             serializer.save(updated=datetime.now())
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class OutletStoreContactViewSet(viewsets.ModelViewSet):
+    queryset = OutletStoreContact.objects.filter(is_active=1)
+    serializer_class = OutletStoreContactSerializer
+    pagination_class = LargeResultsSetPagination
+
+    def list(self, request):
+        queryset = OutletStoreContact.objects.filter(is_active=1)
+        return Response(serializer.data)
 
     @action(detail=False, methods=['post'])
     def createOutletContact(self, request):

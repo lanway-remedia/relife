@@ -16,6 +16,11 @@ class OutletStoreMediaSerializer(serializers.ModelSerializer):
 
 
 class OutletStoreContactSerializer(serializers.ModelSerializer):
+    outlet_store = serializers.PrimaryKeyRelatedField(queryset=OutletStore.objects.filter(is_active=1))
+    create_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_active=1))
+    comment = serializers.CharField(max_length=255)
+    is_active = serializers.BooleanField(default=True)
+
     class Meta:
         model = OutletStoreContact
         fields = '__all__'
