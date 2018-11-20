@@ -64,7 +64,6 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     traffic = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     time_serving = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     regular_holiday = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
-    create_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_active=1))
     is_active = serializers.BooleanField(default=True)
     outlet_store_media = OutletStoreMediaSerializer(many=True, read_only=True, required=False)
     outlet_store_contact = OutletStoreContactSerializer(many=True, read_only=True, required=False)
@@ -74,6 +73,7 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     def validate_district(self, dob):
         dob = District.objects.get(pk=self.initial_data['district'])
         return dob
+    
 
 
 
