@@ -53,12 +53,31 @@ export default function* root() {
     ),
 
     //OutletStore
+    // List
     takeLatest(
       OutletStoresTypes.OUTLET_STORE_LIST_REQUEST,
-      OutletStoresSagas.listUser
+      OutletStoresSagas.listStore
     ),
     takeLatest(
       OutletStoresTypes.OUTLET_STORE_LIST_FAILURE,
+      ErrorSagas.handleError
+    ),
+    //Add
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_ADD_REQUEST,
+      OutletStoresSagas.addStore
+    ),
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_ADD_FAILURE,
+      ErrorSagas.handleError
+    ),
+    //Delete
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_DELETE_REQUEST,
+      OutletStoresSagas.deleteStore
+    ),
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_DELETE_FAILURE,
       ErrorSagas.handleError
     ),
 

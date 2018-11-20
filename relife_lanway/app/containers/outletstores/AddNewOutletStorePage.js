@@ -15,6 +15,8 @@ import {
 import { Helmet } from 'react-helmet'
 import I18nUtils from '../../utils/I18nUtils'
 import validator from 'validator'
+import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
+import { toast } from 'react-toastify'
 
 import ImageUploadComponent from './../../components/ImageUploadComponent'
 
@@ -30,18 +32,18 @@ class AddNewOutletStorePage extends React.Component {
       address: '',
       zipcode: '',
       traffic: '',
-      ưebsite: '',
+      website: '',
       regularHoliday: '',
       timeServing: '',
-      content: ''
+      content: '',
+      city: '',
+      district: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.redirectToListPage = this.redirectToListPage.bind(this)
   }
-
-  handleSubmit = () => {}
 
   handleChange = e => {
     this.setState({
@@ -57,6 +59,42 @@ class AddNewOutletStorePage extends React.Component {
 
   redirectToListPage = () => {
     this.props.history.push('manage-outlet-store-list')
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data != nextProps.data) {
+      let data = nextProps.data
+      if (data.isAddStore) {
+        toast.success(
+          I18nUtils.formatMessage(
+            { id: 'toast-add-sucess' },
+            { name: this.state.title }
+          )
+        )
+      }
+    }
+  }
+
+  handleSubmit = e => {
+    e.preventDefault()
+    let data = new FormData()
+    data.append('create_user', 1)
+    data.append('latitude', 111111)
+    data.append('longitude', 222222)
+    data.append('title', this.state.title)
+    data.append('email', this.state.email)
+    data.append('tel', this.state.phone)
+    data.append('address', this.state.address)
+    data.append('zipcode', this.state.zipcode)
+    data.append('traffic', this.state.traffic)
+    data.append('home_page', this.state.website)
+    data.append('regular_holiday', this.state.regularHoliday)
+    data.append('time_serving', this.state.timeServing)
+    data.append('content', this.state.content)
+    data.append('city', this.state.city)
+    data.append('district', this.state.district)
+    data.append('img_large', this.state.thumbnailImage)
+    this.props.outletStoreAddRequest(data)
   }
 
   render() {
@@ -173,8 +211,8 @@ class AddNewOutletStorePage extends React.Component {
                   onChange={this.handleChange}
                 >
                   <option value="">{I18nUtils.t('lb-select')}</option>
-                  <option value="1">{I18nUtils.t('lb-enable')}</option>
-                  <option value="2">{I18nUtils.t('lb-disabled')}</option>
+                  <option value="1">Hà Nội</option>
+                  <option value="2">Hồ Chí Minh</option>
                 </SelectGroup>
               </FormGroup>
             </Col>
@@ -189,8 +227,8 @@ class AddNewOutletStorePage extends React.Component {
                   onChange={this.handleChange}
                 >
                   <option value="">{I18nUtils.t('lb-select')}</option>
-                  <option value="1">{I18nUtils.t('lb-enable')}</option>
-                  <option value="2">{I18nUtils.t('lb-disabled')}</option>
+                  <option value="1">Hoàng Mai</option>
+                  <option value="2">Hai Bà Trưng</option>
                 </SelectGroup>
               </FormGroup>
             </Col>
@@ -236,13 +274,13 @@ class AddNewOutletStorePage extends React.Component {
             </Col>
             <Col xs="12" md="6">
               <FormGroup>
-                <Label htmlFor="regular-holiday">
+                <Label htmlFor="regularHoliday">
                   {I18nUtils.t('regular-holiday')}
                 </Label>
                 <TextInput
                   type="text"
-                  name="regular-holiday"
-                  id="regular-holiday"
+                  name="regularHoliday"
+                  id="regularHoliday"
                   placeholder={I18nUtils.t('all-place-input')}
                   value={this.state.regularHoliday}
                   onChange={this.handleChange}
@@ -251,13 +289,13 @@ class AddNewOutletStorePage extends React.Component {
             </Col>
             <Col xs="12" md="6">
               <FormGroup>
-                <Label htmlFor="time-serving">
+                <Label htmlFor="timeServing">
                   {I18nUtils.t('time-serving')}
                 </Label>
                 <TextInput
                   type="text"
-                  name="time-serving"
-                  id="time-serving"
+                  name="timeServing"
+                  id="timeServing"
                   placeholder={I18nUtils.t('all-place-input')}
                   value={this.state.timeServing}
                   onChange={this.handleChange}
@@ -299,7 +337,24 @@ class AddNewOutletStorePage extends React.Component {
 }
 
 AddNewOutletStorePage.propTypes = {
-  history: PropTypes.object
+  history: PropTypes.object,
+  outletStoreAddRequest: PropTypes.func,
+  data: PropTypes.object
 }
 
-export default connect()(withRouter(AddNewOutletStorePage))
+const mapStateToProps = state => {
+  return {
+    processing: state.outletStores.processing,
+    data: state.outletStores.data
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  outletStoreAddRequest: data =>
+    dispatch(OutletStoreActions.outletStoreAddRequest(data))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(AddNewOutletStorePage))

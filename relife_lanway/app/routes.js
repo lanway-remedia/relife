@@ -19,6 +19,11 @@ import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
 
 import ManageOutletStoreListPage from './containers/outletstores/ManageOutletStoreListPage'
 import AddNewOutletStorePage from './containers/outletstores/AddNewOutletStorePage'
+import EditOutletStorePage from './containers/outletstores/EditOutletStorePage'
+
+import ManageExhibtionListPage from './containers/exhibtions/ManageExhibtionListPage'
+import AddNewExhibitionPage from './containers/exhibtions/AddNewExhibitionPage'
+import EditExhibitionPage from './containers/exhibtions/EditExhibitionPage'
 
 import Language from './components/Language'
 
@@ -130,7 +135,21 @@ class Routes extends React.Component {
               }
             />
           </Sidebar.Menu.Item>
-
+          <Sidebar.Menu.Item
+            title={I18nUtils.t('exh-parent-title')}
+            icon={{ className: 'fa-trello' }}
+          >
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/add-new-exhibtion'}
+              title={I18nUtils.t('exh-add-page-title')}
+              onClick={() => this.props.history.push('add-new-exhibtion')}
+            />
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/manage-exhibtion-list'}
+              title={I18nUtils.t('exh-page-title')}
+              onClick={() => this.props.history.push('manage-exhibtion-list')}
+            />
+          </Sidebar.Menu.Item>
           <Sidebar.Menu.Item
             active={this.props.location.pathname == '/article'}
             onClick={() => this.props.history.push('/article')}
@@ -197,6 +216,22 @@ class Routes extends React.Component {
                 <Route
                   path="/add-new-outlet-store"
                   component={requireLogin(AddNewOutletStorePage)}
+                />
+                <Route
+                  path="/edit-outlet-store"
+                  component={requireLogin(EditOutletStorePage)}
+                />
+                <Route
+                  path="/manage-exhibition-list"
+                  component={requireLogin(ManageExhibtionListPage)}
+                />
+                <Route
+                  path="/add-new-exhibition"
+                  component={requireLogin(AddNewExhibitionPage)}
+                />
+                <Route
+                  path="/edit-exhibition"
+                  component={requireLogin(EditExhibitionPage)}
                 />
               </Switch>
             </div>

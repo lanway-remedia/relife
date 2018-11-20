@@ -12,7 +12,10 @@ export default class OutletStoresService {
       }`
     )
   }
-  deleteSore(data) {
-    return apiClient.delete(`/outletstores/?${data}`)
+  addStore(data) {
+    return apiClient.post(`/outletstores/`, data)
+  }
+  deleteStore(data) {
+    return apiClient.delete(`/outletstores/${data}`)
   }
 }

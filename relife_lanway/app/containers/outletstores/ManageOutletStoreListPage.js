@@ -10,25 +10,25 @@ import { Container, Button, Table } from 'reactstrap'
 import { Helmet } from 'react-helmet'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
+import { ModalName } from '../../constants'
 import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
+import { toast } from 'react-toastify'
 
 class ManageOutletStoreListPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      pageSize: 10,
+      pageSize: 3,
       totalCount: 10,
       currentPage: 1,
       storeList: []
     }
-  }
-
-  redirectToAddNew = () => {
-    this.props.history.push('add-new-outlet-store')
+    this.handleDeleteStore = this.handleDeleteStore.bind(this)
+    this.redirectToAddNew = this.redirectToAddNew.bind(this)
   }
 
   componentDidMount() {
@@ -38,7 +38,7 @@ class ManageOutletStoreListPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let data = nextProps.data
-      if (data.data) {
+      if (data.isGetStoreList) {
         this.setState({
           storeList: data.data
         })
@@ -46,10 +46,38 @@ class ManageOutletStoreListPage extends React.Component {
     }
   }
 
+  handleDeleteStore = store => {
+    this.props.show(ModalName.COMMON, {
+      bodyClass: 'text-center',
+      title: I18nUtils.formatMessage(
+        { id: 'modal-del-header' },
+        { name: store.title }
+      ),
+      message: I18nUtils.t('modal-del-body'),
+      okFunction: () => this.okFunction(store)
+    })
+  }
+
+  redirectToAddNew = () => {
+    this.props.history.push('add-new-outlet-store')
+  }
+
+  okFunction = store => {
+    const originStoreList = this.state.storeList
+    const storeList = originStoreList.filter(s => s.id !== store.id)
+
+    this.setState({ storeList })
+
+    this.props.outletStoreDeleteRequest(store.id)
+    this.props.hide(ModalName.COMMON)
+    toast.success(
+      I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: store.title })
+    )
+  }
+
   render() {
     let { pageSize, totalCount, currentPage, storeList } = this.state
     totalCount = storeList.length
-    // console.log(storeList.length)
     return (
       <Container fluid className="manage-outletstore-list">
         <Helmet>
@@ -68,7 +96,8 @@ class ManageOutletStoreListPage extends React.Component {
           formClass="test"
           formAction="test"
           inputTitle="Title,Email,Phone"
-          select="City,District"
+          district
+          city
         />
         <div className="formTable">
           <PaginationComponent
@@ -79,13 +108,13 @@ class ManageOutletStoreListPage extends React.Component {
           <Table hover>
             <TableHeadComponent
               onSort={this.handleSort}
-              theadTitle="#,Image,Title,Email,Phone,District,City,Action"
+              theadTitle="#,Image,Title,Email,Phone,Action"
             />
             <tbody>
               {storeList.map((store, key) => {
                 return (
                   <tr key={key}>
-                    <td>{store.id}</td>
+                    <td>{key + 1}</td>
                     <td>
                       <img
                         alt={store.title}
@@ -97,8 +126,6 @@ class ManageOutletStoreListPage extends React.Component {
                     <td>{store.title}</td>
                     <td>{store.email}</td>
                     <td>{store.tel}</td>
-                    <td>{store.district}</td>
-                    <td>{store.city}</td>
                     <td>
                       <Button
                         title={I18nUtils.t('edit')}
@@ -115,6 +142,7 @@ class ManageOutletStoreListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
+                        onClick={() => this.handleDeleteStore(store)}
                       >
                         <i className="fa fa-trash" />
                       </Button>
@@ -137,7 +165,10 @@ ManageOutletStoreListPage.propTypes = {
   totalCount: PropTypes.number,
   pageSize: PropTypes.string,
   currentPage: PropTypes.string,
-  outletStoreListRequest: PropTypes.func
+  outletStoreListRequest: PropTypes.func,
+  outletStoreDeleteRequest: PropTypes.func,
+  show: PropTypes.func,
+  hide: PropTypes.func
 }
 
 const mapStateToProps = state => {
@@ -150,7 +181,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ show, hide }, dispatch),
   outletStoreListRequest: data =>
-    dispatch(OutletStoreActions.outletStoreListRequest(data))
+    dispatch(OutletStoreActions.outletStoreListRequest(data)),
+  outletStoreDeleteRequest: data =>
+    dispatch(OutletStoreActions.outletStoreDeleteRequest(data))
 })
 
 export default connect(
