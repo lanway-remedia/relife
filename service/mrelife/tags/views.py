@@ -86,3 +86,18 @@ class TagViewSet(viewsets.ModelViewSet):
         response = HttpResponse(dataset.csv, content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="tag.csv"'
         return response
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Get detail Tag
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Partial update Tag
+        """
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
