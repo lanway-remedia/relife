@@ -8,7 +8,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 
 import HotSwappingIntlProvider from '../containers/HotSwappingIntlProvider'
 import LocaleComponent from '../utils/LocaleComponent'
-import BootstrapModal from '../components/BootstrapModal'
+import CommonModal from '../components/CommonModal'
 import ErrorApi from '../components/ErrorApi'
 import Routes from '../routes'
 
@@ -32,7 +32,7 @@ export default class App extends React.Component {
           <div className="root-content">
             <LocaleComponent />
             <Routes />
-            <BootstrapModal />
+            <CommonModal />
             <ErrorApi />
           </div>
         </Router>

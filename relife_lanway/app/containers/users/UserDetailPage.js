@@ -7,7 +7,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
-import { Container, Row, Col, Button, FormGroup, Label, Input } from 'reactstrap'
+import { Container, Row, Col, Button, FormGroup, Label, InputGroup, Input, InputGroupAddon } from 'reactstrap'
+import StoreListModal from '../../components/StoreListModal'
 import UsersActions from '../../redux/wrapper/UsersRedux'
 import I18nUtils from '../../utils/I18nUtils'
 
@@ -17,6 +18,7 @@ class UserDetailPage extends React.Component {
     this.state = {
       profileImage: null,
       isAdd: true,
+      showStoreList: false,
       username: '',
       password: '',
       confirmPassword: '',
@@ -61,8 +63,20 @@ class UserDetailPage extends React.Component {
     return value && value === this.state.password1
   }
 
+  showStoreListHandle = () => {
+    this.setState({
+      showStoreList: true
+    })
+  }
+
+  toggleHandle = isOpen => {
+    this.setState({
+      showStoreList: isOpen
+    })
+  }
+
   render() {
-    let { isAdd, username, password, confirmPassword, fname, lname, email, phone, address, group } = this.state
+    let { isAdd, showStoreList, username, password, confirmPassword, fname, lname, email, phone, address, group } = this.state
 
     return (
       <Container fluid className="user-edit-profile">
@@ -72,6 +86,7 @@ class UserDetailPage extends React.Component {
             {isAdd ? I18nUtils.t('add-user') : I18nUtils.formatMessage({ id: 'ed-title' }, { username: username })}
           </h1>
         </div>
+        <StoreListModal isOpen={showStoreList} toggle={isOpen => this.toggleHandle(isOpen)} />
         <ValidationForm className="form-user-info" onSubmit={this.handleSubmit}>
           <Row>
 
@@ -206,13 +221,12 @@ class UserDetailPage extends React.Component {
             <Col xs="12" md="6">
               <FormGroup>
                 <Label for="store">{I18nUtils.t('store-selection')}</Label>
-                <Input type="select" name="store" id="store">
-                  <option value={null}>---</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </Input>
+                <InputGroup>
+                  <Input type="text" name="store" id="store" disabled />
+                  <InputGroupAddon addonType="append">
+                    <Button type="button" color="secondary" onClick={this.showStoreListHandle}>{I18nUtils.t('store-selection')}</Button>
+                  </InputGroupAddon>
+                </InputGroup>
               </FormGroup>
             </Col>
 

@@ -5,7 +5,7 @@ import { connectModal } from 'redux-modal'
 import { ModalName, DefaultValue } from '../constants'
 import I18nUtils from '../utils/I18nUtils'
 
-class BootstrapModal extends Component {
+class CommonModal extends Component {
   static propTypes = {
     show: PropTypes.bool,
     title: PropTypes.string,
@@ -30,4 +30,4 @@ class BootstrapModal extends Component {
   }
 }
 
-export default connectModal({ name: ModalName.COMMON })(BootstrapModal)
+export default connectModal({ name: ModalName.COMMON })(CommonModal)
