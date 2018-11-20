@@ -17,7 +17,7 @@ from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
 from mrelife.commons.pagination import LargeResultsSetPagination
 from mrelife.file_managements.serializers import FileSerializer
-from mrelife.users.serializers import ProfileSerializer, UserSerializer
+from mrelife.users.serializers import ProfileSerializer, UserSerializer, PasswordSerializer
 from mrelife.utils.groups import GroupUser, IsStore
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.relifepermissions import AdminOrStoreOrDenyPermission
@@ -167,6 +167,37 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
         return Response({
             'status': True,
             'messageCode': 'US009',
+            'messageParams': {},
+            'data': serializer.data
+        }, status.HTTP_200_OK)
+
+
+    @list_route(methods=['post'])
+    def update_password(self, request, *args, **kwargs):
+        user = User.objects.get(pk=request.user.id)
+
+        serializer = PasswordSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({
+                'status': False,
+                'messageCode': 'US013',
+                'messageParams': {},
+                'data': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        if not user.check_password(serializer.data['password']):
+            return Response({
+                'status': False,
+                'messageCode': 'US012',
+                'messageParams': {},
+                'data': {}
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(serializer.data['password1'])
+        user.save()
+        return Response({
+            'status': True,
+            'messageCode': 'US014',
             'messageParams': {},
             'data': serializer.data
         }, status.HTTP_200_OK)
