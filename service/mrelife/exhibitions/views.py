@@ -4,15 +4,19 @@ from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.authentication import (BasicAuthentication,
+                                           SessionAuthentication)
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.commons.pagination import LargeResultsSetPagination
-from mrelife.exhibitions.models import Exhibition
-from mrelife.exhibitions.serializers import ExhibitionSerializer
+from mrelife.events.models import EventExhibition
+from mrelife.exhibitions.models import Exhibition, ExhibitionContact
+from mrelife.exhibitions.serializers import (ExhibitionContactReplySerializer,
+                                             ExhibitionContactSerializer,
+                                             ExhibitionSerializer)
 
 
 class EhibitionViewSet(viewsets.ModelViewSet):
@@ -52,7 +56,17 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             return Response(output)
 
     def destroy(self, request, pk=None):
-        queryset = Exhibition.objects.all().filter(is_active=1, pk=pk)
-        event_obj = get_object_or_404(queryset, pk=pk)
-        CommonFuntion.update_active(queryset)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        queryset = Exhibition.objects.all()
+        exhibitionObject = get_object_or_404(queryset, pk=pk)
+        data = {"is_active": settings.IS_INACTIVE}
+        serializer = ExhibitionSerializer(exhibitionObject, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save(updated=datetime.now())
+            exhibitonContactObject = ExhibitionContact.objects.filter(
+                is_active=1, exhibition_id=pk)
+            CommonFuntion.update_active(exhibitonContactObject)
+            eventExhibitionObject = EventExhibition.objects.filter(
+                is_active=1, exhibition_id=pk)
+            CommonFuntion.update_active(eventExhibitionObject)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
