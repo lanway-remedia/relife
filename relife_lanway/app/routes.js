@@ -18,6 +18,14 @@ import ListAccountPage from './containers/users/ListAccountPage'
 import ForgotPasswordPage from './containers/ForgotPasswordPage'
 import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
 
+import ManageOutletStoreListPage from './containers/outletstores/ManageOutletStoreListPage'
+import AddNewOutletStorePage from './containers/outletstores/AddNewOutletStorePage'
+import EditOutletStorePage from './containers/outletstores/EditOutletStorePage'
+
+import ManageExhibtionListPage from './containers/exhibtions/ManageExhibtionListPage'
+import AddNewExhibitionPage from './containers/exhibtions/AddNewExhibitionPage'
+import EditExhibitionPage from './containers/exhibtions/EditExhibitionPage'
+
 import Language from './components/Language'
 
 import AppUtils from './utils/AppUtils'
@@ -95,7 +103,7 @@ class Routes extends React.Component {
             title={I18nUtils.t('nav-home-lbl')}
           />
           <Sidebar.Menu.Item
-            title="User Management"
+            title={I18nUtils.t('um-parent-title')}
             icon={{ className: 'fa-address-card' }}
           >
             <Sidebar.Menu.Item
@@ -107,6 +115,40 @@ class Routes extends React.Component {
               active={this.props.location.pathname === '/list-account'}
               title={I18nUtils.t('la-page-title')}
               onClick={() => this.props.history.push('/list-account')}
+            />
+          </Sidebar.Menu.Item>
+          <Sidebar.Menu.Item
+            title={I18nUtils.t('ots-parent-title')}
+            icon={{ className: 'fa-trello' }}
+          >
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/add-new-outlet-store'}
+              title={I18nUtils.t('ots-add-page-title')}
+              onClick={() => this.props.history.push('add-new-outlet-store')}
+            />
+            <Sidebar.Menu.Item
+              active={
+                this.props.location.pathname === '/manage-outlet-store-list'
+              }
+              title={I18nUtils.t('otsl-page-title')}
+              onClick={() =>
+                this.props.history.push('manage-outlet-store-list')
+              }
+            />
+          </Sidebar.Menu.Item>
+          <Sidebar.Menu.Item
+            title={I18nUtils.t('exh-parent-title')}
+            icon={{ className: 'fa-trello' }}
+          >
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/add-new-exhibtion'}
+              title={I18nUtils.t('exh-add-page-title')}
+              onClick={() => this.props.history.push('add-new-exhibtion')}
+            />
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/manage-exhibtion-list'}
+              title={I18nUtils.t('exh-page-title')}
+              onClick={() => this.props.history.push('manage-exhibtion-list')}
             />
           </Sidebar.Menu.Item>
           <Sidebar.Menu.Item
@@ -168,6 +210,30 @@ class Routes extends React.Component {
                 <Route
                   path="/list-account"
                   component={requireLogin(ListAccountPage)}
+                />
+                <Route
+                  path="/manage-outlet-store-list"
+                  component={requireLogin(ManageOutletStoreListPage)}
+                />
+                <Route
+                  path="/add-new-outlet-store"
+                  component={requireLogin(AddNewOutletStorePage)}
+                />
+                <Route
+                  path="/edit-outlet-store"
+                  component={requireLogin(EditOutletStorePage)}
+                />
+                <Route
+                  path="/manage-exhibition-list"
+                  component={requireLogin(ManageExhibtionListPage)}
+                />
+                <Route
+                  path="/add-new-exhibition"
+                  component={requireLogin(AddNewExhibitionPage)}
+                />
+                <Route
+                  path="/edit-exhibition"
+                  component={requireLogin(EditExhibitionPage)}
                 />
               </Switch>
             </div>

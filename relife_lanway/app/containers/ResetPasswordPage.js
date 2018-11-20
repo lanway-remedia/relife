@@ -49,12 +49,12 @@ class ResetPasswordPage extends React.Component {
     if (this.props.response != nextProps.response) {
       let response = nextProps.response
       if (response.resetPassword) {
-        this.props.show(ModalName.COMMON, { message: I18nUtils.t(response.messageCode), okFunc: () => this.okFunc()})
+        this.props.show(ModalName.COMMON, { message: I18nUtils.t(response.messageCode), okFunction: () => this.okFunction()})
       }
     }
   }
 
-  okFunc() {
+  okFunction() {
     this.props.history.push('/login')
     this.props.hide(ModalName.COMMON)
   }

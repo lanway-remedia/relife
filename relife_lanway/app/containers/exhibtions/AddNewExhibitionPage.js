@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-class ManageOutletStoreList extends React.Component {
+class EditExhibitionPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -16,14 +16,14 @@ class ManageOutletStoreList extends React.Component {
   render() {
     return (
       <div className="app">
-        <div className="home-page">home page</div>
+        <div className="home-page">AddNewExhibitionPage</div>
       </div>
     )
   }
 }
 
-ManageOutletStoreList.propTypes = {
+EditExhibitionPage.propTypes = {
   history: PropTypes.object
 }
 
-export default connect()(withRouter(ManageOutletStoreList))
+export default connect()(withRouter(EditExhibitionPage))
