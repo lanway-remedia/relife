@@ -1,9 +1,13 @@
 from django.urls import include, path
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
+
 from mrelife.outletstores import views
 
 router = routers.SimpleRouter()
+router.register(r'medias', views.OutletStoreMediaViewSet)
+router.register(r'contacts_reply', views.OutletStoreContactReplyViewSet)
+router.register(r'contacts', views.OutletStoreContactViewSet)
 router.register(r'', views.OutletStoreViewSet)
 
 urlpatterns = [

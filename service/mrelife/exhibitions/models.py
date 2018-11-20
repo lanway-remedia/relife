@@ -1,16 +1,10 @@
-from django.db.models import (
-    CASCADE,
-    BooleanField,
-    CharField,
-    DateTimeField,
-    ForeignKey,
-    ImageField,
-    IntegerField,
-    Model,
-    TextField
-)
+from django.db.models import (CASCADE, BooleanField, CharField, DateTimeField,
+                              ForeignKey, ImageField, IntegerField, Model,
+                              TextField)
 
 from mrelife.locations.models import District
+
+
 
 
 class Exhibition(Model):
@@ -34,4 +28,32 @@ class Exhibition(Model):
 
     class Meta:
         db_table = 'exhibition'
+        ordering = ['created', ]
+
+
+class ExhibitionContact(Model):
+
+    exhibition = ForeignKey(Exhibition, related_name='exhibition_contact', on_delete=CASCADE)
+    create_user = ForeignKey('users.User', on_delete=CASCADE)
+    comment = CharField(max_length=255)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
+    class Meta:
+        db_table = 'exhibition_contact'
+        ordering = ['created', ]
+
+
+class ExhibitionContactReply(Model):
+
+    exhibition_contact = ForeignKey(Exhibition, related_name='exhibition_contact_reply', on_delete=CASCADE)
+    create_user = ForeignKey('users.User', on_delete=CASCADE)
+    comment = CharField(max_length=255)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
+    class Meta:
+        db_table = 'exhibition_contact_reply'
         ordering = ['created', ]
