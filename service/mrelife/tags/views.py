@@ -15,11 +15,10 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
-    """
-    Create a model instance.
-    """
-
     def create(self, request, *args, **kwargs):
+        """
+        Create a Tag.
+        """
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             self.perform_create(serializer)
@@ -31,11 +30,10 @@ class TagViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now())
 
-    """
-    Update a model instance.
-    """
-
     def update(self, request, *args, **kwargs):
+        """
+        Update a Tag was exist.
+        """
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -53,11 +51,10 @@ class TagViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now())
 
-    """
-    List a queryset.
-    """
-
     def list(self, request, *args, **kwargs):
+        """
+        Get list Tag.
+        """
         queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
 
         page = self.paginate_queryset(queryset)
@@ -68,11 +65,10 @@ class TagViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
-    """
-    Destroy a model instance.
-    """
-
     def destroy(self, request, *args, **kwargs):
+        """
+        Delete a Tag.
+        """
         instance = self.get_object()
         instance.is_active = settings.IS_INACTIVE
         instance.save()
@@ -81,6 +77,9 @@ class TagViewSet(viewsets.ModelViewSet):
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
     def export_csv(self, request, *args, **kwargs):
+        """
+        Export data tag to csv.
+        """
         tag_resource = TagResource()
         queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
         dataset = tag_resource.export(queryset)

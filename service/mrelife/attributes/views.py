@@ -12,11 +12,10 @@ class ContructionViewSet(viewsets.ModelViewSet):
     queryset = Contruction.objects.all()
     serializer_class = ContructionSerializer
 
-    """
-    Create a model instance.
-    """
-
     def create(self, request, *args, **kwargs):
+        """
+        Create a contruction attribute.
+        """
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             self.perform_create(serializer)
@@ -28,11 +27,11 @@ class ContructionViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now())
 
-    """
-    Update a model instance.
-    """
-
     def update(self, request, *args, **kwargs):
+        """
+        Update a contruction attribute.
+        """
+
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -50,11 +49,10 @@ class ContructionViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now())
 
-    """
-    List a queryset.
-    """
-
     def list(self, request, *args, **kwargs):
+        """
+        Get list contruction attributes.
+        """
         queryset = Contruction.objects.filter(is_active=settings.IS_ACTIVE)
 
         page = self.paginate_queryset(queryset)
@@ -65,28 +63,41 @@ class ContructionViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
-    """
-    Destroy a model instance.
-    """
-
     def destroy(self, request, *args, **kwargs):
+        """
+        Delete a contruction attribute.
+        """
         instance = self.get_object()
         instance.is_active = settings.IS_INACTIVE
         instance.save()
         queryset = Contruction.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Get detail attribute
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Partial update attribute
+        """
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
 
 
 class PriceRangeViewSet(viewsets.ModelViewSet):
     queryset = PriceRange.objects.all()
     serializer_class = PriceRangeSerializer
 
-    """
-    Create a model instance.
-    """
-
     def create(self, request, *args, **kwargs):
+        """
+        Create a price attribute.
+        """
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             self.perform_create(serializer)
@@ -98,11 +109,10 @@ class PriceRangeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now())
 
-    """
-    Update a model instance.
-    """
-
     def update(self, request, *args, **kwargs):
+        """
+        Update a price attribute
+        """
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -120,11 +130,10 @@ class PriceRangeViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now())
 
-    """
-    List a queryset.
-    """
-
     def list(self, request, *args, **kwargs):
+        """
+        Get list price attributes.
+        """
         queryset = PriceRange.objects.filter(is_active=settings.IS_ACTIVE)
 
         page = self.paginate_queryset(queryset)
@@ -135,28 +144,41 @@ class PriceRangeViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
-    """
-    Destroy a model instance.
-    """
-
     def destroy(self, request, *args, **kwargs):
+        """
+        Delete a price attribute.
+        """
         instance = self.get_object()
         instance.is_active = settings.IS_INACTIVE
         instance.save()
         queryset = PriceRange.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Get detail attribute
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Partial update attribute
+        """
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
 
 
 class FloorViewSet(viewsets.ModelViewSet):
     queryset = Floor.objects.all()
     serializer_class = FloorSerializer
 
-    """
-    Create a model instance.
-    """
-
     def create(self, request, *args, **kwargs):
+        """
+        Create a floor attribute.
+        """
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             self.perform_create(serializer)
@@ -168,11 +190,10 @@ class FloorViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now())
 
-    """
-    Update a model instance.
-    """
-
     def update(self, request, *args, **kwargs):
+        """
+        Update a floor attribute.
+        """
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -190,11 +211,10 @@ class FloorViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now())
 
-    """
-    List a queryset.
-    """
-
     def list(self, request, *args, **kwargs):
+        """
+        Get list floor attributes
+        """
         queryset = Floor.objects.filter(is_active=settings.IS_ACTIVE)
 
         page = self.paginate_queryset(queryset)
@@ -205,28 +225,41 @@ class FloorViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
-    """
-    Destroy a model instance.
-    """
-
     def destroy(self, request, *args, **kwargs):
+        """
+        Delete a floor attribute.
+        """
         instance = self.get_object()
         instance.is_active = settings.IS_INACTIVE
         instance.save()
         queryset = Floor.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Get detail attribute
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Partial update attribute
+        """
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
 
 
 class StyleViewSet(viewsets.ModelViewSet):
     queryset = Style.objects.all()
     serializer_class = StyleSerializer
 
-    """
-    Create a model instance.
-    """
-
     def create(self, request, *args, **kwargs):
+        """
+        Create a style attribute.
+        """
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             self.perform_create(serializer)
@@ -238,11 +271,10 @@ class StyleViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now())
 
-    """
-    Update a model instance.
-    """
-
     def update(self, request, *args, **kwargs):
+        """
+        Update a style attribute.
+        """
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -260,11 +292,10 @@ class StyleViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now())
 
-    """
-    List a queryset.
-    """
-
     def list(self, request, *args, **kwargs):
+        """
+        Get list style attributes
+        """
         queryset = Style.objects.filter(is_active=settings.IS_ACTIVE)
 
         page = self.paginate_queryset(queryset)
@@ -275,28 +306,41 @@ class StyleViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
-    """
-    Destroy a model instance.
-    """
-
     def destroy(self, request, *args, **kwargs):
+        """
+        Delete a style attribute.
+        """
         instance = self.get_object()
         instance.is_active = settings.IS_INACTIVE
         instance.save()
         queryset = Style.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Get detail attribute
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Partial update attribute
+        """
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
 
 
 class HouseHoldIncomeViewSet(viewsets.ModelViewSet):
     queryset = HouseHoldIncome.objects.all()
     serializer_class = HouseHoldIncomeSerializer
 
-    """
-    Create a model instance.
-    """
-
     def create(self, request, *args, **kwargs):
+        """
+        Create a household_income attribute.
+        """
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             self.perform_create(serializer)
@@ -308,11 +352,10 @@ class HouseHoldIncomeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now())
 
-    """
-    Update a model instance.
-    """
-
     def update(self, request, *args, **kwargs):
+        """
+        Update a household_income attribute.
+        """
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -330,11 +373,10 @@ class HouseHoldIncomeViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now())
 
-    """
-    List a queryset.
-    """
-
     def list(self, request, *args, **kwargs):
+        """
+        Get list household_income attributes.
+        """
         queryset = HouseHoldIncome.objects.filter(is_active=settings.IS_ACTIVE)
 
         page = self.paginate_queryset(queryset)
@@ -345,28 +387,41 @@ class HouseHoldIncomeViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
-    """
-    Destroy a model instance.
-    """
-
     def destroy(self, request, *args, **kwargs):
+        """
+        Destroy a household_income attribute.
+        """
         instance = self.get_object()
         instance.is_active = settings.IS_INACTIVE
         instance.save()
         queryset = HouseHoldIncome.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Get detail attribute
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Partial update attribute
+        """
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
 
 
 class HouseHoldSizeViewSet(viewsets.ModelViewSet):
     queryset = HouseHoldSize.objects.all()
     serializer_class = HouseHoldSizeSerializer
 
-    """
-    Create a model instance.
-    """
-
     def create(self, request, *args, **kwargs):
+        """
+        Create a household_size attribute.
+        """
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             self.perform_create(serializer)
@@ -378,11 +433,10 @@ class HouseHoldSizeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now())
 
-    """
-    Update a model instance.
-    """
-
     def update(self, request, *args, **kwargs):
+        """
+        Update a household_size attribute.
+        """
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -400,11 +454,10 @@ class HouseHoldSizeViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now())
 
-    """
-    List a queryset.
-    """
-
     def list(self, request, *args, **kwargs):
+        """
+        Get list household_size attributes
+        """
         queryset = HouseHoldSize.objects.filter(is_active=settings.IS_ACTIVE)
 
         page = self.paginate_queryset(queryset)
@@ -415,14 +468,28 @@ class HouseHoldSizeViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
-    """
-    Destroy a model instance.
-    """
-
     def destroy(self, request, *args, **kwargs):
+        """
+        Delete a household_size attribute
+        """
         instance = self.get_object()
         instance.is_active = settings.IS_INACTIVE
         instance.save()
         queryset = HouseHoldSize.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Get detail attribute
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Partial update attribute
+        """
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
