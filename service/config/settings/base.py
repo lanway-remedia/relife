@@ -68,7 +68,9 @@ THIRD_PARTY_APPS = [
     'rest_framework_swagger',
     # Filter on URL
     'url_filter',
-    'corsheaders'
+    'corsheaders',
+    # Export CSV
+    'import_export'
 ]
 LOCAL_APPS = [
     # Your stuff: custom apps go here
@@ -303,3 +305,4 @@ CORS_ORIGIN_ALLOW_ALL = True
 JWT_AUTH = {
     'JWT_VERIFY_EXPIRATION': False
 }
+IMPORT_EXPORT_USE_TRANSACTIONS = False

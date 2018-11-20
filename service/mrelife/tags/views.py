@@ -2,11 +2,13 @@ from datetime import datetime
 
 from django.conf import settings
 from mrelife.tags.models import Tag
+from mrelife.tags.resources import TagResource
 from mrelife.tags.serializers import TagSerializer
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
 from rest_framework import viewsets
 from rest_framework.response import Response
+from django.http import HttpResponse
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -77,3 +79,11 @@ class TagViewSet(viewsets.ModelViewSet):
         queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+
+    def export_csv(self, request, *args, **kwargs):
+        tag_resource = TagResource()
+        queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
+        dataset = tag_resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="tag.csv"'
+        return response
