@@ -151,7 +151,7 @@ class FilterGroupComponent extends Component {
             </Col>
           </Row>
         </Form>
-        <span className="lb-showhide text-success">
+        <span className="lb-showhide text-success active">
           {I18nUtils.t('lb-showhide')}
         </span>
       </div>

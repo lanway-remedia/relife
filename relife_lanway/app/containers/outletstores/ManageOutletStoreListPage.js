@@ -8,6 +8,9 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Container, Button, Table } from 'reactstrap'
 import { Helmet } from 'react-helmet'
+import { bindActionCreators } from 'redux'
+import { show, hide } from 'redux-modal'
+import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
@@ -17,10 +20,10 @@ class ManageOutletStoreListPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      pageSize: 5,
-      totalCount: 30,
+      pageSize: 10,
+      totalCount: 10,
       currentPage: 1,
-      users: []
+      storeList: []
     }
   }
 
@@ -28,8 +31,25 @@ class ManageOutletStoreListPage extends React.Component {
     this.props.history.push('add-new-outlet-store')
   }
 
+  componentDidMount() {
+    this.props.outletStoreListRequest({})
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data != nextProps.data) {
+      let data = nextProps.data
+      if (data.data) {
+        this.setState({
+          storeList: data.data
+        })
+      }
+    }
+  }
+
   render() {
-    let { pageSize, totalCount, currentPage, users } = this.state
+    let { pageSize, totalCount, currentPage, storeList } = this.state
+    totalCount = storeList.length
+    // console.log(storeList.length)
     return (
       <Container fluid className="manage-outletstore-list">
         <Helmet>
@@ -48,7 +68,7 @@ class ManageOutletStoreListPage extends React.Component {
           formClass="test"
           formAction="test"
           inputTitle="Title,Email,Phone"
-          select="Status,City,District"
+          select="City,District"
         />
         <div className="formTable">
           <PaginationComponent
@@ -59,16 +79,26 @@ class ManageOutletStoreListPage extends React.Component {
           <Table hover>
             <TableHeadComponent
               onSort={this.handleSort}
-              theadTitle="#,Image,Title,Email,Phone,District,City,Status,Action"
+              theadTitle="#,Image,Title,Email,Phone,District,City,Action"
             />
             <tbody>
-              {users.map((user, key) => {
+              {storeList.map((store, key) => {
                 return (
                   <tr key={key}>
-                    <td>{user.id}</td>
-                    <td>{user.username}</td>
-                    <td>{user.email}</td>
-                    <td>{user.groups[0]}</td>
+                    <td>{store.id}</td>
+                    <td>
+                      <img
+                        alt={store.title}
+                        src={store.img_large}
+                        width="150"
+                        height="100"
+                      />
+                    </td>
+                    <td>{store.title}</td>
+                    <td>{store.email}</td>
+                    <td>{store.tel}</td>
+                    <td>{store.district}</td>
+                    <td>{store.city}</td>
                     <td>
                       <Button
                         title={I18nUtils.t('edit')}
@@ -101,7 +131,29 @@ class ManageOutletStoreListPage extends React.Component {
 }
 
 ManageOutletStoreListPage.propTypes = {
-  history: PropTypes.object
+  history: PropTypes.object,
+  processing: PropTypes.bool,
+  data: PropTypes.object,
+  totalCount: PropTypes.number,
+  pageSize: PropTypes.string,
+  currentPage: PropTypes.string,
+  outletStoreListRequest: PropTypes.func
 }
 
-export default connect()(withRouter(ManageOutletStoreListPage))
+const mapStateToProps = state => {
+  return {
+    processing: state.outletStores.processing,
+    data: state.outletStores.data
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ show, hide }, dispatch),
+  outletStoreListRequest: data =>
+    dispatch(OutletStoreActions.outletStoreListRequest(data))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ManageOutletStoreListPage))

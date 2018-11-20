@@ -3,6 +3,10 @@
   border: 1px solid $border-color;
   position: relative;
 
+  > form {
+    display: none;
+  }
+
   @include default-radius();
 
   .lb-search {
