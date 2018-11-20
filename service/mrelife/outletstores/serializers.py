@@ -4,10 +4,9 @@ from django.conf import settings
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from mrelife.exhibitions.models import District
-from mrelife.outletstores.models import (OutletStore, OutletStoreContact,
-                                         OutletStoreContactReply,
-                                         OutletStoreMedia)
+from mrelife.locations.models import District
+from mrelife.locations.serializers import DistrictSerializer
+from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreContactReply, OutletStoreMedia
 from mrelife.users.models import User
 
 
@@ -57,7 +56,7 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     latitude = serializers.CharField(style={'base_template': 'textarea.html'}, allow_blank=True, allow_null=True)
     longitude = serializers.CharField(style={'base_template': 'textarea.html'}, allow_blank=True, allow_null=True)
     address = serializers.CharField(max_length=800)
-    district = serializers.PrimaryKeyRelatedField(queryset=District.objects.all())
+    district = serializers.PrimaryKeyRelatedField(queryset=District.objects.filter(is_active=1), write_only=True)
     tel = serializers.CharField(max_length=13)
     email = serializers.CharField(max_length=100)
     zipcode = serializers.CharField(max_length=8, allow_blank=True, allow_null=True)
@@ -69,6 +68,14 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     is_active = serializers.BooleanField(default=True)
     outlet_store_media = OutletStoreMediaSerializer(many=True, read_only=True, required=False)
     outlet_store_contact = OutletStoreContactSerializer(many=True, read_only=True, required=False)
+    # district = serializers.SerializerMethodField('is_named_bar', read_only=True)
+    district = DistrictSerializer(many=False, read_only=True)
+
+    def validate_district(self, dob):
+        dob = District.objects.get(pk=self.initial_data['district'])
+        return dob
+
+
 
     class Meta:
         model = OutletStore
