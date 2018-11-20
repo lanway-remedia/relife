@@ -5,17 +5,15 @@ from django.core.files.storage import default_storage
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import detail_route
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from mrelife.events.models import Event, EventModelHouse
-from mrelife.modelhouses.models import (ModelHouse, ModelHouseMedia,
-                                        ModelHouseOutletStore, ModelHouseTag,
-                                        ModelHouseUser)
-from mrelife.modelhouses.serializers import (ModelHouseNestedSerializer,
-                                             ModelHouseSerializer)
+from mrelife.modelhouses.models import ModelHouse, ModelHouseMedia, ModelHouseOutletStore, ModelHouseTag, ModelHouseUser
+from mrelife.modelhouses.serializers import ModelHouseNestedSerializer, ModelHouseSerializer
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
@@ -28,6 +26,7 @@ class ModelHouseViewSet(ModelViewSet):
     serializer_class = ModelHouseSerializer
     permission_classes = (IsAuthenticated, ModelHousePermission,)
     parser_class = (FormParser, MultiPartParser, JSONParser)
+    pagination_class = LimitOffsetPagination
 
     def create(self, request, *args, **kwargs):
         request.data['create_user'] = request.user.id
