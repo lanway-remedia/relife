@@ -53,8 +53,10 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     content = serializers.CharField(style={'base_template': 'textarea.html'})
     img_thumbnail = serializers.CharField(max_length=800, allow_blank=True, allow_null=True, read_only=True)
     img_large = serializers.FileField(required=True)
-    latitude = serializers.CharField(style={'base_template': 'textarea.html'}, allow_blank=True, allow_null=True)
-    longitude = serializers.CharField(style={'base_template': 'textarea.html'}, allow_blank=True, allow_null=True)
+    latitude = serializers.CharField(style={'base_template': 'textarea.html'},
+                                     required=False, allow_blank=True, allow_null=True)
+    longitude = serializers.CharField(style={'base_template': 'textarea.html'},
+                                      required=False, allow_blank=True, allow_null=True)
     address = serializers.CharField(max_length=800)
     district = serializers.PrimaryKeyRelatedField(queryset=District.objects.filter(is_active=1), write_only=True)
     tel = serializers.CharField(max_length=13)
@@ -73,13 +75,13 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     def validate_district(self, dob):
         dob = District.objects.get(pk=self.initial_data['district'])
         return dob
-    
+
 
 
 
     class Meta:
-        model = OutletStore
+        model=OutletStore
 
-        fields = ('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'longitude', 'address', 'district',
+        fields=('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'longitude', 'address', 'district',
                   'tel', 'email', 'zipcode', 'home_page', 'traffic', 'time_serving', 'regular_holiday', 'create_user',
                   'is_active', 'outlet_store_media', 'outlet_store_contact')
