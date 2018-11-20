@@ -6,6 +6,8 @@
 @import './components/language';
 @import './components/paginationComponent';
 @import './components/profileImage';
+@import './components/filterGroup';
+@import './components/imageUploadComponent';
 
 //Containers
 @import './containers/loginPage';
@@ -13,6 +15,7 @@
 @import './containers/listAccountPage';
 @import './containers/profiles/userDashboardPage';
 @import './containers/profiles/userEditProfile';
+@import './containers/outletstores/addNewOutletStore';
 @import './containers/outletstores/manageOutletStoreList';
 
 //Common

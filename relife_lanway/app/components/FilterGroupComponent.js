@@ -40,10 +40,27 @@ class FilterGroupComponent extends Component {
     })
   }
 
+  handleShowHideForm = e => {
+    let elem = e.target
+    let lbNotice = document.getElementsByClassName('lb-showhide')
+    if (elem.nextSibling.offsetHeight > 0)
+      elem.nextSibling.setAttribute('style', 'display:none'),
+        lbNotice[0].classList.add('active'),
+        elem.classList.remove('active')
+    else
+      elem.nextSibling.setAttribute('style', 'display:block'),
+        lbNotice[0].classList.remove('active'),
+        elem.classList.add('active')
+  }
+
   render() {
     const props = this.props
     return (
       <div className="filter-group mb-5">
+        <label className="lb-search" onClick={this.handleShowHideForm}>
+          {I18nUtils.t('lb-ad-search')}
+          <i className="fa fa-angle-down" aria-hidden="true" />
+        </label>
         <Form
           className={props.formClass}
           method="POST"
@@ -107,6 +124,25 @@ class FilterGroupComponent extends Component {
                 </FormGroup>
               </Col>
             )}
+            {props.select &&
+              props.select.split(',').map((title, key) => {
+                return (
+                  <Col xs="12" md="6" key={key}>
+                    <FormGroup>
+                      <Label for={'filter' + title}>
+                        {I18nUtils.t(title.toLowerCase())}
+                      </Label>
+                      <Input
+                        type="select"
+                        name={'filter' + title}
+                        id={'filter' + title}
+                      >
+                        <option value="">{I18nUtils.t('lb-select')}</option>
+                      </Input>
+                    </FormGroup>
+                  </Col>
+                )
+              })}
             <Col xs="12" md="12">
               <div className="btns-group text-center mt-2">
                 <Button color="success">{I18nUtils.t('search')}</Button>
@@ -115,6 +151,9 @@ class FilterGroupComponent extends Component {
             </Col>
           </Row>
         </Form>
+        <span className="lb-showhide text-success">
+          {I18nUtils.t('lb-showhide')}
+        </span>
       </div>
     )
   }

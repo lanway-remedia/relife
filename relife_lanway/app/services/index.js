@@ -6,8 +6,10 @@ import LanguageService from './wrapper/LanguageService'
 import AuthsService from './wrapper/AuthsService'
 import UsersService from './wrapper/UsersService'
 import UserProfileService from './wrapper/UserProfileService'
+import OutletStoreService from './wrapper/OutletStoresService'
 
 export const languageService = new LanguageService()
 export const authsService = new AuthsService()
 export const usersService = new UsersService()
 export const userProfileService = new UserProfileService()
+export const outletStoreService = new OutletStoreService()

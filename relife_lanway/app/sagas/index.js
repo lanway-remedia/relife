@@ -11,12 +11,14 @@ import { SetLanguageTypes } from '../redux/wrapper/SetLanguageRedux'
 import { AuthsTypes } from '../redux/wrapper/AuthsRedux'
 import { UsersTypes } from '../redux/wrapper/UsersRedux'
 import { UserProfileTypes } from '../redux/wrapper/UserProfileRedux'
+import { OutletStoresTypes } from '../redux/wrapper/OutletStoresRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
 import AuthsSagas from './wrapper/AuthsSagas'
 import UsersSagas from './wrapper/UsersSagas'
 import UserProfileSagas from './wrapper/UserProfileSagas'
+import OutletStoresSagas from './wrapper/OutletStoresSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -47,6 +49,16 @@ export default function* root() {
     ),
     takeLatest(
       UserProfileTypes.EDIT_PROFILE_AVATAR_FAILURE,
+      ErrorSagas.handleError
+    ),
+
+    //OutletStore
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_LIST_REQUEST,
+      OutletStoresSagas.listUser
+    ),
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_LIST_FAILURE,
       ErrorSagas.handleError
     ),
 

@@ -17,7 +17,8 @@ import ListAccountPage from './containers/users/ListAccountPage'
 import ForgotPasswordPage from './containers/ForgotPasswordPage'
 import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
 
-import ManageOutletStoreList from './containers/outletstores/ManageOutletStoreList'
+import ManageOutletStoreListPage from './containers/outletstores/ManageOutletStoreListPage'
+import AddNewOutletStorePage from './containers/outletstores/AddNewOutletStorePage'
 
 import Language from './components/Language'
 
@@ -115,6 +116,11 @@ class Routes extends React.Component {
             icon={{ className: 'fa-trello' }}
           >
             <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/add-new-outlet-store'}
+              title={I18nUtils.t('ots-add-page-title')}
+              onClick={() => this.props.history.push('add-new-outlet-store')}
+            />
+            <Sidebar.Menu.Item
               active={
                 this.props.location.pathname === '/manage-outlet-store-list'
               }
@@ -186,7 +192,11 @@ class Routes extends React.Component {
                 />
                 <Route
                   path="/manage-outlet-store-list"
-                  component={requireLogin(ManageOutletStoreList)}
+                  component={requireLogin(ManageOutletStoreListPage)}
+                />
+                <Route
+                  path="/add-new-outlet-store"
+                  component={requireLogin(AddNewOutletStorePage)}
                 />
               </Switch>
             </div>
