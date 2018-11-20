@@ -3,16 +3,38 @@
  * StoreListModal component
  */
 
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem, InputGroup, Input, InputGroupAddon } from 'reactstrap'
+import OutletStoreActions from '../redux/wrapper/OutletStoresRedux'
+import I18nUtils from '../utils/I18nUtils'
+import UltimatePagination from 'react-ultimate-pagination-bootstrap-4'
 
-class StoreListModal extends React.Component {
+class StoreListModal extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      page: 1,
+      total: 10,
+      storeList: []
+    }
+    this.onPageChange = this.onPageChange.bind(this)
+  }
+
+  componentDidMount() {
+    this.props.outletStoreListRequest({})
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.response != nextProps.response) {
+      let response = nextProps.response
+      if (response.isGetStoreList) {
+        this.setState({
+          storeList: response.data.slice(0, 10)
+        })
+      }
     }
   }
 
@@ -20,16 +42,36 @@ class StoreListModal extends React.Component {
     this.props.toggle(false)
   }
 
+  onPageChange(page) {
+    this.setState({page})
+  }
+
   render() {
+    let { page, total, storeList } = this.state
     return (
       <Modal isOpen={this.props.isOpen} toggle={this.toggle}>
-        <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
-        <ModalBody>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        <ModalHeader toggle={this.toggle}>{I18nUtils.t('store-selection')}</ModalHeader>
+        <ModalBody className="search-modal">
+          <InputGroup>
+            <Input type="text" name="search" id="search" />
+            <InputGroupAddon addonType="append">
+              <Button type="button" color="primary">{I18nUtils.t('search')}</Button>
+            </InputGroupAddon>
+          </InputGroup>
+          <UltimatePagination
+            currentPage={page} 
+            totalPages={total} 
+            onChange={this.onPageChange}
+          />
+          <ListGroup>
+            {storeList.map((item, key) => {
+              return (<ListGroupItem key={key}>{item.title}</ListGroupItem>)
+            })}
+          </ListGroup>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-          <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+          <Button color="success" onClick={this.toggle}>{I18nUtils.t('select')}</Button>{' '}
+          <Button color="warning" onClick={this.toggle}>{I18nUtils.t('cancel')}</Button>
         </ModalFooter>
       </Modal>
     )
@@ -39,7 +81,24 @@ class StoreListModal extends React.Component {
 StoreListModal.propTypes = {
   history: PropTypes.object,
   toggle: PropTypes.func,
-  isOpen: PropTypes.bool
+  isOpen: PropTypes.bool,
+  response: PropTypes.object,
+  outletStoreListRequest: PropTypes.func
 }
 
-export default connect()(withRouter(StoreListModal))
+const mapStateToProps = state => {
+  return {
+    processing: state.outletStores.processing,
+    response: state.outletStores.data
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  outletStoreListRequest: data =>
+    dispatch(OutletStoreActions.outletStoreListRequest(data))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(StoreListModal))
