@@ -10,9 +10,9 @@ import { withRouter, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { show, hide } from 'redux-modal'
 import { bindActionCreators } from 'redux'
-import { ModalName } from '../constants'
-import AuthsActions from '../redux/wrapper/AuthsRedux'
-import I18nUtils from '../utils/I18nUtils'
+import { ModalName } from '../../constants'
+import AuthsActions from '../../redux/wrapper/AuthsRedux'
+import I18nUtils from '../../utils/I18nUtils'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import {
   Button,
@@ -49,12 +49,12 @@ class ResetPasswordPage extends React.Component {
     if (this.props.response != nextProps.response) {
       let response = nextProps.response
       if (response.resetPassword) {
-        this.props.show(ModalName.COMMON, { message: I18nUtils.t(response.messageCode), okFunc: () => this.okFunc()})
+        this.props.show(ModalName.COMMON, { message: I18nUtils.t(response.messageCode), okFunction: () => this.okFunction()})
       }
     }
   }
 
-  okFunc() {
+  okFunction() {
     this.props.history.push('/login')
     this.props.hide(ModalName.COMMON)
   }

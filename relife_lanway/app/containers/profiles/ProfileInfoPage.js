@@ -109,7 +109,7 @@ class ProfileInfoPage extends React.Component {
                 >
                   {I18nUtils.t('ud-btn-editprofile')}
                 </Button>
-                <Button onClick={this.redirectToChangePass} color="primary">
+                <Button onClick={this.redirectToChangePass} color="warning">
                   {I18nUtils.t('changePassword')}
                 </Button>
               </div>

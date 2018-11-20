@@ -56,7 +56,7 @@ class ListAccountsPage extends React.Component {
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />
             {I18nUtils.t('la-page-title')}
-            <Button className="add-button" color="success" onClick={this.addUser}>
+            <Button color="success" onClick={this.addUser}>
               {I18nUtils.t('add-user')}
             </Button>
           </h1>

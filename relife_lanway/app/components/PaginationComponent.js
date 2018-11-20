@@ -17,25 +17,31 @@ class PaginationComponent extends Component {
     const { itemsCount, pageSize, currentPage } = this.props
 
     const pagesCount = Math.ceil(itemsCount / pageSize)
-    if (pagesCount === 1) return null
+    // if (pagesCount === 1) return null
     const pages = _.range(1, pagesCount + 1)
+    let itemSize
+    if (pageSize > itemsCount) {
+      itemSize = itemsCount
+    } else {
+      itemSize = pageSize
+    }
 
     return (
       <div className="toolbar mb-5">
         <div className="total">
           {I18nUtils.formatMessage(
             { id: 'toolbar-totalRecords' },
-            { limit: '10', total: '30' }
+            { limit: itemSize, total: itemsCount }
           )}
         </div>
         <div className="limiter">
           <Label for="selectLimit">{I18nUtils.t('toolbar-limit')}</Label>
           <Input type="select" name="selectLimit" id="selectLimit">
-            <option>10</option>
-            <option>20</option>
-            <option>30</option>
-            <option>40</option>
-            <option>50</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
           </Input>
         </div>
         <Pagination className="pagination" aria-label="Page navigation">

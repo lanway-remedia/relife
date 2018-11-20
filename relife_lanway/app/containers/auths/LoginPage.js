@@ -8,11 +8,11 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import AuthsActions from '../redux/wrapper/AuthsRedux'
-import I18nUtils from '../utils/I18nUtils'
+import AuthsActions from '../../redux/wrapper/AuthsRedux'
+import I18nUtils from '../../utils/I18nUtils'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Button, FormGroup, Label } from 'reactstrap'
-import AppUtils from '../utils/AppUtils'
+import AppUtils from '../../utils/AppUtils'
 
 class LoginPage extends React.Component {
   constructor(props) {

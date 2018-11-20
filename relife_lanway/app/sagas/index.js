@@ -11,12 +11,14 @@ import { SetLanguageTypes } from '../redux/wrapper/SetLanguageRedux'
 import { AuthsTypes } from '../redux/wrapper/AuthsRedux'
 import { UsersTypes } from '../redux/wrapper/UsersRedux'
 import { UserProfileTypes } from '../redux/wrapper/UserProfileRedux'
+import { OutletStoresTypes } from '../redux/wrapper/OutletStoresRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
 import AuthsSagas from './wrapper/AuthsSagas'
 import UsersSagas from './wrapper/UsersSagas'
 import UserProfileSagas from './wrapper/UserProfileSagas'
+import OutletStoresSagas from './wrapper/OutletStoresSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -49,6 +51,35 @@ export default function* root() {
     ),
     takeLatest(
       UserProfileTypes.EDIT_PROFILE_AVATAR_FAILURE,
+      ErrorSagas.handleError
+    ),
+
+    //OutletStore
+    // List
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_LIST_REQUEST,
+      OutletStoresSagas.listStore
+    ),
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_LIST_FAILURE,
+      ErrorSagas.handleError
+    ),
+    //Add
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_ADD_REQUEST,
+      OutletStoresSagas.addStore
+    ),
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_ADD_FAILURE,
+      ErrorSagas.handleError
+    ),
+    //Delete
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_DELETE_REQUEST,
+      OutletStoresSagas.deleteStore
+    ),
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_DELETE_FAILURE,
       ErrorSagas.handleError
     ),
 
