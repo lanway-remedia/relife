@@ -1,5 +1,8 @@
 from django.contrib.auth import get_user_model
-from rest_framework.serializers import CharField, ModelSerializer, Serializer, ValidationError
+from rest_framework.serializers import (CharField, ModelSerializer, Serializer,
+                                        ValidationError)
+
+from mrelife.utils.validates import email_exist
 
 User = get_user_model()
 
@@ -8,6 +11,15 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+
+    def validate(self, attrs):
+        """
+        Check that email exists in system
+        """
+        # TODO: Change error message
+        if email_exist(attrs['email']):
+            raise ValidationError("US004")
+        return attrs
 
     def create(self, validated_data):
         user = User(
