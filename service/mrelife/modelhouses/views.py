@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from mrelife.commons.pagination import LargeResultsSetPagination
 from mrelife.events.models import Event, EventModelHouse
 from mrelife.modelhouses.models import (ModelHouse, ModelHouseMedia,
                                         ModelHouseOutletStore, ModelHouseTag,
@@ -28,6 +29,7 @@ class ModelHouseViewSet(ModelViewSet):
     serializer_class = ModelHouseSerializer
     permission_classes = (IsAuthenticated, ModelHousePermission,)
     parser_class = (FormParser, MultiPartParser, JSONParser)
+    pagination_class = LargeResultsSetPagination
 
     def create(self, request, *args, **kwargs):
         request.data['create_user'] = request.user.id

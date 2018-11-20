@@ -15,6 +15,7 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
+from mrelife.commons.pagination import LargeResultsSetPagination
 from mrelife.file_managements.serializers import FileSerializer
 from mrelife.users.serializers import ProfileSerializer, UserSerializer
 from mrelife.utils.groups import GroupUser, IsStore
@@ -34,6 +35,7 @@ class UserVs(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, AdminOrStoreOrDenyPermission,)
+    pagination_class = LargeResultsSetPagination
     # user
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['group_id', 'username']
