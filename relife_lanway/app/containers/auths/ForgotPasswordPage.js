@@ -7,8 +7,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import I18nUtils from '../utils/I18nUtils'
+import { Helmet } from 'react-helmet'
+import { show, hide } from 'redux-modal'
+import { bindActionCreators } from 'redux'
+import { ModalName } from '../../constants'
+import AuthsActions from '../../redux/wrapper/AuthsRedux'
+import I18nUtils from '../../utils/I18nUtils'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
+import validator from 'validator'
 import {
   Button,
   FormGroup,
@@ -20,7 +26,7 @@ class ForgotPasswordPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: ''
+      mail: ''
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -29,39 +35,47 @@ class ForgotPasswordPage extends React.Component {
 
   componentDidMount() {
     document.body.classList.add('cms-forgotpassword-index')
-    document.title = `${I18nUtils.t('forgotpassword-page-title')}`
   }
 
   componentWillUnmount() {
     document.body.classList.remove('cms-forgotpassword-index')
   }
 
-  handleChange = async e => {
-    const target = e.target
-
-    this.setState({
-      [target.name]: target.value
-    })
-
-    await this.form.validateFields(target)
+  componentWillReceiveProps(nextProps) {
+    if (this.props.response != nextProps.response) {
+      let response = nextProps.response
+      if (response.forgotPassword) {
+        this.props.show(ModalName.COMMON, { message: I18nUtils.t(response.messageCode), okFunction: () => this.okFunction()})
+      }
+    }
   }
 
-  handleSubmit = async e => {
+  okFunction() {
+    this.props.history.push('/login')
+    this.props.hide(ModalName.COMMON)
+  }
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleSubmit = e => {
     e.preventDefault()
-
-    await this.form.validateForm()
-    const formIsValid = this.form.isValid()
-
-    if (formIsValid) {
-      alert(
-        `Valid form\n\nthis.state =\n${JSON.stringify(this.state, null, 2)}`
-      )
+    let data = {
+      mail: this.state.mail,
+      domain: window.location.origin + '/'
     }
+    this.props.forgotPasswordRequest(data)
   }
 
   render() {
     return (
       <div className="login-page forgotpassword-page">
+        <Helmet>
+          <title>{I18nUtils.t('forgotpassword-page-title')}</title>
+        </Helmet>
         <div className="login-header">
           <span>Re:Style</span>
         </div>
@@ -80,15 +94,15 @@ class ForgotPasswordPage extends React.Component {
                   </FormText>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="forgotEmail">{I18nUtils.t('email')}</Label>
+                  <Label for="mail">{I18nUtils.t('email')}</Label>
                   <TextInput
                     type="email"
-                    name="forgotEmail"
-                    id="forgotEmail"
+                    name="mail"
+                    id="mail"
                     placeholder={I18nUtils.t('all-place-email')}
                     onChange={this.handleChange}
-                    required
-                    minLength={3}
+                    validator={validator.isEmail} 
+                    errorMessage={{validator:'Please enter a valid email'}}
                     className="form-control"
                   />
                 </FormGroup>
@@ -110,7 +124,28 @@ class ForgotPasswordPage extends React.Component {
 }
 
 ForgotPasswordPage.propTypes = {
-  history: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object,
+  processing: PropTypes.bool,
+  response: PropTypes.object,
+  show: PropTypes.func,
+  hide: PropTypes.func,
+  forgotPasswordRequest: PropTypes.func
 }
 
-export default connect()(withRouter(ForgotPasswordPage))
+const mapStateToProps = state => {
+  return {
+    processing: state.auths.processing,
+    response: state.auths.data
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ show, hide }, dispatch),
+  forgotPasswordRequest: data => dispatch(AuthsActions.forgotPasswordRequest(data))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ForgotPasswordPage))

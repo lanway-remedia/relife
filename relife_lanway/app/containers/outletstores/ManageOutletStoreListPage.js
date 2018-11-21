@@ -96,10 +96,10 @@ class ManageOutletStoreListPage extends React.Component {
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />
             {I18nUtils.t('otsl-page-title')}
+            <Button onClick={this.redirectToAddNew} color="success">
+              {I18nUtils.t('btn-add-new')}
+            </Button>
           </h1>
-          <Button onClick={this.redirectToAddNew} color="success">
-            {I18nUtils.t('btn-add-new')}
-          </Button>
         </div>
         <FilterGroupComponent
           formClass="test"

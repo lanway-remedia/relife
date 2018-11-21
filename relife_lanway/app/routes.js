@@ -7,24 +7,28 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Route, Redirect, withRouter, Switch } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-
-import LoginPage from './containers/LoginPage'
 import HomePage from './containers/HomePage'
 import ArticlePage from './containers/ArticlePage'
+//auths
+import LoginPage from './containers/auths/LoginPage'
+import ResetPasswordPage from './containers/auths/ResetPasswordPage'
+import ForgotPasswordPage from './containers/auths/ForgotPasswordPage'
+//profiles
 import ProfileInfoPage from './containers/profiles/ProfileInfoPage'
 import ProfileEditPage from './containers/profiles/ProfileEditPage'
-import ListAccountPage from './containers/users/ListAccountPage'
-import ForgotPasswordPage from './containers/ForgotPasswordPage'
 import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
-
+//users
+import UserListPage from './containers/users/UserListPage'
+import UserDetailPage from './containers/users/UserDetailPage'
+//outletstores
 import ManageOutletStoreListPage from './containers/outletstores/ManageOutletStoreListPage'
 import AddNewOutletStorePage from './containers/outletstores/AddNewOutletStorePage'
 import EditOutletStorePage from './containers/outletstores/EditOutletStorePage'
-
+//exhibtions
 import ManageExhibtionListPage from './containers/exhibtions/ManageExhibtionListPage'
 import AddNewExhibitionPage from './containers/exhibtions/AddNewExhibitionPage'
 import EditExhibitionPage from './containers/exhibtions/EditExhibitionPage'
-
+//languages
 import Language from './components/Language'
 
 import AppUtils from './utils/AppUtils'
@@ -174,7 +178,8 @@ class Routes extends React.Component {
 
     let hideMenu =
       this.props.location.pathname.includes('/login') ||
-      this.props.location.pathname.includes('/forgot-password')
+      this.props.location.pathname.includes('/forgot-password') ||
+      this.props.location.pathname.includes('/email-confirm')
 
     return (
       <div className="wrapper">
@@ -207,7 +212,11 @@ class Routes extends React.Component {
                 />
                 <Route
                   path="/list-account"
-                  component={requireLogin(ListAccountPage)}
+                  component={requireLogin(UserListPage)}
+                />
+                <Route
+                  path="/add-user"
+                  component={requireLogin(UserDetailPage)}
                 />
                 <Route
                   path="/manage-outlet-store-list"
@@ -242,6 +251,7 @@ class Routes extends React.Component {
             <Switch>
               <Route exact path="/login" component={LoginPage} />
               <Route path="/forgot-password" component={ForgotPasswordPage} />
+              <Route path="/email-confirm/:uidb64/:token_key" component={ResetPasswordPage} />
             </Switch>
           </React.Fragment>
         )}

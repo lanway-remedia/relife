@@ -8,6 +8,7 @@ import { createReducer, createActions } from 'reduxsauce'
 /* ------------- Types and Action Creators ------------- */
 const { Types, Creators } = createActions({
   userListRequest: ['data'],
+  addUserRequest: ['data'],
   usersSuccess: ['data'],
   usersFailure: ['error']
 })
@@ -38,6 +39,7 @@ export const failure = (state, { error }) => {
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.USER_LIST_REQUEST]: request,
+  [Types.ADD_USER_REQUEST]: request,
   [Types.USERS_SUCCESS]: success,
   [Types.USERS_FAILURE]: failure
 })

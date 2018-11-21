@@ -33,6 +33,8 @@ export default function* root() {
 
     //authentication
     takeLatest(AuthsTypes.LOGIN_REQUEST, AuthsSagas.login),
+    takeLatest(AuthsTypes.FORGOT_PASSWORD_REQUEST, AuthsSagas.forgotPassword),
+    takeLatest(AuthsTypes.RESET_PASSWORD_REQUEST, AuthsSagas.resetPassword),
     takeLatest(AuthsTypes.AUTHS_FAILURE, ErrorSagas.handleError),
 
     //user profile
@@ -83,6 +85,7 @@ export default function* root() {
 
     //user
     takeLatest(UsersTypes.USER_LIST_REQUEST, UsersSagas.listUser),
+    takeLatest(UsersTypes.ADD_USER_REQUEST, UsersSagas.addUser),
     takeLatest(UsersTypes.USERS_FAILURE, ErrorSagas.handleError)
   ]
 }

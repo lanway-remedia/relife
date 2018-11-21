@@ -86,6 +86,7 @@
   "update": "Update",
   "save": "Save",
   "search": "Search",
+  "add": "Add",
   "edit": "Edit",
   "delete": "Delete",
   "login": "Login",
@@ -109,6 +110,14 @@
   "lb-disabled": "Disabled",
 
   "btn-change-avatar": "Change Avatar",
+  "add-user": "Add User",
+  "store-selection": "Select Store",
+  "group-selection": "Select Group",
+
+  "group-system-admin": "System Admin",
+  "group-store-admin": "Store Admin",
+  "group-sub-store": "Sub store",
+  "group-user": "User",
   "btn-choose-img": "Choose Image",
   "btn-add-new": "Add New",
   "btn-back": "Back",
@@ -140,5 +149,6 @@
   "CM001": "Something wrong.",
   "AU001": "Sorry, you are not allowed to access this function.",
   "AU002": "Bạn đã đăng nhập nên không thể thực hiện thao tác này",
-  "AU003": "Username or password incorrect"
+  "AU003": "Username or password incorrect",
+  "RP001": "yêu cầu tìm lại mật khẩu thành công, vui lòng kiểm tra email"
 }

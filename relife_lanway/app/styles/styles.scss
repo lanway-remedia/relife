@@ -10,9 +10,9 @@
 @import './components/imageUploadComponent';
 
 //Containers
-@import './containers/loginPage';
-@import './containers/forgotPasswordPage';
-@import './containers/listAccountPage';
+@import './containers/auths/loginPage';
+@import './containers/auths/forgotPasswordPage';
+@import './containers/users/userListPage';
 @import './containers/profiles/userDashboardPage';
 @import './containers/profiles/userEditProfile';
 @import './containers/outletstores/addNewOutletStore';
