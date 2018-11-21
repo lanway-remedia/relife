@@ -54,7 +54,7 @@ class EventViewSet(viewsets.ModelViewSet):
         queryset = Event.objects.all()
         event_obj = get_object_or_404(queryset, pk=pk)
         data = {"is_active": settings.IS_INACTIVE}
-        serializer = EventSerializer(event_obj, data=data)
+        serializer = EventSerializer(event_obj, data=data,partial=True)
         if(serializer.is_valid()):
             serializer.save(updated=datetime.now())
         return Response(status=status.HTTP_204_NO_CONTENT)

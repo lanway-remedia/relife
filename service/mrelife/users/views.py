@@ -8,6 +8,7 @@ from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
 from rest_framework.decorators import list_route
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -16,7 +17,8 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
 from mrelife.file_managements.serializers import FileSerializer
-from mrelife.users.serializers import ProfileSerializer, UserSerializer
+from mrelife.users.serializers import (PasswordSerializer, ProfileSerializer,
+                                       UserSerializer)
 from mrelife.utils.groups import GroupUser, IsStore
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.relifepermissions import AdminOrStoreOrDenyPermission
@@ -34,6 +36,7 @@ class UserVs(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated, AdminOrStoreOrDenyPermission,)
+    pagination_class = LimitOffsetPagination
     # user
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['group_id', 'username']
@@ -158,13 +161,44 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
             }, status=status.HTTP_400_BAD_REQUEST)
         f = request.data['file']
         file = default_storage.save(f.name, f)
-        user.profile_image = settings.MEDIA_URL + file
+        user.profile_image = f.name
         user.save()
         serializer = UserSerializer(user)
 
         return Response({
             'status': True,
             'messageCode': 'US009',
+            'messageParams': {},
+            'data': serializer.data
+        }, status.HTTP_200_OK)
+
+
+    @list_route(methods=['post'])
+    def update_password(self, request, *args, **kwargs):
+        user = User.objects.get(pk=request.user.id)
+
+        serializer = PasswordSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({
+                'status': False,
+                'messageCode': 'US013',
+                'messageParams': {},
+                'data': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        if not user.check_password(serializer.data['password']):
+            return Response({
+                'status': False,
+                'messageCode': 'US012',
+                'messageParams': {},
+                'data': {}
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(serializer.data['password1'])
+        user.save()
+        return Response({
+            'status': True,
+            'messageCode': 'US014',
             'messageParams': {},
             'data': serializer.data
         }, status.HTTP_200_OK)
