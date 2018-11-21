@@ -27,7 +27,7 @@ class UserDetailPage extends React.Component {
       email: '',
       phone: '',
       address: '',
-      store: null,
+      store: {},
       group: 4
     }
     this.handleChange = this.handleChange.bind(this)
@@ -60,7 +60,7 @@ class UserDetailPage extends React.Component {
   }
 
   matchPassword = (value) => {
-    return value && value === this.state.password1
+    return value && value === this.state.password
   }
 
   showStoreListHandle = () => {
@@ -75,8 +75,31 @@ class UserDetailPage extends React.Component {
     })
   }
 
+  selectStore = selectedStore => {
+    this.setState({
+      store: selectedStore,
+      showStoreList: false
+    })
+  }
+
+  addUser = () => {
+    let data = {
+      username: this.state.username,
+      password: this.state.password,
+      is_active: true,
+      fname: this.state.fname,
+      lname: this.state.lname,
+      email: this.state.email,
+      tel: this.state.phone,
+      address: this.state.address,
+      store: this.state.store.id,
+      group: this.state.group
+    }
+    this.props.addUserRequest(data)
+  }
+
   render() {
-    let { isAdd, showStoreList, username, password, confirmPassword, fname, lname, email, phone, address, group } = this.state
+    let { isAdd, showStoreList, username, password, confirmPassword, fname, lname, email, phone, address, store, group } = this.state
 
     return (
       <Container fluid className="user-edit-profile">
@@ -86,7 +109,11 @@ class UserDetailPage extends React.Component {
             {isAdd ? I18nUtils.t('add-user') : I18nUtils.formatMessage({ id: 'ed-title' }, { username: username })}
           </h1>
         </div>
-        <StoreListModal isOpen={showStoreList} toggle={isOpen => this.toggleHandle(isOpen)} />
+        <StoreListModal
+          isOpen={showStoreList}
+          toggle={isOpen => this.toggleHandle(isOpen)}
+          selectStore={selectedStore => this.selectStore(selectedStore)}
+        />
         <ValidationForm className="form-user-info" onSubmit={this.handleSubmit}>
           <Row>
 
@@ -222,7 +249,7 @@ class UserDetailPage extends React.Component {
               <FormGroup>
                 <Label for="store">{I18nUtils.t('store-selection')}</Label>
                 <InputGroup>
-                  <Input type="text" name="store" id="store" disabled />
+                  <Input type="text" name="store" id="store" value={store.title||''} disabled />
                   <InputGroupAddon addonType="append">
                     <Button type="button" color="secondary" onClick={this.showStoreListHandle}>{I18nUtils.t('store-selection')}</Button>
                   </InputGroupAddon>
@@ -244,7 +271,7 @@ class UserDetailPage extends React.Component {
 
             <Col xs="12" md="12">
               <div className="btns-group text-left">
-                <Button color="success">{isAdd ? I18nUtils.t('add') : I18nUtils.t('edit')}</Button>
+                <Button color="success" onClick={this.addUser}>{I18nUtils.t('save')}</Button>
                 <Button onClick={this.redirectToListAcc} color="danger">
                   {I18nUtils.t('back')}
                 </Button>

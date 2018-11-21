@@ -18,7 +18,8 @@ class StoreListModal extends Component {
     this.state = {
       page: 1,
       total: 10,
-      storeList: []
+      storeList: [],
+      selectedStore: {}
     }
     this.onPageChange = this.onPageChange.bind(this)
   }
@@ -43,11 +44,22 @@ class StoreListModal extends Component {
   }
 
   onPageChange(page) {
-    this.setState({page})
+    this.setState({ page })
   }
 
+  focusStore = (item) => {
+    this.setState({
+      selectedStore: item
+    })
+  }
+
+  selectStore = () => {
+    this.props.selectStore(this.state.selectedStore)
+  }
+
+
   render() {
-    let { page, total, storeList } = this.state
+    let { page, total, storeList, selectedStore } = this.state
     return (
       <Modal isOpen={this.props.isOpen} toggle={this.toggle}>
         <ModalHeader toggle={this.toggle}>{I18nUtils.t('store-selection')}</ModalHeader>
@@ -59,18 +71,26 @@ class StoreListModal extends Component {
             </InputGroupAddon>
           </InputGroup>
           <UltimatePagination
-            currentPage={page} 
-            totalPages={total} 
+            currentPage={page}
+            totalPages={total}
             onChange={this.onPageChange}
           />
           <ListGroup>
             {storeList.map((item, key) => {
-              return (<ListGroupItem key={key}>{item.title}</ListGroupItem>)
+              return (
+                <ListGroupItem
+                  key={key}
+                  className={item.id == selectedStore.id && "selected"}
+                  onClick={() => this.focusStore(item)}
+                  onDoubleClick={this.selectStore}
+                >
+                  {item.title}
+                </ListGroupItem>)
             })}
           </ListGroup>
         </ModalBody>
         <ModalFooter>
-          <Button color="success" onClick={this.toggle}>{I18nUtils.t('select')}</Button>{' '}
+          <Button color="success" onClick={this.selectStore}>{I18nUtils.t('select')}</Button>{' '}
           <Button color="warning" onClick={this.toggle}>{I18nUtils.t('cancel')}</Button>
         </ModalFooter>
       </Modal>
@@ -83,7 +103,8 @@ StoreListModal.propTypes = {
   toggle: PropTypes.func,
   isOpen: PropTypes.bool,
   response: PropTypes.object,
-  outletStoreListRequest: PropTypes.func
+  outletStoreListRequest: PropTypes.func,
+  selectStore: PropTypes.func
 }
 
 const mapStateToProps = state => {

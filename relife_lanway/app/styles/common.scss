@@ -189,6 +189,9 @@
             &:hover {
               background-color: $item-hover;
             }
+            &.selected {
+              background-color: $item-hover;
+            }
           }
         }
         &.search-modal {
