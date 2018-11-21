@@ -57,7 +57,6 @@ class StoreListModal extends Component {
     this.props.selectStore(this.state.selectedStore)
   }
 
-
   render() {
     let { page, total, storeList, selectedStore } = this.state
     return (
@@ -80,7 +79,7 @@ class StoreListModal extends Component {
               return (
                 <ListGroupItem
                   key={key}
-                  className={item.id == selectedStore.id && "selected"}
+                  className={item.id == selectedStore.id && 'selected'}
                   onClick={() => this.focusStore(item)}
                   onDoubleClick={this.selectStore}
                 >

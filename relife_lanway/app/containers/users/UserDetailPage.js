@@ -291,7 +291,8 @@ UserDetailPage.propTypes = {
   profileRequest: PropTypes.func,
   editProfileRequest: PropTypes.func,
   editProfileAvatarRequest: PropTypes.func,
-  response: PropTypes.object
+  response: PropTypes.object,
+  addUserRequest: PropTypes.func
 }
 
 const mapStateToProps = state => {
