@@ -6,6 +6,8 @@ from datetime import datetime
 from django.conf import settings
 from mrelife.attributes.models import Contruction, PriceRange, Floor, Style, HouseHoldIncome, HouseHoldSize
 from mrelife.attributes.serializers import ContructionSerializer, PriceRangeSerializer, FloorSerializer, StyleSerializer, HouseHoldIncomeSerializer, HouseHoldSizeSerializer
+from mrelife.attributes.resources import ContructionResource, PriceRangeResource, FloorResource, StyleResource, CommitmentResource, HouseHoldSizeResource, HouseHoldIncomeResource
+from django.http import HttpResponse
 
 
 class ContructionViewSet(viewsets.ModelViewSet):
@@ -89,6 +91,17 @@ class ContructionViewSet(viewsets.ModelViewSet):
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
 
+    def export_csv(self, request, *args, **kwargs):
+        """
+        Export contruction attribute to csv.
+        """
+        resource = ContructionResource()
+        queryset = Contruction.objects.filter(is_active=settings.IS_ACTIVE)
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="contructions.csv"'
+        return response
+
 
 class PriceRangeViewSet(viewsets.ModelViewSet):
     queryset = PriceRange.objects.all()
@@ -169,6 +182,17 @@ class PriceRangeViewSet(viewsets.ModelViewSet):
         """
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
+
+    def export_csv(self, request, *args, **kwargs):
+        """
+        Export price range attribute to csv.
+        """
+        resource = PriceRangeResource()
+        queryset = PriceRange.objects.filter(is_active=settings.IS_ACTIVE)
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="priceranges.csv"'
+        return response
 
 
 class FloorViewSet(viewsets.ModelViewSet):
@@ -251,6 +275,17 @@ class FloorViewSet(viewsets.ModelViewSet):
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
 
+    def export_csv(self, request, *args, **kwargs):
+        """
+        Export floor attribute to csv.
+        """
+        resource = FloorResource()
+        queryset = Floor.objects.filter(is_active=settings.IS_ACTIVE)
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="floors.csv"'
+        return response
+
 
 class StyleViewSet(viewsets.ModelViewSet):
     queryset = Style.objects.all()
@@ -331,6 +366,17 @@ class StyleViewSet(viewsets.ModelViewSet):
         """
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
+
+    def export_csv(self, request, *args, **kwargs):
+        """
+        Export style attribute to csv.
+        """
+        resource = StyleResource()
+        queryset = Style.objects.filter(is_active=settings.IS_ACTIVE)
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="styles.csv"'
+        return response
 
 
 class HouseHoldIncomeViewSet(viewsets.ModelViewSet):
@@ -413,6 +459,17 @@ class HouseHoldIncomeViewSet(viewsets.ModelViewSet):
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
 
+    def export_csv(self, request, *args, **kwargs):
+        """
+        Export household_income attribute to csv.
+        """
+        resource = HouseHoldIncomeResource()
+        queryset = HouseHoldIncome.objects.filter(is_active=settings.IS_ACTIVE)
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="household_incomes.csv"'
+        return response
+
 
 class HouseHoldSizeViewSet(viewsets.ModelViewSet):
     queryset = HouseHoldSize.objects.all()
@@ -493,3 +550,14 @@ class HouseHoldSizeViewSet(viewsets.ModelViewSet):
         """
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
+
+    def export_csv(self, request, *args, **kwargs):
+        """
+        Export attribute household_size to csv.
+        """
+        resource = HouseHoldSizeResource()
+        queryset = HouseHoldSize.objects.filter(is_active=settings.IS_ACTIVE)
+        dataset = resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="household_sizes.csv"'
+        return response

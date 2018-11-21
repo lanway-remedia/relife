@@ -84,7 +84,7 @@ class TagViewSet(viewsets.ModelViewSet):
         queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
         dataset = tag_resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="tag.csv"'
+        response['Content-Disposition'] = 'attachment; filename="tags.csv"'
         return response
 
     def retrieve(self, request, *args, **kwargs):
