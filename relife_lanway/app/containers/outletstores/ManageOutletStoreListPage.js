@@ -16,6 +16,7 @@ import I18nUtils from '../../utils/I18nUtils'
 import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
+import { paginate } from '../../utils/Paginate'
 import { toast } from 'react-toastify'
 
 class ManageOutletStoreListPage extends React.Component {
@@ -29,6 +30,7 @@ class ManageOutletStoreListPage extends React.Component {
     }
     this.handleDeleteStore = this.handleDeleteStore.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
+    this.handlePageChange = this.handlePageChange.bind(this)
   }
 
   componentDidMount() {
@@ -75,9 +77,16 @@ class ManageOutletStoreListPage extends React.Component {
     )
   }
 
+  handlePageChange = page => {
+    this.setState({ currentPage: page })
+  }
+
   render() {
-    let { pageSize, totalCount, currentPage, storeList } = this.state
-    totalCount = storeList.length
+    let { pageSize, totalCount, currentPage, storeList: allStore } = this.state
+    totalCount = allStore.length
+
+    const storeList = paginate(allStore, currentPage, pageSize)
+
     return (
       <Container fluid className="manage-outletstore-list">
         <Helmet>
@@ -104,6 +113,7 @@ class ManageOutletStoreListPage extends React.Component {
             itemsCount={totalCount}
             pageSize={pageSize}
             currentPage={currentPage}
+            onPageChange={this.handlePageChange}
           />
           <Table hover>
             <TableHeadComponent

@@ -14,7 +14,7 @@ import {
 
 class PaginationComponent extends Component {
   render() {
-    const { itemsCount, pageSize, currentPage } = this.props
+    const { itemsCount, pageSize, currentPage, onPageChange } = this.props
 
     const pagesCount = Math.ceil(itemsCount / pageSize)
     // if (pagesCount === 1) return null
@@ -52,7 +52,11 @@ class PaginationComponent extends Component {
                 page === currentPage ? 'page-item active' : 'page-item'
               }
             >
-              <PaginationLink className="page-link" href="#">
+              <PaginationLink
+                className="page-link"
+                href="#"
+                onClick={() => onPageChange(page)}
+              >
                 {page}
               </PaginationLink>
             </PaginationItem>
@@ -66,7 +70,8 @@ class PaginationComponent extends Component {
 PaginationComponent.propTypes = {
   itemsCount: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
-  currentPage: PropTypes.number.isRequired
+  currentPage: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func
 }
 
 export default connect()(withRouter(PaginationComponent))
