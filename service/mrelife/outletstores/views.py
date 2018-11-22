@@ -38,7 +38,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         return Response(output, status=status.HTTP_200_OK)
 
     def create(self, request):
-        #request.data['create_user_id'] = request.user.id
+        request.data['create_user_id'] = request.user.id
         serializer = OutletStoreSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
