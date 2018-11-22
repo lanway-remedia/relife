@@ -19,11 +19,11 @@ from mrelife.exhibitions.serializers import (ExhibitionContactReplySerializer,
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
 
+
 class EhibitionViewSet(viewsets.ModelViewSet):
 
     queryset = Exhibition.objects.all()
     serializer_class = ExhibitionSerializer
-
 
     def list(self, request):
         queryset = Exhibition.objects.filter(is_active=1)
@@ -66,9 +66,11 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             serializer.save(updated=datetime.now())
             exhibitonContactObject = ExhibitionContact.objects.filter(
                 is_active=1, exhibition_id=pk)
-            CommonFuntion.update_active(exhibitonContactObject)
+            if(exhibitonContactObject):
+                CommonFuntion.update_active(exhibitonContactObject)
             eventExhibitionObject = EventExhibition.objects.filter(
                 is_active=1, exhibition_id=pk)
-            CommonFuntion.update_active(eventExhibitionObject)
+            if(eventExhibitionObject):
+                CommonFuntion.update_active(eventExhibitionObject)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
