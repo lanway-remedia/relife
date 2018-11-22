@@ -47,8 +47,9 @@ class OutletStore(Model):
         ordering = ['created', ]
 
     def save(self, *args, **kwargs):
-        self.create_img_thumbnail()
+       
         super(OutletStore, self).save(*args, **kwargs)
+        self.create_img_thumbnail()
 
     def create_img_thumbnail(self):
         if not self.img_large:
@@ -65,7 +66,6 @@ class OutletStore(Model):
             image = Image.open(f)
             width, height = image.size
             basewidth = 300
-
             wpercent = (basewidth/float(width))
             hsize = int((float(height)*float(wpercent)))
             image = image.resize((basewidth, hsize), Image.ANTIALIAS)
@@ -74,7 +74,7 @@ class OutletStore(Model):
             image.save(f_thumb, "JPEG")
             f_thumb.close()
             self.img_thumbnail = storage.path(f_thumb)
-            # self.save()
+            self.save()
             return "success"
         except:
             return "error"
