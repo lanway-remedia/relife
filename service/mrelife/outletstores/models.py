@@ -72,6 +72,7 @@ class OutletStore(Model):
 
             f_thumb = storage.open(thumb_file_path, "w")
             image.save(f_thumb, "JPEG")
+            file = storage.save(f.name, f)
             f_thumb.close()
             self.img_thumbnail = settings.MEDIA_URL+thumb_file_path
             self.save()
