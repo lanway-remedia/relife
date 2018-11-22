@@ -1,4 +1,5 @@
 import os
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group
 from django.core.files.storage import default_storage as storage
@@ -42,6 +43,10 @@ class Exhibition(Model):
     class Meta:
         db_table = 'exhibition'
         ordering = ['created', ]
+
+    def save(self, *args, **kwargs):
+        super(Exhibition, self).save(*args, **kwargs)
+        self.create_img_thumbnail()
 
     def create_img_thumbnail(self):
         if not self.img_large:
