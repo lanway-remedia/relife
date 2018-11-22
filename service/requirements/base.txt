@@ -30,3 +30,6 @@ django-url-filter # http://django-url-filter.readthedocs.io/
 
 
 django-cors-headers # https://pypi.org/project/django-cors-headers/
+
+# Import Export
+django-import-export # https://django-import-export.readthedocs.io/en/latest/

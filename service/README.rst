@@ -3,6 +3,8 @@ Re:Life
 SSH
 18.179.32.241
 - ssh -i "service/lanwayrelife.pem" centos@ec2-18-179-32-241.ap-northeast-1.compute.amazonaws.com
+13.115.151.77
+- ssh -i "service/relifetest.pem" root@ec2-13-115-151-77.ap-northeast-1.compute.amazonaws.com
 
 Build the Stack
 - This can take a while, especially the first time you run this particular command on your development system:

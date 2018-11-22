@@ -161,7 +161,7 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
             }, status=status.HTTP_400_BAD_REQUEST)
         f = request.data['file']
         file = default_storage.save(f.name, f)
-        user.profile_image = settings.MEDIA_URL + file
+        user.profile_image = f.name
         user.save()
         serializer = UserSerializer(user)
 
