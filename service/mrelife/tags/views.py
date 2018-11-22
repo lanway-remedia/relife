@@ -2,22 +2,23 @@ from datetime import datetime
 
 from django.conf import settings
 from mrelife.tags.models import Tag
+from mrelife.tags.resources import TagResource
 from mrelife.tags.serializers import TagSerializer
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
 from rest_framework import viewsets
 from rest_framework.response import Response
+from django.http import HttpResponse
 
 
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
-    """
-    Create a model instance.
-    """
-
     def create(self, request, *args, **kwargs):
+        """
+        Create a Tag.
+        """
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             self.perform_create(serializer)
@@ -29,11 +30,10 @@ class TagViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now())
 
-    """
-    Update a model instance.
-    """
-
     def update(self, request, *args, **kwargs):
+        """
+        Update a Tag was exist.
+        """
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -51,11 +51,10 @@ class TagViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now())
 
-    """
-    List a queryset.
-    """
-
     def list(self, request, *args, **kwargs):
+        """
+        Get list Tag.
+        """
         queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
 
         page = self.paginate_queryset(queryset)
@@ -66,14 +65,39 @@ class TagViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
-    """
-    Destroy a model instance.
-    """
-
     def destroy(self, request, *args, **kwargs):
+        """
+        Delete a Tag.
+        """
         instance = self.get_object()
         instance.is_active = settings.IS_INACTIVE
         instance.save()
         queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+
+    def export_csv(self, request, *args, **kwargs):
+        """
+        Export data tag to csv.
+        """
+        tag_resource = TagResource()
+        queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
+        dataset = tag_resource.export(queryset)
+        response = HttpResponse(dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="tags.csv"'
+        return response
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Get detail Tag
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Partial update Tag
+        """
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
