@@ -12,6 +12,7 @@ from mrelife.utils.relifeenum import MessageCode
 from rest_framework.views import APIView
 from mrelife.utils import result
 
+from mrelife.commons.pagination import LargeResultsSetPagination
 from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreContactReply, OutletStoreMedia
 from mrelife.outletstores.serializers import (
     OutletStoreContactReplySerializer,
@@ -69,6 +70,10 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save(updated=datetime.now())
             outletContact = OutletStoreContact.objects.filter(is_active=1, outlet_store_id=outletstoreObject.id)
+            for item in outletContact:
+                outletContact_reply = OutletStoreContactReply.objects.filter(
+                    outlet_store_contact_id=item.id).filter(is_active=1)
+                self.update_active(outletContact_reply)
             self.update_active(outletContact)
             outletMedia = OutletStoreMedia.objects.filter(is_active=1, outlet_store_id=outletstoreObject.id)
             self.update_active(outletMedia)
