@@ -66,7 +66,7 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     traffic = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     time_serving = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     regular_holiday = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
-    district_id = serializers.CharField(write_only=True, required=True, allow_null=False)
+    district_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     is_active = serializers.BooleanField(default=True)
     outlet_store_media = OutletStoreMediaSerializer(many=True, read_only=True, required=False)
     outlet_store_contact = OutletStoreContactSerializer(many=True, read_only=True, required=False)
