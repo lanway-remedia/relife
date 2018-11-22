@@ -69,10 +69,10 @@ class OutletStore(Model):
             wpercent = (basewidth/float(width))
             hsize = int((float(height)*float(wpercent)))
             image = image.resize((basewidth, hsize), Image.ANTIALIAS)
-
             f_thumb = storage.open(thumb_file_path, "w")
             image.save(f_thumb, "JPEG")
-            file = storage.save(f.name, f)
+            file = storage.save(image.name, image)
+            f_thumb = storage.open(thumb_file_path, image)
             f_thumb.close()
             self.img_thumbnail = settings.MEDIA_URL+thumb_file_path
             self.save()
