@@ -53,7 +53,7 @@ class Exhibition(Model):
             return ""
         file_path = self.img_large.name
         filename_base, filename_ext = os.path.splitext(file_path)
-        thumb_file_path = settings.MEDIA_ROOT+"%s_thumb.jpg" % filename_base
+        thumb_file_path = "%s_thumb.jpg" % filename_base
         if storage.exists(thumb_file_path):
             return "exists"
         try:
