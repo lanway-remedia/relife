@@ -29,7 +29,7 @@ class OutletStore(Model):
     latitude = TextField(null=True)
     longitude = TextField(null=True)
     address = CharField(max_length=800)
-    district = ForeignKey(District,related_name="outlet_dict", on_delete=CASCADE)
+    district = ForeignKey(District, related_name="outlet_dict", on_delete=CASCADE)
     tel = CharField(max_length=13)
     email = CharField(max_length=100)
     zipcode = CharField(max_length=8, null=True)
@@ -49,11 +49,12 @@ class OutletStore(Model):
     def save(self, *args, **kwargs):
         self.create_img_thumbnail()
         super(OutletStore, self).save(*args, **kwargs)
-    
+
     def create_img_thumbnail(self):
         if not self.img_large:
             return ""
         file_path = self.img_large.name
+
         filename_base, filename_ext = os.path.splitext(file_path)
         thumb_file_path = "%s_thumb.jpg" % filename_base
         if storage.exists(thumb_file_path):
@@ -72,7 +73,7 @@ class OutletStore(Model):
             f_thumb = storage.open(thumb_file_path, "w")
             image.save(f_thumb, "JPEG")
             f_thumb.close()
-            self.img_thumbnail = thumb_file_path
+            self.img_thumbnail = storage.path(f_thumb)
             # self.save()
             return "success"
         except:
