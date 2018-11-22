@@ -32,13 +32,13 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
     def retrieve(self, request, pk=None):
-        queryset = OutletStore.objects.all().filter(id=self.kwargs['pk'])
+        queryset = OutletStore.objects.filter(id=self.kwargs['pk']).filter(is_active=1)
         serializer = OutletStoreSerializer(queryset, many=True)
         output = {"status": True, 'messageCode': 'MSG01', "data": serializer.data}
         return Response(output, status=status.HTTP_200_OK)
 
     def create(self, request):
-        request.data['create_user_id'] = request.user.id
+       
         serializer = OutletStoreSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
