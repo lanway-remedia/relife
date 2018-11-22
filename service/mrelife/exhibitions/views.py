@@ -11,24 +11,24 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from mrelife.commons.common_fnc import CommonFuntion
-from mrelife.commons.pagination import LargeResultsSetPagination
 from mrelife.events.models import EventExhibition
 from mrelife.exhibitions.models import Exhibition, ExhibitionContact
 from mrelife.exhibitions.serializers import (ExhibitionContactReplySerializer,
                                              ExhibitionContactSerializer,
                                              ExhibitionSerializer)
-
+from mrelife.utils import result
+from mrelife.utils.relifeenum import MessageCode
 
 class EhibitionViewSet(viewsets.ModelViewSet):
 
     queryset = Exhibition.objects.all()
     serializer_class = ExhibitionSerializer
-    pagination_class = LargeResultsSetPagination
+
 
     def list(self, request):
         queryset = Exhibition.objects.filter(is_active=1)
         serializer = ExhibitionSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
     def retrieve(self, request, pk=None):
         queryset = Exhibition.objects.all().filter(id=self.kwargs['pk'])
@@ -37,6 +37,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         return Response(output, status=status.HTTP_200_OK)
 
     def create(self, request):
+        request.data['create_user_id'] = request.user.id
         serializer = ExhibitionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
@@ -45,6 +46,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         return Response(output, status=status.HTTP_200_OK)
 
     def update(self, request, pk=None):
+        request.data['create_user_id'] = request.user.id
         queryset = Exhibition.objects.all()
         event_obj = get_object_or_404(queryset, pk=pk)
         serializer = ExhibitionSerializer(event_obj, data=request.data)
