@@ -22,6 +22,19 @@ const OutletStoresSagas = {
       yield put(OutletStoresActions.outletStoreListFailure(err))
     }
   },
+  *getStore({ data }) {
+    try {
+      let response = yield call(outletStoresService.getStore, data)
+      yield put(
+        OutletStoresActions.outletStoreGetSuccess(
+          response.data,
+          (response.data.isGetStore = true)
+        )
+      )
+    } catch (err) {
+      yield put(OutletStoresActions.outletStoreGetFailure(err))
+    }
+  },
   *addStore({ data }) {
     try {
       let response = yield call(outletStoresService.addStore, data)
@@ -33,6 +46,19 @@ const OutletStoresSagas = {
       )
     } catch (err) {
       yield put(OutletStoresActions.outletStoreAddFailure(err))
+    }
+  },
+  *editStore({ data }) {
+    try {
+      let response = yield call(outletStoresService.editStore, data)
+      yield put(
+        OutletStoresActions.outletStoreEditSuccess(
+          response.data,
+          (response.data.isEditStore = true)
+        )
+      )
+    } catch (err) {
+      yield put(OutletStoresActions.outletStoreEditFailure(err))
     }
   },
   *deleteStore({ data }) {

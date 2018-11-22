@@ -58,7 +58,7 @@ class AddNewOutletStorePage extends React.Component {
   }
 
   redirectToListPage = () => {
-    this.props.history.push('manage-outlet-store-list')
+    this.props.history.push('/manage-outlet-store-list')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -78,7 +78,6 @@ class AddNewOutletStorePage extends React.Component {
   handleSubmit = e => {
     e.preventDefault()
     let data = new FormData()
-    data.append('create_user', 1)
     data.append('latitude', 111111)
     data.append('longitude', 222222)
     data.append('title', this.state.title)
@@ -122,7 +121,8 @@ class AddNewOutletStorePage extends React.Component {
                   { id: 'sub-title-img' },
                   { type: 'thumbnail', name: 'Outlet Store' }
                 )}
-                size={120}
+                width={120}
+                height={120}
                 onImageChange={image => this.handleImageChange(image)}
               />
             </Col>
@@ -138,22 +138,6 @@ class AddNewOutletStorePage extends React.Component {
                   onChange={this.handleChange}
                   required
                 />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="status">{I18nUtils.t('status')}</Label>
-                <SelectGroup
-                  name="status"
-                  id="status"
-                  required
-                  errorMessage={I18nUtils.t('lb-select')}
-                  onChange={this.handleChange}
-                >
-                  <option value="">{I18nUtils.t('lb-select')}</option>
-                  <option value="1">{I18nUtils.t('lb-enable')}</option>
-                  <option value="2">{I18nUtils.t('lb-disabled')}</option>
-                </SelectGroup>
               </FormGroup>
             </Col>
             <Col xs="12" md="6">
