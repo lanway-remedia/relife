@@ -1,4 +1,5 @@
 import os
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group
 from django.core.files.storage import default_storage as storage
@@ -55,7 +56,7 @@ class OutletStore(Model):
             return ""
         file_path = self.img_large.name
         filename_base, filename_ext = os.path.splitext(file_path)
-        thumb_file_path ="%s_thumb.jpg" % filename_base
+        thumb_file_path = "%s_thumb.jpg" % filename_base
         if storage.exists(thumb_file_path):
             return "exists"
         try:
@@ -72,7 +73,7 @@ class OutletStore(Model):
             f_thumb = storage.open(thumb_file_path, "w")
             image.save(f_thumb, "JPEG")
             f_thumb.close()
-            self.img_thumbnail = settings.MEDIA_URL + thumb_file_path
+            self.img_thumbnail = thumb_file_path
             self.save()
             return "success"
         except:
