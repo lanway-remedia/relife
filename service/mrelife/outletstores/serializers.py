@@ -8,6 +8,7 @@ from mrelife.locations.models import District
 from mrelife.locations.serializers import DistrictSerializer
 from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreContactReply, OutletStoreMedia
 from mrelife.users.models import User
+from mrelife.users.serializers import UserSerializer
 
 
 class OutletStoreMediaSerializer(serializers.ModelSerializer):
@@ -70,11 +71,13 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     outlet_store_media = OutletStoreMediaSerializer(many=True, read_only=True, required=False)
     outlet_store_contact = OutletStoreContactSerializer(many=True, read_only=True, required=False)
     district = DistrictSerializer(read_only=True)
+    create_user = UserSerializer(read_only=True)
+    create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
 
     class Meta:
         model = OutletStore
         fields = ('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'longitude', 'address', 'district_id', 'district',
-                  'tel', 'email', 'zipcode', 'home_page', 'traffic', 'time_serving', 'regular_holiday', 'create_user',
+                  'tel', 'email', 'zipcode', 'home_page', 'traffic', 'time_serving', 'regular_holiday', 'create_user_id', 'create_user',
                   'is_active', 'outlet_store_media', 'outlet_store_contact')
 
     def validate_district_id(self, district_id):
