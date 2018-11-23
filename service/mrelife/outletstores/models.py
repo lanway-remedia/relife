@@ -79,26 +79,18 @@ class OutletStore(Model):
                 right = width
                 lower = width + upper
 
+            image = image.crop((left, upper, right, lower))
+            image = image.resize((50, 50), Image.ANTIALIAS)
+
             f_thumb = storage.open(thumb_file_path, "w")
-            file = storage.save(thumb_file_path, image)
             image.save(f_thumb, 'JPEG')
             f_thumb.close()
+            if storage.exists(thumb_file_path):
+                self.img_thumbnail = storage.url(thumb_file_path)
+                self.save()
             return "success"
         except:
             return "error"
-
-    def get_avatar_thumb_url(self):
-        import os
-        from django.core.files.storage import default_storage as storage
-        if not self.img_large:
-            return ""
-        file_path = self.img_large.name
-        filename_base, filename_ext = os.path.splitext(file_path)
-        thumb_file_path = "%s_thumb.jpg" % filename_base
-        if storage.exists(thumb_file_path):
-            self.img_thumbnail = storage.url(thumb_file_path)
-            self.save()
-        return ""
 
 
 class OutletStoreMedia(Model):
