@@ -50,6 +50,7 @@ class OutletStore(Model):
     def save(self, *args, **kwargs):
         super(OutletStore, self).save(*args, **kwargs)
         self.create_img_thumbnail()
+        self. get_avatar_thumb_url()
 
     def create_img_thumbnail(self):
         if not self.img_large:
@@ -64,11 +65,22 @@ class OutletStore(Model):
             f = storage.open(file_path, 'r')
             image = Image.open(f)
             width, height = image.size
-            basewidth = 300
 
-            wpercent = (basewidth / float(width))
-            hsize = int((float(height) * float(wpercent)))
-            image = image.resize((basewidth, hsize), Image.ANTIALIAS)
+            if width > height:
+                delta = width - height
+                left = int(delta/2)
+                upper = 0
+                right = height + left
+                lower = height
+            else:
+                delta = height - width
+                left = 0
+                upper = int(delta/2)
+                right = width
+                lower = width + upper
+
+            image = image.crop((left, upper, right, lower))
+            image = image.resize((50, 50), Image.ANTIALIAS)
 
             f_thumb = storage.open(thumb_file_path, "w")
             image.save(f_thumb, "JPEG")
@@ -78,6 +90,20 @@ class OutletStore(Model):
             return "success"
         except:
             return "error"
+
+    def get_avatar_thumb_url(self):
+        import os
+        from django.core.files.storage import default_storage as storage
+        if not self.img_large:
+            return ""
+        file_path = self.img_large.name
+        filename_base, filename_ext = os.path.splitext(file_path)
+        thumb_file_path = "%s_thumb.jpg" % filename_base
+        if storage.exists(thumb_file_path):
+            self.img_thumbnail = storage.url(thumb_file_path)
+            self.save()
+        return ""
+
 
 class OutletStoreMedia(Model):
     outlet_store = ForeignKey(OutletStore, related_name='outlet_store_media', on_delete=CASCADE)
