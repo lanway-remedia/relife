@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.conf import settings
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
@@ -32,7 +30,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     img_large = serializers.ImageField()
     latitude = serializers.CharField()
     longtitude = serializers.CharField()
-    address = serializers.CharField(max_length=800) 
+    address = serializers.CharField(max_length=800)
     district_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     zipcode = serializers.CharField(max_length=255, allow_blank=True)
     num_attend = serializers.IntegerField()
@@ -45,6 +43,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     district = DistrictSerializer(read_only=True)
     create_user = UserSerializer(read_only=True)
+
     class Meta:
         model = Exhibition
         fields = ('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'district_id', 'longtitude', 'address', 'district', 'zipcode', 'num_attend', 'start_time', 'end_time',
