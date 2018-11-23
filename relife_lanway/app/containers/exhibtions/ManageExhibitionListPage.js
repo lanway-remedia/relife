@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import { ModalName } from '../../constants'
-import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
+import ExhibitionActions from '../../redux/wrapper/ExhibitionsRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
@@ -19,14 +19,14 @@ import UltimatePagination from 'react-ultimate-pagination-bootstrap-4'
 import { paginate } from '../../utils/paginate'
 import { toast } from 'react-toastify'
 
-class ManageOutletStoreListPage extends React.Component {
+class ManageExhibitionListPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       page: 1,
       pageLimit: 10,
       total: 10,
-      storeList: []
+      exhList: []
     }
     this.handleDeleteStore = this.handleDeleteStore.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
@@ -35,53 +35,53 @@ class ManageOutletStoreListPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.outletStoreListRequest({})
+    this.props.exhibitionListRequest({})
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
       console.log(response)
-      if (response.isGetStoreList) {
+      if (response.isGetList) {
         this.setState({
-          storeList: response.data,
+          exhList: response.data,
           total: response.data.length
         })
       }
     }
   }
 
-  handleDeleteStore = store => {
+  handleDeleteStore = exh => {
     this.props.show(ModalName.COMMON, {
       bodyClass: 'text-center',
       title: I18nUtils.formatMessage(
         { id: 'modal-del-header' },
-        { name: store.title }
+        { name: exh.title }
       ),
       message: I18nUtils.t('modal-del-body'),
-      okFunction: () => this.okFunction(store)
+      okFunction: () => this.okFunction(exh)
     })
   }
 
   redirectToAddNew = () => {
-    this.props.history.push('add-new-outlet-store')
+    this.props.history.push('/add-new-exhibition')
   }
 
-  redirectToEdit = store => {
-    this.props.history.push(`/edit-outlet-store/${store.id}`)
+  redirectToEdit = exh => {
+    this.props.history.push(`/edit-exhibition/${exh.id}`)
   }
 
-  okFunction = store => {
-    const originStoreList = this.state.storeList
-    const storeList = originStoreList.filter(s => s.id !== store.id)
-    const total = storeList.length
+  okFunction = exh => {
+    const originExhList = this.state.exhList
+    const exhList = originExhList.filter(e => e.id !== exh.id)
+    const total = exhList.length
 
-    this.setState({ storeList, total })
+    this.setState({ exhList, total })
 
-    this.props.outletStoreDeleteRequest(store.id)
+    this.props.exhibitionDeleteRequest(exh.id)
     this.props.hide(ModalName.COMMON)
     toast.success(
-      I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: store.title })
+      I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: exh.title })
     )
   }
 
@@ -90,20 +90,20 @@ class ManageOutletStoreListPage extends React.Component {
   }
 
   render() {
-    let { page, total, pageLimit, storeList: allStore } = this.state
+    let { page, total, pageLimit, exhList: allExh } = this.state
     const pagesCount = Math.ceil(total / pageLimit)
 
-    const storeList = paginate(allStore, page, pageLimit)
+    const exhList = paginate(allExh, page, pageLimit)
 
     return (
-      <Container fluid className="manage-outletstore-list">
+      <Container fluid className="manage-exhibition-list">
         <Helmet>
-          <title>{I18nUtils.t('otsl-page-title')}</title>
+          <title>{I18nUtils.t('exh-page-title')}</title>
         </Helmet>
         <div className="page-title">
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />
-            {I18nUtils.t('otsl-page-title')}
+            {I18nUtils.t('exh-page-title')}
             <Button onClick={this.redirectToAddNew} color="success">
               {I18nUtils.t('btn-add-new')}
             </Button>
@@ -112,7 +112,8 @@ class ManageOutletStoreListPage extends React.Component {
         <FilterGroupComponent
           formClass="test"
           formAction="test"
-          inputTitle="Title,Email,Phone,Address,Zipcode"
+          inputTitle="Title,Address,Zipcode"
+          calendarName="Start Date"
         />
         <div className="formTable">
           <UltimatePagination
@@ -123,26 +124,27 @@ class ManageOutletStoreListPage extends React.Component {
           <Table hover>
             <TableHeadComponent
               onSort={this.handleSort}
-              theadTitle="#,Image,Title,Email,Phone,Address,Zipcode,Action"
+              theadTitle="#,Image,Title,Start Date,End Date,Address, Zipcode, Number Attend,Action"
             />
             <tbody>
-              {storeList.map((store, key) => {
+              {exhList.map((exh, key) => {
                 return (
                   <tr key={key}>
                     <td>{(page - 1) * 10 + key + 1}</td>
                     <td>
                       <img
-                        alt={store.title}
-                        src={store.img_large}
+                        alt={exh.title}
+                        src={exh.img_large}
                         width="150"
                         height="100"
                       />
                     </td>
-                    <td>{store.title}</td>
-                    <td>{store.email}</td>
-                    <td>{store.tel}</td>
-                    <td>{store.address}</td>
-                    <td>{store.zipcode}</td>
+                    <td>{exh.title}</td>
+                    <td>{exh.start_time}</td>
+                    <td>{exh.end_time}</td>
+                    <td>{exh.address}</td>
+                    <td>{exh.zipcode}</td>
+                    <td>{exh.num_attend}</td>
                     <td>
                       <Button
                         title={I18nUtils.t('edit')}
@@ -150,7 +152,7 @@ class ManageOutletStoreListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.redirectToEdit(store)}
+                        onClick={() => this.redirectToEdit(exh)}
                       >
                         <i className="fa fa-edit" />
                       </Button>
@@ -160,7 +162,7 @@ class ManageOutletStoreListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.handleDeleteStore(store)}
+                        onClick={() => this.handleDeleteStore(exh)}
                       >
                         <i className="fa fa-trash" />
                       </Button>
@@ -176,35 +178,35 @@ class ManageOutletStoreListPage extends React.Component {
   }
 }
 
-ManageOutletStoreListPage.propTypes = {
+ManageExhibitionListPage.propTypes = {
   history: PropTypes.object,
   processing: PropTypes.bool,
   data: PropTypes.object,
   totalCount: PropTypes.number,
   pageSize: PropTypes.string,
   currentPage: PropTypes.string,
-  outletStoreListRequest: PropTypes.func,
-  outletStoreDeleteRequest: PropTypes.func,
+  exhibitionListRequest: PropTypes.func,
+  exhibitionDeleteRequest: PropTypes.func,
   show: PropTypes.func,
   hide: PropTypes.func
 }
 
 const mapStateToProps = state => {
   return {
-    processing: state.outletStores.processing,
-    data: state.outletStores.data
+    processing: state.exhibitions.processing,
+    data: state.exhibitions.data
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ show, hide }, dispatch),
-  outletStoreListRequest: data =>
-    dispatch(OutletStoreActions.outletStoreListRequest(data)),
-  outletStoreDeleteRequest: data =>
-    dispatch(OutletStoreActions.outletStoreDeleteRequest(data))
+  exhibitionListRequest: data =>
+    dispatch(ExhibitionActions.exhibitionListRequest(data)),
+  exhibitionDeleteRequest: data =>
+    dispatch(ExhibitionActions.exhibitionDeleteRequest(data))
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ManageOutletStoreListPage))
+)(withRouter(ManageExhibitionListPage))

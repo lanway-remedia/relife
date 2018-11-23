@@ -25,7 +25,7 @@ import ManageOutletStoreListPage from './containers/outletstores/ManageOutletSto
 import AddNewOutletStorePage from './containers/outletstores/AddNewOutletStorePage'
 import EditOutletStorePage from './containers/outletstores/EditOutletStorePage'
 //exhibtions
-import ManageExhibtionListPage from './containers/exhibtions/ManageExhibtionListPage'
+import ManageExhibitionListPage from './containers/exhibtions/ManageExhibitionListPage'
 import AddNewExhibitionPage from './containers/exhibtions/AddNewExhibitionPage'
 import EditExhibitionPage from './containers/exhibtions/EditExhibitionPage'
 //languages
@@ -112,7 +112,7 @@ class Routes extends React.Component {
             <Sidebar.Menu.Item
               active={this.props.location.pathname === '/profile-info'}
               title={I18nUtils.t('ud-page-title')}
-              onClick={() => this.props.history.push('profile-info')}
+              onClick={() => this.props.history.push('/profile-info')}
             />
             <Sidebar.Menu.Item
               active={this.props.location.pathname === '/list-account'}
@@ -127,7 +127,7 @@ class Routes extends React.Component {
             <Sidebar.Menu.Item
               active={this.props.location.pathname === '/add-new-outlet-store'}
               title={I18nUtils.t('ots-add-page-title')}
-              onClick={() => this.props.history.push('add-new-outlet-store')}
+              onClick={() => this.props.history.push('/add-new-outlet-store')}
             />
             <Sidebar.Menu.Item
               active={
@@ -135,7 +135,7 @@ class Routes extends React.Component {
               }
               title={I18nUtils.t('otsl-page-title')}
               onClick={() =>
-                this.props.history.push('manage-outlet-store-list')
+                this.props.history.push('/manage-outlet-store-list')
               }
             />
           </Sidebar.Menu.Item>
@@ -144,14 +144,16 @@ class Routes extends React.Component {
             icon={{ className: 'fa-trello' }}
           >
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/add-new-exhibtion'}
+              active={this.props.location.pathname === '/add-new-exhibition'}
               title={I18nUtils.t('exh-add-page-title')}
-              onClick={() => this.props.history.push('add-new-exhibtion')}
+              onClick={() => this.props.history.push('/add-new-exhibition')}
             />
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/manage-exhibtion-list'}
+              active={
+                this.props.location.pathname === '/manage-exhibition-list'
+              }
               title={I18nUtils.t('exh-page-title')}
-              onClick={() => this.props.history.push('manage-exhibtion-list')}
+              onClick={() => this.props.history.push('/manage-exhibition-list')}
             />
           </Sidebar.Menu.Item>
           <Sidebar.Menu.Item
@@ -219,6 +221,10 @@ class Routes extends React.Component {
                   component={requireLogin(UserDetailPage)}
                 />
                 <Route
+                  path="/edit-outlet-store/:id"
+                  component={requireLogin(EditOutletStorePage)}
+                />
+                <Route
                   path="/manage-outlet-store-list"
                   component={requireLogin(ManageOutletStoreListPage)}
                 />
@@ -227,19 +233,15 @@ class Routes extends React.Component {
                   component={requireLogin(AddNewOutletStorePage)}
                 />
                 <Route
-                  path="/edit-outlet-store"
-                  component={requireLogin(EditOutletStorePage)}
-                />
-                <Route
                   path="/manage-exhibition-list"
-                  component={requireLogin(ManageExhibtionListPage)}
+                  component={requireLogin(ManageExhibitionListPage)}
                 />
                 <Route
                   path="/add-new-exhibition"
                   component={requireLogin(AddNewExhibitionPage)}
                 />
                 <Route
-                  path="/edit-exhibition"
+                  path="/edit-exhibition/:id"
                   component={requireLogin(EditExhibitionPage)}
                 />
               </Switch>
@@ -251,7 +253,10 @@ class Routes extends React.Component {
             <Switch>
               <Route exact path="/login" component={LoginPage} />
               <Route path="/forgot-password" component={ForgotPasswordPage} />
-              <Route path="/email-confirm/:uidb64/:token_key" component={ResetPasswordPage} />
+              <Route
+                path="/email-confirm/:uidb64/:token_key"
+                component={ResetPasswordPage}
+              />
             </Switch>
           </React.Fragment>
         )}

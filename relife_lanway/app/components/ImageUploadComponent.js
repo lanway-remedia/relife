@@ -27,18 +27,18 @@ class ImageUploadComponent extends React.Component {
   }
 
   render() {
-    let { imageUpload, size, uploadTitle } = this.props
+    let { imageUpload, width, height, uploadTitle } = this.props
     return (
       <div className="upload-container upload-image">
         {!imageUpload ? (
           <div
             className="upload-icon"
             style={{
-              width: `${size}px`,
-              height: `${size}px`
+              width: `${width}px`,
+              height: `${height}px`
             }}
           >
-            <label id="uploader-icon" style={{ lineHeight: `${size - 6}px` }}>
+            <label id="uploader-icon" style={{ lineHeight: `${height - 6}px` }}>
               <span className="fa fa-file-image-o fa-2x" />
             </label>
             <Button
@@ -62,9 +62,8 @@ class ImageUploadComponent extends React.Component {
           <div
             className="upload-icon"
             style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              borderRadius: `${size / 2}px`
+              width: `${width}px`,
+              height: `${height}px`
             }}
           >
             <label htmlFor="upload-icon">
@@ -75,8 +74,8 @@ class ImageUploadComponent extends React.Component {
                     : URL.createObjectURL(imageUpload)
                 }
                 style={{
-                  width: `${size - 2}px`,
-                  height: `${size - 2}px`
+                  width: `${width - 2}px`,
+                  height: `${height - 2}px`
                 }}
               />
             </label>
@@ -106,7 +105,8 @@ class ImageUploadComponent extends React.Component {
 ImageUploadComponent.propTypes = {
   imageUpload: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   uploadTitle: PropTypes.string,
-  size: PropTypes.number,
+  width: PropTypes.number,
+  height: PropTypes.number,
   onImageChange: PropTypes.func
 }
 
