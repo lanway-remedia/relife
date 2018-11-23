@@ -1,4 +1,5 @@
 import os
+from io import BytesIO
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group
@@ -67,8 +68,19 @@ class Exhibition(Model):
             hsize = int((float(height) * float(wpercent)))
             image = image.resize((basewidth, hsize), Image.ANTIALIAS)
 
+            f = storage.open(file_path, 'r')
+            image = Image.open(f)
+            width, height = image.size
+            basewidth = 300
+
+            wpercent = (basewidth / float(width))
+            hsize = int((float(height) * float(wpercent)))
+            image = image.resize((basewidth, hsize), Image.ANTIALIAS)
+
             f_thumb = storage.open(thumb_file_path, "w")
-            image.save(f_thumb, "JPEG")
+            out_im2 = BytesIO()
+            image.save(out_im2, "JPEG")
+            f_thumb.write(out_im2.getvalue())
             f_thumb.close()
             self.img_thumbnail = settings.MEDIA_URL + thumb_file_path
             self.save()
