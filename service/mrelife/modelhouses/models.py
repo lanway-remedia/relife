@@ -112,8 +112,8 @@ class ModelHouseOutletStore(Model):
     model_house = ForeignKey(ModelHouse, related_name="stores", on_delete=CASCADE)
     outlet_store = ForeignKey('outletstores.OutletStore', related_name="model_houses", on_delete=CASCADE)
     is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False)
-    updated = DateTimeField(auto_now_add=False)
+    created = DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         db_table = 'model_house_outlet_store'
