@@ -28,12 +28,12 @@ class ModelHouse(Model):
     create_user = ForeignKey('users.User', related_name= "creating_model_houses", on_delete=CASCADE, blank=True, null=True)
     is_active = BooleanField(default=True)
     is_free = BooleanField(default=True)
-    # created = DateTimeField(auto_now=True, null=True, blank=True)
-    # updated = DateTimeField(auto_now=True, null=True, blank=True)
+    created = DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         db_table = 'model_house'
-        # ordering = ['created', ]
+        ordering = ['created', ]
 
     def save(self, *args, **kwargs):
         super(ModelHouse, self).save(*args, **kwargs)
@@ -73,8 +73,8 @@ class ModelHouseUser(Model):
     user = ForeignKey('users.User', related_name="own_model_house", on_delete=CASCADE)
     model_house = ForeignKey(ModelHouse, related_name="users", on_delete=CASCADE)
     is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False)
-    updated = DateTimeField(auto_now_add=False)
+    created = DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         db_table = 'model_house_user'
@@ -86,8 +86,8 @@ class ModelHouseTag(Model):
     model_house = ForeignKey(ModelHouse, related_name="tags", on_delete=CASCADE)
     tag = ForeignKey(Tag, related_name="model_houses", on_delete=CASCADE)
     is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
+    created = DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         db_table = 'model_house_tag'
