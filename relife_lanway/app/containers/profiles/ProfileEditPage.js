@@ -37,10 +37,12 @@ class ProfileEditPage extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
+      console.log(nextProps.data)
       this.setState({
         data: nextProps.data.data,
         id: nextProps.data.data.id,
         group: nextProps.data.data.group,
+        profileImage: nextProps.data.data.profile_image,
         fname:
           nextProps.data.data.first_name === null
             ? ''
@@ -100,8 +102,6 @@ class ProfileEditPage extends React.Component {
   render() {
     let { profileImage, data } = this.state
     let fullName = data.first_name + ' ' + data.last_name
-
-    if (data.profile_image != null) profileImage = data.profile_image
 
     return (
       <Container fluid className="user-edit-profile">

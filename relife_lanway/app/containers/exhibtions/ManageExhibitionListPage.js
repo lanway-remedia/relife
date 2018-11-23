@@ -110,8 +110,6 @@ class ManageExhibitionListPage extends React.Component {
           </h1>
         </div>
         <FilterGroupComponent
-          formClass="test"
-          formAction="test"
           inputTitle="Title,Address,Zipcode"
           calendarName="Start Date"
         />
@@ -124,7 +122,7 @@ class ManageExhibitionListPage extends React.Component {
           <Table hover>
             <TableHeadComponent
               onSort={this.handleSort}
-              theadTitle="#,Image,Title,Start Date,End Date,Address, Zipcode, Number Attend,Action"
+              theadTitle="#,Image,Title,Start Date,End Date,Address, Zipcode,Action"
             />
             <tbody>
               {exhList.map((exh, key) => {
@@ -144,7 +142,6 @@ class ManageExhibitionListPage extends React.Component {
                     <td>{exh.end_time}</td>
                     <td>{exh.address}</td>
                     <td>{exh.zipcode}</td>
-                    <td>{exh.num_attend}</td>
                     <td>
                       <Button
                         title={I18nUtils.t('edit')}

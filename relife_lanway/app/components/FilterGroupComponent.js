@@ -26,6 +26,9 @@ class FilterGroupComponent extends Component {
     }
     this.handleChangeFromDate = this.handleChangeFromDate.bind(this)
     this.handleChangeToDate = this.handleChangeToDate.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleResetForm = this.handleResetForm.bind(this)
+    this.onclickSubmit = this.onclickSubmit.bind(this)
   }
 
   handleChangeFromDate(date) {
@@ -38,6 +41,18 @@ class FilterGroupComponent extends Component {
     this.setState({
       toDate: date
     })
+  }
+
+  handleSubmit = () => {
+    console.log('submit search')
+  }
+
+  handleResetForm = () => {
+    this.form && this.form.reset()
+  }
+
+  onclickSubmit = () => {
+    console.log('submit search')
   }
 
   handleShowHideForm = e => {
@@ -67,8 +82,8 @@ class FilterGroupComponent extends Component {
         </label>
         <Form
           className={props.formClass}
-          method="POST"
-          action={props.formAction}
+          onSubmit={this.handleSubmit}
+          ref={f => (this.form = f)}
         >
           <Row>
             {props.inputTitle &&
@@ -104,9 +119,9 @@ class FilterGroupComponent extends Component {
                       className="form-control"
                       selected={this.state.fromDate}
                       onChange={this.handleChangeFromDate}
-                      dateFormat="YYYY/MM/DD"
+                      dateFormat="YYYY-MM-DD"
                       locale="en-us"
-                      placeholderText="yyyy/mm/dd"
+                      placeholderText="yyyy-mm-dd"
                       name={'filterFrom' + props.calendarName.replace(' ', '')}
                     />
                     <InputGroupAddon
@@ -119,9 +134,9 @@ class FilterGroupComponent extends Component {
                       className="form-control"
                       selected={this.state.toDate}
                       onChange={this.handleChangeToDate}
-                      dateFormat="YYYY/MM/DD"
+                      dateFormat="YYYY-MM-DD"
                       locale="en-us"
-                      placeholderText="yyyy/mm/dd"
+                      placeholderText="yyyy-mm-dd"
                       name={'filterTo' + props.calendarName.replace(' ', '')}
                     />
                   </InputGroup>
@@ -172,8 +187,12 @@ class FilterGroupComponent extends Component {
             )}
             <Col xs="12" md="12">
               <div className="btns-group text-center mt-2">
-                <Button color="success">{I18nUtils.t('search')}</Button>
-                <Button color="danger">{I18nUtils.t('reset')}</Button>
+                <Button color="success" onClick={this.onclickSubmit}>
+                  {I18nUtils.t('search')}
+                </Button>
+                <Button color="danger" onClick={this.handleResetForm}>
+                  {I18nUtils.t('reset')}
+                </Button>
               </div>
             </Col>
           </Row>
