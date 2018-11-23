@@ -28,8 +28,8 @@ class ModelHouse(Model):
     create_user = ForeignKey('users.User', related_name= "creating_model_houses", on_delete=CASCADE, blank=True, null=True)
     is_active = BooleanField(default=True)
     is_free = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=True)
-    updated = DateTimeField(auto_now_add=True)
+    created = DateTimeField(auto_now_add=True, blank=True)
+    updated = DateTimeField(auto_now_add=True, blank=True)
 
     class Meta:
         db_table = 'model_house'
