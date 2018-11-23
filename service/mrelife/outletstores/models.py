@@ -79,10 +79,6 @@ class OutletStore(Model):
                 right = width
                 lower = width + upper
 
-            image = image.crop((left, upper, right, lower))
-            image = image.resize((50, 50), Image.ANTIALIAS)
-            image.name = thumb_file_path
-
             f_thumb = storage.open(thumb_file_path, "w")
             file = storage.save(thumb_file_path, image)
             image.save(f_thumb, 'JPEG')
