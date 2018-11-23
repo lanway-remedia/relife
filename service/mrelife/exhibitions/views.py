@@ -31,11 +31,15 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
     def retrieve(self, request, pk=None):
-        queryset = Exhibition.objects.all()
-        event_obj = get_object_or_404(queryset, pk=pk)
-        serializer = ExhibitionSerializer(event_obj, many=True)
-        output = {"status": True, 'messageCode': 'MSG01', "data": serializer.data}
-        return Response(output, status=status.HTTP_200_OK)
+        try:
+            queryset = Exhibition.objects.all()
+            outletstoreObject = get_object_or_404(queryset, pk=pk)
+            serializer = ExhibitionSerializer(outletstoreObject)
+            output = {"status": True, 'messageCode': 'MSG01', "data": serializer.data}
+            return Response(output, status=status.HTTP_200_OK)
+        except Exception as e:
+            output = {"status": False, 'messageCode': 'MSG01', "data": []}
+            return Response(output, status=status.HTTP_200_OK)
 
     def create(self, request):
         request.data['create_user_id'] = request.user.id
