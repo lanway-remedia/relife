@@ -99,8 +99,7 @@
 }
 
 .form-datepicker {
-  > div:first-child,
-  > div:last-child {
+  > div.react-datepicker-wrapper {
     position: relative;
     flex: 1 1 auto;
     width: 1%;
@@ -160,6 +159,7 @@
     line-height: 1.8rem;
   }
 }
+
 .modal {
   .modal-dialog {
     .modal-content {
@@ -172,7 +172,7 @@
           line-height: 1;
           color: #000;
           text-shadow: 0 1px 0 #fff;
-          opacity: .5;
+          opacity: 0.5;
         }
       }
       .modal-body {
@@ -181,7 +181,7 @@
           .list-group-item {
             position: relative;
             display: block;
-            padding: .75rem 1.25rem;
+            padding: 0.75rem 1.25rem;
             margin-bottom: -1px;
             background-color: $bkg-white-color;
             border: 1px solid $border-color;
@@ -211,4 +211,8 @@
       }
     }
   }
+}
+
+.fr-box.fr-basic .fr-element {
+  min-height: 150px;
 }
