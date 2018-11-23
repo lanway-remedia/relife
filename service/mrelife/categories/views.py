@@ -119,26 +119,14 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     def export_csv(self, request, *args, **kwargs):
         """
-        Export data tag to csv.
+        Export data categories to csv.
         """
-        fields = []
-        for field in SubCategory._meta.get_fields():
-            fields.append(field.name)
-        for field in Category._meta.get_fields():
-            fields.append(field.name)
-        #listFields = Category._meta.get_fields()
-        #response = HttpResponse(content_type='text/csv')
-        #response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
-        #writer = csv.writer(response)
-        #writer.writerow(fields)
-        data = SubCategory.objects.filter(is_active=settings.IS_ACTIVE)
-        for subCatData in data:
-            a = subCatData.
-            value.append(subCatData.id)
-            value.append(subCatData.name)
-        #writer = csv.writer(response)
-        
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
 
-        #writer.writerow(['Second row', 'A', 'B', 'C', '"Testing"', "Here's a quote"])
-        
+        data = SubCategory.objects.filter(is_active=settings.IS_ACTIVE)
+        writer = csv.writer(response)
+        writer.writerow(['sub_category_id', 'sub_category_name', 'sub_category_order', 'category_id', 'category_name','category_order'])
+        for subCatData in data:
+            writer.writerow([subCatData.id, subCatData.name, subCatData.order, subCatData.category.id, subCatData.category.name, subCatData.category.order])
         return response
