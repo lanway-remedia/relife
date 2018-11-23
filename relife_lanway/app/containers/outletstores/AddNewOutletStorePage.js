@@ -19,6 +19,7 @@ import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
 import { toast } from 'react-toastify'
 
 import ImageUploadComponent from './../../components/ImageUploadComponent'
+import LocationsComponent from './../../components/LocationsComponent'
 
 class AddNewOutletStorePage extends React.Component {
   constructor(props) {
@@ -109,6 +110,7 @@ class AddNewOutletStorePage extends React.Component {
             {I18nUtils.t('ots-add-page-title')}
           </h1>
         </div>
+        <LocationsComponent />
         <ValidationForm
           className="form-add-outletstore col-no-mg"
           onSubmit={this.handleSubmit}

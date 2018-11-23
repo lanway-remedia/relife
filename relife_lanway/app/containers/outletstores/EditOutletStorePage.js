@@ -65,7 +65,7 @@ class EditOutletStorePage extends React.Component {
           phone: response.data.tel,
           address: response.data.address,
           city: response.data.id,
-          district: response.data.district.id,
+          district: response.data.district,
           zipcode: response.data.zipcode,
           traffic: response.data.traffic,
           website: response.data.home_page,
@@ -233,7 +233,7 @@ class EditOutletStorePage extends React.Component {
                   errorMessage={I18nUtils.t('lb-select')}
                   onChange={this.handleChange}
                   value={
-                    this.state.district === null ? ' ' : this.state.district
+                    this.state.district === null ? ' ' : this.state.district.id
                   }
                 >
                   <option value="">{I18nUtils.t('lb-select')}</option>
