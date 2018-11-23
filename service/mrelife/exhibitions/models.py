@@ -1,10 +1,24 @@
-from django.db.models import (CASCADE, BooleanField, CharField, DateTimeField,
-                              ForeignKey, ImageField, IntegerField, Model,
-                              TextField)
+import os
+
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser, Group
+from django.core.files.storage import default_storage as storage
+from django.db.models import (
+    CASCADE,
+    BooleanField,
+    CharField,
+    DateTimeField,
+    ForeignKey,
+    ImageField,
+    IntegerField,
+    Model,
+    TextField
+)
+from django.urls import reverse
+from django.utils.translation import ugettext_lazy as _
+from PIL import Image
 
 from mrelife.locations.models import District
-
-
 
 
 class Exhibition(Model):
@@ -29,6 +43,38 @@ class Exhibition(Model):
     class Meta:
         db_table = 'exhibition'
         ordering = ['created', ]
+
+    def save(self, *args, **kwargs):
+        super(Exhibition, self).save(*args, **kwargs)
+        self.create_img_thumbnail()
+
+    def create_img_thumbnail(self):
+        if not self.img_large:
+            return ""
+        file_path = self.img_large.name
+        filename_base, filename_ext = os.path.splitext(file_path)
+        thumb_file_path = "%s_thumb.jpg" % filename_base
+        if storage.exists(thumb_file_path):
+            return "exists"
+        try:
+            # resize the original image and return url path of the thumbnail
+            f = storage.open(file_path, 'r')
+            image = Image.open(f)
+            width, height = image.size
+            basewidth = 300
+
+            wpercent = (basewidth / float(width))
+            hsize = int((float(height) * float(wpercent)))
+            image = image.resize((basewidth, hsize), Image.ANTIALIAS)
+
+            f_thumb = storage.open(thumb_file_path, "w")
+            image.save(f_thumb, "JPEG")
+            f_thumb.close()
+            self.img_thumbnail = settings.MEDIA_URL + thumb_file_path
+            self.save()
+            return "success"
+        except:
+            return "error"
 
 
 class ExhibitionContact(Model):

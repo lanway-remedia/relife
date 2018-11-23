@@ -44,6 +44,9 @@ class EventSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         # Check that the start time, end time.
-        if data['end_time'] > data['start_time']:
-            raise serializers.ValidationError("Start time must be greater than end time")
+        try:
+            if data['end_time'] < data['start_time']:
+                raise serializers.ValidationError("Start time must be greater than end time")
+        except KeyError as e:
+            pass
         return data
