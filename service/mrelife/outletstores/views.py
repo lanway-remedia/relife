@@ -53,7 +53,8 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         serializer = OutletStoreSerializer(outletstoreObject, data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
-            return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+            output = {"status": True, 'messageCode': 'MSG01', "data": serializer.data}
+            return Response(output, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update_active(self, objectM):
