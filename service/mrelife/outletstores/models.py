@@ -65,7 +65,26 @@ class OutletStore(Model):
             f = storage.open(file_path, 'r')
             image = Image.open(f)
             width, height = image.size
+
+            if width > height:
+                delta = width - height
+                left = int(delta/2)
+                upper = 0
+                right = height + left
+                lower = height
+            else:
+                delta = height - width
+                left = 0
+                upper = int(delta/2)
+                right = width
+                lower = width + upper
+
+            image = image.crop((left, upper, right, lower))
+            image = image.resize((50, 50), Image.ANTIALIAS)
+            image.name = thumb_file_path
+
             f_thumb = storage.open(thumb_file_path, "w")
+            file = storage.save(thumb_file_path, image)
             image.save(f_thumb, 'JPEG')
             f_thumb.close()
             return "success"
