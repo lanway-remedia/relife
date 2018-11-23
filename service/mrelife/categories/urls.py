@@ -14,9 +14,13 @@ category_update = views.CategoryViewSet.as_view({
     'put': 'update',
     'delete': 'destroy'
 })
+category_export_csv = views.CategoryViewSet.as_view({
+    'get' : 'export_csv'
+})
 urlpatterns = [
     path('<int:type>', category_create, name='create' ),
     path('<int:pk>/<int:type>', category_update, name='update'),
+    path('export_csv', category_export_csv, name='category_export_csv'),
     #path('', include(router.urls)),
 ]
 
