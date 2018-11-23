@@ -80,7 +80,10 @@ class LocationViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
+        if (int(type) == settings.DISTRICT):
+            serializer = DistrictSerializer(queryset, many=True)
+        else:
+            serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
     def destroy(self, request, type=None, *args, **kwargs):

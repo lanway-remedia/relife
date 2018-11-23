@@ -44,7 +44,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         return Response(output, status=status.HTTP_200_OK)
 
     def create(self, request):
-
+        request.data['create_user'] = request.user.id
         serializer = OutletStoreSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
@@ -53,6 +53,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         return Response(output, status=status.HTTP_200_OK)
 
     def update(self, request, pk=None):
+        request.data['create_user'] = request.user.id
         queryset = OutletStore.objects.all()
         outletstoreObject = get_object_or_404(queryset, pk=pk)
         serializer = OutletStoreSerializer(outletstoreObject, data=request.data)

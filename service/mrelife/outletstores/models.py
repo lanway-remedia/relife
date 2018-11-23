@@ -29,7 +29,7 @@ class OutletStore(Model):
     latitude = TextField(null=True)
     longitude = TextField(null=True)
     address = CharField(max_length=800)
-    district = ForeignKey(District, on_delete=CASCADE, null=True)
+    district = ForeignKey(District,related_name="outlet_dict", on_delete=CASCADE)
     tel = CharField(max_length=13)
     email = CharField(max_length=100)
     zipcode = CharField(max_length=8, null=True)
