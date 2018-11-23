@@ -49,11 +49,12 @@ class ExhibitionSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'district_id', 'longtitude', 'address', 'district', 'zipcode', 'num_attend', 'start_time', 'end_time',
                   'create_user_id', 'create_user', 'is_active', 'exhibition_contact', 'exhibition_contact_reply', 'exhibition_event')
 
-    def validate_end_time(self, data):
+    """def validate_end_time(self, data):
         # Check that the start time, end time.
         if data['end_time'] < data['start_time']:
             raise serializers.ValidationError("Start time must be greater than end time")
         return data
+    """
 
     def validate_district_id(self, district_id):
         try:
@@ -63,3 +64,11 @@ class ExhibitionSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise serializers.ValidationError(e)
         return district_id
+    def validate(self, data):
+        # Check that the start time, end time.
+        try:
+            if data['end_time'] < data['start_time']:
+                raise serializers.ValidationError("Start time must be greater than end time")
+        except KeyError as e:
+            pass
+        return data
