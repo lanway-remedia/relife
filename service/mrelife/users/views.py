@@ -17,6 +17,7 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
 from mrelife.file_managements.serializers import FileSerializer
+from mrelife.outletstores.models import OutletStore
 from mrelife.users.serializers import (PasswordSerializer, ProfileSerializer,
                                        UserSerializer)
 from mrelife.utils.groups import GroupUser, IsStore
@@ -54,13 +55,18 @@ class UserVs(ModelViewSet):
         if not IsStore(request.user):
             try:
                 group = Group.objects.get(pk=int(request.data.get('group')))
+                store = OutletStore.objects.get(pk=int(request.data.get('store')))
             except Exception:
                 group = GroupUser()
+                store = None
         else:
-            user.store = request.user.store
+            store = request.user.store
         user.group = group
+        user.store = store
         user.save()
         obj.data['group'] = group.id
+        if store is not None:
+            obj.data['store'] = store.id
         return obj
 
 
