@@ -13,7 +13,7 @@ export default class ExhibitionsService {
     )
   }
   getExh(data) {
-    return apiClient.get(`/exhibitions/${data}`)
+    return apiClient.get(`/exhibitions/${data}/`)
   }
   addExh(data) {
     return apiClient.post(`/exhibitions/`, data)
@@ -22,6 +22,6 @@ export default class ExhibitionsService {
     return apiClient.put(`/exhibitions/${data.get('id')}/`, data)
   }
   deleteExh(data) {
-    return apiClient.delete(`/exhibitions/${data}`)
+    return apiClient.delete(`/exhibitions/${data}/`)
   }
 }

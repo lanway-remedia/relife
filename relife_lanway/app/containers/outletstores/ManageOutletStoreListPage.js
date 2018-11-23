@@ -110,8 +110,6 @@ class ManageOutletStoreListPage extends React.Component {
           </h1>
         </div>
         <FilterGroupComponent
-          formClass="test"
-          formAction="test"
           inputTitle="Title,Email,Phone,Address,Zipcode"
         />
         <div className="formTable">

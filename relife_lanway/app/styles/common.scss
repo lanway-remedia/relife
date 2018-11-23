@@ -159,6 +159,7 @@
     line-height: 1.8rem;
   }
 }
+
 .modal {
   .modal-dialog {
     .modal-content {
@@ -207,4 +208,8 @@
       }
     }
   }
+}
+
+.fr-box.fr-basic .fr-element {
+  min-height: 150px;
 }

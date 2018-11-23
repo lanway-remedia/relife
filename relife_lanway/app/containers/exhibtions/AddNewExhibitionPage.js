@@ -26,6 +26,7 @@ import I18nUtils from '../../utils/I18nUtils'
 import ExhibitionActions from '../../redux/wrapper/ExhibitionsRedux'
 import { toast } from 'react-toastify'
 import DatePicker from 'react-datepicker'
+import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 
 import ImageUploadComponent from './../../components/ImageUploadComponent'
@@ -39,8 +40,6 @@ class AddNewExhibitionPage extends React.Component {
       title: '',
       address: '',
       zipcode: '',
-      fromDate: '',
-      toDate: '',
       content: '',
       city: '',
       district: ''
@@ -98,17 +97,21 @@ class AddNewExhibitionPage extends React.Component {
   handleSubmit = e => {
     console.log(e)
     e.preventDefault()
+
+    // const fromDate = new Date(this.state.fromDate)
+
     let data = new FormData()
+    data.append('num_attend', 111111)
     data.append('latitude', 111111)
-    data.append('longitude', 222222)
+    data.append('longtitude', 222222)
     data.append('title', this.state.title)
     data.append('address', this.state.address)
     data.append('zipcode', this.state.zipcode)
     data.append('content', this.state.content)
     data.append('city', this.state.city)
     data.append('district', this.state.district)
-    data.append('start_time', this.state.fromDate)
-    data.append('end_time', this.state.toDate)
+    data.append('start_time', moment(this.state.fromDate).format('YYYY-MM-DD'))
+    data.append('end_time', moment(this.state.toDate).format('YYYY-MM-DD'))
     data.append('img_large', this.state.thumbnailImage)
     this.props.exhibitionAddRequest(data)
   }
@@ -165,9 +168,9 @@ class AddNewExhibitionPage extends React.Component {
                     className="form-control"
                     selected={this.state.fromDate}
                     onChange={this.handleChangeFromDate}
-                    dateFormat="YYYY/MM/DD"
+                    dateFormat="YYYY-MM-DD"
                     locale="en-us"
-                    placeholderText="yyyy/mm/dd"
+                    placeholderText="yyyy-mm-dd"
                     name="fromDate"
                   />
                   <InputGroupAddon
@@ -180,9 +183,9 @@ class AddNewExhibitionPage extends React.Component {
                     className="form-control"
                     selected={this.state.toDate}
                     onChange={this.handleChangeToDate}
-                    dateFormat="YYYY/MM/DD"
+                    dateFormat="YYYY-MM-DD"
                     locale="en-us"
-                    placeholderText="yyyy/mm/dd"
+                    placeholderText="yyyy-mm-dd"
                     name="toDate"
                   />
                 </InputGroup>
