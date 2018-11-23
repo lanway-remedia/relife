@@ -26,7 +26,6 @@ from mrelife.utils.relifeenum import MessageCode
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.all()
     serializer_class = OutletStoreSerializer
-    
 
     def list(self, request):
         queryset = OutletStore.objects.filter(is_active=1)
