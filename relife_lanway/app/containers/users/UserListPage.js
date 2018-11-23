@@ -15,6 +15,8 @@ import UsersActions from '../../redux/wrapper/UsersRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
+import URLSearchParams from 'url-search-params'
+import { DefaultValue } from '../../constants'
 
 class ListAccountsPage extends React.Component {
   constructor(props) {
@@ -29,7 +31,14 @@ class ListAccountsPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.userListRequest({})
+    let params = new URLSearchParams(this.props.history.location.search)
+    let page = params.get('page') ? params.get('page') : DefaultValue.PAGE
+    let limit = params.get('limit') ? params.get('limit') : DefaultValue.LIMIT
+    let data = {
+      offset: (page - 1) * limit,
+      limit: limit
+    }
+    this.props.userListRequest(data)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,7 +46,7 @@ class ListAccountsPage extends React.Component {
       let response = nextProps.response
       if (response.listUser) {
         this.setState({
-          users: response.data
+          users: response.data.results
         })
       }
     }
@@ -49,7 +58,7 @@ class ListAccountsPage extends React.Component {
 
   render() {
     let { pageSize, currentPage, sortColumn, users } = this.state
-    let totalCount = users.length
+    let totalCount = 10
     return (
       <Container fluid className="list-account-content">
         <div className="page-title">
@@ -80,7 +89,7 @@ class ListAccountsPage extends React.Component {
                     <td>{user.id}</td>
                     <td>{user.username}</td>
                     <td>{user.email}</td>
-                    <td>{user.store}</td>
+                    <td>{user.store ? user.store.title : ''}</td>
                     <td>{user.group}</td>
                     <td>
                       <Button
