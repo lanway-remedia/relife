@@ -2,7 +2,20 @@ from mrelife.locations.models import City, District
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-
+class CityOfDistrictSerializer(serializers.ModelSerializer):
+    # validate name is unique
+    name = serializers.CharField(
+        max_length=255,
+        validators=[UniqueValidator(queryset=City.objects.all())]
+    )
+    name_en = serializers.CharField(
+        max_length=255,
+        validators=[UniqueValidator(queryset=City.objects.all())]
+    )
+    #districts = DistrictSerializer(many=True, read_only=True)
+    class Meta:
+        model = City
+        fields = ('id', 'name', 'name_en', 'order', )
 class DistrictSerializer(serializers.ModelSerializer):
     # validate name is unique
     name = serializers.CharField(
@@ -14,7 +27,7 @@ class DistrictSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=District.objects.all())]
     )
     
-
+    city = CityOfDistrictSerializer(read_only=True)
     class Meta:
         model = District
         fields = ('id', 'name', 'name_en', 'order', 'city' )

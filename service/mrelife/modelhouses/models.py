@@ -1,4 +1,5 @@
 import os
+from io import BytesIO
 
 from django.core.files.storage import default_storage as storage
 from django.db.models import (CASCADE, BooleanField, CharField, DateTimeField,
@@ -28,8 +29,8 @@ class ModelHouse(Model):
     create_user = ForeignKey('users.User', related_name= "creating_model_houses", on_delete=CASCADE, blank=True, null=True)
     is_active = BooleanField(default=True)
     is_free = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=True)
-    updated = DateTimeField(auto_now_add=True)
+    created = DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         db_table = 'model_house'
@@ -58,8 +59,10 @@ class ModelHouse(Model):
             hsize = int((float(height) * float(wpercent)))
             image = image.resize((basewidth, hsize), Image.ANTIALIAS)
 
-            f_thumb = storage.open(thumb_file_path, "w")
-            image.save(f_thumb, "JPEG")
+            f_thumb = storage.open(thumb_file_path, "wb")
+            out_im2 = BytesIO()
+            image.save(out_im2, "JPEG")
+            f_thumb.write(out_im2.getvalue())
             f_thumb.close()
             self.img_thumbnail = thumb_file_path
             self.save()
@@ -73,8 +76,8 @@ class ModelHouseUser(Model):
     user = ForeignKey('users.User', related_name="own_model_house", on_delete=CASCADE)
     model_house = ForeignKey(ModelHouse, related_name="users", on_delete=CASCADE)
     is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False)
-    updated = DateTimeField(auto_now_add=False)
+    created = DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         db_table = 'model_house_user'
@@ -86,8 +89,8 @@ class ModelHouseTag(Model):
     model_house = ForeignKey(ModelHouse, related_name="tags", on_delete=CASCADE)
     tag = ForeignKey(Tag, related_name="model_houses", on_delete=CASCADE)
     is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
+    created = DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         db_table = 'model_house_tag'
@@ -112,8 +115,8 @@ class ModelHouseOutletStore(Model):
     model_house = ForeignKey(ModelHouse, related_name="stores", on_delete=CASCADE)
     outlet_store = ForeignKey('outletstores.OutletStore', related_name="model_houses", on_delete=CASCADE)
     is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False)
-    updated = DateTimeField(auto_now_add=False)
+    created = DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         db_table = 'model_house_outlet_store'

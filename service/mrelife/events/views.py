@@ -9,9 +9,10 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.commons.pagination import LargeResultsSetPagination
-from mrelife.events.models import Event
-from mrelife.events.serializers import EventSerializer
+from mrelife.events.models import Event, EventContact, EventContactReply
+from mrelife.events.serializers import EventContactReplySerializer, EventContactSerializer, EventSerializer
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -54,7 +55,17 @@ class EventViewSet(viewsets.ModelViewSet):
         queryset = Event.objects.all()
         event_obj = get_object_or_404(queryset, pk=pk)
         data = {"is_active": settings.IS_INACTIVE}
-        serializer = EventSerializer(event_obj, data=data)
+        serializer = EventSerializer(event_obj, data=data, partial=True)
         if(serializer.is_valid()):
             serializer.save(updated=datetime.now())
+            eventContactObject = EventContact.objects.filter(
+                is_active=1, event_id=pk)
+            if(eventContactObject):
+                CommonFuntion.update_active(eventContactObject)
+                for item in eventContactObject:
+                    eventContactReplyObject = EventContactReply.objects.filter(
+                        is_active=1, event_contact_reply=eventContactObject.id)
+                    if(eventContactReplyObject):
+                        CommonFuntion.update_active(eventContactReplyObject)
+
         return Response(status=status.HTTP_204_NO_CONTENT)

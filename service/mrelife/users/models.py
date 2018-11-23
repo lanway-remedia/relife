@@ -1,10 +1,13 @@
 import os
+from io import BytesIO
 
-from PIL import Image
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group
 from django.core.files.storage import default_storage as storage
 from django.db.models import (SET_NULL, BooleanField, CharField, DateTimeField,
                               ForeignKey, ImageField, IntegerField, Model)
+from PIL import Image
+
 from mrelife.outletstores.models import OutletStore
 
 
@@ -46,9 +49,11 @@ class User(AbstractUser):
             image = image.resize((basewidth, hsize), Image.ANTIALIAS)
 
             f_thumb = storage.open(thumb_file_path, "w")
-            image.save(f_thumb, "JPEG")
+            out_im2 = BytesIO()
+            image.save(out_im2, "JPEG")
+            f_thumb.write(out_im2.getvalue())
             f_thumb.close()
-            self.profile_image_thumb = thumb_file_path
+            self.profile_image_thumb = settings.MEDIA_URL + thumb_file_path
             self.save()
             return "success"
         except:

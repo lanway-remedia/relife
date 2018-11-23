@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
 from django.core.files.storage import default_storage
+from django.db.models import Q
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
@@ -17,6 +18,7 @@ from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
 from mrelife.file_managements.serializers import FileSerializer
+from mrelife.outletstores.models import OutletStore
 from mrelife.users.serializers import (PasswordSerializer, ProfileSerializer,
                                        UserSerializer)
 from mrelife.utils.groups import GroupUser, IsStore
@@ -39,12 +41,16 @@ class UserVs(ModelViewSet):
     pagination_class = LimitOffsetPagination
     # user
     filter_backends = [DjangoFilterBackend]
-    filter_fields = ['group_id', 'username']
+    filter_fields = ['group_id', 'username', 'first_name', 'last_name']
 
     def list(self, request, *args, **kwargs):
         group = request.user.group
         if IsStore(request.user):  # group store admin
             self.queryset = User.objects.filter(group=group)
+        name = request.GET.get('name')
+        if name is not None:
+            self.queryset = self.queryset.filter(Q(username__contains=name) | Q(
+                first_name__contains=name) | Q(last_name__contains=name))
         return super(UserVs, self).list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
@@ -54,13 +60,18 @@ class UserVs(ModelViewSet):
         if not IsStore(request.user):
             try:
                 group = Group.objects.get(pk=int(request.data.get('group')))
+                store = OutletStore.objects.get(pk=int(request.data.get('store')))
             except Exception:
                 group = GroupUser()
+                store = None
         else:
-            user.store = request.user.store
+            store = request.user.store
         user.group = group
+        user.store = store
         user.save()
         obj.data['group'] = group.id
+        if store is not None:
+            obj.data['store'] = store.id
         return obj
 
 
@@ -161,7 +172,7 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
             }, status=status.HTTP_400_BAD_REQUEST)
         f = request.data['file']
         file = default_storage.save(f.name, f)
-        user.profile_image = settings.MEDIA_URL + file
+        user.profile_image = f.name
         user.save()
         serializer = UserSerializer(user)
 
@@ -171,7 +182,6 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
             'messageParams': {},
             'data': serializer.data
         }, status.HTTP_200_OK)
-
 
     @list_route(methods=['post'])
     def update_password(self, request, *args, **kwargs):

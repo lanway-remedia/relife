@@ -1,5 +1,7 @@
 import os
+from io import BytesIO
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group
 from django.core.files.storage import default_storage as storage
 from django.db.models import (
@@ -29,7 +31,7 @@ class OutletStore(Model):
     latitude = TextField(null=True)
     longitude = TextField(null=True)
     address = CharField(max_length=800)
-    district = ForeignKey(District, on_delete=CASCADE, null=True)
+    district = ForeignKey(District, related_name="outlet_dict", on_delete=CASCADE)
     tel = CharField(max_length=13)
     email = CharField(max_length=100)
     zipcode = CharField(max_length=8, null=True)
@@ -47,9 +49,9 @@ class OutletStore(Model):
         ordering = ['created', ]
 
     def save(self, *args, **kwargs):
-        self.create_img_thumbnail()
         super(OutletStore, self).save(*args, **kwargs)
-    
+        self.create_img_thumbnail()
+
     def create_img_thumbnail(self):
         if not self.img_large:
             return ""
@@ -63,17 +65,31 @@ class OutletStore(Model):
             f = storage.open(file_path, 'r')
             image = Image.open(f)
             width, height = image.size
-            basewidth = 300
 
-            wpercent = (basewidth/float(width))
-            hsize = int((float(height)*float(wpercent)))
-            image = image.resize((basewidth, hsize), Image.ANTIALIAS)
+            if width > height:
+                delta = width - height
+                left = int(delta/2)
+                upper = 0
+                right = height + left
+                lower = height
+            else:
+                delta = height - width
+                left = 0
+                upper = int(delta/2)
+                right = width
+                lower = width + upper
+
+            image = image.crop((left, upper, right, lower))
+            image = image.resize((50, 50), Image.ANTIALIAS)
 
             f_thumb = storage.open(thumb_file_path, "w")
-            image.save(f_thumb, "JPEG")
+            out_im2 = BytesIO()
+            image.save(out_im2, "JPEG")
+            f_thumb.write(out_im2.getvalue())
             f_thumb.close()
-            self.img_thumbnail = thumb_file_path
-            # self.save()
+            if storage.exists(thumb_file_path):
+                self.img_thumbnail = storage.url(thumb_file_path)
+                self.save()
             return "success"
         except:
             return "error"
