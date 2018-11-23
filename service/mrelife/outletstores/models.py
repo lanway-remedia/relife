@@ -83,7 +83,7 @@ class OutletStore(Model):
             image = image.resize((50, 50), Image.ANTIALIAS)
 
             f_thumb = storage.open(thumb_file_path, "w")
-            image.save(f_thumb, JPEG, quality=90)
+            image.save(f_thumb, 'JPEG')
             f_thumb.close()
             return "success"
         except:
