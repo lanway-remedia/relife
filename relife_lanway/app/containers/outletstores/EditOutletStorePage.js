@@ -51,7 +51,6 @@ class EditOutletStorePage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
       if (response.data === undefined || response.data.length === 0) {
@@ -59,21 +58,21 @@ class EditOutletStorePage extends React.Component {
         this.props.history.replace('/manage-outlet-store-list')
       } else {
         this.setState({
-          data: response.data[0],
-          id: response.data[0].id,
-          title: response.data[0].title,
-          email: response.data[0].email,
-          phone: response.data[0].tel,
-          address: response.data[0].address,
-          city: response.data[0].id,
-          district: response.data[0].district,
-          zipcode: response.data[0].zipcode,
-          traffic: response.data[0].traffic,
-          website: response.data[0].home_page,
-          regularHoliday: response.data[0].regular_holiday,
-          timeServing: response.data[0].time_serving,
-          content: response.data[0].content,
-          thumbnailImage: response.data[0].img_large
+          data: response.data,
+          id: response.data.id,
+          title: response.data.title,
+          email: response.data.email,
+          phone: response.data.tel,
+          address: response.data.address,
+          city: response.data.id,
+          district: response.data.district.id,
+          zipcode: response.data.zipcode,
+          traffic: response.data.traffic,
+          website: response.data.home_page,
+          regularHoliday: response.data.regular_holiday,
+          timeServing: response.data.time_serving,
+          content: response.data.content,
+          thumbnailImage: response.data.img_large
         })
       }
     }
@@ -111,7 +110,7 @@ class EditOutletStorePage extends React.Component {
     data.append('regular_holiday', this.state.regularHoliday)
     data.append('time_serving', this.state.timeServing)
     data.append('content', this.state.content)
-    data.append('district', this.state.district)
+    data.append('district_id', this.state.district)
 
     if (typeof this.state.thumbnailImage !== 'string') {
       data.append('img_large', this.state.thumbnailImage)
@@ -234,7 +233,7 @@ class EditOutletStorePage extends React.Component {
                   errorMessage={I18nUtils.t('lb-select')}
                   onChange={this.handleChange}
                   value={
-                    this.state.district === null ? ' ' : this.state.district.id
+                    this.state.district === null ? ' ' : this.state.district
                   }
                 >
                   <option value="">{I18nUtils.t('lb-select')}</option>
