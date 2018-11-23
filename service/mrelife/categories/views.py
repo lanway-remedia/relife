@@ -122,7 +122,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         Export data categories to csv.
         """
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+        response['Content-Disposition'] = 'attachment; filename="categories.csv"'
 
         data = SubCategory.objects.filter(is_active=settings.IS_ACTIVE)
         writer = csv.writer(response)

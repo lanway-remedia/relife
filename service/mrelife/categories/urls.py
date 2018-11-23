@@ -24,4 +24,4 @@ urlpatterns = [
     #path('', include(router.urls)),
 ]
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+#urlpatterns = format_suffix_patterns(urlpatterns)
