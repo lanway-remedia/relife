@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
 from django.core.files.storage import default_storage
+from django.db.models import Q
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
@@ -40,12 +41,16 @@ class UserVs(ModelViewSet):
     pagination_class = LimitOffsetPagination
     # user
     filter_backends = [DjangoFilterBackend]
-    filter_fields = ['group_id', 'username']
+    filter_fields = ['group_id', 'username', 'first_name', 'last_name']
 
     def list(self, request, *args, **kwargs):
         group = request.user.group
         if IsStore(request.user):  # group store admin
             self.queryset = User.objects.filter(group=group)
+        name = request.GET.get('name')
+        if name is not None:
+            self.queryset = self.queryset.filter(Q(username__contains=name) | Q(
+                first_name__contains=name) | Q(last_name__contains=name))
         return super(UserVs, self).list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
@@ -177,7 +182,6 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
             'messageParams': {},
             'data': serializer.data
         }, status.HTTP_200_OK)
-
 
     @list_route(methods=['post'])
     def update_password(self, request, *args, **kwargs):
