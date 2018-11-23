@@ -26,7 +26,6 @@ from mrelife.utils.relifeenum import MessageCode
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.all()
     serializer_class = OutletStoreSerializer
-    
 
     def list(self, request):
         queryset = OutletStore.objects.filter(is_active=1)
@@ -45,7 +44,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             return Response(output, status=status.HTTP_200_OK)
 
     def create(self, request):
-
+        request.data['create_user_id'] = request.user.id
         serializer = OutletStoreSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
