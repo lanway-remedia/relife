@@ -31,8 +31,9 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
     def retrieve(self, request, pk=None):
-        queryset = Exhibition.objects.all().filter(id=self.kwargs['pk'])
-        serializer = ExhibitionSerializer(queryset, many=True)
+        queryset = Exhibition.objects.all()
+        event_obj = get_object_or_404(queryset, pk=pk)
+        serializer = ExhibitionSerializer(event_obj, many=True)
         output = {"status": True, 'messageCode': 'MSG01', "data": serializer.data}
         return Response(output, status=status.HTTP_200_OK)
 
