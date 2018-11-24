@@ -31,8 +31,8 @@ class ListAccountsPage extends React.Component {
 
   componentDidMount() {
     let params = new URLSearchParams(this.props.history.location.search)
-    let page = params.get('page') ? params.get('page') : DefaultValue.PAGE
-    let limit = params.get('limit') ? params.get('limit') : DefaultValue.LIMIT
+    let page = params.get('page') * 1 || DefaultValue.PAGE
+    let limit = params.get('limit') *1 || DefaultValue.LIMIT
     let data = {
       offset: (page - 1) * limit,
       limit: limit
@@ -59,7 +59,7 @@ class ListAccountsPage extends React.Component {
   render() {
     let { sortColumn, count, users } = this.state
     return (
-      <Container fluid className="list-account-content">
+      <Container fluid className="list-user-content">
         <div className="page-title">
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />

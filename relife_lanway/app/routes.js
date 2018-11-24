@@ -7,8 +7,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Route, Redirect, withRouter, Switch } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import HomePage from './containers/HomePage'
-import ArticlePage from './containers/ArticlePage'
 //auths
 import LoginPage from './containers/auths/LoginPage'
 import ResetPasswordPage from './containers/auths/ResetPasswordPage'
@@ -34,10 +32,7 @@ import Language from './components/Language'
 import AppUtils from './utils/AppUtils'
 import I18nUtils from './utils/I18nUtils'
 import { StorageKeyConstants } from './constants'
-
 import { Dashboard, Header, Sidebar } from 'react-adminlte-dash'
-
-import admin from './images/admin.jpeg'
 import 'react-toastify/dist/ReactToastify.css'
 
 class Routes extends React.Component {
@@ -57,6 +52,8 @@ class Routes extends React.Component {
   }
 
   render() {
+    let { username, userimage } = this.props
+
     const isAuthenticated = () => {
       let isLogin = false
       var code = localStorage.getItem(StorageKeyConstants.TOKEN)
@@ -81,9 +78,9 @@ class Routes extends React.Component {
         <Language />
       </li>,
       <Header.UserMenu
-        name="Relife Admin"
-        image={admin}
-        profileAction={() => this.props.history.push('/profile-info')}
+        name={username}
+        image={userimage}
+        profileAction={() => this.props.history.push('/')}
         signOutAction={() => AppUtils.logout(this.props.history)}
         key="2"
       />
@@ -91,33 +88,35 @@ class Routes extends React.Component {
 
     const sb = () => {
       return [
-        <Sidebar.UserPanel name="Relife Admin" image={admin} online key="1" />,
-        <Sidebar.Search
-          name={''}
-          placeholder={I18nUtils.t('search-lbl').toLowerCase()}
-          onClick={() => this.props.history.push('/search')}
-          key="2"
-        />,
+        <Sidebar.UserPanel name={username} image={userimage} online key="1" />,
+        // <Sidebar.Search
+        //   name={''}
+        //   placeholder={I18nUtils.t('search-lbl').toLowerCase()}
+        //   onClick={() => this.props.history.push('/search')}
+        //   key="2"
+        // />,
         <Sidebar.Menu header={I18nUtils.t('nav-main-lbl')} key="3">
           <Sidebar.Menu.Item
-            active={this.props.location.pathname == '/'}
+            active={this.props.location.pathname === '/'}
+            icon={{ className: 'fa-user' }}
+            title={I18nUtils.t('ud-page-title')}
             onClick={() => this.props.history.push('/')}
-            icon={{ className: 'fa-home' }}
-            title={I18nUtils.t('nav-home-lbl')}
           />
           <Sidebar.Menu.Item
             title={I18nUtils.t('um-parent-title')}
-            icon={{ className: 'fa-address-card' }}
+            icon={{ className: 'fa-users' }}
           >
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/profile-info'}
-              title={I18nUtils.t('ud-page-title')}
-              onClick={() => this.props.history.push('/profile-info')}
+              active={this.props.location.pathname === '/add-user'}
+              title={I18nUtils.t('au-page-title')}
+              icon={{ className: 'fa-plus-square' }}
+              onClick={() => this.props.history.push('/add-user')}
             />
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/list-account'}
+              active={this.props.location.pathname === '/list-user'}
               title={I18nUtils.t('la-page-title')}
-              onClick={() => this.props.history.push('/list-account')}
+              icon={{ className: 'fa-list-ol' }}
+              onClick={() => this.props.history.push('/list-user')}
             />
           </Sidebar.Menu.Item>
           <Sidebar.Menu.Item
@@ -127,6 +126,7 @@ class Routes extends React.Component {
             <Sidebar.Menu.Item
               active={this.props.location.pathname === '/add-new-outlet-store'}
               title={I18nUtils.t('ots-add-page-title')}
+              icon={{ className: 'fa-plus-square' }}
               onClick={() => this.props.history.push('/add-new-outlet-store')}
             />
             <Sidebar.Menu.Item
@@ -134,6 +134,7 @@ class Routes extends React.Component {
                 this.props.location.pathname === '/manage-outlet-store-list'
               }
               title={I18nUtils.t('otsl-page-title')}
+              icon={{ className: 'fa-list-ol' }}
               onClick={() =>
                 this.props.history.push('/manage-outlet-store-list')
               }
@@ -146,6 +147,7 @@ class Routes extends React.Component {
             <Sidebar.Menu.Item
               active={this.props.location.pathname === '/add-new-exhibition'}
               title={I18nUtils.t('exh-add-page-title')}
+              icon={{ className: 'fa-plus-square' }}
               onClick={() => this.props.history.push('/add-new-exhibition')}
             />
             <Sidebar.Menu.Item
@@ -153,15 +155,16 @@ class Routes extends React.Component {
                 this.props.location.pathname === '/manage-exhibition-list'
               }
               title={I18nUtils.t('exh-page-title')}
+              icon={{ className: 'fa-list-ol' }}
               onClick={() => this.props.history.push('/manage-exhibition-list')}
             />
           </Sidebar.Menu.Item>
-          <Sidebar.Menu.Item
+          {/* <Sidebar.Menu.Item
             active={this.props.location.pathname == '/article'}
             onClick={() => this.props.history.push('/article')}
             icon={{ className: 'fa-pencil' }}
             title={I18nUtils.t('nav-article-lbl')}
-          />
+          /> */}
         </Sidebar.Menu>
       ]
     }
@@ -169,7 +172,7 @@ class Routes extends React.Component {
     const footer = () => [
       <strong key="1">
         <span>Copyright © 2018 </span>
-        <a href="http://mor.vn">Mor Design</a>
+        <a href="https://mor.vn">Mor Design</a>
         <span>. </span>
       </strong>,
       <span key="2" className="pull-right">
@@ -198,10 +201,8 @@ class Routes extends React.Component {
             <div className="root-wrap">
               <ToastContainer />
               <Switch>
-                <Route exact path="/" component={requireLogin(HomePage)} />
-                <Route path="/article" component={requireLogin(ArticlePage)} />
                 <Route
-                  path="/profile-info"
+                  exact path="/"
                   component={requireLogin(ProfileInfoPage)}
                 />
                 <Route
@@ -213,7 +214,7 @@ class Routes extends React.Component {
                   component={requireLogin(ProfileChangePassPage)}
                 />
                 <Route
-                  path="/list-account"
+                  path="/list-user"
                   component={requireLogin(UserListPage)}
                 />
                 <Route
@@ -267,7 +268,9 @@ class Routes extends React.Component {
 
 Routes.propTypes = {
   location: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
+  userimage: PropTypes.string,
+  username: PropTypes.string
 }
 
 export default withRouter(Routes)

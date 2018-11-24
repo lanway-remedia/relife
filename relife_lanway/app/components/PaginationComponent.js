@@ -21,10 +21,10 @@ class PaginationComponent extends Component {
 
   componentWillMount() {
     let params = new URLSearchParams(this.props.history.location.search)
-    let page = params.get('page') ? params.get('page') : DefaultValue.PAGE
-    let limit = params.get('limit') ? params.get('limit') : DefaultValue.LIMIT
+    let page = params.get('page') * 1 || DefaultValue.PAGE
+    let limit = params.get('limit') * 1 || DefaultValue.LIMIT
     this.setState({
-      page: page*1,
+      page: page,
       limit: limit
     })
   }
@@ -48,8 +48,8 @@ class PaginationComponent extends Component {
     return (
       <div className="toolbar mb-5">
         <div className="limiter">
-          <Label for="selectLimit">{I18nUtils.t('toolbar-limit')}</Label>
-          <Input type="select" name="selectLimit" id="selectLimit" value={limit} onChange={this.onPerpageChange}>
+          <Label for="limit">{I18nUtils.t('toolbar-limit')}</Label>
+          <Input type="select" name="limit" id="limit" value={limit} onChange={this.onPerpageChange}>
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="50">50</option>

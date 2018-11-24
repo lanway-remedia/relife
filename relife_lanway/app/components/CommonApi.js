@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom'
 import { show } from 'redux-modal'
 import { bindActionCreators } from 'redux'
 import { ModalName } from '../constants'
+import ProfileActions from '../redux/wrapper/UserProfileRedux'
 
 let f
 
@@ -22,6 +23,13 @@ class ErrorApi extends React.Component {
 
   componentWillMount() {
     f = this
+    this.props.profileRequest({})
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data != nextProps.data) {
+      this.props.getProfile(nextProps.data.data)
+    }
   }
 
   render() {
@@ -34,14 +42,28 @@ class ErrorApi extends React.Component {
 }
 
 ErrorApi.propTypes = {
-  history: PropTypes.object
+  history: PropTypes.object,
+  profileRequest: PropTypes.func,
+  data: PropTypes.object,
+  getProfile: PropTypes.func
 }
+
+const mapStateToProps = state => {
+  return {
+    data: state.userProfile.data
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ show }, dispatch),
+  profileRequest: data => dispatch(ProfileActions.profileRequest(data))
+})
 
 export function showError(message) {
   f.props.show(ModalName.COMMON, { message: message })
 }
 
 export default connect(
-  null,
-  dispatch => bindActionCreators({ show }, dispatch)
+  mapStateToProps,
+  mapDispatchToProps
 )(withRouter(ErrorApi))

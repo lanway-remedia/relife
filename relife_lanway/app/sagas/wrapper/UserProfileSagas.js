@@ -12,6 +12,7 @@ const UserProfileSagas = {
   *userProfile({ data }) {
     try {
       let response = yield call(userProfileService.getUserProfile, data)
+      response.data.getProfile = true
       yield put(UserProfileActions.profileSuccess(response.data))
     } catch (err) {
       yield put(UserProfileActions.profileFailure(err))
@@ -20,6 +21,7 @@ const UserProfileSagas = {
   *editProfile({ data }) {
     try {
       let response = yield call(userProfileService.editUserProfile, data)
+      response.data.editProfile = true
       yield put(UserProfileActions.editProfileSuccess(response.data))
     } catch (err) {
       yield put(UserProfileActions.editProfileFailure(err))
@@ -28,6 +30,7 @@ const UserProfileSagas = {
   *editProfileAvatar({ data }) {
     try {
       let response = yield call(userProfileService.editAvatarProfile, data)
+      response.data.editProfileImage = true
       yield put(UserProfileActions.editProfileAvatarSuccess(response.data))
     } catch (err) {
       yield put(UserProfileActions.editProfileAvatarFailure(err))

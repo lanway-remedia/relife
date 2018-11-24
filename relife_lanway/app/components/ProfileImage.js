@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Button } from 'reactstrap'
-import defaultAvatar from '../images/admin.jpeg'
+import defaultAvatar from '../images/user.png'
 import I18nUtils from '../utils/I18nUtils'
 
 class ProfileImage extends React.Component {

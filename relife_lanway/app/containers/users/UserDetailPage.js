@@ -56,7 +56,7 @@ class UserDetailPage extends React.Component {
   }
 
   redirectToListAcc = () => {
-    this.props.history.push('/list-account')
+    this.props.history.push('/list-user')
   }
 
   matchPassword = (value) => {
