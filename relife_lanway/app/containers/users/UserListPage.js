@@ -22,9 +22,8 @@ class ListAccountsPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      pageSize: 4,
-      currentPage: 1,
       sortColumn: { path: 'name', order: 'asc' },
+      count: 0,
       users: []
     }
     document.title = `${I18nUtils.t('la-page-title')}`
@@ -46,7 +45,8 @@ class ListAccountsPage extends React.Component {
       let response = nextProps.response
       if (response.listUser) {
         this.setState({
-          users: response.data.results
+          users: response.data.results,
+          count: response.data.count
         })
       }
     }
@@ -57,8 +57,7 @@ class ListAccountsPage extends React.Component {
   }
 
   render() {
-    let { pageSize, currentPage, sortColumn, users } = this.state
-    let totalCount = 10
+    let { sortColumn, count, users } = this.state
     return (
       <Container fluid className="list-account-content">
         <div className="page-title">
@@ -71,11 +70,7 @@ class ListAccountsPage extends React.Component {
           </h1>
         </div>
         <div className="formTable">
-          <PaginationComponent
-            itemsCount={totalCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-          />
+          <PaginationComponent count={count} />
           <Table hover>
             <TableHeadComponent
               sortColumn={sortColumn}

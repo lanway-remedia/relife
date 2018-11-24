@@ -32,7 +32,6 @@ class StoreListModal extends Component {
       storeList: [],
       selectedStore: {}
     }
-    this.onPageChange = this.onPageChange.bind(this)
   }
 
   componentDidMount() {
@@ -54,7 +53,7 @@ class StoreListModal extends Component {
     this.props.toggle(false)
   }
 
-  onPageChange(page) {
+  onPageChange = (page) => {
     this.setState({ page })
   }
 
