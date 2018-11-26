@@ -36,8 +36,14 @@ class PaginationComponent extends Component {
   }
 
   onPerpageChange = (e) => {
+    let { page } = this.state
+    let { count } = this.props
+    let limit = e.target.value
+    if ((page - 1) * limit >= count) {
+      page = Math.ceil(count / limit)
+    }
     this.props.history.push({
-      search: `?page=${this.state.page}&limit=${e.target.value}`
+      search: `?page=${page}&limit=${limit}`
     })
   }
 

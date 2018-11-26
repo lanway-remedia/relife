@@ -8,6 +8,9 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Container, Row, Col, Button, FormGroup, Label, InputGroup, Input, InputGroupAddon } from 'reactstrap'
+import { bindActionCreators } from 'redux'
+import { show, hide } from 'redux-modal'
+import { ModalName } from '../../constants'
 import StoreListModal from '../../components/StoreListModal'
 import UsersActions from '../../redux/wrapper/UsersRedux'
 import I18nUtils from '../../utils/I18nUtils'
@@ -39,11 +42,19 @@ class UserDetailPage extends React.Component {
     })
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props.data != nextProps.data) {
-      
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.response != nextProps.response) {
+      let response = nextProps.response
+      if (response.addUser) {
+        this.props.show(ModalName.COMMON, { message: I18nUtils.t('US015'), closeFunction: () => this.closeFunction()})
+      }
+    }
+  }
+
+  closeFunction = () => {
+    this.props.history.push('/list-user')
+    this.props.hide(ModalName.COMMON)
+  }
 
   handleChange = e => {
     this.setState({
@@ -85,13 +96,8 @@ class UserDetailPage extends React.Component {
   addUser = () => {
     let data = {
       username: this.state.username,
-      password: this.state.password,
-      is_active: true,
-      fname: this.state.fname,
-      lname: this.state.lname,
       email: this.state.email,
-      tel: this.state.phone,
-      address: this.state.address,
+      password: this.state.password,
       store: this.state.store.id,
       group: this.state.group
     }
@@ -188,68 +194,72 @@ class UserDetailPage extends React.Component {
                 />
               </FormGroup>
             </Col>
+            {!isAdd &&
+              <Col xs="12" md="6">
+                <FormGroup>
+                  <Label for="fname">{I18nUtils.t('fname')}</Label>
+                  <TextInput
+                    type="text"
+                    name="fname"
+                    id="fname"
+                    placeholder={I18nUtils.t('all-place-fname')}
+                    value={fname}
+                    onChange={this.handleChange}
+                  />
+                </FormGroup>
+              </Col>
+            }
 
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="fname">{I18nUtils.t('fname')}</Label>
-                <TextInput
-                  type="text"
-                  name="fname"
-                  id="fname"
-                  placeholder={I18nUtils.t('all-place-fname')}
-                  value={fname}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="fname">{I18nUtils.t('lname')}</Label>
-                <TextInput
-                  type="text"
-                  name="lname"
-                  id="lname"
-                  placeholder={I18nUtils.t('all-place-lname')}
-                  value={lname}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="phone">{I18nUtils.t('phone')}</Label>
-                <TextInput
-                  type="text"
-                  name="phone"
-                  id="phone"
-                  placeholder={I18nUtils.t('all-place-phone')}
-                  value={phone}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="address">{I18nUtils.t('address')}</Label>
-                <TextInput
-                  type="text"
-                  name="address"
-                  id="address"
-                  placeholder={I18nUtils.t('all-place-address')}
-                  value={address}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-
+            {!isAdd &&
+              <Col xs="12" md="6">
+                <FormGroup>
+                  <Label for="fname">{I18nUtils.t('lname')}</Label>
+                  <TextInput
+                    type="text"
+                    name="lname"
+                    id="lname"
+                    placeholder={I18nUtils.t('all-place-lname')}
+                    value={lname}
+                    onChange={this.handleChange}
+                  />
+                </FormGroup>
+              </Col>
+            }
+            {!isAdd &&
+              <Col xs="12" md="6">
+                <FormGroup>
+                  <Label for="phone">{I18nUtils.t('phone')}</Label>
+                  <TextInput
+                    type="text"
+                    name="phone"
+                    id="phone"
+                    placeholder={I18nUtils.t('all-place-phone')}
+                    value={phone}
+                    onChange={this.handleChange}
+                  />
+                </FormGroup>
+              </Col>
+            }
+            {!isAdd &&
+              <Col xs="12" md="6">
+                <FormGroup>
+                  <Label for="address">{I18nUtils.t('address')}</Label>
+                  <TextInput
+                    type="text"
+                    name="address"
+                    id="address"
+                    placeholder={I18nUtils.t('all-place-address')}
+                    value={address}
+                    onChange={this.handleChange}
+                  />
+                </FormGroup>
+              </Col>
+            }
             <Col xs="12" md="6">
               <FormGroup>
                 <Label for="store">{I18nUtils.t('store-selection')}</Label>
                 <InputGroup>
-                  <Input type="text" name="store" id="store" value={store.title||''} disabled />
+                  <Input type="text" name="store" id="store" value={store.title || ''} disabled />
                   <InputGroupAddon addonType="append">
                     <Button type="button" color="secondary" onClick={this.showStoreListHandle}>{I18nUtils.t('store-selection')}</Button>
                   </InputGroupAddon>
@@ -286,6 +296,8 @@ class UserDetailPage extends React.Component {
 
 UserDetailPage.propTypes = {
   history: PropTypes.object,
+  show: PropTypes.func,
+  hide: PropTypes.func,
   maxFileSize: PropTypes.number,
   onChange: PropTypes.func,
   profileRequest: PropTypes.func,
@@ -297,12 +309,13 @@ UserDetailPage.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    processing: state.userProfile.processing,
-    response: state.userProfile.data
+    processing: state.users.processing,
+    response: state.users.data
   }
 }
 
 const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ show, hide }, dispatch),
   addUserRequest: data => dispatch(UsersActions.addUserRequest(data))
 })
 

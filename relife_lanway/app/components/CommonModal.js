@@ -13,7 +13,8 @@ class CommonModal extends Component {
     title: PropTypes.string,
     message: PropTypes.string.isRequired,
     handleHide: PropTypes.func.isRequired,
-    okFunction: PropTypes.func
+    okFunction: PropTypes.func,
+    closeFunction: PropTypes.func
   }
 
   render() {
@@ -24,22 +25,36 @@ class CommonModal extends Component {
       title,
       message,
       handleHide,
-      okFunction
+      okFunction,
+      closeFunction
     } = this.props
     title = !title ? I18nUtils.t(DefaultValue.MODAL_NAME) : title
+
     return (
       <Modal isOpen={show}>
         {title && <ModalHeader className={headerClass}>{title}</ModalHeader>}
         <ModalBody className={bodyClass}>{message}</ModalBody>
         <ModalFooter>
           {okFunction && (
-            <Button color="danger" onClick={okFunction}>
-              Save changes
+            <div>
+              <Button color="danger" onClick={okFunction}>
+                {I18nUtils.t('ok')}
+              </Button>
+              <Button color="primary" onClick={handleHide}>
+                {I18nUtils.t('cancel')}
+              </Button>
+            </div>
+          )}
+          {closeFunction && (
+            <Button color="primary" onClick={closeFunction}>
+              {I18nUtils.t('close')}
             </Button>
           )}
-          <Button color="primary" onClick={handleHide}>
-            Close
-          </Button>
+          {(!okFunction && !closeFunction) && (
+            <Button color="primary" onClick={handleHide}>
+              {I18nUtils.t('close')}
+            </Button>
+          )}
         </ModalFooter>
       </Modal>
     )

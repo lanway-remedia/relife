@@ -16,7 +16,7 @@ import I18nUtils from '../../utils/I18nUtils'
 import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import UltimatePagination from 'react-ultimate-pagination-bootstrap-4'
-import { paginate } from '../../utils/paginate'
+import { paginate } from '../../utils/Paginate'
 import { toast } from 'react-toastify'
 
 class ManageExhibitionListPage extends React.Component {
