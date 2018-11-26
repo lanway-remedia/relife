@@ -15,21 +15,29 @@ import UsersActions from '../../redux/wrapper/UsersRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
+import URLSearchParams from 'url-search-params'
+import { DefaultValue } from '../../constants'
 
 class ListAccountsPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      pageSize: 4,
-      currentPage: 1,
       sortColumn: { path: 'name', order: 'asc' },
+      count: 0,
       users: []
     }
     document.title = `${I18nUtils.t('la-page-title')}`
   }
 
   componentDidMount() {
-    this.props.userListRequest({})
+    let params = new URLSearchParams(this.props.history.location.search)
+    let page = params.get('page') * 1 || DefaultValue.PAGE
+    let limit = params.get('limit') *1 || DefaultValue.LIMIT
+    let data = {
+      offset: (page - 1) * limit,
+      limit: limit
+    }
+    this.props.userListRequest(data)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,7 +45,8 @@ class ListAccountsPage extends React.Component {
       let response = nextProps.response
       if (response.listUser) {
         this.setState({
-          users: response.data
+          users: response.data.results,
+          count: response.data.count
         })
       }
     }
@@ -48,10 +57,9 @@ class ListAccountsPage extends React.Component {
   }
 
   render() {
-    let { pageSize, currentPage, sortColumn, users } = this.state
-    let totalCount = users.length
+    let { sortColumn, count, users } = this.state
     return (
-      <Container fluid className="list-account-content">
+      <Container fluid className="list-user-content">
         <div className="page-title">
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />
@@ -62,11 +70,7 @@ class ListAccountsPage extends React.Component {
           </h1>
         </div>
         <div className="formTable">
-          <PaginationComponent
-            itemsCount={totalCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-          />
+          <PaginationComponent count={count} />
           <Table hover>
             <TableHeadComponent
               sortColumn={sortColumn}
@@ -80,7 +84,7 @@ class ListAccountsPage extends React.Component {
                     <td>{user.id}</td>
                     <td>{user.username}</td>
                     <td>{user.email}</td>
-                    <td>{user.store}</td>
+                    <td>{user.store ? user.store.title : ''}</td>
                     <td>{user.group}</td>
                     <td>
                       <Button

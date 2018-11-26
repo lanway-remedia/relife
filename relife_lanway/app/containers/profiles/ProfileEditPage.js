@@ -37,28 +37,38 @@ class ProfileEditPage extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
-      console.log(nextProps.data)
-      this.setState({
-        data: nextProps.data.data,
-        id: nextProps.data.data.id,
-        group: nextProps.data.data.group,
-        profileImage: nextProps.data.data.profile_image,
-        fname:
-          nextProps.data.data.first_name === null
-            ? ''
-            : nextProps.data.data.first_name,
-        lname:
-          nextProps.data.data.last_name === null
-            ? ''
-            : nextProps.data.data.last_name,
-        email:
-          nextProps.data.data.email === null ? '' : nextProps.data.data.email,
-        address:
-          nextProps.data.data.address === null
-            ? ''
-            : nextProps.data.data.address,
-        phone: nextProps.data.data.tel === null ? '' : nextProps.data.data.tel
-      })
+      //update profile
+      // if (nextProps.data.editProfile) {
+        
+      // }
+      //update profile image
+      // if (nextProps.data.editProfileImage) {
+
+      // }
+      //get profile info
+      if (nextProps.data.getProfile) {
+        this.setState({
+          data: nextProps.data.data,
+          id: nextProps.data.data.id,
+          group: nextProps.data.data.group,
+          profileImage: nextProps.data.data.profile_image,
+          fname:
+            nextProps.data.data.first_name === null
+              ? ''
+              : nextProps.data.data.first_name,
+          lname:
+            nextProps.data.data.last_name === null
+              ? ''
+              : nextProps.data.data.last_name,
+          email:
+            nextProps.data.data.email === null ? '' : nextProps.data.data.email,
+          address:
+            nextProps.data.data.address === null
+              ? ''
+              : nextProps.data.data.address,
+          phone: nextProps.data.data.tel === null ? '' : nextProps.data.data.tel
+        })
+      }
     }
   }
 
@@ -96,7 +106,7 @@ class ProfileEditPage extends React.Component {
   }
 
   redirectToProfile = () => {
-    this.props.history.push('profile-info')
+    this.props.history.push('/')
   }
 
   render() {

@@ -28,7 +28,8 @@
   "ucp-hi": "Hi, {name}",
   "ucp-welcome": "In here, you can change your password",
 
-  "la-page-title": "List Account",
+  "la-page-title": "List User",
+  "au-page-title": "Add new user",
 
   "ots-parent-title": "Outlet Store Management",
   "otsl-page-title": "Manage Outlet Store List",
