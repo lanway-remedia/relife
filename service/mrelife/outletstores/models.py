@@ -1,4 +1,5 @@
 import os
+from io import BytesIO
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group
@@ -82,7 +83,9 @@ class OutletStore(Model):
             image = image.resize((50, 50), Image.ANTIALIAS)
 
             f_thumb = storage.open(thumb_file_path, "w")
-            image.save(f_thumb, 'JPEG')
+            out_im2 = BytesIO()
+            image.save(out_im2, "JPEG")
+            f_thumb.write(out_im2.getvalue())
             f_thumb.close()
             if storage.exists(thumb_file_path):
                 self.img_thumbnail = storage.url(thumb_file_path)

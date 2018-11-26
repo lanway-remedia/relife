@@ -1,4 +1,5 @@
 import os
+from io import BytesIO
 
 from django.core.files.storage import default_storage as storage
 from django.db.models import (CASCADE, BooleanField, CharField, DateTimeField,
@@ -58,8 +59,10 @@ class ModelHouse(Model):
             hsize = int((float(height) * float(wpercent)))
             image = image.resize((basewidth, hsize), Image.ANTIALIAS)
 
-            f_thumb = storage.open(thumb_file_path, "w")
-            image.save(f_thumb, "JPEG")
+            f_thumb = storage.open(thumb_file_path, "wb")
+            out_im2 = BytesIO()
+            image.save(out_im2, "JPEG")
+            f_thumb.write(out_im2.getvalue())
             f_thumb.close()
             self.img_thumbnail = thumb_file_path
             self.save()

@@ -27,7 +27,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     content = serializers.CharField()
     img_thumbnail = serializers.CharField(max_length=800, allow_blank=True, allow_null=True, read_only=True)
-    img_large = serializers.ImageField()
+    img_large = serializers.ImageField(max_length=None, allow_empty_file=True, use_url=True)
     latitude = serializers.CharField()
     longtitude = serializers.CharField()
     address = serializers.CharField(max_length=800)

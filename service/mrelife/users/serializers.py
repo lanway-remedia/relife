@@ -2,12 +2,22 @@ from django.contrib.auth import get_user_model
 from rest_framework.serializers import (CharField, ModelSerializer, Serializer,
                                         ValidationError)
 
+from mrelife.outletstores.models import OutletStore
 from mrelife.utils.validates import email_exist
 
 User = get_user_model()
 
 
+class OutletStoreSerializer(ModelSerializer):
+
+    class Meta:
+        model = OutletStore
+        fields = '__all__'
+
+
 class UserSerializer(ModelSerializer):
+    store = OutletStoreSerializer(read_only=True)
+
     class Meta:
         model = User
         fields = '__all__'
@@ -16,7 +26,6 @@ class UserSerializer(ModelSerializer):
         """
         Check that email exists in system
         """
-        # TODO: Change error message
         if email_exist(attrs['email']):
             raise ValidationError("US004")
         return attrs
@@ -29,6 +38,12 @@ class UserSerializer(ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+
+class UserWithoutRequireInfoSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        exclude = ('password', 'username', 'email')
 
 
 class ProfileSerializer(ModelSerializer):
