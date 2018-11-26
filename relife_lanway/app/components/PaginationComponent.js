@@ -50,6 +50,14 @@ class PaginationComponent extends Component {
     let pagesCount = count == 0 ? 1 : Math.ceil(count / limit)
     return (
       <div className="toolbar mb-5">
+        <div className="total">
+          <span>
+            {I18nUtils.formatMessage(
+              { id: 'toolbar-totalRecords' },
+              { limit: limit, total: count }
+            )}
+          </span>
+        </div>
         <div className="limiter">
           <Label for="limit">{I18nUtils.t('toolbar-limit')}</Label>
           <Input

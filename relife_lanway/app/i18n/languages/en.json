@@ -43,6 +43,18 @@
   "exh-ed-page-title": "Edit '{name}'",
   "exh-title-back-list": "Back to Manage Exhibition List Page",
 
+  "tag-parent-title": "Tag Management",
+  "tag-page-title": "Manage Tag List",
+  "tag-add-page-title": "Add New Tag",
+  "tag-ed-page-title": "Edit '{name}'",
+  "tag-title-back-list": "Back to Manage Tag List Page",
+
+  "cate-parent-title": "Category Management",
+  "cate-page-title": "Manage Category List",
+  "cate-add-page-title": "Add New Category",
+  "cate-ed-page-title": "Edit '{name}'",
+  "cate-title-back-list": "Back to Manage Category List Page",
+
   "all-place-title": "Please input title here",
   "all-place-name": "Please input name here",
   "all-place-username": "Please input username here",
@@ -140,8 +152,9 @@
   "toast-add-sucess": "Add new {name} success",
   "toast-add-error": "Add new {name} error",
   "toast-no-data": "No Data",
+  "toast-no-record": "No Records In Table",
 
-  "toolbar-totalRecords": "Showing {limit} in {total} records",
+  "toolbar-totalRecords": "Showing {limit} in {total} record(s)",
   "toolbar-limit": "Visible",
 
   "login-page-title": "RE:STYLE SYSTEM LOGIN PAGE",

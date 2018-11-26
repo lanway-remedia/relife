@@ -30,6 +30,10 @@ import EditExhibitionPage from './containers/exhibtions/EditExhibitionPage'
 import ManageTagListPage from './containers/tags/ManageTagListPage'
 import AddNewTagPage from './containers/tags/AddNewTagPage'
 import EditTagPage from './containers/tags/EditTagPage'
+//Categories
+import ManageCategoryListPage from './containers/categories/ManageCategoryListPage'
+import AddNewCategoryPage from './containers/categories/AddNewCategoryPage'
+import EditCategoryPage from './containers/categories/EditCategoryPage'
 //languages
 import Language from './components/Language'
 
@@ -146,7 +150,7 @@ class Routes extends React.Component {
           </Sidebar.Menu.Item>
           <Sidebar.Menu.Item
             title={I18nUtils.t('exh-parent-title')}
-            icon={{ className: 'fa-trello' }}
+            icon={{ className: 'fa-camera-retro' }}
           >
             <Sidebar.Menu.Item
               active={this.props.location.pathname === '/add-new-exhibition'}
@@ -178,6 +182,23 @@ class Routes extends React.Component {
               title={I18nUtils.t('tag-page-title')}
               icon={{ className: 'fa-list-ol' }}
               onClick={() => this.props.history.push('/manage-tag-list')}
+            />
+          </Sidebar.Menu.Item>
+          <Sidebar.Menu.Item
+            title={I18nUtils.t('cate-parent-title')}
+            icon={{ className: 'fa-link' }}
+          >
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/add-new-category'}
+              title={I18nUtils.t('cate-add-page-title')}
+              icon={{ className: 'fa-plus-square' }}
+              onClick={() => this.props.history.push('/add-new-category')}
+            />
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/manage-category-list'}
+              title={I18nUtils.t('cate-page-title')}
+              icon={{ className: 'fa-list-ol' }}
+              onClick={() => this.props.history.push('/manage-category-list')}
             />
           </Sidebar.Menu.Item>
           {/* <Sidebar.Menu.Item
@@ -278,6 +299,18 @@ class Routes extends React.Component {
                 <Route
                   path="/edit-tag/:id"
                   component={requireLogin(EditTagPage)}
+                />
+                <Route
+                  path="/manage-category-list"
+                  component={requireLogin(ManageCategoryListPage)}
+                />
+                <Route
+                  path="/add-new-category"
+                  component={requireLogin(AddNewCategoryPage)}
+                />
+                <Route
+                  path="/edit-category/:id"
+                  component={requireLogin(EditCategoryPage)}
                 />
               </Switch>
             </div>

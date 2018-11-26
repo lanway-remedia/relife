@@ -29,7 +29,7 @@ class ManageExhibitionListPage extends React.Component {
       limit: 0,
       exhList: []
     }
-    this.handleDeleteStore = this.handleDeleteStore.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
   }
@@ -53,6 +53,9 @@ class ManageExhibitionListPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
+      if (response.data.count === 0) {
+        toast.warn(I18nUtils.t('toast-no-record'))
+      }
       if (response.isGetList) {
         this.setState({
           exhList: response.data.results,
@@ -62,7 +65,7 @@ class ManageExhibitionListPage extends React.Component {
     }
   }
 
-  handleDeleteStore = exh => {
+  handleDelete = exh => {
     this.props.show(ModalName.COMMON, {
       bodyClass: 'text-center',
       title: I18nUtils.formatMessage(
@@ -125,6 +128,13 @@ class ManageExhibitionListPage extends React.Component {
               theadTitle="#,Image,Title,Start Date,End Date,Address, Zipcode,Action"
             />
             <tbody>
+              {exhList.length === 0 && (
+                <tr>
+                  <td colSpan="8" className="alert alert-warning">
+                    {I18nUtils.t('toast-no-record')}
+                  </td>
+                </tr>
+              )}
               {exhList.map((exh, key) => {
                 return (
                   <tr key={key}>
@@ -159,7 +169,7 @@ class ManageExhibitionListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.handleDeleteStore(exh)}
+                        onClick={() => this.handleDelete(exh)}
                       >
                         <i className="fa fa-trash" />
                       </Button>
@@ -179,9 +189,6 @@ ManageExhibitionListPage.propTypes = {
   history: PropTypes.object,
   processing: PropTypes.bool,
   data: PropTypes.object,
-  totalCount: PropTypes.number,
-  pageSize: PropTypes.string,
-  currentPage: PropTypes.string,
   exhibitionListRequest: PropTypes.func,
   exhibitionDeleteRequest: PropTypes.func,
   show: PropTypes.func,

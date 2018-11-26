@@ -29,7 +29,7 @@ class ManageOutletStoreListPage extends React.Component {
       limit: 0,
       storeList: []
     }
-    this.handleDeleteStore = this.handleDeleteStore.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
   }
@@ -54,6 +54,9 @@ class ManageOutletStoreListPage extends React.Component {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
       if (response.isGetStoreList) {
+        if (response.data.count === 0) {
+          toast.warn(I18nUtils.t('toast-no-record'))
+        }
         this.setState({
           storeList: response.data.results,
           count: response.data.count
@@ -62,7 +65,7 @@ class ManageOutletStoreListPage extends React.Component {
     }
   }
 
-  handleDeleteStore = store => {
+  handleDelete = store => {
     this.props.show(ModalName.COMMON, {
       bodyClass: 'text-center',
       title: I18nUtils.formatMessage(
@@ -121,6 +124,13 @@ class ManageOutletStoreListPage extends React.Component {
               theadTitle="#,Image,Title,Email,Phone,Address,Zipcode,Action"
             />
             <tbody>
+              {storeList.length === 0 && (
+                <tr>
+                  <td colSpan="8" className="alert alert-warning">
+                    {I18nUtils.t('toast-no-record')}
+                  </td>
+                </tr>
+              )}
               {storeList.map((store, key) => {
                 return (
                   <tr key={key}>
@@ -155,7 +165,7 @@ class ManageOutletStoreListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.handleDeleteStore(store)}
+                        onClick={() => this.handleDelete(store)}
                       >
                         <i className="fa fa-trash" />
                       </Button>
@@ -175,9 +185,6 @@ ManageOutletStoreListPage.propTypes = {
   history: PropTypes.object,
   processing: PropTypes.bool,
   data: PropTypes.object,
-  totalCount: PropTypes.number,
-  pageSize: PropTypes.string,
-  currentPage: PropTypes.string,
   outletStoreListRequest: PropTypes.func,
   outletStoreDeleteRequest: PropTypes.func,
   show: PropTypes.func,

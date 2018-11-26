@@ -4,7 +4,7 @@
 
 import apiClient from '../../shared/apiClient'
 
-export default class OutletStoresService {
+export default class TagsService {
   listTag(data) {
     return apiClient.get(`/tags/?limit=${data.limit}&offset=${data.offset}`)
   }

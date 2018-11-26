@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import { ModalName } from '../../constants'
-import TagActions from '../../redux/wrapper/TagsRedux'
+import CateActions from '../../redux/wrapper/CategoriesRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
@@ -20,14 +20,15 @@ import { toast } from 'react-toastify'
 import URLSearchParams from 'url-search-params'
 import { DefaultValue } from '../../constants'
 
-class ManageTagListPage extends React.Component {
+class ManageCategoryListPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       count: 0,
       page: 0,
       limit: 0,
-      tagList: []
+      type: 1,
+      cateList: []
     }
     this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
@@ -41,13 +42,14 @@ class ManageTagListPage extends React.Component {
     let data = {
       offset: (page - 1) * limit,
       limit: limit,
-      page: page
+      page: page,
+      type: this.state.type
     }
     this.setState({
       page: data.page,
       limit: data.limit
     })
-    this.props.tagListRequest(data)
+    this.props.cateListRequest(data)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,59 +60,59 @@ class ManageTagListPage extends React.Component {
           toast.warn(I18nUtils.t('toast-no-record'))
         }
         this.setState({
-          tagList: response.data.results,
+          cateList: response.data.results,
           count: response.data.count
         })
       }
     }
   }
 
-  handleDelete = tag => {
+  handleDelete = cate => {
     this.props.show(ModalName.COMMON, {
       bodyClass: 'text-center',
       title: I18nUtils.formatMessage(
         { id: 'modal-del-header' },
-        { name: tag.title }
+        { name: cate.title }
       ),
       message: I18nUtils.t('modal-del-body'),
-      okFunction: () => this.okFunction(tag)
+      okFunction: () => this.okFunction(cate)
     })
   }
 
   redirectToAddNew = () => {
-    this.props.history.push('/add-new-tag')
+    this.props.history.push('/add-new-category')
   }
 
-  redirectToEdit = tag => {
-    this.props.history.push(`/edit-tag/${tag.id}`)
+  redirectToEdit = cate => {
+    this.props.history.push(`/edit-category/${cate.id}`)
   }
 
-  okFunction = tag => {
-    const originTagList = this.state.tagList
-    const tagList = originTagList.filter(t => t.id !== tag.id)
-    const total = tagList.length
+  okFunction = cate => {
+    const originCateList = this.state.cateList
+    const cateList = originCateList.filter(c => c.id !== cate.id)
+    const total = cateList.length
 
-    this.setState({ tagList, total })
+    this.setState({ cateList, total })
 
-    this.props.tagDeleteRequest(tag.id)
+    this.props.cateDeleteRequest(cate.id)
     this.props.hide(ModalName.COMMON)
     toast.success(
-      I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: tag.name })
+      I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: cate.name })
     )
   }
 
   render() {
-    let { page, limit, count, tagList } = this.state
+    let { page, limit, count, cateList } = this.state
 
     return (
-      <Container fluid className="manage-tag-list">
+      <Container fluid className="manage-cate-list">
         <Helmet>
-          <title>{I18nUtils.t('tag-page-title')}</title>
+          <title>{I18nUtils.t('cate-page-title')}</title>
         </Helmet>
         <div className="page-title">
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />
-            {I18nUtils.t('tag-page-title')}
+            {I18nUtils.t('cate-page-title')}
             <Button onClick={this.redirectToAddNew} color="success">
               {I18nUtils.t('btn-add-new')}
             </Button>
@@ -125,18 +127,18 @@ class ManageTagListPage extends React.Component {
               theadTitle="#,Name,Action"
             />
             <tbody>
-              {tagList.length === 0 && (
+              {cateList.length === 0 && (
                 <tr>
                   <td colSpan="3" className="alert alert-warning">
                     {I18nUtils.t('toast-no-record')}
                   </td>
                 </tr>
               )}
-              {tagList.map((tag, key) => {
+              {cateList.map((cate, key) => {
                 return (
                   <tr key={key}>
                     <td>{(page - 1) * limit + key + 1}</td>
-                    <td>{tag.name}</td>
+                    <td>{cate.name}</td>
                     <td>
                       <Button
                         title={I18nUtils.t('edit')}
@@ -144,7 +146,7 @@ class ManageTagListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.redirectToEdit(tag)}
+                        onClick={() => this.redirectToEdit(cate)}
                       >
                         <i className="fa fa-edit" />
                       </Button>
@@ -154,7 +156,7 @@ class ManageTagListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.handleDelete(tag)}
+                        onClick={() => this.handleDelete(cate)}
                       >
                         <i className="fa fa-trash" />
                       </Button>
@@ -170,30 +172,30 @@ class ManageTagListPage extends React.Component {
   }
 }
 
-ManageTagListPage.propTypes = {
+ManageCategoryListPage.propTypes = {
   history: PropTypes.object,
   processing: PropTypes.bool,
   data: PropTypes.object,
-  tagListRequest: PropTypes.func,
-  tagDeleteRequest: PropTypes.func,
+  cateListRequest: PropTypes.func,
+  cateDeleteRequest: PropTypes.func,
   show: PropTypes.func,
   hide: PropTypes.func
 }
 
 const mapStateToProps = state => {
   return {
-    processing: state.tags.processing,
-    data: state.tags.data
+    processing: state.categories.processing,
+    data: state.categories.data
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ show, hide }, dispatch),
-  tagListRequest: data => dispatch(TagActions.tagListRequest(data)),
-  tagDeleteRequest: data => dispatch(TagActions.tagDeleteRequest(data))
+  cateListRequest: data => dispatch(CateActions.cateListRequest(data)),
+  cateDeleteRequest: data => dispatch(CateActions.cateDeleteRequest(data))
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ManageTagListPage))
+)(withRouter(ManageCategoryListPage))
