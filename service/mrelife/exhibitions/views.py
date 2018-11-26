@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from mrelife.commons.common_fnc import CommonFuntion
+from rest_framework.pagination import LimitOffsetPagination
 from mrelife.events.models import EventExhibition
 from mrelife.exhibitions.models import Exhibition, ExhibitionContact
 from mrelife.exhibitions.serializers import (ExhibitionContactReplySerializer,
@@ -24,12 +25,11 @@ class EhibitionViewSet(viewsets.ModelViewSet):
 
     queryset = Exhibition.objects.all()
     serializer_class = ExhibitionSerializer
+    pagination_class = LimitOffsetPagination
 
-    def list(self, request):
-        queryset = Exhibition.objects.filter(is_active=1)
-        serializer = ExhibitionSerializer(queryset, many=True)
-        return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
-
+    def list(self, request, *args, **kwargs):
+        self.queryset = Exhibition.objects.all()
+        return super(EhibitionViewSet, self).list(request, *args, **kwargs)
     def retrieve(self, request, pk=None):
         try:
             queryset = Exhibition.objects.all()

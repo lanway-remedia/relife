@@ -8,9 +8,9 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.pagination import LimitOffsetPagination
 
 from mrelife.commons.common_fnc import CommonFuntion
-from mrelife.commons.pagination import LargeResultsSetPagination
 from mrelife.events.models import Event, EventContact, EventContactReply
 from mrelife.events.serializers import EventContactReplySerializer, EventContactSerializer, EventSerializer
 
@@ -19,12 +19,12 @@ class EventViewSet(viewsets.ModelViewSet):
 
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    pagination_class = LargeResultsSetPagination
+    pagination_class = LimitOffsetPagination
 
     def list(self, request):
-        queryset = Event.objects.filter(is_active=1)
+        self.queryset = Event.objects.filter(is_active=1)
         serializer = EventSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return super(EventViewSet, self).list(request)
 
     def retrieve(self, request, pk=None):
         queryset = Event.objects.all().filter(id=self.kwargs['pk'])
