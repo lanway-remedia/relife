@@ -2,6 +2,7 @@
 import datetime
 
 from django.conf import settings
+from rest_framework.response import Response
 
 
 class CommonFuntion():
@@ -10,3 +11,12 @@ class CommonFuntion():
             item.is_active = settings.IS_INACTIVE
             item.updated = datetime.now()
             item.save()
+
+    def resultResponse(status, data, messageCode, messageParams):
+        result = {
+            'status': status,
+            'messageCode': messageCode,
+            'messageParams': messageParams,
+            'data': data
+        }
+        return result
