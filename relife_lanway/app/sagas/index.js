@@ -153,6 +153,8 @@ export default function* root() {
     //user
     takeLatest(UsersTypes.USER_LIST_REQUEST, UsersSagas.listUser),
     takeLatest(UsersTypes.ADD_USER_REQUEST, UsersSagas.addUser),
+    takeLatest(UsersTypes.EDIT_USER_REQUEST, UsersSagas.editUser),
+    takeLatest(UsersTypes.FIND_USER_BY_ID, UsersSagas.findUserById),
     takeLatest(UsersTypes.USERS_FAILURE, ErrorSagas.handleError)
   ]
 }

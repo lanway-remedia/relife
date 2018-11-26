@@ -18,6 +18,9 @@ import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
 //users
 import UserListPage from './containers/users/UserListPage'
 import UserDetailPage from './containers/users/UserDetailPage'
+import AddUserPage from './containers/users/AddUserPage'
+import EditUserPage from './containers/users/EditUserPage'
+import ResetPassUserPage from './containers/users/ResetPassUserPage'
 //outletstores
 import ManageOutletStoreListPage from './containers/outletstores/ManageOutletStoreListPage'
 import AddNewOutletStorePage from './containers/outletstores/AddNewOutletStorePage'
@@ -113,10 +116,10 @@ class Routes extends React.Component {
               onClick={() => this.props.history.push('/add-user')}
             />
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/list-user'}
+              active={this.props.location.pathname === '/users'}
               title={I18nUtils.t('la-page-title')}
               icon={{ className: 'fa-list-ol' }}
-              onClick={() => this.props.history.push('/list-user')}
+              onClick={() => this.props.history.push('/users')}
             />
           </Sidebar.Menu.Item>
           <Sidebar.Menu.Item
@@ -214,12 +217,24 @@ class Routes extends React.Component {
                   component={requireLogin(ProfileChangePassPage)}
                 />
                 <Route
-                  path="/list-user"
+                  path="/users"
                   component={requireLogin(UserListPage)}
                 />
                 <Route
-                  path="/add-user"
+                  path="/user/:id"
                   component={requireLogin(UserDetailPage)}
+                />
+                <Route
+                  path="/add-user"
+                  component={requireLogin(AddUserPage)}
+                />
+                <Route
+                  path="/edit-user/:id"
+                  component={requireLogin(EditUserPage)}
+                />
+                <Route
+                  path="/reset-password-user/:id"
+                  component={requireLogin(ResetPassUserPage)}
                 />
                 <Route
                   path="/edit-outlet-store/:id"

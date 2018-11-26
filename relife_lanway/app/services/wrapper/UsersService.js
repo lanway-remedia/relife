@@ -13,4 +13,12 @@ export default class UsersService {
   addUser(data) {
     return apiClient.post(`/users/v1/users/`, data)
   }
+
+  editUser(data) {
+    return apiClient.put(`/users/v1/users/${data.id}/`, data)
+  }
+
+  findUserById(id) {
+    return apiClient.get(`/users/v1/users/${id}`)
+  }
 }
