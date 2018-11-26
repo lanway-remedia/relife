@@ -4,20 +4,21 @@ from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.authentication import (BasicAuthentication,
+                                           SessionAuthentication)
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from mrelife.commons.pagination import LargeResultsSetPagination
-from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreContactReply, OutletStoreMedia
-from mrelife.outletstores.serializers import (
-    OutletStoreContactReplySerializer,
-    OutletStoreContactSerializer,
-    OutletStoreMediaSerializer,
-    OutletStoreSerializer
-)
+from mrelife.outletstores.models import (OutletStore, OutletStoreContact,
+                                         OutletStoreContactReply,
+                                         OutletStoreMedia)
+from mrelife.outletstores.serializers import (OutletStoreContactReplySerializer,
+                                              OutletStoreContactSerializer,
+                                              OutletStoreMediaSerializer,
+                                              OutletStoreSerializer)
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
 
@@ -32,13 +33,18 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
 
     def retrieve(self, request, pk=None):
-        queryset = OutletStore.objects.filter(id=self.kwargs['pk']).filter(is_active=1)
-        serializer = OutletStoreSerializer(queryset, many=True)
-        output = {"status": True, 'messageCode': 'MSG01', "data": serializer.data}
-        return Response(output, status=status.HTTP_200_OK)
+        try:
+            queryset = OutletStore.objects.all()
+            outletstoreObject = get_object_or_404(queryset, pk=pk)
+            serializer = OutletStoreSerializer(outletstoreObject)
+            output = {"status": True, 'messageCode': 'MSG01', "data": serializer.data}
+            return Response(output, status=status.HTTP_200_OK)
+        except Exception as e:
+            output = {"status": False, 'messageCode': 'MSG01', "data": []}
+            return Response(output, status=status.HTTP_200_OK)
 
     def create(self, request):
-       
+        request.data['create_user_id'] = request.user.id
         serializer = OutletStoreSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
@@ -55,7 +61,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
             output = {"status": True, 'messageCode': 'MSG01', "data": serializer.data}
             return Response(output, status=status.HTTP_200_OK)
-        
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update_active(self, objectM):
@@ -158,10 +164,14 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
-        queryset = OutletStoreContactReply.objects.all().filter(id=self.kwargs['pk'])
-        serializer = OutletStoreContactReplySerializer(queryset, many=True)
-        output = {"status": True, 'messageCode': 'MSG01', "data": serializer.data}
-        return Response(output, status=status.HTTP_200_OK)
+        try:
+            queryset = OutletStoreContactReply.get(id=self.kwargs['pk'])
+            serializer = OutletStoreContactReplySerializer(queryset)
+            output = {"status": True, 'messageCode': 'MSG01', "data": serializer.data}
+            return Response(output, status=status.HTTP_200_OK)
+        except Exception as e:
+            output = {"status": False, 'messageCode': 'MSG01', "data": []}
+            return Response(output, status=status.HTTP_200_OK)
 
     def create(self, request):
 
