@@ -26,6 +26,10 @@ import EditOutletStorePage from './containers/outletstores/EditOutletStorePage'
 import ManageExhibitionListPage from './containers/exhibtions/ManageExhibitionListPage'
 import AddNewExhibitionPage from './containers/exhibtions/AddNewExhibitionPage'
 import EditExhibitionPage from './containers/exhibtions/EditExhibitionPage'
+//Tags
+import ManageTagListPage from './containers/tags/ManageTagListPage'
+import AddNewTagPage from './containers/tags/AddNewTagPage'
+import EditTagPage from './containers/tags/EditTagPage'
 //languages
 import Language from './components/Language'
 
@@ -159,6 +163,23 @@ class Routes extends React.Component {
               onClick={() => this.props.history.push('/manage-exhibition-list')}
             />
           </Sidebar.Menu.Item>
+          <Sidebar.Menu.Item
+            title={I18nUtils.t('tag-parent-title')}
+            icon={{ className: 'fa-tags' }}
+          >
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/add-new-tag'}
+              title={I18nUtils.t('tag-add-page-title')}
+              icon={{ className: 'fa-plus-square' }}
+              onClick={() => this.props.history.push('/add-new-tag')}
+            />
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/manage-tag-list'}
+              title={I18nUtils.t('tag-page-title')}
+              icon={{ className: 'fa-list-ol' }}
+              onClick={() => this.props.history.push('/manage-tag-list')}
+            />
+          </Sidebar.Menu.Item>
           {/* <Sidebar.Menu.Item
             active={this.props.location.pathname == '/article'}
             onClick={() => this.props.history.push('/article')}
@@ -202,7 +223,8 @@ class Routes extends React.Component {
               <ToastContainer />
               <Switch>
                 <Route
-                  exact path="/"
+                  exact
+                  path="/"
                   component={requireLogin(ProfileInfoPage)}
                 />
                 <Route
@@ -244,6 +266,18 @@ class Routes extends React.Component {
                 <Route
                   path="/edit-exhibition/:id"
                   component={requireLogin(EditExhibitionPage)}
+                />
+                <Route
+                  path="/manage-tag-list"
+                  component={requireLogin(ManageTagListPage)}
+                />
+                <Route
+                  path="/add-new-tag"
+                  component={requireLogin(AddNewTagPage)}
+                />
+                <Route
+                  path="/edit-tag/:id"
+                  component={requireLogin(EditTagPage)}
                 />
               </Switch>
             </div>

@@ -103,6 +103,7 @@ img {
     position: absolute;
     bottom: -17px;
     left: 0;
+    @include text-overflow-multiple-lines();
   }
 }
 

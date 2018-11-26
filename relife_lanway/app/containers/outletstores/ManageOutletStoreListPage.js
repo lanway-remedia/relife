@@ -15,37 +15,48 @@ import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
-import UltimatePagination from 'react-ultimate-pagination-bootstrap-4'
-import { paginate } from '../../utils/paginate'
+import PaginationComponent from '../../components/PaginationComponent'
 import { toast } from 'react-toastify'
+import URLSearchParams from 'url-search-params'
+import { DefaultValue } from '../../constants'
 
 class ManageOutletStoreListPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      page: 1,
-      pageLimit: 10,
-      total: 10,
+      count: 0,
+      page: 0,
+      limit: 0,
       storeList: []
     }
     this.handleDeleteStore = this.handleDeleteStore.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
-    this.onPageChange = this.onPageChange.bind(this)
   }
 
   componentDidMount() {
-    this.props.outletStoreListRequest({})
+    let params = new URLSearchParams(this.props.history.location.search)
+    let page = params.get('page') * 1 || DefaultValue.PAGE
+    let limit = params.get('limit') * 1 || DefaultValue.LIMIT
+    let data = {
+      offset: (page - 1) * limit,
+      limit: limit,
+      page: page
+    }
+    this.setState({
+      page: data.page,
+      limit: data.limit
+    })
+    this.props.outletStoreListRequest(data)
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
-      console.log(response)
       if (response.isGetStoreList) {
         this.setState({
-          storeList: response.data,
-          total: response.data.length
+          storeList: response.data.results,
+          count: response.data.count
         })
       }
     }
@@ -85,16 +96,8 @@ class ManageOutletStoreListPage extends React.Component {
     )
   }
 
-  onPageChange(page) {
-    this.setState({ page })
-  }
-
   render() {
-    let { page, total, pageLimit, storeList: allStore } = this.state
-    const pagesCount = Math.ceil(total / pageLimit)
-
-    const storeList = paginate(allStore, page, pageLimit)
-
+    let { page, limit, storeList, count } = this.state
     return (
       <Container fluid className="manage-outletstore-list">
         <Helmet>
@@ -109,15 +112,9 @@ class ManageOutletStoreListPage extends React.Component {
             </Button>
           </h1>
         </div>
-        <FilterGroupComponent
-          inputTitle="Title,Email,Phone,Address,Zipcode"
-        />
+        <FilterGroupComponent inputTitle="Title,Email,Phone,Address,Zipcode" />
         <div className="formTable">
-          <UltimatePagination
-            currentPage={page}
-            totalPages={pagesCount}
-            onChange={this.onPageChange}
-          />
+          <PaginationComponent count={count} />
           <Table hover>
             <TableHeadComponent
               onSort={this.handleSort}
@@ -127,7 +124,7 @@ class ManageOutletStoreListPage extends React.Component {
               {storeList.map((store, key) => {
                 return (
                   <tr key={key}>
-                    <td>{(page - 1) * 10 + key + 1}</td>
+                    <td>{(page - 1) * limit + key + 1}</td>
                     <td>
                       <img
                         alt={store.title}

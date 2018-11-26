@@ -15,27 +15,39 @@ import ExhibitionActions from '../../redux/wrapper/ExhibitionsRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
-import UltimatePagination from 'react-ultimate-pagination-bootstrap-4'
-import { paginate } from '../../utils/paginate'
+import PaginationComponent from '../../components/PaginationComponent'
 import { toast } from 'react-toastify'
+import URLSearchParams from 'url-search-params'
+import { DefaultValue } from '../../constants'
 
 class ManageExhibitionListPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      page: 1,
-      pageLimit: 10,
-      total: 10,
+      count: 0,
+      page: 0,
+      limit: 0,
       exhList: []
     }
     this.handleDeleteStore = this.handleDeleteStore.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
-    this.onPageChange = this.onPageChange.bind(this)
   }
 
   componentDidMount() {
-    this.props.exhibitionListRequest({})
+    let params = new URLSearchParams(this.props.history.location.search)
+    let page = params.get('page') * 1 || DefaultValue.PAGE
+    let limit = params.get('limit') * 1 || DefaultValue.LIMIT
+    let data = {
+      offset: (page - 1) * limit,
+      limit: limit,
+      page: page
+    }
+    this.setState({
+      page: data.page,
+      limit: data.limit
+    })
+    this.props.exhibitionListRequest(data)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,8 +55,8 @@ class ManageExhibitionListPage extends React.Component {
       let response = nextProps.data
       if (response.isGetList) {
         this.setState({
-          exhList: response.data,
-          total: response.data.length
+          exhList: response.data.results,
+          count: response.data.count
         })
       }
     }
@@ -84,15 +96,8 @@ class ManageExhibitionListPage extends React.Component {
     )
   }
 
-  onPageChange(page) {
-    this.setState({ page })
-  }
-
   render() {
-    let { page, total, pageLimit, exhList: allExh } = this.state
-    const pagesCount = Math.ceil(total / pageLimit)
-
-    const exhList = paginate(allExh, page, pageLimit)
+    let { page, limit, count, exhList } = this.state
 
     return (
       <Container fluid className="manage-exhibition-list">
@@ -113,11 +118,7 @@ class ManageExhibitionListPage extends React.Component {
           calendarName="Start Date"
         />
         <div className="formTable">
-          <UltimatePagination
-            currentPage={page}
-            totalPages={pagesCount}
-            onChange={this.onPageChange}
-          />
+          <PaginationComponent count={count} />
           <Table hover>
             <TableHeadComponent
               onSort={this.handleSort}
@@ -127,7 +128,7 @@ class ManageExhibitionListPage extends React.Component {
               {exhList.map((exh, key) => {
                 return (
                   <tr key={key}>
-                    <td>{(page - 1) * 10 + key + 1}</td>
+                    <td>{(page - 1) * limit + key + 1}</td>
                     <td>
                       <img
                         alt={exh.title}
