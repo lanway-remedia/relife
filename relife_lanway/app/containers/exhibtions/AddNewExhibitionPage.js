@@ -95,10 +95,7 @@ class AddNewExhibitionPage extends React.Component {
   }
 
   handleSubmit = e => {
-    console.log(e)
     e.preventDefault()
-
-    // const fromDate = new Date(this.state.fromDate)
 
     let data = new FormData()
     data.append('num_attend', 111111)
@@ -109,9 +106,9 @@ class AddNewExhibitionPage extends React.Component {
     data.append('zipcode', this.state.zipcode)
     data.append('content', this.state.content)
     data.append('city', this.state.city)
-    data.append('district', this.state.district)
-    data.append('start_time', moment(this.state.fromDate).format('YYYY-MM-DD'))
-    data.append('end_time', moment(this.state.toDate).format('YYYY-MM-DD'))
+    data.append('district_id', this.state.district)
+    data.append('start_time', moment(this.state.fromDate).format('YYYY/MM/DD'))
+    data.append('end_time', moment(this.state.toDate).format('YYYY/MM/DD'))
     data.append('img_large', this.state.thumbnailImage)
     this.props.exhibitionAddRequest(data)
   }
@@ -168,9 +165,9 @@ class AddNewExhibitionPage extends React.Component {
                     className="form-control"
                     selected={this.state.fromDate}
                     onChange={this.handleChangeFromDate}
-                    dateFormat="YYYY-MM-DD"
+                    dateFormat="YYYY/MM/DD"
                     locale="en-us"
-                    placeholderText="yyyy-mm-dd"
+                    placeholderText="yyyy/mm/dd"
                     name="fromDate"
                   />
                   <InputGroupAddon
@@ -183,9 +180,9 @@ class AddNewExhibitionPage extends React.Component {
                     className="form-control"
                     selected={this.state.toDate}
                     onChange={this.handleChangeToDate}
-                    dateFormat="YYYY-MM-DD"
+                    dateFormat="YYYY/MM/DD"
                     locale="en-us"
-                    placeholderText="yyyy-mm-dd"
+                    placeholderText="yyyy/mm/dd"
                     name="toDate"
                   />
                 </InputGroup>

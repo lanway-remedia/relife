@@ -41,7 +41,6 @@ class ManageExhibitionListPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
-      console.log(response)
       if (response.isGetList) {
         this.setState({
           exhList: response.data,

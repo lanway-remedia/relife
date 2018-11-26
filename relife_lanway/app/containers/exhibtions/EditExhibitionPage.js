@@ -9,15 +9,26 @@ import { withRouter } from 'react-router-dom'
 import ExhibitionActions from '../../redux/wrapper/ExhibitionsRedux'
 import ImageUploadComponent from './../../components/ImageUploadComponent'
 import I18nUtils from '../../utils/I18nUtils'
-import { Container, Button, Row, Col, FormGroup, Label } from 'reactstrap'
+import {
+  Container,
+  Button,
+  Row,
+  Col,
+  FormGroup,
+  Label,
+  InputGroup,
+  InputGroupAddon
+} from 'reactstrap'
 import {
   ValidationForm,
   TextInput,
   SelectGroup
 } from 'react-bootstrap4-form-validation'
-import validator from 'validator'
 import { Helmet } from 'react-helmet'
 import { toast } from 'react-toastify'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
+import 'react-datepicker/dist/react-datepicker.css'
 
 class EditExhibitionPage extends React.Component {
   constructor(props) {
@@ -27,14 +38,10 @@ class EditExhibitionPage extends React.Component {
       thumbnailImage: null,
       id: '',
       title: '',
-      email: '',
-      phone: '',
       address: '',
       zipcode: '',
-      traffic: '',
-      website: '',
-      regularHoliday: '',
-      timeServing: '',
+      startTime: '',
+      endTime: '',
       content: '',
       city: '',
       district: ''
@@ -43,6 +50,20 @@ class EditExhibitionPage extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChangeFromDate = this.handleChangeFromDate.bind(this)
+    this.handleChangeToDate = this.handleChangeToDate.bind(this)
+  }
+
+  handleChangeFromDate(date) {
+    this.setState({
+      fromDate: date
+    })
+  }
+
+  handleChangeToDate(date) {
+    this.setState({
+      toDate: date
+    })
   }
 
   componentDidMount() {
@@ -55,32 +76,32 @@ class EditExhibitionPage extends React.Component {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
       if (response.data === undefined || response.data.length === 0) {
-        toast.error(I18nUtils.t('toast-no-data'))
-        this.props.history.replace('/manage-outlet-store-list')
+        if (response.errors) {
+          toast.error(response.errors.non_field_errors)
+        } else {
+          toast.error(I18nUtils.t('toast-no-data'))
+          this.props.history.replace('/manage-exhibition-list')
+        }
       } else {
         this.setState({
-          data: response.data[0],
-          id: response.data[0].id,
-          title: response.data[0].title,
-          email: response.data[0].email,
-          phone: response.data[0].tel,
-          address: response.data[0].address,
-          city: response.data[0].id,
-          district: response.data[0].district,
-          zipcode: response.data[0].zipcode,
-          traffic: response.data[0].traffic,
-          website: response.data[0].home_page,
-          regularHoliday: response.data[0].regular_holiday,
-          timeServing: response.data[0].time_serving,
-          content: response.data[0].content,
-          thumbnailImage: response.data[0].img_large
+          data: response.data,
+          id: response.data.id,
+          title: response.data.title,
+          address: response.data.address,
+          city: response.data.district.city.id,
+          district: response.data.district,
+          zipcode: response.data.zipcode,
+          startTime: response.data.start_time,
+          endTime: response.data.end_time,
+          content: response.data.content,
+          thumbnailImage: response.data.img_large
         })
       }
     }
   }
 
   redirectToListPage = () => {
-    this.props.history.push('/manage-outlet-store-list')
+    this.props.history.push('/manage-exhibition-list')
   }
 
   handleChange = e => {
@@ -99,19 +120,16 @@ class EditExhibitionPage extends React.Component {
     e.preventDefault()
     let data = new FormData()
     data.append('id', this.state.id)
+    data.append('num_attend', 111111)
     data.append('latitude', 111111)
-    data.append('longitude', 222222)
+    data.append('longtitude', 222222)
     data.append('title', this.state.title)
-    data.append('email', this.state.email)
-    data.append('tel', this.state.phone)
     data.append('address', this.state.address)
     data.append('zipcode', this.state.zipcode)
-    data.append('traffic', this.state.traffic)
-    data.append('home_page', this.state.website)
-    data.append('regular_holiday', this.state.regularHoliday)
-    data.append('time_serving', this.state.timeServing)
+    data.append('start_time', moment(this.state.fromDate).format('YYYY/MM/DD'))
+    data.append('end_time', moment(this.state.toDate).format('YYYY/MM/DD'))
     data.append('content', this.state.content)
-    data.append('district', this.state.district)
+    data.append('district', this.state.district.id)
 
     if (typeof this.state.thumbnailImage !== 'string') {
       data.append('img_large', this.state.thumbnailImage)
@@ -182,36 +200,6 @@ class EditExhibitionPage extends React.Component {
             </Col>
             <Col xs="12" md="6">
               <FormGroup>
-                <Label htmlFor="phone">{I18nUtils.t('phone')}</Label>
-                <TextInput
-                  type="text"
-                  name="phone"
-                  id="phone"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.phone}
-                  onChange={this.handleChange}
-                  required
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="email">{I18nUtils.t('email')}</Label>
-                <TextInput
-                  type="text"
-                  name="email"
-                  id="email"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                  validator={validator.isEmail}
-                  errorMessage={{ validator: I18nUtils.t('validate-email') }}
-                  required
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
                 <Label htmlFor="address">{I18nUtils.t('address')}</Label>
                 <TextInput
                   type="text"
@@ -243,6 +231,27 @@ class EditExhibitionPage extends React.Component {
                 </SelectGroup>
               </FormGroup>
             </Col>
+            {/* <Col xs="12" md="6">
+              <FormGroup>
+                <Label htmlFor="city">{I18nUtils.t('city')}</Label>
+                <SelectGroup
+                  name="city"
+                  id="city"
+                  required
+                  errorMessage={I18nUtils.t('lb-select')}
+                  onChange={this.handleChange}
+                  value={
+                    this.state.district.city === null
+                      ? ' '
+                      : this.state.district.city
+                  }
+                >
+                  <option value="">{I18nUtils.t('lb-select')}</option>
+                  <option value="1">Hoàng Mai</option>
+                  <option value="2">Hai Bà Trưng</option>
+                </SelectGroup>
+              </FormGroup>
+            </Col> */}
             <Col xs="12" md="6">
               <FormGroup>
                 <Label htmlFor="zipcode">{I18nUtils.t('zipcode')}</Label>
@@ -259,58 +268,37 @@ class EditExhibitionPage extends React.Component {
             </Col>
             <Col xs="12" md="6">
               <FormGroup>
-                <Label htmlFor="traffic">{I18nUtils.t('traffic')}</Label>
-                <TextInput
-                  type="text"
-                  name="traffic"
-                  id="traffic"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.traffic}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="website">{I18nUtils.t('website')}</Label>
-                <TextInput
-                  type="text"
-                  name="website"
-                  id="website"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.website}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="regularHoliday">
-                  {I18nUtils.t('regular-holiday')}
-                </Label>
-                <TextInput
-                  type="text"
-                  name="regularHoliday"
-                  id="regularHoliday"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.regularHoliday}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="timeServing">
-                  {I18nUtils.t('time-serving')}
-                </Label>
-                <TextInput
-                  type="text"
-                  name="timeServing"
-                  id="timeServing"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.timeServing}
-                  onChange={this.handleChange}
-                />
+                <Label>{I18nUtils.t('start-date')}</Label>
+                <InputGroup className="form-datepicker">
+                  <DatePicker
+                    className="form-control"
+                    selected={this.state.fromDate}
+                    onChange={this.handleChangeFromDate}
+                    dateFormat="YYYY/MM/DD"
+                    locale="en-us"
+                    placeholderText="yyyy/mm/dd"
+                    name="fromDate"
+                    autocompete="off"
+                    value={this.state.startTime}
+                  />
+                  <InputGroupAddon
+                    addonType="prepend"
+                    className="input-group-append"
+                  >
+                    ~
+                  </InputGroupAddon>
+                  <DatePicker
+                    className="form-control"
+                    selected={this.state.toDate}
+                    onChange={this.handleChangeToDate}
+                    dateFormat="YYYY/MM/DD"
+                    locale="en-us"
+                    placeholderText="yyyy/mm/dd"
+                    name="toDate"
+                    autocompete="off"
+                    value={this.state.endTime}
+                  />
+                </InputGroup>
               </FormGroup>
             </Col>
             <Col xs="12" md="12">
@@ -359,8 +347,8 @@ EditExhibitionPage.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    processing: state.outletStores.processing,
-    data: state.outletStores.data
+    processing: state.exhibitions.processing,
+    data: state.exhibitions.data
   }
 }
 

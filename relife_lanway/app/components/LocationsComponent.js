@@ -82,6 +82,15 @@ class LocationsComponent extends Component {
                 (this.state.city === '' && (
                   <option value="0">Please select city</option>
                 ))}
+              {this.state.city !== null ||
+                (this.state.city !== 0 &&
+                  this.state.dataCity.districts[this.state.city].map(
+                    (item, key) => (
+                      <option key={key} value={item.id}>
+                        {item.name}
+                      </option>
+                    )
+                  ))}
               {/* {dataCity[0].districts.map((district, key) => {
                 return (
                   <option key={key} value={district.id}>
