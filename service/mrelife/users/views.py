@@ -20,7 +20,8 @@ from mrelife.authenticates.serializers import ResetPasswordSerializer
 from mrelife.file_managements.serializers import FileSerializer
 from mrelife.outletstores.models import OutletStore
 from mrelife.users.serializers import (PasswordSerializer, ProfileSerializer,
-                                       UserSerializer)
+                                       UserSerializer,
+                                       UserWithoutRequireInfoSerializer)
 from mrelife.utils.groups import GroupUser, IsStore
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.relifepermissions import AdminOrStoreOrDenyPermission
@@ -73,6 +74,10 @@ class UserVs(ModelViewSet):
         if store is not None:
             obj.data['store'] = store.id
         return obj
+
+    def update(self, request, *args, **kwargs):
+        self.serializer_class = UserWithoutRequireInfoSerializer
+        return super(UserVs, self).update(request, *args, **kwargs)
 
 
 class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):

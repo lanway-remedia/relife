@@ -40,6 +40,12 @@ class UserSerializer(ModelSerializer):
         return user
 
 
+class UserWithoutRequireInfoSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        exclude = ('password', 'username', 'email')
+
+
 class ProfileSerializer(ModelSerializer):
     class Meta:
         model = User

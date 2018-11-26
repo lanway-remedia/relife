@@ -80,3 +80,5 @@ To check the logs out, run:
 - docker rmi $(docker images -q)
 
 - docker restart dev_nginx_1
+
+
