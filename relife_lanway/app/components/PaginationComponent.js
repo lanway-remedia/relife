@@ -3,75 +3,75 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import I18nUtils from './../utils/I18nUtils'
-import _ from 'lodash'
 import {
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Label,
   Input
 } from 'reactstrap'
+import UltimatePagination from 'react-ultimate-pagination-bootstrap-4'
+import { DefaultValue } from '../constants'
 
 class PaginationComponent extends Component {
-  render() {
-    const { itemsCount, pageSize, currentPage, onPageChange } = this.props
-
-    const pagesCount = Math.ceil(itemsCount / pageSize)
-    // if (pagesCount === 1) return null
-    const pages = _.range(1, pagesCount + 1)
-    let itemSize
-    if (pageSize > itemsCount) {
-      itemSize = itemsCount
-    } else {
-      itemSize = pageSize
+  constructor(props) {
+    super(props)
+    this.state = {
+      page: DefaultValue.PAGE,
+      limit: DefaultValue.LIMIT
     }
+  }
 
+  componentWillMount() {
+    let params = new URLSearchParams(this.props.history.location.search)
+    let page = params.get('page') * 1 || DefaultValue.PAGE
+    let limit = params.get('limit') * 1 || DefaultValue.LIMIT
+    this.setState({
+      page: page,
+      limit: limit
+    })
+  }
+
+  onPageChange = (page) => {
+    this.props.history.push({
+      search: `?page=${page}&limit=${this.state.limit}`
+    })
+  }
+
+  onPerpageChange = (e) => {
+    this.props.history.push({
+      search: `?page=${this.state.page}&limit=${e.target.value}`
+    })
+  }
+
+  render() {
+    let { count } = this.props
+    let { page, limit } = this.state
+    let pagesCount = count == 0 ? 1 : Math.ceil(count / limit)
     return (
       <div className="toolbar mb-5">
-        <div className="total">
-          {I18nUtils.formatMessage(
-            { id: 'toolbar-totalRecords' },
-            { limit: itemSize, total: itemsCount }
-          )}
-        </div>
         <div className="limiter">
-          <Label for="selectLimit">{I18nUtils.t('toolbar-limit')}</Label>
-          <Input type="select" name="selectLimit" id="selectLimit">
+          <Label for="limit">{I18nUtils.t('toolbar-limit')}</Label>
+          <Input type="select" name="limit" id="limit" value={limit} onChange={this.onPerpageChange}>
             <option value="10">10</option>
             <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="40">40</option>
             <option value="50">50</option>
+            <option value="100">100</option>
           </Input>
         </div>
-        <Pagination className="pagination" aria-label="Page navigation">
-          {pages.map(page => (
-            <PaginationItem
-              key={page}
-              className={
-                page === currentPage ? 'page-item active' : 'page-item'
-              }
-            >
-              <PaginationLink
-                className="page-link"
-                href="#"
-                onClick={() => onPageChange(page)}
-              >
-                {page}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-        </Pagination>
+        {
+          count > 0 &&
+          <UltimatePagination
+            currentPage={page}
+            totalPages={pagesCount}
+            onChange={this.onPageChange}
+          />
+        }
       </div>
     )
   }
 }
 
 PaginationComponent.propTypes = {
-  itemsCount: PropTypes.number.isRequired,
-  pageSize: PropTypes.number.isRequired,
-  currentPage: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func
+  history: PropTypes.object,
+  count: PropTypes.number.isRequired
 }
 
 export default connect()(withRouter(PaginationComponent))

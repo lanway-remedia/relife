@@ -11,7 +11,7 @@ import ProfileActions from '../../redux/wrapper/UserProfileRedux'
 import { Container, Row, Col, Button, Label } from 'reactstrap'
 import I18nUtils from '../../utils/I18nUtils'
 
-import avatarUser from '../../images/admin.jpeg'
+import user from '../../images/user.png'
 
 class ProfileInfoPage extends React.Component {
   constructor(props) {
@@ -30,9 +30,11 @@ class ProfileInfoPage extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
-      this.setState({
-        data: nextProps.data.data
-      })
+      if (nextProps.data.getProfile) {
+        this.setState({
+          data: nextProps.data.data
+        })
+      }
     }
   }
 
@@ -55,7 +57,7 @@ class ProfileInfoPage extends React.Component {
     let { profileImage, data } = this.state
     let fullName = data.first_name + ' ' + data.last_name
     if (data.profile_image != null) profileImage = data.profile_image
-    else profileImage = avatarUser
+    else profileImage = user
     return (
       <Container fluid className="user-dashboard-content">
         <div className="page-title">

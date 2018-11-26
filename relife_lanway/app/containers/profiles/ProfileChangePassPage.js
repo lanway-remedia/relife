@@ -46,11 +46,10 @@ class ProfileChangePassPage extends React.Component {
         id: nextProps.data.data.id
       })
     }
-    console.log(nextProps.data)
   }
 
   redirectToProfile = () => {
-    this.props.history.push('profile-info')
+    this.props.history.push('/')
   }
 
   render() {
