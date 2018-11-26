@@ -7,9 +7,7 @@ import apiClient from '../../shared/apiClient'
 export default class ExhibitionsService {
   listExh(data) {
     return apiClient.get(
-      `/exhibitions/?${data.page ? `page=${data.page}` : ''}${
-        data.page_size ? `&page_size=${data.page_size}` : ''
-      }`
+      `/exhibitions/?limit=${data.limit}&offset=${data.offset}`
     )
   }
   getExh(data) {

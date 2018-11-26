@@ -3,10 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import I18nUtils from './../utils/I18nUtils'
-import {
-  Label,
-  Input
-} from 'reactstrap'
+import { Label, Input } from 'reactstrap'
 import UltimatePagination from 'react-ultimate-pagination-bootstrap-4'
 import { DefaultValue } from '../constants'
 
@@ -29,16 +26,22 @@ class PaginationComponent extends Component {
     })
   }
 
-  onPageChange = (page) => {
+  onPageChange = page => {
     this.props.history.push({
       search: `?page=${page}&limit=${this.state.limit}`
     })
   }
 
-  onPerpageChange = (e) => {
-    this.props.history.push({
-      search: `?page=${this.state.page}&limit=${e.target.value}`
-    })
+  onPerpageChange = e => {
+    if (e.target.value > this.props.count) {
+      this.props.history.push({
+        search: `?page=${this.state.page - 1}&limit=${e.target.value}`
+      })
+    } else {
+      this.props.history.push({
+        search: `?page=${this.state.page}&limit=${e.target.value}`
+      })
+    }
   }
 
   render() {
@@ -47,23 +50,36 @@ class PaginationComponent extends Component {
     let pagesCount = count == 0 ? 1 : Math.ceil(count / limit)
     return (
       <div className="toolbar mb-5">
+        <div className="total">
+          <span>
+            {I18nUtils.formatMessage(
+              { id: 'toolbar-totalRecords' },
+              { limit: limit, total: count }
+            )}
+          </span>
+        </div>
         <div className="limiter">
           <Label for="limit">{I18nUtils.t('toolbar-limit')}</Label>
-          <Input type="select" name="limit" id="limit" value={limit} onChange={this.onPerpageChange}>
+          <Input
+            type="select"
+            name="limit"
+            id="limit"
+            value={limit}
+            onChange={this.onPerpageChange}
+          >
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="50">50</option>
             <option value="100">100</option>
           </Input>
         </div>
-        {
-          count > 0 &&
+        {count > 0 && (
           <UltimatePagination
             currentPage={page}
             totalPages={pagesCount}
             onChange={this.onPageChange}
           />
-        }
+        )}
       </div>
     )
   }

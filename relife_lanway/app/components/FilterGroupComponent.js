@@ -119,9 +119,9 @@ class FilterGroupComponent extends Component {
                       className="form-control"
                       selected={this.state.fromDate}
                       onChange={this.handleChangeFromDate}
-                      dateFormat="YYYY-MM-DD"
+                      dateFormat="YYYY/MM/DD"
                       locale="en-us"
-                      placeholderText="yyyy-mm-dd"
+                      placeholderText="yyyy/mm/dd"
                       name={'filterFrom' + props.calendarName.replace(' ', '')}
                     />
                     <InputGroupAddon
@@ -134,9 +134,9 @@ class FilterGroupComponent extends Component {
                       className="form-control"
                       selected={this.state.toDate}
                       onChange={this.handleChangeToDate}
-                      dateFormat="YYYY-MM-DD"
+                      dateFormat="YYYY/MM/DD"
                       locale="en-us"
-                      placeholderText="yyyy-mm-dd"
+                      placeholderText="yyyy/mm/dd"
                       name={'filterTo' + props.calendarName.replace(' ', '')}
                     />
                   </InputGroup>

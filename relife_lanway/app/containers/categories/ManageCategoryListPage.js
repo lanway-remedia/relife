@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import { ModalName } from '../../constants'
-import ExhibitionActions from '../../redux/wrapper/ExhibitionsRedux'
+import CateActions from '../../redux/wrapper/CategoriesRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
@@ -20,14 +20,15 @@ import { toast } from 'react-toastify'
 import URLSearchParams from 'url-search-params'
 import { DefaultValue } from '../../constants'
 
-class ManageExhibitionListPage extends React.Component {
+class ManageCategoryListPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       count: 0,
       page: 0,
       limit: 0,
-      exhList: []
+      type: 1,
+      cateList: []
     }
     this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
@@ -41,117 +42,103 @@ class ManageExhibitionListPage extends React.Component {
     let data = {
       offset: (page - 1) * limit,
       limit: limit,
-      page: page
+      page: page,
+      type: this.state.type
     }
     this.setState({
       page: data.page,
       limit: data.limit
     })
-    this.props.exhibitionListRequest(data)
+    this.props.cateListRequest(data)
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
-      if (response.data.count === 0) {
-        toast.warn(I18nUtils.t('toast-no-record'))
-      }
       if (response.isGetList) {
+        if (response.data.count === 0) {
+          toast.warn(I18nUtils.t('toast-no-record'))
+        }
         this.setState({
-          exhList: response.data.results,
+          cateList: response.data.results,
           count: response.data.count
         })
       }
     }
   }
 
-  handleDelete = exh => {
+  handleDelete = cate => {
     this.props.show(ModalName.COMMON, {
       bodyClass: 'text-center',
       title: I18nUtils.formatMessage(
         { id: 'modal-del-header' },
-        { name: exh.title }
+        { name: cate.title }
       ),
       message: I18nUtils.t('modal-del-body'),
-      okFunction: () => this.okFunction(exh)
+      okFunction: () => this.okFunction(cate)
     })
   }
 
   redirectToAddNew = () => {
-    this.props.history.push('/add-new-exhibition')
+    this.props.history.push('/add-new-category')
   }
 
-  redirectToEdit = exh => {
-    this.props.history.push(`/edit-exhibition/${exh.id}`)
+  redirectToEdit = cate => {
+    this.props.history.push(`/edit-category/${cate.id}`)
   }
 
-  okFunction = exh => {
-    const originExhList = this.state.exhList
-    const exhList = originExhList.filter(e => e.id !== exh.id)
-    const total = exhList.length
+  okFunction = cate => {
+    const originCateList = this.state.cateList
+    const cateList = originCateList.filter(c => c.id !== cate.id)
+    const total = cateList.length
 
-    this.setState({ exhList, total })
+    this.setState({ cateList, total })
 
-    this.props.exhibitionDeleteRequest(exh.id)
+    this.props.cateDeleteRequest(cate.id)
     this.props.hide(ModalName.COMMON)
     toast.success(
-      I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: exh.title })
+      I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: cate.name })
     )
   }
 
   render() {
-    let { page, limit, count, exhList } = this.state
+    let { page, limit, count, cateList } = this.state
 
     return (
-      <Container fluid className="manage-exhibition-list">
+      <Container fluid className="manage-cate-list">
         <Helmet>
-          <title>{I18nUtils.t('exh-page-title')}</title>
+          <title>{I18nUtils.t('cate-page-title')}</title>
         </Helmet>
         <div className="page-title">
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />
-            {I18nUtils.t('exh-page-title')}
+            {I18nUtils.t('cate-page-title')}
             <Button onClick={this.redirectToAddNew} color="success">
               {I18nUtils.t('btn-add-new')}
             </Button>
           </h1>
         </div>
-        <FilterGroupComponent
-          inputTitle="Title,Address,Zipcode"
-          calendarName="Start Date"
-        />
+        <FilterGroupComponent inputTitle="Name" calendarName="Created Date" />
         <div className="formTable">
           <PaginationComponent count={count} />
           <Table hover>
             <TableHeadComponent
               onSort={this.handleSort}
-              theadTitle="#,Image,Title,Start Date,End Date,Address, Zipcode,Action"
+              theadTitle="#,Name,Action"
             />
             <tbody>
-              {exhList.length === 0 && (
+              {cateList.length === 0 && (
                 <tr>
-                  <td colSpan="8" className="alert alert-warning">
+                  <td colSpan="3" className="alert alert-warning">
                     {I18nUtils.t('toast-no-record')}
                   </td>
                 </tr>
               )}
-              {exhList.map((exh, key) => {
+              {cateList.map((cate, key) => {
                 return (
                   <tr key={key}>
                     <td>{(page - 1) * limit + key + 1}</td>
-                    <td>
-                      <img
-                        alt={exh.title}
-                        src={exh.img_large}
-                        width="150"
-                        height="100"
-                      />
-                    </td>
-                    <td>{exh.title}</td>
-                    <td>{exh.start_time}</td>
-                    <td>{exh.end_time}</td>
-                    <td>{exh.address}</td>
-                    <td>{exh.zipcode}</td>
+                    <td>{cate.name}</td>
                     <td>
                       <Button
                         title={I18nUtils.t('edit')}
@@ -159,7 +146,7 @@ class ManageExhibitionListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.redirectToEdit(exh)}
+                        onClick={() => this.redirectToEdit(cate)}
                       >
                         <i className="fa fa-edit" />
                       </Button>
@@ -169,7 +156,7 @@ class ManageExhibitionListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.handleDelete(exh)}
+                        onClick={() => this.handleDelete(cate)}
                       >
                         <i className="fa fa-trash" />
                       </Button>
@@ -185,32 +172,30 @@ class ManageExhibitionListPage extends React.Component {
   }
 }
 
-ManageExhibitionListPage.propTypes = {
+ManageCategoryListPage.propTypes = {
   history: PropTypes.object,
   processing: PropTypes.bool,
   data: PropTypes.object,
-  exhibitionListRequest: PropTypes.func,
-  exhibitionDeleteRequest: PropTypes.func,
+  cateListRequest: PropTypes.func,
+  cateDeleteRequest: PropTypes.func,
   show: PropTypes.func,
   hide: PropTypes.func
 }
 
 const mapStateToProps = state => {
   return {
-    processing: state.exhibitions.processing,
-    data: state.exhibitions.data
+    processing: state.categories.processing,
+    data: state.categories.data
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ show, hide }, dispatch),
-  exhibitionListRequest: data =>
-    dispatch(ExhibitionActions.exhibitionListRequest(data)),
-  exhibitionDeleteRequest: data =>
-    dispatch(ExhibitionActions.exhibitionDeleteRequest(data))
+  cateListRequest: data => dispatch(CateActions.cateListRequest(data)),
+  cateDeleteRequest: data => dispatch(CateActions.cateDeleteRequest(data))
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ManageExhibitionListPage))
+)(withRouter(ManageCategoryListPage))

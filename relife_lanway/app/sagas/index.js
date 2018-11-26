@@ -14,6 +14,8 @@ import { UserProfileTypes } from '../redux/wrapper/UserProfileRedux'
 import { OutletStoresTypes } from '../redux/wrapper/OutletStoresRedux'
 import { ExhibitionsTypes } from '../redux/wrapper/ExhibitionsRedux'
 import { LocationTypes } from '../redux/wrapper/LocationsRedux'
+import { TagTypes } from '../redux/wrapper/TagsRedux'
+import { CategoryTypes } from '../redux/wrapper/CategoriesRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
@@ -23,6 +25,8 @@ import UserProfileSagas from './wrapper/UserProfileSagas'
 import OutletStoresSagas from './wrapper/OutletStoresSagas'
 import ExhibitionsSagas from './wrapper/ExhibitionsSagas'
 import LocationsSagas from './wrapper/LocationsSagas'
+import TagsSagas from './wrapper/TagsSagas'
+import CategoriesSagas from './wrapper/CategoriesSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -145,6 +149,40 @@ export default function* root() {
       ExhibitionsTypes.EXHIBITION_DELETE_FAILURE,
       ErrorSagas.handleError
     ),
+
+    //Tags
+    // Get List
+    takeLatest(TagTypes.TAG_LIST_REQUEST, TagsSagas.listTag),
+    takeLatest(TagTypes.TAG_LIST_FAILURE, ErrorSagas.handleError),
+    //Get Tag by ID
+    takeLatest(TagTypes.TAG_GET_REQUEST, TagsSagas.getTag),
+    takeLatest(TagTypes.TAG_GET_FAILURE, ErrorSagas.handleError),
+    //Add Tag
+    takeLatest(TagTypes.TAG_ADD_REQUEST, TagsSagas.addTag),
+    takeLatest(TagTypes.TAG_ADD_FAILURE, ErrorSagas.handleError),
+    //Edit Tag
+    takeLatest(TagTypes.TAG_EDIT_REQUEST, TagsSagas.editTag),
+    takeLatest(TagTypes.TAG_EDIT_FAILURE, ErrorSagas.handleError),
+    //Delete Tag
+    takeLatest(TagTypes.TAG_DELETE_REQUEST, TagsSagas.deleteTag),
+    takeLatest(TagTypes.TAG_DELETE_FAILURE, ErrorSagas.handleError),
+
+    //Categories
+    // Get List Category
+    takeLatest(CategoryTypes.CATE_LIST_REQUEST, CategoriesSagas.listCate),
+    takeLatest(CategoryTypes.CATE_LIST_FAILURE, ErrorSagas.handleError),
+    //Get Category by ID
+    takeLatest(CategoryTypes.CATE_GET_REQUEST, CategoriesSagas.getCate),
+    takeLatest(CategoryTypes.CATE_GET_FAILURE, ErrorSagas.handleError),
+    //Add Category
+    takeLatest(CategoryTypes.CATE_ADD_REQUEST, CategoriesSagas.addCate),
+    takeLatest(CategoryTypes.CATE_ADD_FAILURE, ErrorSagas.handleError),
+    //Edit Category
+    takeLatest(CategoryTypes.CATE_EDIT_REQUEST, CategoriesSagas.editCate),
+    takeLatest(CategoryTypes.CATE_EDIT_FAILURE, ErrorSagas.handleError),
+    //Delete Category
+    takeLatest(CategoryTypes.CATE_DELETE_REQUEST, CategoriesSagas.deleteCate),
+    takeLatest(CategoryTypes.CATE_DELETE_FAILURE, ErrorSagas.handleError),
 
     //Get Location
     takeLatest(LocationTypes.LOCATIONS_REQUEST, LocationsSagas.getLocation),
