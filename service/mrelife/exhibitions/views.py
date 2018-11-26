@@ -28,27 +28,24 @@ class EhibitionViewSet(viewsets.ModelViewSet):
     pagination_class = LimitOffsetPagination
 
     def list(self, request, *args, **kwargs):
-        self.queryset = Exhibition.objects.all()
+        self.queryset = Exhibition.objects.all().filter(is_active=1)
         return super(EhibitionViewSet, self).list(request, *args, **kwargs)
     def retrieve(self, request, pk=None):
         try:
             queryset = Exhibition.objects.all()
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = ExhibitionSerializer(outletstoreObject)
-            output = {"status": True, 'messageCode': 'MSG01', "data": serializer.data}
-            return Response(output, status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX002.value, ""), status=status.HTTP_200_OK)
         except Exception as e:
-            output = {"status": False, 'messageCode': 'MSG01', "data": []}
-            return Response(output, status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX003.value,""), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         request.data['create_user_id'] = request.user.id
         serializer = ExhibitionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        output = {"status": False, 'messageCode': 'MSG01', "errors": serializer.errors, "data": []}
-        return Response(output, status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX004.value, ""), status=status.HTTP_201_CREATED)
+        return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         request.data['create_user_id'] = request.user.id
@@ -57,10 +54,8 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         serializer = ExhibitionSerializer(event_obj, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            output = {"status": False, 'messageCode': 'MSG01', "errors": serializer.errors, "data": []}
-            return Response(output)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX006.value, ""), status=status.HTTP_200_OK)
+        return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         queryset = Exhibition.objects.all()
@@ -77,5 +72,5 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                 is_active=1, exhibition_id=pk)
             if(eventExhibitionObject):
                 CommonFuntion.update_active(eventExhibitionObject)
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX008.value, ""), status=status.HTTP_200_OK)
+        return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)

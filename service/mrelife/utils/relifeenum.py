@@ -16,3 +16,12 @@ class MessageCode(Enum):
     OT007 = 'OT007'  # update with err data
     OT008 = 'OT008'  # delete sussess
     OT009 = 'OT009'  # delete fail
+    EX001 = 'EX001'  # get list
+    EX002 = 'EX002'  # get detail
+    EX003 = 'EX003'  # get detail. not found request
+    EX004 = 'EX004'  # create susscess
+    EX005 = 'EX005'  # create with err data
+    EX006 = 'EX006'  # update sussess
+    EX007 = 'EX007'  # update with err data
+    EX008 = 'EX008'  # delete sussess
+    EX009 = 'EX009'  # delete fail
