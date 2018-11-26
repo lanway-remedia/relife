@@ -4,21 +4,20 @@ from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.authentication import (BasicAuthentication,
-                                           SessionAuthentication)
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.decorators import action
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from mrelife.commons.pagination import LargeResultsSetPagination
-from mrelife.outletstores.models import (OutletStore, OutletStoreContact,
-                                         OutletStoreContactReply,
-                                         OutletStoreMedia)
-from mrelife.outletstores.serializers import (OutletStoreContactReplySerializer,
-                                              OutletStoreContactSerializer,
-                                              OutletStoreMediaSerializer,
-                                              OutletStoreSerializer)
+from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreContactReply, OutletStoreMedia
+from mrelife.outletstores.serializers import (
+    OutletStoreContactReplySerializer,
+    OutletStoreContactSerializer,
+    OutletStoreMediaSerializer,
+    OutletStoreSerializer
+)
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
 
@@ -26,11 +25,11 @@ from mrelife.utils.relifeenum import MessageCode
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.all()
     serializer_class = OutletStoreSerializer
+    pagination_class = LimitOffsetPagination
 
     def list(self, request):
-        queryset = OutletStore.objects.filter(is_active=1)
-        serializer = OutletStoreSerializer(queryset, many=True)
-        return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+        self.queryset = OutletStore.objects.filter(is_active=1)
+        return super(OutletStoreViewSet, self).list(request)
 
     def retrieve(self, request, pk=None):
         try:
