@@ -7,14 +7,12 @@ import { createReducer, createActions } from 'reduxsauce'
 /* ------------- Types and Action Creators ------------- */
 const { Types, Creators } = createActions({
   profileRequest: ['data'],
-  profileSuccess: ['data'],
   editProfileRequest: ['data'],
-  editProfileSuccess: ['data'],
   editProfileAvatarRequest: ['data'],
-  editProfileAvatarSuccess: ['data'],
+  changePassRequest: ['data'],
+  profileSuccess: ['data'],
   profileFailure: ['error'],
-  editProfileFailure: ['error'],
-  editProfileAvatarFailure: ['error']
+
 })
 
 export const UserProfileTypes = Types
@@ -40,39 +38,12 @@ export const failure = (state, { error }) => {
   return { ...state, processing: false, error }
 }
 
-export const editProfileRequest = state => {
-  return { ...state, processing: true }
-}
-
-export const editProfileSuccess = (state, { data }) => {
-  return { ...state, processing: false, data, error: null }
-}
-
-export const editProfilefailure = (state, { error }) => {
-  return { ...state, processing: false, error }
-}
-
-export const editProfileAvatarRequest = state => {
-  return { ...state, processing: true }
-}
-
-export const editProfileAvatarSuccess = (state, { data }) => {
-  return { ...state, processing: false, data, error: null }
-}
-
-export const editProfileAvatarfailure = (state, { error }) => {
-  return { ...state, processing: false, error }
-}
-
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.PROFILE_REQUEST]: request,
+  [Types.EDIT_PROFILE_REQUEST]: request,
+  [Types.EDIT_PROFILE_AVATAR_REQUEST]: request,
+  [Types.CHANGE_PASS_REQUEST]: request,
   [Types.PROFILE_SUCCESS]: success,
-  [Types.PROFILE_FAILURE]: failure,
-  [Types.EDIT_PROFILE_REQUEST]: editProfileRequest,
-  [Types.EDIT_PROFILE_SUCCESS]: editProfileSuccess,
-  [Types.EDIT_PROFILE_FAILURE]: editProfilefailure,
-  [Types.EDIT_PROFILE_AVATAR_REQUEST]: editProfileAvatarRequest,
-  [Types.EDIT_PROFILE_AVATAR_SUCCESS]: editProfileAvatarSuccess,
-  [Types.EDIT_PROFILE_AVATAR_FAILURE]: editProfileAvatarfailure
+  [Types.PROFILE_FAILURE]: failure
 })

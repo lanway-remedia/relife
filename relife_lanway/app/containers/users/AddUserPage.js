@@ -65,9 +65,7 @@ class AddUserPage extends React.Component {
     this.props.history.push('/users')
   }
 
-  matchPassword = (value) => {
-    return value && value === this.state.password
-  }
+  matchPassword = (value) => value && value === this.state.password
 
   showStoreListHandle = () => {
     this.setState({
@@ -189,6 +187,7 @@ class AddUserPage extends React.Component {
                     required: I18nUtils.t('validate-field-0'),
                     validator: 'Password does not match'
                   }}
+                  autoComplete="new-password"
                 />
               </FormGroup>
             </Col>
