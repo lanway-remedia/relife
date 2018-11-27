@@ -78,7 +78,7 @@ class ListAccountsPage extends React.Component {
         </div>
         <div className="formTable">
           <PaginationComponent count={count} />
-          <Table hover>
+          <Table hover responsive>
             <TableHeadComponent
               sortColumn={sortColumn}
               onSort={this.handleSort}
