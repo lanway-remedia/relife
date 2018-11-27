@@ -34,3 +34,12 @@ class MessageCode(Enum):
     EV007 = 'EV007'  # update with err data
     EV008 = 'EV008'  # delete sussess
     EV009 = 'EV009'  # get detail
+    EXT001 = 'EXT001'  # get list
+    EXT002 = 'EXT002'  # get detail
+    EXT003 = 'EXT003'  # get detail. not found request
+    EXT004 = 'EXT004'  # create susscess
+    EXT005 = 'EXT005'  # create with err data
+    EXT006 = 'EXT006'  # update sussess
+    EXT007 = 'EXT007'  # update with err data
+    EXT008 = 'EXT008'  # delete sussess
+    EXT009 = 'EXT009'  # get detail
