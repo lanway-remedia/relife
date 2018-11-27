@@ -29,6 +29,13 @@ class ModelHouseViewSet(ModelViewSet):
     pagination_class = LimitOffsetPagination
 
     def create(self, request, *args, **kwargs):
+        """
+            POST:
+                store: int
+                events: []
+                tags: []
+                medias: []
+        """
         request.data['create_user'] = request.user.id
         obj = super(ModelHouseViewSet, self).create(request, *args, **kwargs)
         house = ModelHouse.objects.get(pk=obj.data['id'])
@@ -86,6 +93,10 @@ class ModelHouseViewSet(ModelViewSet):
 
     @detail_route(methods=['post'])
     def add_event(self, request, *args, **kwargs):
+        """
+            POST:
+                events: []
+        """
         house = ModelHouse.objects.get(pk=kwargs['pk'])
         events = request.data.get('events')
         if events is not None:
@@ -99,6 +110,10 @@ class ModelHouseViewSet(ModelViewSet):
 
     @detail_route(methods=['post'])
     def remove_event(self, request, *args, **kwargs):
+        """
+            POST:
+                events: []
+        """
         house = ModelHouse.objects.get(pk=kwargs['pk'])
         events = request.data.get('events')
         if events is not None:
@@ -112,6 +127,10 @@ class ModelHouseViewSet(ModelViewSet):
 
     @detail_route(methods=['post'])
     def add_tag(self, request, *args, **kwargs):
+        """
+            POST:
+                tags: []
+        """
         house = ModelHouse.objects.get(pk=kwargs['pk'])
         tags = request.data.get('tags')
         if tags is not None:
@@ -124,6 +143,10 @@ class ModelHouseViewSet(ModelViewSet):
 
     @detail_route(methods=['post'])
     def remove_tag(self, request, *args, **kwargs):
+        """
+            POST:
+                tags: []
+        """
         house = ModelHouse.objects.get(pk=kwargs['pk'])
         tags = request.data.get('tags')
         if tags is not None:
@@ -137,6 +160,10 @@ class ModelHouseViewSet(ModelViewSet):
 
     @detail_route(methods=['post'])
     def add_media(self, request, *args, **kwargs):
+        """
+            POST:
+                medias: []
+        """
         house = ModelHouse.objects.get(pk=kwargs['pk'])
         medias = request.data.getlist('medias')
         count = 0
@@ -149,6 +176,10 @@ class ModelHouseViewSet(ModelViewSet):
 
     @detail_route(methods=['post'])
     def remove_media(self, request, *args, **kwargs):
+        """
+            POST:
+                medias: []
+        """
         house = ModelHouse.objects.get(pk=kwargs['pk'])
         medias = request.data.get('medias')
         if medias is not None:
@@ -162,6 +193,10 @@ class ModelHouseViewSet(ModelViewSet):
 
     @detail_route(methods=['post'])
     def add_user(self, request, *args, **kwargs):
+        """
+            GET:
+            POST:
+        """
         house = ModelHouse.objects.get(pk=kwargs['pk'])
         users = request.data.get('users')
         if users is not None:
@@ -175,6 +210,10 @@ class ModelHouseViewSet(ModelViewSet):
 
     @detail_route(methods=['post'])
     def remove_user(self, request, *args, **kwargs):
+        """
+            POST:
+                users: [int]
+        """
         house = ModelHouse.objects.get(pk=kwargs['pk'])
         users = request.data.get('users')
         if users is not None:

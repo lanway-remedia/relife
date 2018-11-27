@@ -34,7 +34,6 @@ User = get_user_model()
 class UserVs(ModelViewSet):
     """
     User Management
-    Can filter group_id, username by adding parameter on url ?group_id=ID&username=STRING
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -45,6 +44,10 @@ class UserVs(ModelViewSet):
     filter_fields = ['group_id', 'username', 'first_name', 'last_name']
 
     def list(self, request, *args, **kwargs):
+        """
+            Can filter group_id, username by adding parameter on url
+            GET: ?group_id=ID&username=STRING
+        """
         group = request.user.group
         if IsStore(request.user):  # group store admin
             self.queryset = User.objects.filter(group=group)
@@ -55,6 +58,16 @@ class UserVs(ModelViewSet):
         return super(UserVs, self).list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
+        """
+            POST:
+                mail: str require
+                username: str require
+                password1: str require
+                password2: str require
+                group: int
+                store: int
+                other field is optional
+        """
         obj = super(UserVs, self).create(request, *args, **kwargs)
         user = User.objects.get(pk=obj.data['id'])
         group = request.user.group
@@ -76,6 +89,12 @@ class UserVs(ModelViewSet):
         return obj
 
     def update(self, request, *args, **kwargs):
+        """
+            POST:
+                email: not changing with this action
+                password: not changing with this action
+                username: not changing with this action
+        """
         self.serializer_class = UserWithoutRequireInfoSerializer
         return super(UserVs, self).update(request, *args, **kwargs)
 
@@ -120,6 +139,11 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
 
     @list_route(methods=['post'])
     def update_email(self, request, *args, **kwargs):
+        """
+            POST:
+                email: str require
+                domain: str require
+        """
         # validate data
         serializer = ResetPasswordSerializer(data=request.data)
         if not serializer.is_valid():
@@ -163,6 +187,10 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
 
     @list_route(methods=['post'])
     def update_avatar(self, request, *args, **kwargs):
+        """
+            POST:
+                file: File
+        """
         user = User.objects.get(pk=request.user.id)
         self.parser_class = (FormParser, MultiPartParser)
         self.serializer_class = FileSerializer
@@ -190,6 +218,12 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
 
     @list_route(methods=['post'])
     def update_password(self, request, *args, **kwargs):
+        """
+            POST:
+                password: str require
+                password1: str require
+                password2: str require
+        """
         user = User.objects.get(pk=request.user.id)
 
         serializer = PasswordSerializer(data=request.data)
