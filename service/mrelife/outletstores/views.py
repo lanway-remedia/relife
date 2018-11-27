@@ -21,11 +21,14 @@ from mrelife.outletstores.serializers import (
 )
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
+from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
+from mrelife.utils.outlet_store_permission import OutletStorePermission
 
 
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.all().filter(is_active=1)
     serializer_class = OutletStoreSerializer
+    permission_classes = (IsAuthenticated, OutletStorePermission,)
     pagination_class = LimitOffsetPagination
 
     def list(self, request):
