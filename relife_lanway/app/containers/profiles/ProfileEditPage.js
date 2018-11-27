@@ -10,7 +10,10 @@ import ProfileActions from '../../redux/wrapper/UserProfileRedux'
 import ProfileImage from '../../components/ProfileImage'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Container, Row, Col, Button, FormGroup, Label } from 'reactstrap'
+import { bindActionCreators } from 'redux'
+import { show, hide } from 'redux-modal'
 import I18nUtils from '../../utils/I18nUtils'
+import { ModalName } from '../../constants'
 
 class ProfileEditPage extends React.Component {
   constructor(props) {
@@ -37,14 +40,10 @@ class ProfileEditPage extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
-      //update profile
-      // if (nextProps.data.editProfile) {
-        
-      // }
-      //update profile image
-      // if (nextProps.data.editProfileImage) {
-
-      // }
+      //update profile or update profile image
+      if (nextProps.data.editProfile || nextProps.data.editProfileImage) {
+        this.props.show(ModalName.COMMON, { message: I18nUtils.t('US016'), closeFunction: () => this.closeFunction() })
+      }
       //get profile info
       if (nextProps.data.getProfile) {
         this.setState({
@@ -70,6 +69,11 @@ class ProfileEditPage extends React.Component {
         })
       }
     }
+  }
+
+  closeFunction = () => {
+    this.props.history.push(`/`)
+    this.props.hide(ModalName.COMMON)
   }
 
   handleProfileChange = image => {
@@ -228,6 +232,8 @@ ProfileEditPage.propTypes = {
   maxFileSize: PropTypes.number,
   onChange: PropTypes.func,
   profileRequest: PropTypes.func,
+  show: PropTypes.func,
+  hide: PropTypes.func,
   editProfileRequest: PropTypes.func,
   editProfileAvatarRequest: PropTypes.func,
   data: PropTypes.object
@@ -241,6 +247,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ show, hide }, dispatch),
   profileRequest: data => dispatch(ProfileActions.profileRequest(data)),
   editProfileRequest: data => dispatch(ProfileActions.editProfileRequest(data)),
   editProfileAvatarRequest: formData =>

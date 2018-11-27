@@ -79,27 +79,27 @@ class ProfileInfoPage extends React.Component {
         </div>
         <div className="account-info">
           <Row>
-            <Col xs="12" md="5">
-              <Label>{I18nUtils.t('fname')}:</Label>
-              <span>{data.first_name}</span>
-            </Col>
-            <Col xs="12" md="5">
-              <Label>{I18nUtils.t('lname')}:</Label>
-              <span>{data.last_name}</span>
-            </Col>
-            <Col xs="12" md="5">
-              <Label>{I18nUtils.t('email')}:</Label>
-              <span>{data.email}</span>
-            </Col>
-            <Col xs="12" md="5">
-              <Label>{I18nUtils.t('phone')}:</Label>
-              <span>{data.tel}</span>
-            </Col>
-            <Col xs="12" md="5">
+            <Col xs="12" md="6">
               <Label>{I18nUtils.t('username')}:</Label>
               <span>{data.username}</span>
             </Col>
-            <Col xs="12" md="5">
+            <Col xs="12" md="6">
+              <Label>{I18nUtils.t('email')}:</Label>
+              <span>{data.email}</span>
+            </Col>
+            <Col xs="12" md="6">
+              <Label>{I18nUtils.t('fname')}:</Label>
+              <span>{data.first_name}</span>
+            </Col>
+            <Col xs="12" md="6">
+              <Label>{I18nUtils.t('lname')}:</Label>
+              <span>{data.last_name}</span>
+            </Col>
+            <Col xs="12" md="6">
+              <Label>{I18nUtils.t('phone')}:</Label>
+              <span>{data.tel}</span>
+            </Col>
+            <Col xs="12" md="6">
               <Label>{I18nUtils.t('address')}:</Label>
               <span>{data.address}</span>
             </Col>
