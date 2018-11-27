@@ -6,52 +6,55 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.decorators import action
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from mrelife.commons.common_fnc import CommonFuntion
-from mrelife.commons.pagination import LargeResultsSetPagination
 from mrelife.events.models import Event, EventContact, EventContactReply
 from mrelife.events.serializers import EventContactReplySerializer, EventContactSerializer, EventSerializer
+from mrelife.utils.relifeenum import MessageCode
 
 
 class EventViewSet(viewsets.ModelViewSet):
 
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    pagination_class = LargeResultsSetPagination
+    pagination_class = LimitOffsetPagination
 
     def list(self, request):
-        queryset = Event.objects.filter(is_active=1)
-        serializer = EventSerializer(queryset, many=True)
-        return Response(serializer.data)
+        self.queryset = Event.objects.filter(is_active=1)
+        return super(EventViewSet, self).list(request)
 
     def retrieve(self, request, pk=None):
-        queryset = Event.objects.all().filter(id=self.kwargs['pk'])
-        serializer = EventSerializer(queryset, many=True)
-        output = {"status": True, 'messageCode': 'MSG01', "data": serializer.data}
-        return Response(output, status=status.HTTP_200_OK)
+        try:
+            queryset = Event.objects.all().filter(is_active=1)
+            outletstoreObject = get_object_or_404(queryset, pk=pk)
+            serializer = EventSerializer(outletstoreObject)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV002.value, ""), status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV003.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
+        request.data['create_user_id'] = request.user.id
         serializer = EventSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        output = {"status": False, 'messageCode': 'MSG01', "errors": serializer.errors, "data": []}
-        return Response(output, status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV004.value, ""), status=status.HTTP_201_CREATED)
+        return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
+        request.data['create_user_id'] = request.user.id
         queryset = Event.objects.all()
         event_obj = get_object_or_404(queryset, pk=pk)
         serializer = EventSerializer(event_obj, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            output = {"status": False, 'messageCode': 'MSG01', "errors": serializer.errors, "data": []}
-            return Response(output)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV006.value, ""), status=status.HTTP_200_OK)
+        return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
+        
         queryset = Event.objects.all()
         event_obj = get_object_or_404(queryset, pk=pk)
         data = {"is_active": settings.IS_INACTIVE}
@@ -68,4 +71,5 @@ class EventViewSet(viewsets.ModelViewSet):
                     if(eventContactReplyObject):
                         CommonFuntion.update_active(eventContactReplyObject)
 
-        return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV008.value, ""), status=status.HTTP_200_NO_CONTENT)
+        return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV009.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
