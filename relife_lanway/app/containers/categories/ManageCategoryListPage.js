@@ -6,7 +6,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Container, Button, Table } from 'reactstrap'
+import {
+  Container,
+  Button,
+  Table,
+  ListGroup,
+  ListGroupItem,
+  Badge,
+  UncontrolledCollapse
+} from 'reactstrap'
 import { Helmet } from 'react-helmet'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
@@ -27,9 +35,11 @@ class ManageCategoryListPage extends React.Component {
       count: 0,
       page: 0,
       limit: 0,
-      type: 1,
-      cateList: []
+      type: 1, //Type category (1: Parent category, 2: Sub category)
+      cateList: [],
+      collapse: false
     }
+    this.toggle = this.toggle.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
@@ -67,6 +77,10 @@ class ManageCategoryListPage extends React.Component {
     }
   }
 
+  toggle = () => {
+    this.setState({ collapse: !this.state.collapse })
+  }
+
   handleDelete = cate => {
     this.props.show(ModalName.COMMON, {
       bodyClass: 'text-center',
@@ -77,6 +91,10 @@ class ManageCategoryListPage extends React.Component {
       message: I18nUtils.t('modal-del-body'),
       okFunction: () => this.okFunction(cate)
     })
+  }
+
+  addNewSubCategory = sub => {
+    console.log(sub)
   }
 
   redirectToAddNew = () => {
@@ -103,6 +121,7 @@ class ManageCategoryListPage extends React.Component {
 
   render() {
     let { page, limit, count, cateList } = this.state
+    console.log(cateList)
 
     return (
       <Container fluid className="manage-cate-list">
@@ -118,18 +137,18 @@ class ManageCategoryListPage extends React.Component {
             </Button>
           </h1>
         </div>
-        <FilterGroupComponent inputTitle="Name" calendarName="Created Date" />
+        <FilterGroupComponent inputTitle="Name" />
         <div className="formTable">
           <PaginationComponent count={count} />
           <Table hover>
             <TableHeadComponent
               onSort={this.handleSort}
-              theadTitle="#,Name,Action"
+              theadTitle="#,Name,Order,Action"
             />
             <tbody>
               {cateList.length === 0 && (
                 <tr>
-                  <td colSpan="3" className="alert alert-warning">
+                  <td colSpan="4" className="alert alert-warning">
                     {I18nUtils.t('toast-no-record')}
                   </td>
                 </tr>
@@ -138,8 +157,74 @@ class ManageCategoryListPage extends React.Component {
                 return (
                   <tr key={key}>
                     <td>{(page - 1) * limit + key + 1}</td>
-                    <td>{cate.name}</td>
+                    <td className="name-style">
+                      <div className="clearfix">
+                        {cate.name}
+                        {cate.sub_categories.length !== 0 && (
+                          <Button
+                            color="primary"
+                            onClick={this.toggle}
+                            size="sm"
+                            className="float-right"
+                            id={'category-' + cate.id}
+                          >
+                            {I18nUtils.t('cate-sub-showhide')}
+                          </Button>
+                        )}
+                      </div>
+
+                      {cate.sub_categories.length !== 0 && (
+                        <UncontrolledCollapse
+                          toggler={'category-' + cate.id}
+                          // isOpen={this.state.collapse}
+                        >
+                          <ListGroup className="mt-3 clearfix">
+                            {cate.sub_categories.map((sub, key) => {
+                              return (
+                                <ListGroupItem key={key}>
+                                  {sub.name}
+                                  <Badge pill color="primary" className="ml-2">
+                                    {I18nUtils.t('order')} : {sub.order}
+                                  </Badge>
+                                  <Button
+                                    title={I18nUtils.t('delete')}
+                                    color="danger"
+                                    outline
+                                    size="sm"
+                                    className="float-right"
+                                    onClick={() => this.handleDeleteSub(sub)}
+                                  >
+                                    <i className="fa fa-trash" />
+                                  </Button>
+                                  <Button
+                                    title={I18nUtils.t('edit')}
+                                    color="primary"
+                                    outline
+                                    size="sm"
+                                    className="float-right mr-2"
+                                    onClick={() => this.redirectToEditSub(sub)}
+                                  >
+                                    <i className="fa fa-edit" />
+                                  </Button>
+                                </ListGroupItem>
+                              )
+                            })}
+                          </ListGroup>
+                        </UncontrolledCollapse>
+                      )}
+                    </td>
+                    <td>{cate.order}</td>
                     <td>
+                      <Button
+                        title={I18nUtils.t('cate-add-sub')}
+                        color="success"
+                        outline
+                        size="sm"
+                        className="btn-act"
+                        onClick={() => this.addNewSubCategory(cate)}
+                      >
+                        <i className="fa fa-plus" />
+                      </Button>
                       <Button
                         title={I18nUtils.t('edit')}
                         color="primary"

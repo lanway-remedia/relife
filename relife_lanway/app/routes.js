@@ -33,7 +33,9 @@ import EditTagPage from './containers/tags/EditTagPage'
 //Categories
 import ManageCategoryListPage from './containers/categories/ManageCategoryListPage'
 import AddNewCategoryPage from './containers/categories/AddNewCategoryPage'
+import AddNewSubCategoryPage from './containers/categories/AddNewSubCategoryPage'
 import EditCategoryPage from './containers/categories/EditCategoryPage'
+import EditSubCategoryPage from './containers/categories/EditSubCategoryPage'
 //languages
 import Language from './components/Language'
 
@@ -311,6 +313,14 @@ class Routes extends React.Component {
                 <Route
                   path="/edit-category/:id"
                   component={requireLogin(EditCategoryPage)}
+                />
+                <Route
+                  path="/add-new-sub-category/:id"
+                  component={requireLogin(AddNewSubCategoryPage)}
+                />
+                <Route
+                  path="/edit-sub-category/:id"
+                  component={requireLogin(EditSubCategoryPage)}
                 />
               </Switch>
             </div>
