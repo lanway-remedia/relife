@@ -26,6 +26,7 @@ class SubCategorySerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         subCategory = SubCategory.objects.create(
             name=self.initial_data['name'],
+            order=validated_data['order'],
             category = Category.objects.get(pk=self.initial_data['category']),
             is_active=True,
             created=validated_data['created'],
