@@ -17,6 +17,7 @@ import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
 import URLSearchParams from 'url-search-params'
 import { DefaultValue } from '../../constants'
+import { Helmet } from 'react-helmet'
 
 class ListAccountsPage extends React.Component {
   constructor(props) {
@@ -26,7 +27,6 @@ class ListAccountsPage extends React.Component {
       count: 0,
       users: []
     }
-    document.title = `${I18nUtils.t('la-page-title')}`
   }
 
   componentDidMount() {
@@ -53,13 +53,20 @@ class ListAccountsPage extends React.Component {
   }
 
   addUser = () => {
-    this.props.history.push('add-user')
+    this.props.history.push('/add-user')
+  }
+
+  editUser = (id) => {
+    this.props.history.push(`/user/${id}`)
   }
 
   render() {
     let { sortColumn, count, users } = this.state
     return (
       <Container fluid className="list-user-content">
+        <Helmet>
+          <title>{I18nUtils.t('la-page-title')}</title>
+        </Helmet>
         <div className="page-title">
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />
@@ -71,7 +78,7 @@ class ListAccountsPage extends React.Component {
         </div>
         <div className="formTable">
           <PaginationComponent count={count} />
-          <Table hover>
+          <Table hover responsive>
             <TableHeadComponent
               sortColumn={sortColumn}
               onSort={this.handleSort}
@@ -93,6 +100,7 @@ class ListAccountsPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
+                        onClick={() => this.editUser(user.id)}
                       >
                         <i className="fa fa-edit" />
                       </Button>
