@@ -9,6 +9,9 @@ import { withRouter } from 'react-router-dom'
 import ProfileActions from '../../redux/wrapper/UserProfileRedux'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Container, Row, Col, Button, FormGroup, Label } from 'reactstrap'
+import { bindActionCreators } from 'redux'
+import { show, hide } from 'redux-modal'
+import { ModalName } from '../../constants'
 import I18nUtils from '../../utils/I18nUtils'
 
 class ProfileChangePassPage extends React.Component {
@@ -32,25 +35,44 @@ class ProfileChangePassPage extends React.Component {
   handleSubmit = e => {
     e.preventDefault()
     let data = {
-      id: this.state.id,
-      password: this.state.newPassword
+      password: this.state.currentPassword,
+      password1: this.state.newPassword,
+      password2: this.state.confirmNewPassword
     }
-
-    this.props.editProfileRequest(data)
+    this.props.changePassRequest(data)
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
-      this.setState({
-        data: nextProps.data.data,
-        id: nextProps.data.data.id
-      })
+      if (nextProps.data.getProfile) {
+        this.setState({
+          data: nextProps.data.data,
+          id: nextProps.data.data.id
+        })
+      }
+      if (nextProps.data.changePass) {
+        if (nextProps.data.messageCode)
+        this.props.show(ModalName.COMMON, { message: I18nUtils.t(nextProps.data.messageCode), closeFunction: () => this.closeFunction() })
+      }
     }
+  }
+
+  closeFunction = () => {
+    this.props.history.push(`/`)
+    this.props.hide(ModalName.COMMON)
   }
 
   redirectToProfile = () => {
     this.props.history.push('/')
   }
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  matchPassword = (value) => value && value === this.state.newPassword
 
   render() {
     let { data } = this.state
@@ -88,6 +110,13 @@ class ProfileChangePassPage extends React.Component {
                   placeholder={I18nUtils.t('all-place-currentPassword')}
                   value={this.state.currentPassword}
                   onChange={this.handleChange}
+                  required
+                  pattern="(?=.*[A-Z]).{8,}"
+                  errorMessage={{
+                    required: I18nUtils.t('validate-field-0'),
+                    pattern: I18nUtils.t('validate-pass')
+                  }}
+                  autoComplete="new-password"
                 />
               </FormGroup>
             </Col>
@@ -109,6 +138,7 @@ class ProfileChangePassPage extends React.Component {
                     required: I18nUtils.t('validate-field-0'),
                     pattern: I18nUtils.t('validate-pass')
                   }}
+                  autoComplete="new-password"
                 />
               </FormGroup>
             </Col>
@@ -123,11 +153,12 @@ class ProfileChangePassPage extends React.Component {
                   value={this.state.confirmNewPassword}
                   onChange={this.handleChange}
                   required
-                  pattern="(?=.*[A-Z]).{8,}"
+                  validator={this.matchPassword}
                   errorMessage={{
                     required: I18nUtils.t('validate-field-0'),
-                    pattern: I18nUtils.t('validate-pass')
+                    validator: 'Password does not match'
                   }}
+                  autoComplete="new-password"
                 />
               </FormGroup>
             </Col>
@@ -148,20 +179,23 @@ class ProfileChangePassPage extends React.Component {
 
 ProfileChangePassPage.propTypes = {
   history: PropTypes.object,
+  data: PropTypes.object,
   profileRequest: PropTypes.func,
-  editProfileRequest: PropTypes.func,
-  data: PropTypes.object
+  changePassRequest: PropTypes.func,
+  show: PropTypes.func,
+  hide:PropTypes.func
 }
 
 const mapStateToProps = state => {
   return {
-    processing: state.userProfile.processing,
     data: state.userProfile.data
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  profileRequest: data => dispatch(ProfileActions.profileRequest(data))
+  ...bindActionCreators({ show, hide }, dispatch),
+  profileRequest: data => dispatch(ProfileActions.profileRequest(data)),
+  changePassRequest: data => dispatch(ProfileActions.changePassRequest(data))
 })
 
 export default connect(

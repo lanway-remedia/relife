@@ -29,7 +29,6 @@ class ProfileEditPage extends React.Component {
       phone: '',
       address: ''
     }
-    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
@@ -42,7 +41,8 @@ class ProfileEditPage extends React.Component {
     if (this.props.data != nextProps.data) {
       //update profile or update profile image
       if (nextProps.data.editProfile || nextProps.data.editProfileImage) {
-        this.props.show(ModalName.COMMON, { message: I18nUtils.t('US016'), closeFunction: () => this.closeFunction() })
+        if (nextProps.data.messageCode)
+        this.props.show(ModalName.COMMON, { message: I18nUtils.t(nextProps.data.messageCode), closeFunction: () => this.closeFunction() })
       }
       //get profile info
       if (nextProps.data.getProfile) {
@@ -100,7 +100,7 @@ class ProfileEditPage extends React.Component {
       address: this.state.address
     }
 
-    if (this.state.profileImage != null) {
+    if (this.state.profileImage != null && typeof this.state.profileImage != 'string') {
       let formData = new FormData()
       formData.append('file', this.state.profileImage)
       this.props.editProfileAvatarRequest(formData)

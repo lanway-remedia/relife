@@ -12,7 +12,9 @@ export default class UserProfileService {
     return apiClient.post(`/users/v1/profile/`, data)
   }
   editAvatarProfile(data) {
-    console.log(data)
     return apiClient.post(`/users/v1/profile/update_avatar/`, data)
+  }
+  changePass(data) {
+    return apiClient.post(`/users/v1/profile/update_password/`, data)
   }
 }
