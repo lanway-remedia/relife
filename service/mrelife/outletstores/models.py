@@ -39,7 +39,7 @@ class OutletStore(Model):
     traffic = CharField(max_length=255, null=True)
     time_serving = CharField(max_length=255, null=True)
     regular_holiday = CharField(max_length=255, null=True)
-    create_user = ForeignKey('users.User', on_delete=CASCADE, null=True)
+    create_user = ForeignKey('users.User',related_name="outletstore_user", on_delete=CASCADE, null=True)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False)
     updated = DateTimeField(auto_now_add=False)
