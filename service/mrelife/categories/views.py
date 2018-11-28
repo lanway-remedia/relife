@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from django.conf import settings
 from mrelife.categories.models import Category, SubCategory
 from mrelife.categories.serializers import CategorySerializer, SubCategorySerializer
@@ -10,6 +9,8 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from rest_framework.decorators import action
+import csv
+from django.http import HttpResponse
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -115,3 +116,17 @@ class CategoryViewSet(viewsets.ModelViewSet):
         instance.is_active = settings.IS_INACTIVE
         instance.updated = datetime.now()
         instance.save()
+
+    def export_csv(self, request, *args, **kwargs):
+        """
+        Export data categories to csv.
+        """
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="categories.csv"'
+
+        data = SubCategory.objects.filter(is_active=settings.IS_ACTIVE)
+        writer = csv.writer(response)
+        writer.writerow(['sub_category_id', 'sub_category_name', 'sub_category_order', 'category_id', 'category_name','category_order'])
+        for subCatData in data:
+            writer.writerow([subCatData.id, subCatData.name, subCatData.order, subCatData.category.id, subCatData.category.name, subCatData.category.order])
+        return response
