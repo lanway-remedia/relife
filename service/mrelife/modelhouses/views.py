@@ -242,14 +242,14 @@ class OrderModelHouseViewSet(ModelViewSet):
     pagination_class = LimitOffsetPagination
 
     def list(self, request):
-        self.queryset = OutletStore.objects.filter(is_active=1)
+        self.queryset = OrderModelHouse.objects.filter(is_active=1)
         return super(OrderModelHouseViewSet, self).list(request)
 
     def retrieve(self, request, pk=None):
         try:
             queryset = OrderModelHouse.objects.all().filter(is_active=1)
-            outletstoreObject = get_object_or_404(queryset, pk=pk)
-            serializer = OrderModelHouseSerializer(outletstoreObject)
+            orderModelObject = get_object_or_404(queryset, pk=pk)
+            serializer = OrderModelHouseSerializer(orderModelObject)
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH002.value, ""), status=status.HTTP_200_OK)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH003.value, ""), status=status.HTTP_404_NOT_FOUND)
@@ -266,8 +266,8 @@ class OrderModelHouseViewSet(ModelViewSet):
         try:
             request.data['create_user_id'] = request.user.id
             queryset = OrderModelHouse.objects.all().filter(is_active=1)
-            outletstoreObject = get_object_or_404(queryset, pk=pk)
-            serializer = OrderModelHouseSerializer(outletstoreObject, data=request.data)
+            orderModelObject = get_object_or_404(queryset, pk=pk)
+            serializer = OrderModelHouseSerializer(orderModelObject, data=request.data)
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH006.value, ""), status=status.HTTP_200_OK)
@@ -280,9 +280,9 @@ class OrderModelHouseViewSet(ModelViewSet):
     def destroy(self, request, pk=None):
         try:
             queryset = OrderModelHouse.objects.all().filter(is_active=1)
-            outletstoreObject = get_object_or_404(queryset, pk=pk)
+            orderModelObject = get_object_or_404(queryset, pk=pk)
             data = {"is_active": settings.IS_INACTIVE}
-            serializer = OrderModelHouseSerializer(outletstoreObject, data=data, partial=True)
+            serializer = OrderModelHouseSerializer(orderModelObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH008.value, ""), status=status.HTTP_200_NO_CONTENT)
@@ -297,8 +297,8 @@ class OrderModelHouseViewSet(ModelViewSet):
             request.data['create_user_id'] = request.user.id
             self.serializer_class = OrderModelHouseStatusSerializer
             queryset = OrderModelHouse.objects.all().filter(is_active=1)
-            outletstoreObject = get_object_or_404(queryset, pk=pk)
-            serializer = OrderModelHouseSerializer(outletstoreObject, data=request.data, partial=True)
+            orderModelObject = get_object_or_404(queryset, pk=pk)
+            serializer = OrderModelHouseSerializer(orderModelObject, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH006.value, ""), status=status.HTTP_200_OK)
@@ -316,8 +316,8 @@ class updateStatus(GenericAPIView, UpdateModelMixin):
         try:
             request.data['create_user_id'] = request.user.id
             queryset = OrderModelHouse.objects.all().filter(is_active=1)
-            outletstoreObject = get_object_or_404(queryset, pk=pk)
-            serializer = OrderModelHouseSerializer(outletstoreObject, data=request.data, partial=True)
+            orderModelObject = get_object_or_404(queryset, pk=pk)
+            serializer = OrderModelHouseSerializer(orderModelObject, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH006.value, ""), status=status.HTTP_200_OK)
