@@ -60,7 +60,7 @@ class OutletStore(Model):
 
     def create_img_thumbnail(self):
         if not self.img_large:
-            return ""
+            return None
         file_path = self.img_large.name
         filename_base, filename_ext = os.path.splitext(file_path)
         thumb_file_path = "%s_thumb.jpg" % filename_base
@@ -95,9 +95,9 @@ class OutletStore(Model):
             f_thumb.close()
             if storage.exists(thumb_file_path):
                 return storage.url(thumb_file_path)
-            return ""
+            return None
         except:
-            return ""
+            return None
 
 
 class OutletStoreMedia(Model):

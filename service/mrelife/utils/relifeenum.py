@@ -43,3 +43,12 @@ class MessageCode(Enum):
     EXT007 = 'EXT007'  # update with err data
     EXT008 = 'EXT008'  # delete sussess
     EXT009 = 'EXT009'  # get detail
+    OMH001 = 'OMH001'  # get list
+    OMH002 = 'OMH002'  # get detail
+    OMH003 = 'OMH003'  # get detail. not found request
+    OMH004 = 'OMH004'  # create susscess
+    OMH005 = 'OMH005'  # create with err data
+    OMH006 = 'OMH006'  # update sussess
+    OMH007 = 'OMH007'  # update with err data
+    OMH008 = 'OMH008'  # delete sussess
+    OMH009 = 'OMH009'  # delete fail
