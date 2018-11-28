@@ -73,7 +73,7 @@ class AddNewCategoryPage extends React.Component {
           </h1>
         </div>
         <ValidationForm
-          className="form-add-outletstore col-no-mg"
+          className="form-add-category col-no-mg"
           onSubmit={this.handleSubmit}
         >
           <Row>

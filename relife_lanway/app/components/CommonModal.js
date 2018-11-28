@@ -8,36 +8,43 @@ import I18nUtils from '../utils/I18nUtils'
 class CommonModal extends Component {
   static propTypes = {
     show: PropTypes.bool,
+    modalClass: PropTypes.string,
     headerClass: PropTypes.string,
     bodyClass: PropTypes.string,
     title: PropTypes.string,
-    message: PropTypes.string.isRequired,
+    message: PropTypes.oneOfType([
+      PropTypes.string.isRequired,
+      PropTypes.object.isRequired
+    ]),
     handleHide: PropTypes.func.isRequired,
     okFunction: PropTypes.func,
-    closeFunction: PropTypes.func
+    closeFunction: PropTypes.func,
+    hideCloseButton: PropTypes.bool
   }
 
   render() {
     let {
       show,
+      modalClass,
       headerClass,
       bodyClass,
       title,
       message,
       handleHide,
       okFunction,
-      closeFunction
+      closeFunction,
+      hideCloseButton
     } = this.props
     title = !title ? I18nUtils.t(DefaultValue.MODAL_NAME) : title
 
     return (
-      <Modal isOpen={show}>
+      <Modal isOpen={show} className={modalClass}>
         {title && <ModalHeader className={headerClass}>{title}</ModalHeader>}
         <ModalBody className={bodyClass}>{message}</ModalBody>
         <ModalFooter>
           {okFunction && (
             <div>
-              <Button color="danger" onClick={okFunction}>
+              <Button className="mr-2" color="danger" onClick={okFunction}>
                 {I18nUtils.t('ok')}
               </Button>
               <Button color="primary" onClick={handleHide}>
@@ -45,12 +52,13 @@ class CommonModal extends Component {
               </Button>
             </div>
           )}
-          {closeFunction && (
+
+          {closeFunction && !hideCloseButton && (
             <Button color="primary" onClick={closeFunction}>
               {I18nUtils.t('close')}
             </Button>
           )}
-          {(!okFunction && !closeFunction) && (
+          {!okFunction && !closeFunction && !hideCloseButton && (
             <Button color="primary" onClick={handleHide}>
               {I18nUtils.t('close')}
             </Button>

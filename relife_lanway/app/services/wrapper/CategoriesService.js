@@ -24,6 +24,11 @@ export default class CategoriesService {
     return apiClient.put(`/categories/${data.get('id')}/`, data)
   }
   deleteCate(data) {
-    return apiClient.delete(`/categories/${data}`)
+    if (data.id === 1) {
+      return apiClient.delete(`/categories/${data.id}/${data.type}`)
+    } else if (data.id === 2) {
+      return apiClient.delete(`/categories/${data.id}/${data.type}`)
+    }
+    // return apiClient.delete(`/categories/${data.id}`)
   }
 }
