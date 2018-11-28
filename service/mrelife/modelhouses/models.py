@@ -7,10 +7,11 @@ from django.db.models import (CASCADE, BooleanField, CharField, DateTimeField,
                               TextField)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from PIL import Image
 
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
-from PIL import Image
+
 
 
 class ModelHouse(Model):
