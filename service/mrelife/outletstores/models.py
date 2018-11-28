@@ -49,8 +49,14 @@ class OutletStore(Model):
         ordering = ['created', ]
 
     def save(self, *args, **kwargs):
-        super(OutletStore, self).save(*args, **kwargs)
-        self.create_img_thumbnail()
+        # self.create_img_thumbnail()
+        if not self.pk:
+            super(OutletStore, self).save(*args, **kwargs)
+            self.img_thumbnail = self.create_img_thumbnail()
+            self.save()
+        else:
+            self.img_thumbnail = self.create_img_thumbnail()
+            super(OutletStore, self).save(*args, **kwargs)
 
     def create_img_thumbnail(self):
         if not self.img_large:
@@ -59,7 +65,7 @@ class OutletStore(Model):
         filename_base, filename_ext = os.path.splitext(file_path)
         thumb_file_path = "%s_thumb.jpg" % filename_base
         if storage.exists(thumb_file_path):
-            return "exists"
+            return storage.url(thumb_file_path)
         try:
             # resize the original image and return url path of the thumbnail
             f = storage.open(file_path, 'r')
@@ -88,11 +94,10 @@ class OutletStore(Model):
             f_thumb.write(out_im2.getvalue())
             f_thumb.close()
             if storage.exists(thumb_file_path):
-                self.img_thumbnail = storage.url(thumb_file_path)
-                self.save()
-            return "success"
+                return storage.url(thumb_file_path)
+            return ""
         except:
-            return "error"
+            return ""
 
 
 class OutletStoreMedia(Model):
