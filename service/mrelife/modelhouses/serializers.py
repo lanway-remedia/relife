@@ -89,7 +89,7 @@ class OrderModelHouseSerializer(ModelSerializer):
     is_active = serializers.BooleanField(default=True, required=False)
     create_user = UserSerializer(read_only=True)
     create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
-    model_house = ModelHouseSerializer(many=True, read_only=True, required=False)
+    model_house = ModelHouseSerializer(read_only=True)
     model_house_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
 
     class Meta:
