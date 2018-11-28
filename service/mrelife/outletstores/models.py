@@ -50,7 +50,6 @@ class OutletStore(Model):
 
     def save(self, *args, **kwargs):
         self.create_img_thumbnail()
-        self.img_thumbnail = "img_thumbnail"
         kwargs['kwargs'] = self.create_img_thumbnail()
         super(OutletStore, self).save(*args, **kwargs)
         self.create_img_thumbnail()
