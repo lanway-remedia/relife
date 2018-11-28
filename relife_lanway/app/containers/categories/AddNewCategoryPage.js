@@ -12,6 +12,7 @@ import { Helmet } from 'react-helmet'
 import I18nUtils from '../../utils/I18nUtils'
 import CategoryActions from '../../redux/wrapper/CategoriesRedux'
 import { toast } from 'react-toastify'
+import LocationsComponent from '../../components/LocationsComponent'
 
 class AddNewCategoryPage extends React.Component {
   constructor(props) {
@@ -72,6 +73,7 @@ class AddNewCategoryPage extends React.Component {
             {I18nUtils.t('cate-add-page-title')}
           </h1>
         </div>
+        <LocationsComponent city="1" district="1" />
         <ValidationForm
           className="form-add-category col-no-mg"
           onSubmit={this.handleSubmit}
