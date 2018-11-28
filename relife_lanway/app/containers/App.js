@@ -30,7 +30,7 @@ export default class App extends React.Component {
   }
 
   getProfile = (profile) => {
-    if (this.state.userimage != profile.data.profile_image) {
+    if ((profile.getProfile || profile.editProfileImage) && (this.state.userimage != profile.data.profile_image)) {
       this.setState({
         userimage: profile.data.profile_image
       })

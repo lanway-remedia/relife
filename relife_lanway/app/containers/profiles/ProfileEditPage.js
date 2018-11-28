@@ -33,8 +33,12 @@ class ProfileEditPage extends React.Component {
 
   componentDidMount() {
     document.title = `${I18nUtils.t('ud-page-title')}`
-    let data = {}
-    this.props.profileRequest(data)
+    if (!this.props.data.getProfile) {
+      let data = {}
+      this.props.profileRequest(data)
+    } else {
+      this.setProfile(this.props.data)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -46,29 +50,33 @@ class ProfileEditPage extends React.Component {
       }
       //get profile info
       if (nextProps.data.getProfile) {
-        this.setState({
-          data: nextProps.data.data,
-          id: nextProps.data.data.id,
-          group: nextProps.data.data.group,
-          profileImage: nextProps.data.data.profile_image,
-          fname:
-            nextProps.data.data.first_name === null
-              ? ''
-              : nextProps.data.data.first_name,
-          lname:
-            nextProps.data.data.last_name === null
-              ? ''
-              : nextProps.data.data.last_name,
-          email:
-            nextProps.data.data.email === null ? '' : nextProps.data.data.email,
-          address:
-            nextProps.data.data.address === null
-              ? ''
-              : nextProps.data.data.address,
-          phone: nextProps.data.data.tel === null ? '' : nextProps.data.data.tel
-        })
+        this.setProfile(nextProps.data)
       }
     }
+  }
+
+  setProfile = (data) => {
+    this.setState({
+      data: data.data,
+      id: data.data.id,
+      group: data.data.group,
+      profileImage: data.data.profile_image,
+      fname:
+        data.data.first_name === null
+          ? ''
+          : data.data.first_name,
+      lname:
+        data.data.last_name === null
+          ? ''
+          : data.data.last_name,
+      email:
+        data.data.email === null ? '' : data.data.email,
+      address:
+        data.data.address === null
+          ? ''
+          : data.data.address,
+      phone: data.data.tel === null ? '' : data.data.tel
+    })
   }
 
   closeFunction = () => {
@@ -229,8 +237,6 @@ class ProfileEditPage extends React.Component {
 
 ProfileEditPage.propTypes = {
   history: PropTypes.object,
-  maxFileSize: PropTypes.number,
-  onChange: PropTypes.func,
   profileRequest: PropTypes.func,
   show: PropTypes.func,
   hide: PropTypes.func,
