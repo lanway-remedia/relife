@@ -42,7 +42,7 @@ class AddNewTagPage extends React.Component {
         toast.success(
           I18nUtils.formatMessage(
             { id: 'toast-add-sucess' },
-            { name: this.state.title }
+            { name: this.state.name }
           )
         )
       }

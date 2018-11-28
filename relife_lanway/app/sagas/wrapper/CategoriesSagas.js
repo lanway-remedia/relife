@@ -12,7 +12,6 @@ const CategoriesSagas = {
   *listCate({ data }) {
     try {
       let response = yield call(categoriesService.listCate, data)
-      console.log(response)
       yield put(
         CateActions.cateListSuccess(
           response.data,

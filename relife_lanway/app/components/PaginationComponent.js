@@ -52,10 +52,16 @@ class PaginationComponent extends Component {
       <div className="toolbar mb-5">
         <div className="total">
           <span>
-            {I18nUtils.formatMessage(
-              { id: 'toolbar-totalRecords' },
-              { limit: limit, total: count }
-            )}
+            {limit > count &&
+              I18nUtils.formatMessage(
+                { id: 'toolbar-totalRecords' },
+                { limit: count, total: count }
+              )}
+            {limit < count &&
+              I18nUtils.formatMessage(
+                { id: 'toolbar-totalRecords' },
+                { limit: limit, total: count }
+              )}
           </span>
         </div>
         <div className="limiter">

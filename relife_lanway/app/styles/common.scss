@@ -205,6 +205,8 @@ footer.cgYtLz {
         }
       }
       .modal-body {
+        padding: 15px;
+
         .list-group {
           padding: 0;
           .list-group-item {
@@ -237,6 +239,17 @@ footer.cgYtLz {
             }
           }
         }
+      }
+    }
+
+    &.center-modal {
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+
+    &.hide-footer {
+      .modal-footer {
+        display: none;
       }
     }
   }
