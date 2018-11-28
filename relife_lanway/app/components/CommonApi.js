@@ -23,9 +23,7 @@ class CommonApi extends React.Component {
 
   componentWillMount() {
     f = this
-    if (this.props.data != {}) {
-      this.props.profileRequest({})
-    }
+    this.props.profileRequest({})
   }
 
   componentWillReceiveProps(nextProps) {

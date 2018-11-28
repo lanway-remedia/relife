@@ -27,9 +27,16 @@ class ProfileChangePassPage extends React.Component {
   }
 
   componentDidMount() {
-    document.title = `${I18nUtils.t('ucp-page-title')}`
-    let data = {}
-    this.props.profileRequest(data)
+    //document.title = `${I18nUtils.t('ucp-page-title')}`
+    if (!this.props.data.getProfile) {
+      let data = {}
+      this.props.profileRequest(data)
+    } else {
+      this.setState({
+        data: this.props.data.data,
+        id: this.props.data.data.id
+      })
+    }
   }
 
   handleSubmit = e => {

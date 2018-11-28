@@ -40,7 +40,6 @@ const UserProfileSagas = {
     try {
       let response = yield call(userProfileService.changePass, data)
       response.data.changePass = true
-      console.log(response.data)
       yield put(UserProfileActions.profileSuccess(response.data))
     } catch (err) {
       yield put(UserProfileActions.profileFailure(err))
