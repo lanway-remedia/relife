@@ -13,7 +13,6 @@ from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
 
 
-
 class ModelHouse(Model):
 
     title = CharField(max_length=255, null=False)
