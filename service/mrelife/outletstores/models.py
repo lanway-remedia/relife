@@ -39,7 +39,7 @@ class OutletStore(Model):
     traffic = CharField(max_length=255, null=True)
     time_serving = CharField(max_length=255, null=True)
     regular_holiday = CharField(max_length=255, null=True)
-    create_user = ForeignKey('users.User',related_name="outletstore_user", on_delete=CASCADE, null=True)
+    create_user = ForeignKey('users.User', on_delete=CASCADE, null=True)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False)
     updated = DateTimeField(auto_now_add=False)
@@ -50,8 +50,10 @@ class OutletStore(Model):
 
     def save(self, *args, **kwargs):
         self.create_img_thumbnail()
+        self.img_thumbnail = "img_thumbnail"
+        kwargs['kwargs'] = self.create_img_thumbnail()
         super(OutletStore, self).save(*args, **kwargs)
-        
+        self.create_img_thumbnail()
 
     def create_img_thumbnail(self):
         if not self.img_large:
@@ -90,9 +92,10 @@ class OutletStore(Model):
             f_thumb.close()
             if storage.exists(thumb_file_path):
                 self.img_thumbnail = storage.url(thumb_file_path)
-            return "success"
+                self.save()
+            return storage.url(thumb_file_path)
         except:
-            return "error"
+            return ""
 
 
 class OutletStoreMedia(Model):
