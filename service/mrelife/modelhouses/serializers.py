@@ -114,8 +114,9 @@ class OrderModelHouseStatusSerializer(ModelSerializer):
     status = serializers.BooleanField(default=True)
     is_active = serializers.BooleanField(default=True, read_only=True, required=False)
     create_user = UserSerializer(read_only=True)
-    model_house = ModelHouseSerializer(many=True, read_only=True, required=False)
+    model_house = ModelHouseSerializer(read_only=True, required=False)
 
     class Meta:
         model = OrderModelHouse
-        fields = '__all__'
+        fields = ('id', 'tel', 'content', 'status', 'is_active',
+                  'create_user', 'model_house')
