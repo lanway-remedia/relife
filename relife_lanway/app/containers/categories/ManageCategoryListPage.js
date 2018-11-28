@@ -99,7 +99,6 @@ class ManageCategoryListPage extends React.Component {
           )
       }
     }
-    console.log(nextProps.data)
   }
 
   toggle = () => {
