@@ -49,7 +49,8 @@ class OutletStore(Model):
         ordering = ['created', ]
 
     def save(self, *args, **kwargs):
-        self.create_img_thumbnail()
+        # self.create_img_thumbnail()
+        self.img_thumbnail = self.create_img_thumbnail()
         super(OutletStore, self).save(*args, **kwargs)
 
     def create_img_thumbnail(self):
@@ -90,7 +91,8 @@ class OutletStore(Model):
             if storage.exists(thumb_file_path):
                 self.img_thumbnail = storage.url(thumb_file_path)
                 self.save()
-            return storage.url(thumb_file_path)
+                return storage.url(thumb_file_path)
+            return ""
         except:
             return ""
 
