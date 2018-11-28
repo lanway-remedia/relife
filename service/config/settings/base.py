@@ -85,6 +85,7 @@ LOCAL_APPS = [
     'mrelife.authenticates.apps.AuthenticatesAppConfig',
     'mrelife.events.apps.EventsConfig',
     'mrelife.attributes.apps.AttributesConfig',
+    'mrelife.examplehouses.apps.ExamplehousesConfig',
     
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
