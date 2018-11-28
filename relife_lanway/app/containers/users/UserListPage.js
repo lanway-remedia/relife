@@ -15,6 +15,7 @@ import UsersActions from '../../redux/wrapper/UsersRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
+import SearchCondition from '../../components/SearchCondition'
 import URLSearchParams from 'url-search-params'
 import { DefaultValue } from '../../constants'
 import { Helmet } from 'react-helmet'
@@ -77,6 +78,7 @@ class ListAccountsPage extends React.Component {
           </h1>
         </div>
         <div className="formTable">
+          <SearchCondition hasFreeword={{title: I18nUtils.t('username')}} hasGroup hasStore />
           <PaginationComponent count={count} />
           <Table hover responsive>
             <TableHeadComponent
