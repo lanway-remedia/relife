@@ -94,8 +94,8 @@ class OrderModelHouseSerializer(ModelSerializer):
 
     class Meta:
         model = OrderModelHouse
-        fields = {'id', 'tel', 'content', 'status', 'is_active',
-                  'create_user', 'create_user_id', 'model_house', 'model_house_id'}
+        fields = ('id', 'tel', 'content', 'status', 'is_active',
+                  'create_user', 'create_user_id', 'model_house', 'model_house_id')
 
     def validate_model_house_id(self, model_house_id):
         try:
