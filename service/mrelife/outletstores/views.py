@@ -68,6 +68,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             item.updated = datetime.now()
             item.save()
 
+
     def destroy(self, request, pk=None):
         queryset = OutletStore.objects.all().filter(is_active=1)
         outletstoreObject = get_object_or_404(queryset, pk=pk)
@@ -84,7 +85,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             self.update_active(outletContact)
             outletMedia = OutletStoreMedia.objects.filter(is_active=1, outlet_store_id=outletstoreObject.id)
             self.update_active(outletMedia)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OT008.value, ""), status=status.HTTP_200_NO_CONTENT)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OT008.value, ""), status=status.HTTP_200_OK)
         return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
 
     # , permission_classes=[IsAuthenticated])
