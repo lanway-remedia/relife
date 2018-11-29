@@ -57,9 +57,10 @@ class ManageCategoryListPage extends React.Component {
     this.okDeleteFunction = this.okDeleteFunction.bind(this)
     this.handleCloseModal = this.handleCloseModal.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.getCateList = this.getCateList.bind(this)
   }
 
-  componentDidMount() {
+  getCateList() {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
@@ -76,6 +77,10 @@ class ManageCategoryListPage extends React.Component {
     this.props.cateListRequest(data)
   }
 
+  componentDidMount() {
+    this.getCateList()
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
@@ -89,15 +94,20 @@ class ManageCategoryListPage extends React.Component {
         })
       }
       if (response.isAdd) {
-        if (response.messageCode === 'SU001')
+        if (response.messageCode === 'SU001') {
           toast.success(
             I18nUtils.formatMessage(
               { id: 'toast-add-sucess' },
               { name: this.state.name }
             )
           )
+
+          this.forceUpdate(this.getCateList)
+        }
       }
     }
+
+    return null
   }
 
   toggle = () => {
@@ -385,7 +395,9 @@ ManageCategoryListPage.propTypes = {
   cateDeleteRequest: PropTypes.func,
   cateAddRequest: PropTypes.func,
   show: PropTypes.func,
-  hide: PropTypes.func
+  hide: PropTypes.func,
+  name: PropTypes.string,
+  cateList: PropTypes.object
 }
 
 const mapStateToProps = state => {
