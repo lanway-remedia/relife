@@ -5,6 +5,11 @@ from rest_framework.validators import UniqueValidator
 
 
 
+class FilteredListSerializer(serializers.ListSerializer):
+
+    def to_representation(self, data):
+        data = data.filter(is_active=True)
+        return super(FilteredListSerializer, self).to_representation(data)
 
 class SubCategorySerializer(serializers.ModelSerializer):
     # validate name is unique
@@ -16,16 +21,20 @@ class SubCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SubCategory
+        list_serializer_class = FilteredListSerializer  # filter subcat with is_active= True in list category
         fields = ('id', 'name', 'order', 'category' )
     def create(self, validated_data):
         subCategory = SubCategory.objects.create(
             name=self.initial_data['name'],
+            order=validated_data['order'],
             category = Category.objects.get(pk=self.initial_data['category']),
             is_active=True,
             created=validated_data['created'],
             updated=validated_data['updated']
         )
         return subCategory
+
+
 class CategorySerializer(serializers.ModelSerializer):
     # validate name is unique
     name = serializers.CharField(

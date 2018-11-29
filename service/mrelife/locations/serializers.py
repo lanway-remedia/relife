@@ -35,6 +35,7 @@ class DistrictSerializer(serializers.ModelSerializer):
         district = District.objects.create(
             name=self.initial_data['name'],
             name_en=self.initial_data['name_en'],
+            order=validated_data['order'],
             city = City.objects.get(pk=self.initial_data['city']),
             is_active=True,
             created=validated_data['created'],

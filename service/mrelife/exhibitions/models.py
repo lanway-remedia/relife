@@ -4,22 +4,15 @@ from io import BytesIO
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group
 from django.core.files.storage import default_storage as storage
-from django.db.models import (
-    CASCADE,
-    BooleanField,
-    CharField,
-    DateTimeField,
-    ForeignKey,
-    ImageField,
-    IntegerField,
-    Model,
-    TextField
-)
+from django.db.models import (CASCADE, BooleanField, CharField, DateTimeField,
+                              ForeignKey, ImageField, IntegerField, Model,
+                              TextField)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from PIL import Image
 
 from mrelife.locations.models import District
+from mrelife.tags.models import Tag
+from PIL import Image
 
 
 class Exhibition(Model):
@@ -114,4 +107,17 @@ class ExhibitionContactReply(Model):
 
     class Meta:
         db_table = 'exhibition_contact_reply'
+        ordering = ['created', ]
+
+
+class ExhibitionTag(Model):
+
+    exhibition = ForeignKey(Exhibition, related_name="exhibition_tag", on_delete=CASCADE)
+    tag = ForeignKey(Tag, related_name="tag_exhibition", on_delete=CASCADE)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = DateTimeField(auto_now=True, null=True, blank=True)
+
+    class Meta:
+        db_table = 'exhibition_tag'
         ordering = ['created', ]

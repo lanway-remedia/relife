@@ -4,7 +4,7 @@ from django.urls import include, path
 from django.views import defaults as default_views
 from rest_framework_swagger.views import get_swagger_view
 
-schema_view = get_swagger_view(title='Pastebin API')
+schema_view = get_swagger_view(title='Pastebin API', url='/')
 
 api_patterns = [
     path('outletstores/', include('mrelife.outletstores.urls')),
@@ -18,6 +18,7 @@ api_patterns = [
     path('events/', include('mrelife.events.urls')),
     path('exhibitions/', include('mrelife.exhibitions.urls')),
     path('attributes/', include('mrelife.attributes.urls')),
+    path('examplehouses/', include('mrelife.examplehouses.urls')),
 
 
 ]
