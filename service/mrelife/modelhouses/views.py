@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.files.storage import default_storage
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
-from rest_framework.decorators import action, detail_route, permission_classes
+from rest_framework.decorators import action, detail_route, permission_classes,list_route
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.pagination import LimitOffsetPagination
@@ -302,7 +302,7 @@ class OrderModelHouseViewSet(ModelViewSet):
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, ""), status=status.HTTP_404_NOT_FOUND)
 
-    @detail_route(methods=['get']) 
+    @list_route(methods=['get']) 
     def selfGetlistBooking(self, request, pk=None):
         queryset = OrderModelHouse.objects.all().filter(is_active=1).filter(create_user_id=request.user.id)
         return super(OrderModelHouseViewSet, self).list(request)
