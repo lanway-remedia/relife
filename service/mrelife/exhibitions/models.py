@@ -54,7 +54,6 @@ class Exhibition(Model):
         else:
             self.img_thumbnail = self.create_img_thumbnail()
             super(Exhibition, self).save(*args, **kwargs)
-        super(Exhibition, self).save(*args, **kwargs)
 
     def create_img_thumbnail(self):
         if not self.img_large:
