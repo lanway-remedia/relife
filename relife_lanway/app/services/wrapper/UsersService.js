@@ -23,6 +23,10 @@ export default class UsersService {
     return apiClient.put(`/users/v1/users/${data.id}/`, data)
   }
 
+  deleteUser(id) {
+    return apiClient.delete(`/users/v1/users/${id}/`)
+  }
+
   findUserById(id) {
     return apiClient.get(`/users/v1/users/${id}`)
   }
