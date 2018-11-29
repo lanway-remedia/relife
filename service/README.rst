@@ -50,6 +50,10 @@ To run a migration, open up a second terminal and run:
 - docker-compose run --rm django python manage.py makemigrations
 - docker-compose run --rm django python manage.py migrate
 
+IMPORTANT
+MIGRATE DEFAULT GROUP
+- docker-compose run --rm django python manage.py loaddata groups.json
+
 To create a superuser, run:
 
 - docker-compose -f production.yml run --rm django python manage.py createsuperuser
@@ -57,6 +61,7 @@ To create a superuser, run:
 If you need a shell, run:
 
 - docker-compose -f production.yml run --rm django python manage.py shell
+- docker-compose run --rm django python manage.py shell
 
 To check the logs out, run:
 
@@ -75,3 +80,5 @@ To check the logs out, run:
 - docker rmi $(docker images -q)
 
 - docker restart dev_nginx_1
+
+

@@ -1,0 +1,24 @@
+//Variable and Mixins
+@import './vendors/variables';
+@import './vendors/mixins';
+
+//Components
+@import './components/language';
+@import './components/paginationComponent';
+@import './components/profileImage';
+@import './components/filterGroup';
+@import './components/imageUploadComponent';
+
+//Containers
+@import './containers/auths/loginPage';
+@import './containers/auths/forgotPasswordPage';
+@import './containers/users/userListPage';
+@import './containers/profiles/userDashboardPage';
+@import './containers/profiles/userEditProfile';
+@import './containers/outletstores/addNewOutletStore';
+@import './containers/outletstores/manageOutletStoreList';
+@import './containers/categories/manageCategoryList';
+@import './containers/categories/popup_category';
+
+//Common
+@import 'common';

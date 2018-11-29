@@ -1,27 +1,34 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
 from django.urls import include, path
 from django.views import defaults as default_views
-from django.views.generic import TemplateView
 from rest_framework_swagger.views import get_swagger_view
 
-schema_view = get_swagger_view(title='Pastebin API')
+schema_view = get_swagger_view(title='Pastebin API', url='/')
 
 api_patterns = [
     path('outletstores/', include('mrelife.outletstores.urls')),
     path("users/", include("mrelife.users.urls")),
     path("file-managements/", include("mrelife.file_managements.urls"), name="FileManagements"),
-    path('modernhouses/', include('mrelife.modernhouses.urls')),
     path("auths/", include("mrelife.authenticates.urls"), name="Authenticates"),
+    path('tags/', include('mrelife.tags.urls')),
+    path('categories/', include('mrelife.categories.urls')),
+    path('locations/', include('mrelife.locations.urls')),
+    path('modelhouses/', include('mrelife.modelhouses.urls')),
+    path('events/', include('mrelife.events.urls')),
+    path('exhibitions/', include('mrelife.exhibitions.urls')),
+    path('attributes/', include('mrelife.attributes.urls')),
+    path('examplehouses/', include('mrelife.examplehouses.urls')),
+
+
 ]
 
 urlpatterns = [
-    path("", schema_view, name="home"),
-    path('api-auth/', include('rest_framework.urls')),
-    # Your stuff: custom urls includes go here
-    path('api/', include(api_patterns))
-] + static(
+                  path("", schema_view, name="home"),
+                  path('api-auth/', include('rest_framework.urls')),
+                  # Your stuff: custom urls includes go here
+                  path('api/', include(api_patterns))
+              ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )
 

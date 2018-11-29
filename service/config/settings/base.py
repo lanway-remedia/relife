@@ -68,16 +68,25 @@ THIRD_PARTY_APPS = [
     'rest_framework_swagger',
     # Filter on URL
     'url_filter',
+    'corsheaders',
+    # Export CSV
+    'import_export'
 ]
 LOCAL_APPS = [
-    'mrelife.users.apps.UsersAppConfig',
-
-    'mrelife.outletstores.apps.OutletstoresConfig',
-    'mrelife.modernhouses.apps.ModernhousesConfig',
-
     # Your stuff: custom apps go here
+    'mrelife.users.apps.UsersAppConfig',
+    'mrelife.tags.apps.TagsConfig',
+    'mrelife.categories.apps.CategoriesConfig',
+    'mrelife.locations.apps.LocationsConfig',
+    'mrelife.exhibitions.apps.ExhibitionsConfig',
+    'mrelife.outletstores.apps.OutletstoresConfig',
+    'mrelife.modelhouses.apps.ModelhousesConfig',
     'mrelife.file_managements.apps.FileManagementsAppConfig',
     'mrelife.authenticates.apps.AuthenticatesAppConfig',
+    'mrelife.events.apps.EventsConfig',
+    'mrelife.attributes.apps.AttributesConfig',
+    'mrelife.examplehouses.apps.ExamplehousesConfig',
+    
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -131,11 +140,13 @@ AUTH_PASSWORD_VALIDATORS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'mrelife.utils.response_middleware.ModifyResponseMiddleWare'
 ]
 
 # STATIC
@@ -285,3 +296,14 @@ ANONYMOUS_USER_ID = -1
 
 IS_ACTIVE = 1
 IS_INACTIVE = 0
+SUB_CATEGORY = 2
+ROOT_CATEGORY = 1
+DISTRICT = 2
+CITY = 1
+CORS_ORIGIN_ALLOW_ALL = True
+
+
+JWT_AUTH = {
+    'JWT_VERIFY_EXPIRATION': False
+}
+IMPORT_EXPORT_USE_TRANSACTIONS = False
