@@ -10,14 +10,11 @@ import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
 import ImageUploadComponent from './../../components/ImageUploadComponent'
 import I18nUtils from '../../utils/I18nUtils'
 import { Container, Button, Row, Col, FormGroup, Label } from 'reactstrap'
-import {
-  ValidationForm,
-  TextInput,
-  SelectGroup
-} from 'react-bootstrap4-form-validation'
+import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import validator from 'validator'
 import { Helmet } from 'react-helmet'
 import { toast } from 'react-toastify'
+import LocationsComponent from '../../components/LocationsComponent'
 
 class EditOutletStorePage extends React.Component {
   constructor(props) {
@@ -43,6 +40,8 @@ class EditOutletStorePage extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleSelectedCity = this.handleSelectedCity.bind(this)
+    this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
   }
 
   componentDidMount() {
@@ -53,6 +52,7 @@ class EditOutletStorePage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
+      console.log(response)
       if (response.data === undefined || response.data.length === 0) {
         toast.error(I18nUtils.t('toast-no-data'))
         this.props.history.replace('/manage-outlet-store-list')
@@ -64,8 +64,8 @@ class EditOutletStorePage extends React.Component {
           email: response.data.email,
           phone: response.data.tel,
           address: response.data.address,
-          city: response.data.id,
-          district: response.data.district,
+          city: response.data.district.city.id,
+          district: response.data.district.id,
           zipcode: response.data.zipcode,
           traffic: response.data.traffic,
           website: response.data.home_page,
@@ -94,27 +94,59 @@ class EditOutletStorePage extends React.Component {
     })
   }
 
+  handleSelectedCity = cityId => {
+    this.setState({
+      city: cityId
+    })
+  }
+
+  handleSelectedDistrict = districtId => {
+    this.setState({
+      district: districtId
+    })
+  }
+
   handleSubmit = e => {
     e.preventDefault()
-    let data = new FormData()
-    data.append('id', this.state.id)
-    data.append('latitude', 111111)
-    data.append('longitude', 222222)
-    data.append('title', this.state.title)
-    data.append('email', this.state.email)
-    data.append('tel', this.state.phone)
-    data.append('address', this.state.address)
-    data.append('zipcode', this.state.zipcode)
-    data.append('traffic', this.state.traffic)
-    data.append('home_page', this.state.website)
-    data.append('regular_holiday', this.state.regularHoliday)
-    data.append('time_serving', this.state.timeServing)
-    data.append('content', this.state.content)
-    data.append('district_id', this.state.district)
+    // let data = new FormData()
+    // data.append('id', this.state.id)
+    // data.append('latitude', 111111)
+    // data.append('longitude', 222222)
+    // data.append('title', this.state.title)
+    // data.append('email', this.state.email)
+    // data.append('tel', this.state.phone)
+    // data.append('address', this.state.address)
+    // data.append('zipcode', this.state.zipcode)
+    // data.append('traffic', this.state.traffic)
+    // data.append('home_page', this.state.website)
+    // data.append('regular_holiday', this.state.regularHoliday)
+    // data.append('time_serving', this.state.timeServing)
+    // data.append('content', this.state.content)
+    // data.append('district_id', this.state.district)
+    // data.append('city', this.state.city)
 
-    if (typeof this.state.thumbnailImage !== 'string') {
-      data.append('img_large', this.state.thumbnailImage)
+    // if (typeof this.state.thumbnailImage !== 'string') {
+    //   data.append('img_large', this.state.thumbnailImage)
+    // }
+
+    let data = {
+      id: this.state.id,
+      latitude: 111111,
+      longitude: 111111,
+      title: this.state.title,
+      email: this.state.email,
+      tel: this.state.phone,
+      address: this.state.address,
+      zipcode: this.state.zipcode,
+      traffic: this.state.traffic,
+      home_page: this.state.website,
+      regular_holiday: this.state.regularHoliday,
+      time_serving: this.state.timeServing,
+      content: this.state.content,
+      district_id: this.state.district,
+      city: this.state.city
     }
+
     this.props.outletStoreEditRequest(data)
     if (this.props.processing) {
       toast.success(
@@ -223,25 +255,13 @@ class EditOutletStorePage extends React.Component {
                 />
               </FormGroup>
             </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="district">{I18nUtils.t('district')}</Label>
-                <SelectGroup
-                  name="district"
-                  id="district"
-                  required
-                  errorMessage={I18nUtils.t('lb-select')}
-                  onChange={this.handleChange}
-                  value={
-                    this.state.district === null ? ' ' : this.state.district.id
-                  }
-                >
-                  <option value="">{I18nUtils.t('lb-select')}</option>
-                  <option value="1">Hoàng Mai</option>
-                  <option value="2">Hai Bà Trưng</option>
-                </SelectGroup>
-              </FormGroup>
-            </Col>
+            <LocationsComponent
+              required
+              onSelectedCity={this.handleSelectedCity}
+              onSelectedDistrict={this.handleSelectedDistrict}
+              city={`${this.state.city}`}
+              district={`${this.state.district}`}
+            />
             <Col xs="12" md="6">
               <FormGroup>
                 <Label htmlFor="zipcode">{I18nUtils.t('zipcode')}</Label>
