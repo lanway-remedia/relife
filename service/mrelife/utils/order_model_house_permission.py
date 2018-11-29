@@ -9,7 +9,8 @@ class OrderMHViewadminPermission(BasePermission):
         try:
             if(view.action == "list"):
                 return IsAdmin(request.user) or IsStore(request.user) or IsSub(request.user)
-            
+            else:
+                return False
         except Exception:
             return False
 
