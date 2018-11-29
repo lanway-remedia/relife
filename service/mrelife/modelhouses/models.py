@@ -147,3 +147,20 @@ class ModelHouseContactReply(Model):
     class Meta:
         db_table = 'model_house_contact_reply'
         ordering = ['created', ]
+
+
+class OrderModelHouse(Model):
+    
+    create_user = ForeignKey('users.User', related_name="creating_order_model_house",
+                             on_delete=CASCADE, blank=True, null=True)
+    model_house = ForeignKey(ModelHouse, related_name="order_model_house", on_delete=CASCADE, blank=True, null=True)
+    tel = CharField(max_length=13, null=False)
+    content = TextField(null=False)
+    status = BooleanField(null=False)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = DateTimeField(auto_now=True, null=True, blank=True)
+
+    class Meta:
+        db_table = 'order_model_house'
+        ordering = ['created', ]

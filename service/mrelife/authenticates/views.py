@@ -29,7 +29,11 @@ class PasswordResetRequest(APIView):
     parser_classes = (JSONParser,)
 
     def post(self, request):
-
+        """
+            POST:
+                email: str require
+                domain: str require
+        """
         if request.user.is_authenticated:
             return Response({
                 'status': False,
@@ -88,7 +92,9 @@ class PasswordResetFromKey(APIView):
     @staticmethod
     def post(request, uidb64, token_key):
         """
-            New password
+            POST:
+            password1: str require
+            password2: str require
             {"password1": "123456789hhccC", "password2": "123456789hhccC"}
         """
         if request.user.is_authenticated:
@@ -140,6 +146,7 @@ class PasswordResetFromKey(APIView):
     def get(request, uidb64, token_key):
         """
             Verify token_key before allow user create new password
+            GET:url?uidb64=str&token_key=str
         """
         if request.user.is_authenticated:
             return Response({
@@ -186,6 +193,11 @@ class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
     serializer_class = JSONWebTokenSerializer
 
     def post(self, request, *args, **kwargs):
+        """
+            POST:
+                username: str require
+                password: str require
+        """
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid():
@@ -220,6 +232,14 @@ class RegisterView(APIView):
     parser_classes = (JSONParser,)
 
     def post(self, request):
+        """
+            POST:
+                mail: str require
+                username: str require
+                password1: str require
+                password2: str require
+                domain: str require
+        """
         if request.user.is_authenticated:
             return Response({
                 'status': False,
@@ -270,6 +290,7 @@ class RegisterConfirmView(APIView):
     def get(request, uidb64, token_key):
         """
             Verify token_key and active account
+            GET: url?uidb64=str&token_key=str
         """
         if request.user.is_authenticated:
             return Response({
@@ -314,7 +335,11 @@ class ReactiveView(APIView):
     parser_classes = (JSONParser,)
 
     def post(self, request):
-
+        """
+            POST:
+                email: str require
+                domain: str require
+        """
         if request.user.is_authenticated:
             return Response({
                 'status': False,
@@ -372,6 +397,7 @@ class NewMailConfirmView(APIView):
     def get(request, uidb64, email, token_key):
         """
             Verify token_key and change mail
+            GET:url?uidb64=str&email=str&token_key=str
         """
         # Decode user id
         uid_int = urlsafe_base64_decode(uidb64)

@@ -53,7 +53,7 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     content = serializers.CharField(style={'base_template': 'textarea.html'})
     img_thumbnail = serializers.CharField(max_length=800, allow_blank=True, allow_null=True, read_only=True)
-    img_large = serializers.ImageField(max_length=None, allow_empty_file=True, use_url=True,required=False)
+    img_large = serializers.ImageField(allow_null=True, required=False, use_url=True)
     latitude = serializers.CharField(style={'base_template': 'textarea.html'},
                                      allow_blank=True, required=False, allow_null=True)
     longitude = serializers.CharField(style={'base_template': 'textarea.html'},

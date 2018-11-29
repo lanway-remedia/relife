@@ -27,7 +27,7 @@ class OutletStore(Model):
     title = CharField(max_length=255)
     content = TextField()
     img_thumbnail = CharField(max_length=800, null=True)
-    img_large = ImageField(null=True, blank=True)
+    img_large = ImageField(upload_to='outletimag/', null=True, blank=True)
     latitude = TextField(null=True)
     longitude = TextField(null=True)
     address = CharField(max_length=800)
@@ -39,7 +39,7 @@ class OutletStore(Model):
     traffic = CharField(max_length=255, null=True)
     time_serving = CharField(max_length=255, null=True)
     regular_holiday = CharField(max_length=255, null=True)
-    create_user = ForeignKey('users.User',related_name="outletstore_user", on_delete=CASCADE, null=True)
+    create_user = ForeignKey('users.User', on_delete=CASCADE, null=True)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False)
     updated = DateTimeField(auto_now_add=False)
@@ -49,17 +49,23 @@ class OutletStore(Model):
         ordering = ['created', ]
 
     def save(self, *args, **kwargs):
-        super(OutletStore, self).save(*args, **kwargs)
         self.create_img_thumbnail()
+        if not self.pk:
+            super(OutletStore, self).save(*args, **kwargs)
+            self.img_thumbnail = self.create_img_thumbnail()
+            self.save()
+        else:
+            self.img_thumbnail = self.create_img_thumbnail()
+            super(OutletStore, self).save(*args, **kwargs)
 
     def create_img_thumbnail(self):
         if not self.img_large:
-            return ""
+            return None
         file_path = self.img_large.name
         filename_base, filename_ext = os.path.splitext(file_path)
         thumb_file_path = "%s_thumb.jpg" % filename_base
         if storage.exists(thumb_file_path):
-            return "exists"
+            return storage.url(thumb_file_path)
         try:
             # resize the original image and return url path of the thumbnail
             f = storage.open(file_path, 'r')
@@ -88,11 +94,10 @@ class OutletStore(Model):
             f_thumb.write(out_im2.getvalue())
             f_thumb.close()
             if storage.exists(thumb_file_path):
-                self.img_thumbnail = storage.url(thumb_file_path)
-                self.save()
-            return "success"
+                return storage.url(thumb_file_path)
+            return None
         except:
-            return "error"
+            return None
 
 
 class OutletStoreMedia(Model):
