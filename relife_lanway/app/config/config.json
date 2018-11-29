@@ -1,5 +1,5 @@
 {
-  "BASE_URL": "http://18.179.32.241:8000/api/",
+  "BASE_URL": "https://d2t3gximuwdg8x.cloudfront.net/api/",
   "API_TIMEOUT": 30000,
   "DEFAULT_LOCALE": "ja",
   "LOCALES": ["en", "ja"],

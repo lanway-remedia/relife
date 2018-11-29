@@ -31,7 +31,6 @@ import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
 import { toast } from 'react-toastify'
-import URLSearchParams from 'url-search-params'
 import { DefaultValue } from '../../constants'
 
 class ManageCategoryListPage extends React.Component {
