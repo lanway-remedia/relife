@@ -32,9 +32,10 @@ class ManageTagListPage extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
+    this.getTagList = this.getTagList.bind(this)
   }
 
-  componentDidMount() {
+  getTagList() {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
@@ -50,6 +51,10 @@ class ManageTagListPage extends React.Component {
     this.props.tagListRequest(data)
   }
 
+  componentDidMount() {
+    this.getTagList()
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
@@ -62,6 +67,14 @@ class ManageTagListPage extends React.Component {
           count: response.data.count
         })
       }
+      if (response.isDelete) {
+        if (response.messageCode === 'SU001') {
+          toast.success(
+            I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: '' })
+          )
+        }
+        this.forceUpdate(this.getTagList())
+      }
     }
   }
 
@@ -70,7 +83,7 @@ class ManageTagListPage extends React.Component {
       bodyClass: 'text-center',
       title: I18nUtils.formatMessage(
         { id: 'modal-del-header' },
-        { name: tag.title }
+        { name: tag.name }
       ),
       message: I18nUtils.t('modal-del-body'),
       okFunction: () => this.okFunction(tag)
@@ -94,9 +107,6 @@ class ManageTagListPage extends React.Component {
 
     this.props.tagDeleteRequest(tag.id)
     this.props.hide(ModalName.COMMON)
-    toast.success(
-      I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: tag.name })
-    )
   }
 
   render() {

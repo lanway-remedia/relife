@@ -17,9 +17,7 @@ export default class OutletStoresService {
     return apiClient.post(`/outletstores/`, data)
   }
   editStore(data) {
-    console.log(data)
-    return apiClient.put(`/outletstores/${data.id}/`, data)
-    // return apiClient.put(`/outletstores/${data.get('id')}/`, data)
+    return apiClient.put(`/outletstores/${data.get('id')}/`, data)
   }
   deleteStore(data) {
     return apiClient.delete(`/outletstores/${data}`)

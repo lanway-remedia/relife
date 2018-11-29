@@ -95,6 +95,15 @@ class EditExhibitionPage extends React.Component {
           thumbnailImage: response.data.img_large
         })
       }
+
+      if (response.messageCode === 'EX006') {
+        toast.success(
+          I18nUtils.formatMessage(
+            { id: 'toast-edit-sucess' },
+            { name: this.state.title }
+          )
+        )
+      }
     }
   }
 

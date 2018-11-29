@@ -32,9 +32,10 @@ class ManageOutletStoreListPage extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
+    this.getOutletStore = this.getOutletStore.bind(this)
   }
 
-  componentDidMount() {
+  getOutletStore() {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
@@ -50,6 +51,10 @@ class ManageOutletStoreListPage extends React.Component {
     this.props.outletStoreListRequest(data)
   }
 
+  componentDidMount() {
+    this.getOutletStore()
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
@@ -61,6 +66,16 @@ class ManageOutletStoreListPage extends React.Component {
           storeList: response.data.results,
           count: response.data.count
         })
+      }
+
+      if (response.messageCode === 'OT008' && response.isDeleteStore) {
+        toast.success(
+          I18nUtils.formatMessage(
+            { id: 'toast-del-sucess' },
+            { name: response.data.title }
+          )
+        )
+        this.forceUpdate(this.getOutletStore)
       }
     }
   }
@@ -94,9 +109,6 @@ class ManageOutletStoreListPage extends React.Component {
 
     this.props.outletStoreDeleteRequest(store.id)
     this.props.hide(ModalName.COMMON)
-    toast.success(
-      I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: store.title })
-    )
   }
 
   render() {
