@@ -105,6 +105,10 @@ class ManageCategoryListPage extends React.Component {
           this.forceUpdate(this.getCateList)
         }
       }
+
+      if (response.isDelete) {
+        this.forceUpdate(this.getCateList)
+      }
     }
 
     return null
@@ -205,6 +209,7 @@ class ManageCategoryListPage extends React.Component {
     data.append('order', this.state.order)
     data.append('category', this.state.category)
     this.props.cateAddRequest(data)
+    this.props.hide(ModalName.COMMON)
   }
 
   handleCloseModal = () => {

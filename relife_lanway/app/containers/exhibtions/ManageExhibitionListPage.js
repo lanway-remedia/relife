@@ -31,9 +31,10 @@ class ManageExhibitionListPage extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
+    this.getExhList = this.getExhList.bind(this)
   }
 
-  componentDidMount() {
+  getExhList() {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
@@ -49,9 +50,14 @@ class ManageExhibitionListPage extends React.Component {
     this.props.exhibitionListRequest(data)
   }
 
+  componentDidMount() {
+    this.getExhList()
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
+      console.log(response)
       if (response.data.count === 0) {
         toast.warn(I18nUtils.t('toast-no-record'))
       }
@@ -60,6 +66,16 @@ class ManageExhibitionListPage extends React.Component {
           exhList: response.data.results,
           count: response.data.count
         })
+      }
+
+      if (response.messageCode === 'EX008') {
+        toast.success(
+          I18nUtils.formatMessage(
+            { id: 'toast-del-sucess' },
+            { name: response.data.title }
+          )
+        )
+        this.forceUpdate(this.getExhList)
       }
     }
   }
@@ -93,9 +109,6 @@ class ManageExhibitionListPage extends React.Component {
 
     this.props.exhibitionDeleteRequest(exh.id)
     this.props.hide(ModalName.COMMON)
-    toast.success(
-      I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: exh.title })
-    )
   }
 
   render() {

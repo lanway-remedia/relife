@@ -20,7 +20,7 @@ class PaginationComponent extends Component {
     let params = new URLSearchParams(this.props.history.location.search)
     this.setState({
       page: params.get('page') * 1 || DefaultValue.PAGE,
-      limit: params.get('limit') *1 || DefaultValue.LIMIT
+      limit: params.get('limit') * 1 || DefaultValue.LIMIT
     })
   }
 
@@ -33,7 +33,7 @@ class PaginationComponent extends Component {
     })
   }
 
-  onPerpageChange = (e) => {
+  onPerpageChange = e => {
     let { page } = this.state
     let { count } = this.props
     let limit = e.target.value
@@ -53,7 +53,7 @@ class PaginationComponent extends Component {
       <div className="toolbar mb-5">
         <div className="total">
           <span>
-            {limit > count &&
+            {limit >= count &&
               I18nUtils.formatMessage(
                 { id: 'toolbar-totalRecords' },
                 { limit: count, total: count }

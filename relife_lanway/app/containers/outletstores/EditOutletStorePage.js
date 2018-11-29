@@ -42,6 +42,7 @@ class EditOutletStorePage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleSelectedCity = this.handleSelectedCity.bind(this)
     this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
+    this.outletStoreGetRequest = this.outletStoreGetRequest.bind(this)
   }
 
   componentDidMount() {
@@ -52,7 +53,6 @@ class EditOutletStorePage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
-      console.log(response)
       if (response.data === undefined || response.data.length === 0) {
         toast.error(I18nUtils.t('toast-no-data'))
         this.props.history.replace('/manage-outlet-store-list')
@@ -74,6 +74,15 @@ class EditOutletStorePage extends React.Component {
           content: response.data.content,
           thumbnailImage: response.data.img_large
         })
+      }
+
+      if (response.messageCode === 'OT006' && response.isEditStore) {
+        toast.success(
+          I18nUtils.formatMessage(
+            { id: 'toast-edit-sucess' },
+            { name: this.state.title }
+          )
+        )
       }
     }
   }
@@ -108,54 +117,46 @@ class EditOutletStorePage extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    // let data = new FormData()
-    // data.append('id', this.state.id)
-    // data.append('latitude', 111111)
-    // data.append('longitude', 222222)
-    // data.append('title', this.state.title)
-    // data.append('email', this.state.email)
-    // data.append('tel', this.state.phone)
-    // data.append('address', this.state.address)
-    // data.append('zipcode', this.state.zipcode)
-    // data.append('traffic', this.state.traffic)
-    // data.append('home_page', this.state.website)
-    // data.append('regular_holiday', this.state.regularHoliday)
-    // data.append('time_serving', this.state.timeServing)
-    // data.append('content', this.state.content)
-    // data.append('district_id', this.state.district)
-    // data.append('city', this.state.city)
+    let data = new FormData()
+    data.append('id', this.state.id)
+    data.append('latitude', 111111)
+    data.append('longitude', 222222)
+    data.append('title', this.state.title)
+    data.append('email', this.state.email)
+    data.append('tel', this.state.phone)
+    data.append('address', this.state.address)
+    data.append('zipcode', this.state.zipcode)
+    data.append('traffic', this.state.traffic)
+    data.append('home_page', this.state.website)
+    data.append('regular_holiday', this.state.regularHoliday)
+    data.append('time_serving', this.state.timeServing)
+    data.append('content', this.state.content)
+    data.append('district_id', this.state.district)
+    data.append('city', this.state.city)
 
-    // if (typeof this.state.thumbnailImage !== 'string') {
-    //   data.append('img_large', this.state.thumbnailImage)
+    if (typeof this.state.thumbnailImage !== 'string') {
+      data.append('img_large', this.state.thumbnailImage)
+    }
+
+    // let data = {
+    //   id: this.state.id,
+    //   latitude: 111111,
+    //   longitude: 111111,
+    //   title: this.state.title,
+    //   email: this.state.email,
+    //   tel: this.state.phone,
+    //   address: this.state.address,
+    //   zipcode: this.state.zipcode,
+    //   traffic: this.state.traffic,
+    //   home_page: this.state.website,
+    //   regular_holiday: this.state.regularHoliday,
+    //   time_serving: this.state.timeServing,
+    //   content: this.state.content,
+    //   district_id: this.state.district,
+    //   city: this.state.city
     // }
 
-    let data = {
-      id: this.state.id,
-      latitude: 111111,
-      longitude: 111111,
-      title: this.state.title,
-      email: this.state.email,
-      tel: this.state.phone,
-      address: this.state.address,
-      zipcode: this.state.zipcode,
-      traffic: this.state.traffic,
-      home_page: this.state.website,
-      regular_holiday: this.state.regularHoliday,
-      time_serving: this.state.timeServing,
-      content: this.state.content,
-      district_id: this.state.district,
-      city: this.state.city
-    }
-
     this.props.outletStoreEditRequest(data)
-    if (this.props.processing) {
-      toast.success(
-        I18nUtils.formatMessage(
-          { id: 'toast-edit-sucess' },
-          { name: this.state.title }
-        )
-      )
-    }
   }
 
   render() {
@@ -373,7 +374,8 @@ EditOutletStorePage.propTypes = {
   outletStoreGetRequest: PropTypes.func,
   outletStoreEditRequest: PropTypes.func,
   data: PropTypes.object,
-  response: PropTypes.object
+  response: PropTypes.object,
+  messageCode: PropTypes.string
 }
 
 const mapStateToProps = state => {
