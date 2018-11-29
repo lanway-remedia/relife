@@ -41,12 +41,12 @@ class ArticlePage extends React.Component {
 
   render() {
     const config = {
-      imageUploadURL: 'https://abcxyz',
+      imageUploadURL: 'http://18.179.32.241/api/file-managements/v1/upload/',
       imageUploadMethod: 'POST',
       events: {
         'froalaEditor.image.uploaded': (e, editor, response) => {
           response = JSON.parse(response)
-          editor.image.insert(response.imageLink, true, null, editor.image.get(), null)
+          editor.image.insert(response.data.url, true, null, editor.image.get(), null)
           return false
         }
       }

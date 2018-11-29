@@ -82,24 +82,29 @@ class ModelHouseSerializer(ModelSerializer):
 
 
 class OrderModelHouseSerializer(ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    tel = serializers.CharField(max_length=255, read_only=True, required=False)
+    content = serializers.CharField(style={'base_template': 'textarea.html'}, required=False)
+    status = serializers.BooleanField(default=True)
+    is_active = serializers.BooleanField(default=True, required=False)
+    create_user = UserSerializer(read_only=True)
+    create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
+    model_house = ModelHouseSerializer(read_only=True)
+    model_house_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
 
     class Meta:
         model = OrderModelHouse
-        fields = '__all__'
+        fields = ('id', 'tel', 'content', 'status', 'is_active',
+                  'create_user', 'create_user_id', 'model_house', 'model_house_id')
 
-
-"""
-    
-    create_user = ForeignKey('users.User', related_name="creating_order_model_house",
-                             on_delete=CASCADE, blank=True, null=True)
-    model_house = ForeignKey(ModelHouse, related_name="order_model_house", on_delete=CASCADE, blank=True, null=True)
-    tel = CharField(max_length=13, null=False)
-    content = TextField(null=False)
-    status = BooleanField(null=False)
-    is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=True, null=True, blank=True)
-    updated = DateTimeField(auto_now=True, null=True, blank=True)
-"""
+    def validate_model_house_id(self, model_house_id):
+        try:
+            item = ModelHouse.objects.get(id=district_id)
+            if(not item.is_active):
+                raise
+        except Exception as e:
+            raise serializers.ValidationError(e)
+        return model_house_id
 
 
 class OrderModelHouseStatusSerializer(ModelSerializer):
@@ -109,8 +114,9 @@ class OrderModelHouseStatusSerializer(ModelSerializer):
     status = serializers.BooleanField(default=True)
     is_active = serializers.BooleanField(default=True, read_only=True, required=False)
     create_user = UserSerializer(read_only=True)
-    model_house = ModelHouseSerializer(many=True, read_only=True, required=False)
+    model_house = ModelHouseSerializer(read_only=True, required=False)
 
     class Meta:
         model = OrderModelHouse
-        fields = '__all__'
+        fields = ('id', 'tel', 'content', 'status', 'is_active',
+                  'create_user', 'model_house')

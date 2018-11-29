@@ -17,6 +17,46 @@ const UsersSagas = {
     } catch (err) {
       yield put(UsersActions.usersFailure(err))
     }
+  },
+
+  *addUser({ data }) {
+    try {
+      let response = yield call(usersService.addUser, data)
+      response.data.addUser = true
+      yield put(UsersActions.usersSuccess(response.data))
+    } catch (err) {
+      yield put(UsersActions.usersFailure(err))
+    }
+  },
+
+  *editUser({ data }) {
+    try {
+      let response = yield call(usersService.editUser, data)
+      response.data.editUser = true
+      yield put(UsersActions.usersSuccess(response.data))
+    } catch (err) {
+      yield put(UsersActions.usersFailure(err))
+    }
+  },
+
+  *deleteUser({ id }) {
+    try {
+      let response = yield call(usersService.deleteUser, id)
+      response.data.deleteUser = true
+      yield put(UsersActions.usersSuccess(response.data))
+    } catch (err) {
+      yield put(UsersActions.usersFailure(err))
+    }
+  },
+
+  *findUserById({ id }) {
+    try {
+      let response = yield call(usersService.findUserById, id)
+      response.data.findUserById = true
+      yield put(UsersActions.usersSuccess(response.data))
+    } catch (err) {
+      yield put(UsersActions.usersFailure(err))
+    }
   }
 }
 
