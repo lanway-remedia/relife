@@ -3,7 +3,7 @@
  * ErrorSagas: saga to handle general errors
  */
 
-import { showError } from '../../components/ErrorApi'
+import { showError } from '../../components/CommonApi'
 import I18nUtils from '../../utils/I18nUtils'
 
 const ErrorSagas = {

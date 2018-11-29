@@ -18,6 +18,8 @@ class LocationViewSet(viewsets.ModelViewSet):
     def create(self, request, type=None):
         """
         Create a location.
+        type = 1: create new City.
+        type = 2: create new District.
         """
         #type = request.data.get('type')
         if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
@@ -37,6 +39,8 @@ class LocationViewSet(viewsets.ModelViewSet):
     def update(self, request, type=None, *args, **kwargs):
         """
         Update a location.
+        type = 1: update data City.
+        type = 2: update data District.
         """
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
@@ -66,6 +70,8 @@ class LocationViewSet(viewsets.ModelViewSet):
     def list(self, request, type=None, *args, **kwargs):
         """
         Get list Location.
+        type = 1: get data City.
+        type = 2: get data District.
         """
         #type = request.query_params.get('type')
         if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
@@ -89,6 +95,8 @@ class LocationViewSet(viewsets.ModelViewSet):
     def destroy(self, request, type=None, *args, **kwargs):
         """
         Delete a Location.
+        type = 1: delete City.
+        type = 2: delete District.
         """
 
         #type = request.data.get('type')

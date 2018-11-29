@@ -1,0 +1,48 @@
+.filter-group {
+  padding: 18px 15px 15px 15px;
+  border: 1px solid $border-color;
+  position: relative;
+
+  > form {
+    display: none;
+  }
+
+  @include default-radius();
+
+  .lb-search {
+    position: absolute;
+    top: -15px;
+    left: 15px;
+    margin: 0;
+    padding: 3px 8px;
+    border: 1px solid $border-color;
+    background: $bkg-white-color;
+    cursor: pointer;
+
+    @include default-radius(2px);
+
+    i {
+      margin-left: 5px;
+    }
+
+    &.active {
+      i.fa-angle-down {
+        &::before {
+          content: '\f106';
+        }
+      }
+    }
+  }
+
+  .lb-showhide {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+
+  .col-12 {
+    margin-bottom: 0;
+  }
+}

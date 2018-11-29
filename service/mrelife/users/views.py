@@ -41,12 +41,13 @@ class UserVs(ModelViewSet):
     pagination_class = LimitOffsetPagination
     # user
     filter_backends = [DjangoFilterBackend]
-    filter_fields = ['group_id', 'username', 'first_name', 'last_name']
+    filter_fields = ['group_id', 'username', 'first_name', 'last_name', 'store_id']
 
     def list(self, request, *args, **kwargs):
         """
             Can filter group_id, username by adding parameter on url
-            GET: ?group_id=ID&username=STRING
+            GET: ?group_id=INT&username=STRING&store_id=INT
+            ?name=STRING => Search like in username, first_name, last_name
         """
         group = request.user.group
         if IsStore(request.user):  # group store admin
