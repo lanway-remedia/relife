@@ -302,30 +302,14 @@ class OrderModelHouseViewSet(ModelViewSet):
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, ""), status=status.HTTP_404_NOT_FOUND)
 
-    @action(detail=True, methods=['put'], url_path='update_status', url_name='update_status')
+    @detail_route(methods=['get']) 
     def selfGetlistBooking(self, request, pk=None):
         queryset = OrderModelHouse.objects.all().filter(is_active=1).filter(create_user_id=request.user.id)
         return super(OrderModelHouseViewSet, self).list(request)
-
-    @action(detail=True, methods=['put'], url_path='update_status', url_name='update_status')
-    def updateStatus(self, request, pk=None):
-        try:
-            request.data['create_user_id'] = request.user.id
-            self.serializer_class = OrderModelHouseStatusSerializer
-            queryset = OrderModelHouse.objects.all().filter(is_active=1)
-            orderModelObject = get_object_or_404(queryset, pk=pk)
-            serializer = OrderModelHouseSerializer(orderModelObject, data=request.data, partial=True)
-            if serializer.is_valid():
-                serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH006.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, ""), status=status.HTTP_404_NOT_FOUND)
-
-
 class updateStatus(GenericAPIView, UpdateModelMixin):
     queryset = OrderModelHouse.objects.all()
     serializer_class = OrderModelHouseStatusSerializer
+    permission_classes = (IsAuthenticated,)
 
     def put(self, request, pk=None, *args, **kwargs):
         try:
