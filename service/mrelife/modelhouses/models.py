@@ -36,9 +36,9 @@ class ModelHouse(Model):
         db_table = 'model_house'
         ordering = ['created', ]
 
-    def save(self, *args, **kwargs):
-        super(ModelHouse, self).save(*args, **kwargs)
-        self.create_thumb()
+    # def save(self, *args, **kwargs):
+    #     super(ModelHouse, self).save(*args, **kwargs)
+    #     self.create_thumb()
 
     def create_thumb(self):
         if not self.img_large:

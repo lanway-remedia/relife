@@ -27,7 +27,7 @@ class OutletStore(Model):
     title = CharField(max_length=255)
     content = TextField()
     img_thumbnail = CharField(max_length=800, null=True)
-    img_large = ImageField(null=True, blank=True)
+    img_large = ImageField(upload_to='outletimag/', null=True, blank=True)
     latitude = TextField(null=True)
     longitude = TextField(null=True)
     address = CharField(max_length=800)
@@ -48,15 +48,15 @@ class OutletStore(Model):
         db_table = 'outlet_store'
         ordering = ['created', ]
 
-    # def save(self, *args, **kwargs):
-    #     # self.create_img_thumbnail()
-    #     if not self.pk:
-    #         super(OutletStore, self).save(*args, **kwargs)
-    #         self.img_thumbnail = self.create_img_thumbnail()
-    #         self.save()
-    #     else:
-    #         self.img_thumbnail = self.create_img_thumbnail()
-    #         super(OutletStore, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        self.create_img_thumbnail()
+        if not self.pk:
+            super(OutletStore, self).save(*args, **kwargs)
+            self.img_thumbnail = self.create_img_thumbnail()
+            self.save()
+        else:
+            self.img_thumbnail = self.create_img_thumbnail()
+            super(OutletStore, self).save(*args, **kwargs)
 
     def create_img_thumbnail(self):
         if not self.img_large:
