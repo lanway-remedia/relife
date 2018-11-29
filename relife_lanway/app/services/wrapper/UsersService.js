@@ -4,14 +4,20 @@
  */
 
 import apiClient from '../../shared/apiClient'
+import queryString from 'query-string'
 
 export default class UsersService {
   listUser(data) {
+    let parsed = {
+      limit: data.limit || undefined,
+      offset: data.offset || undefined,
+      name: data.name || undefined,
+      group_id: data.group_id || undefined,
+      store_id: data.store_id || undefined
+    }
+    let search = queryString.stringify(parsed)
     return apiClient.get(
-      `/users/v1/users/?limit=${data.limit}&offset=${data.offset}
-        ${data.name ? `&name=${data.name}` : ''}
-        ${data.group_id ? `&group_id=${data.group_id}` : ''}
-        ${data.store_id ? `&store_id=${data.store_id}` : ''}`
+      `/users/v1/users/?${search}`
     )
   }
 

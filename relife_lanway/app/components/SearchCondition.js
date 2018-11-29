@@ -25,15 +25,17 @@ const initialState = {
   freeword: '',
   group: 0,
   store: {},
-  showStoreList: false,
-  collapse: false,
-  timeout: TIMEOUT
+  showStoreList: false
 }
 
 class SearchCondition extends Component {
   constructor(props) {
     super(props)
-    this.state = initialState
+    this.state = { 
+      ...initialState,
+      collapse: false,
+      timeout: TIMEOUT
+    }
   }
 
   componentDidMount() {
@@ -42,25 +44,23 @@ class SearchCondition extends Component {
       freeword: parsed.freeword || '',
       group: parsed.group || 0,
       store: parsed.store ? { id: parsed.store, title: parsed.store_title } : {},
-      collapse: parsed.collapse || false,
-      timeout: parsed.collapse ? 0 : TIMEOUT
+      collapse: !!(parsed.freeword || parsed.group || parsed.store),
+      timeout: parsed.freeword || parsed.group || parsed.store ? 0 : TIMEOUT
     })
   }
 
   onclickSubmit = () => {
-    let { freeword, group, store, collapse } = this.state
+    let { freeword, group, store } = this.state
     let parsed = {
       freeword: freeword || undefined,
       group: group != 0 ? group : undefined,
       store: store.id,
-      store_title: store.title,
-      collapse: collapse || undefined
+      store_title: store.title
     }
     let search = queryString.stringify(parsed)
-    if (search)
-      this.props.history.push({
-        search: `?${search}`
-      })
+    this.props.history.push({
+      search: `?${search}`
+    })
   }
 
   handleResetForm = () => {
