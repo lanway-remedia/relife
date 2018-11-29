@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.files.storage import default_storage
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
-from rest_framework.decorators import action, detail_route, permission_classes,list_route
+from rest_framework.decorators import action, api_view, detail_route, list_route, permission_classes
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.pagination import LimitOffsetPagination
@@ -247,15 +247,12 @@ class OrderModelHouseViewSet(ModelViewSet):
     queryset = OrderModelHouse.objects.all().filter(is_active=1)
     serializer_class = OrderModelHouseSerializer
     pagination_class = LimitOffsetPagination
-    permission_classes = (IsAuthenticated, OrderMHViewadminPermission,)
+    #permission_classes = (IsAuthenticated, OrderMHViewadminPermission,)
 
-    
     def list(self, request):
         self.queryset = OrderModelHouse.objects.filter(is_active=1)
         return super(OrderModelHouseViewSet, self).list(request)
-        
 
-    
     def retrieve(self, request, pk=None):
         try:
             queryset = OrderModelHouse.objects.all().filter(is_active=1)
@@ -265,7 +262,6 @@ class OrderModelHouseViewSet(ModelViewSet):
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH003.value, ""), status=status.HTTP_404_NOT_FOUND)
 
-    
     def create(self, request):
         request.data['create_user_id'] = request.user.id
         serializer = OrderModelHouseSerializer(data=request.data)
@@ -274,7 +270,6 @@ class OrderModelHouseViewSet(ModelViewSet):
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH004.value, ""), status=status.HTTP_201_CREATED)
         return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
-    
     def update(self, request, pk=None):
         try:
             request.data['create_user_id'] = request.user.id
@@ -288,7 +283,6 @@ class OrderModelHouseViewSet(ModelViewSet):
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, ""), status=status.HTTP_404_NOT_FOUND)
 
-    
     def destroy(self, request, pk=None):
         try:
             queryset = OrderModelHouse.objects.all().filter(is_active=1)
@@ -302,10 +296,24 @@ class OrderModelHouseViewSet(ModelViewSet):
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, ""), status=status.HTTP_404_NOT_FOUND)
 
-    @list_route(methods=['get']) 
-    def selfGetlistBooking(self, request, pk=None):
+    @action(detail=False, list=True, pagination_class=LimitOffsetPagination, methods=['get'], url_path='self_getlist', url_name='self_getlist')
+    def selfGetlistBooking12(self, request, *args, **kwargs):
+        pagination_class = LimitOffsetPagination
         queryset = OrderModelHouse.objects.all().filter(is_active=1).filter(create_user_id=request.user.id)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = OrderModelHouseSerializer(page, many=True)
+            data = {'status': status.HTTP_200_OK, 'result': serializer.data}
+            return self.get_paginated_response(data)
+        serializer = OrderModelHouseSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @list_route(methods=['GET'], pagination_class=LimitOffsetPagination)
+    def selfGetlistBooking(self, request):
+        self.queryset = OrderModelHouse.objects.all().filter(is_active=1)
         return super(OrderModelHouseViewSet, self).list(request)
+
+
 class updateStatus(GenericAPIView, UpdateModelMixin):
     queryset = OrderModelHouse.objects.all()
     serializer_class = OrderModelHouseStatusSerializer
