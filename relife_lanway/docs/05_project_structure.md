@@ -2,7 +2,6 @@
 
 ```
 /app
-    /assets       : contains static assets that we want to expose to the world, such as: css, images, ..
     /components   : contains React components that not connected to redux
     /config       : contains project configuration
     /constants    : contains constant classes
