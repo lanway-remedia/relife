@@ -16,7 +16,8 @@ from mrelife.exhibitions.models import Exhibition, ExhibitionContact, Exhibition
 from mrelife.exhibitions.serializers import (
     ExhibitionContactReplySerializer,
     ExhibitionContactSerializer,
-    ExhibitionSerializer
+    ExhibitionSerializer,
+    ExhibitionUpSerializer
 )
 from mrelife.tags.models import Tag
 from mrelife.utils import result
@@ -61,7 +62,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         request.data['create_user_id'] = request.user.id
         queryset = Exhibition.objects.all()
         event_obj = get_object_or_404(queryset, pk=pk)
-        serializer = ExhibitionSerializer(event_obj, data=request.data)
+        serializer = ExhibitionUpSerializer(event_obj, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             newtags = request.data.get('newtags')
