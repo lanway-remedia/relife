@@ -65,6 +65,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise serializers.ValidationError(e)
         return district_id
+        
 
     def validate(self, data):
         # Check that the start time, end time.
