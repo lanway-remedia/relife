@@ -19,6 +19,7 @@ import SearchCondition from '../../components/SearchCondition'
 import { DefaultValue } from '../../constants'
 import { Helmet } from 'react-helmet'
 import queryString from 'query-string'
+import { ModalName } from '../../constants'
 
 class ListAccountsPage extends React.Component {
   constructor(props) {
@@ -38,7 +39,6 @@ class ListAccountsPage extends React.Component {
       offset: (page - 1) * limit,
       limit: limit
     }
-    console.log(parsed)
     if (parsed.freeword) data.name = parsed.freeword
     if (parsed.group && parsed.group!=0) data.group_id = parsed.group
     if (parsed.store) data.store_id = parsed.store
@@ -63,6 +63,23 @@ class ListAccountsPage extends React.Component {
 
   editUser = (id) => {
     this.props.history.push(`/user/${id}`)
+  }
+
+  deleteUser = (user) => {
+    this.props.show(
+      ModalName.COMMON,
+      {
+        message: I18nUtils.formatMessage({ id: 'modal-del-header' }, { name: user.username }),
+        okFunction: () => this.okFunction(user.id)
+      }
+    )
+  }
+
+  okFunction = (id) => {
+    this.props.deleteUserRequest(id)
+    this.props.hide(ModalName.COMMON)
+    let users = this.state.users.filter(user => user.id !== id)
+    this.setState({ users })
   }
 
   render() {
@@ -116,6 +133,7 @@ class ListAccountsPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
+                        onClick={() => this.deleteUser(user)}
                       >
                         <i className="fa fa-trash" />
                       </Button>
@@ -135,10 +153,10 @@ ListAccountsPage.propTypes = {
   history: PropTypes.object,
   processing: PropTypes.bool,
   response: PropTypes.object,
-  totalCount: PropTypes.string,
-  pageSize: PropTypes.string,
-  currentPage: PropTypes.string,
-  userListRequest: PropTypes.func
+  userListRequest: PropTypes.func,
+  deleteUserRequest: PropTypes.func,
+  show: PropTypes.func,
+  hide: PropTypes.func
 }
 
 const mapStateToProps = state => {
@@ -150,7 +168,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ show, hide }, dispatch),
-  userListRequest: data => dispatch(UsersActions.userListRequest(data))
+  userListRequest: data => dispatch(UsersActions.userListRequest(data)),
+  deleteUserRequest: id => dispatch(UsersActions.deleteUserRequest(id))
 })
 
 export default connect(

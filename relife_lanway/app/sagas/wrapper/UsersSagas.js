@@ -39,6 +39,16 @@ const UsersSagas = {
     }
   },
 
+  *deleteUser({ id }) {
+    try {
+      let response = yield call(usersService.deleteUser, id)
+      response.data.deleteUser = true
+      yield put(UsersActions.usersSuccess(response.data))
+    } catch (err) {
+      yield put(UsersActions.usersFailure(err))
+    }
+  },
+
   *findUserById({ id }) {
     try {
       let response = yield call(usersService.findUserById, id)
