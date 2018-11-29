@@ -7,9 +7,9 @@ class OrderMHViewadminPermission(BasePermission):
 
     def has_permission(self, request, view):
         try:
-            if(view.action == "list"):
+            if(view.action in ["list", "retrieve"]):
                 return IsAdmin(request.user) or IsStore(request.user) or IsSub(request.user)
-            elif view.action == "create":
+            elif view.action in ["create", "update"]:
                 return IsUser(request.user)
             else:
                 return False
