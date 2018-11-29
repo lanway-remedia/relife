@@ -9,7 +9,7 @@ class OrderMHViewadminPermission(BasePermission):
         try:
             if(view.action in ["list", "retrieve"]):
                 return IsAdmin(request.user) or IsStore(request.user) or IsSub(request.user)
-            elif view.action in ["create", "update"]:
+            elif view.action in ["create", "update", "selfGetlistBooking"]:
                 return IsUser(request.user)
             else:
                 return False
