@@ -19,16 +19,13 @@ import {
   InputGroup,
   InputGroupAddon
 } from 'reactstrap'
-import {
-  ValidationForm,
-  TextInput,
-  SelectGroup
-} from 'react-bootstrap4-form-validation'
+import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Helmet } from 'react-helmet'
 import { toast } from 'react-toastify'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
+import LocationsComponent from '../../components/LocationsComponent'
 
 class EditExhibitionPage extends React.Component {
   constructor(props) {
@@ -52,6 +49,8 @@ class EditExhibitionPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChangeFromDate = this.handleChangeFromDate.bind(this)
     this.handleChangeToDate = this.handleChangeToDate.bind(this)
+    this.handleSelectedCity = this.handleSelectedCity.bind(this)
+    this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
   }
 
   handleChangeFromDate(date) {
@@ -72,7 +71,6 @@ class EditExhibitionPage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.data)
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
       if (response.data === undefined || response.data.length === 0) {
@@ -89,7 +87,7 @@ class EditExhibitionPage extends React.Component {
           title: response.data.title,
           address: response.data.address,
           city: response.data.district.city.id,
-          district: response.data.district,
+          district: response.data.district.id,
           zipcode: response.data.zipcode,
           startTime: response.data.start_time,
           endTime: response.data.end_time,
@@ -116,6 +114,18 @@ class EditExhibitionPage extends React.Component {
     })
   }
 
+  handleSelectedCity = cityId => {
+    this.setState({
+      city: cityId
+    })
+  }
+
+  handleSelectedDistrict = districtId => {
+    this.setState({
+      district: districtId
+    })
+  }
+
   handleSubmit = e => {
     e.preventDefault()
     let data = new FormData()
@@ -129,7 +139,8 @@ class EditExhibitionPage extends React.Component {
     data.append('start_time', moment(this.state.fromDate).format('YYYY/MM/DD'))
     data.append('end_time', moment(this.state.toDate).format('YYYY/MM/DD'))
     data.append('content', this.state.content)
-    data.append('district', this.state.district.id)
+    data.append('district_id', this.state.district)
+    data.append('city', this.state.city)
 
     if (typeof this.state.thumbnailImage !== 'string') {
       data.append('img_large', this.state.thumbnailImage)
@@ -212,7 +223,14 @@ class EditExhibitionPage extends React.Component {
                 />
               </FormGroup>
             </Col>
-            <Col xs="12" md="6">
+            <LocationsComponent
+              required
+              onSelectedCity={this.handleSelectedCity}
+              onSelectedDistrict={this.handleSelectedDistrict}
+              city={`${this.state.city}`}
+              district={`${this.state.district}`}
+            />
+            {/* <Col xs="12" md="6">
               <FormGroup>
                 <Label htmlFor="district">{I18nUtils.t('district')}</Label>
                 <SelectGroup
@@ -222,7 +240,7 @@ class EditExhibitionPage extends React.Component {
                   errorMessage={I18nUtils.t('lb-select')}
                   onChange={this.handleChange}
                   value={
-                    this.state.district === null ? ' ' : this.state.district.id
+                    this.state.district === null ? ' ' : this.state.district
                   }
                 >
                   <option value="">{I18nUtils.t('lb-select')}</option>
@@ -231,7 +249,7 @@ class EditExhibitionPage extends React.Component {
                 </SelectGroup>
               </FormGroup>
             </Col>
-            {/* <Col xs="12" md="6">
+            <Col xs="12" md="6">
               <FormGroup>
                 <Label htmlFor="city">{I18nUtils.t('city')}</Label>
                 <SelectGroup
@@ -240,11 +258,7 @@ class EditExhibitionPage extends React.Component {
                   required
                   errorMessage={I18nUtils.t('lb-select')}
                   onChange={this.handleChange}
-                  value={
-                    this.state.district.city === null
-                      ? ' '
-                      : this.state.district.city
-                  }
+                  value={this.state.city === null ? ' ' : this.state.city}
                 >
                   <option value="">{I18nUtils.t('lb-select')}</option>
                   <option value="1">Hoàng Mai</option>

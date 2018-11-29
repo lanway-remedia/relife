@@ -7,16 +7,13 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Container, Button, Row, Col, FormGroup, Label } from 'reactstrap'
-import {
-  ValidationForm,
-  TextInput,
-  SelectGroup
-} from 'react-bootstrap4-form-validation'
+import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Helmet } from 'react-helmet'
 import I18nUtils from '../../utils/I18nUtils'
 import validator from 'validator'
 import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
 import { toast } from 'react-toastify'
+import LocationsComponent from '../../components/LocationsComponent'
 
 import ImageUploadComponent from './../../components/ImageUploadComponent'
 
@@ -43,6 +40,8 @@ class AddNewOutletStorePage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.redirectToListPage = this.redirectToListPage.bind(this)
+    this.handleSelectedCity = this.redirectToListPage.bind(this)
+    this.handleSelectedDistrict = this.redirectToListPage.bind(this)
   }
 
   handleChange = e => {
@@ -54,6 +53,18 @@ class AddNewOutletStorePage extends React.Component {
   handleImageChange = image => {
     this.setState({
       thumbnailImage: image
+    })
+  }
+
+  handleSelectedCity = cityId => {
+    this.setState({
+      city: cityId
+    })
+  }
+
+  handleSelectedDistrict = districtId => {
+    this.setState({
+      district: districtId
     })
   }
 
@@ -91,7 +102,7 @@ class AddNewOutletStorePage extends React.Component {
     data.append('time_serving', this.state.timeServing)
     data.append('content', this.state.content)
     data.append('city', this.state.city)
-    data.append('district', this.state.district)
+    data.append('district_id', this.state.district)
     data.append('img_large', this.state.thumbnailImage)
     this.props.outletStoreAddRequest(data)
   }
@@ -184,7 +195,12 @@ class AddNewOutletStorePage extends React.Component {
                 />
               </FormGroup>
             </Col>
-            <Col xs="12" md="6">
+            <LocationsComponent
+              required
+              onSelectedCity={this.handleSelectedCity}
+              onSelectedDistrict={this.handleSelectedDistrict}
+            />
+            {/* <Col xs="12" md="6">
               <FormGroup>
                 <Label htmlFor="city">{I18nUtils.t('city')}</Label>
                 <SelectGroup
@@ -215,7 +231,7 @@ class AddNewOutletStorePage extends React.Component {
                   <option value="2">Hai Bà Trưng</option>
                 </SelectGroup>
               </FormGroup>
-            </Col>
+            </Col> */}
             <Col xs="12" md="6">
               <FormGroup>
                 <Label htmlFor="zipcode">{I18nUtils.t('zipcode')}</Label>
