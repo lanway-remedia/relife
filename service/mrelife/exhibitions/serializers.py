@@ -33,7 +33,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     content = serializers.CharField()
     img_thumbnail = serializers.CharField(max_length=800, allow_blank=True, allow_null=True, read_only=True)
-    img_large = serializers.ImageField(max_length=None,allow_null=True, allow_empty_file=True,required=False)
+    img_large = serializers.ImageField(max_length=None, allow_null=True, allow_empty_file=True, required=False)
     #img_large = serializers.CharField(max_length=800, allow_blank=True, allow_null=True)
     latitude = serializers.CharField()
     longtitude = serializers.CharField()
@@ -65,7 +65,14 @@ class ExhibitionSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise serializers.ValidationError(e)
         return district_id
-        
+
+    def validate_img_large(self, img_large):
+        try:
+            img_large
+        except Exception as e:
+            img_large = None
+            pass
+        return None
 
     def validate(self, data):
         # Check that the start time, end time.
