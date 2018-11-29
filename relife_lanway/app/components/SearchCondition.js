@@ -17,7 +17,6 @@ import {
   InputGroupAddon,
   Collapse, CardBody, Card
 } from 'reactstrap'
-import queryString from 'query-string'
 
 const TIMEOUT = 500
 
@@ -39,27 +38,27 @@ class SearchCondition extends Component {
   }
 
   componentDidMount() {
-    let parsed = queryString.parse(this.props.history.location.search)
+    let params = new URLSearchParams(this.props.history.location.search)
     this.setState({
-      freeword: parsed.freeword || '',
-      group: parsed.group || 0,
-      store: parsed.store ? { id: parsed.store, title: parsed.store_title } : {},
-      collapse: !!(parsed.freeword || parsed.group || parsed.store),
-      timeout: parsed.freeword || parsed.group || parsed.store ? 0 : TIMEOUT
+      freeword: params.get('freeword') || '',
+      group: params.get('group') || 0,
+      store: params.get('store') ? { id: params.get('store'), title: params.get('store_title') } : {},
+      collapse: !!(params.get('freeword') || params.get('group') || params.get('store')),
+      timeout: params.get('freeword') || params.get('group') || params.get('store') ? 0 : TIMEOUT
     })
   }
 
   onclickSubmit = () => {
     let { freeword, group, store } = this.state
     let parsed = {
-      freeword: freeword || undefined,
-      group: group != 0 ? group : undefined,
-      store: store.id,
-      store_title: store.title
+      ...(freeword && {freeword: freeword}),
+      ...(group && group != 0 && {group: group}),
+      ...(store.id && {store: store.id}),
+      ...(store.title && {store_title: store.title})
     }
-    let search = queryString.stringify(parsed)
+    let search = new URLSearchParams(parsed)
     this.props.history.push({
-      search: `?${search}`
+      search: `?${search.toString()}`
     })
   }
 
