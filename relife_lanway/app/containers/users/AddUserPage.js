@@ -208,10 +208,10 @@ class AddUserPage extends React.Component {
               <FormGroup>
                 <Label for="group">{I18nUtils.t('group-selection')}</Label>
                 <Input type="select" name="group" id="group" onChange={this.handleChange} value={group}>
-                  <option value={4}>{I18nUtils.t('group-user')}</option>
-                  <option value={3}>{I18nUtils.t('group-sub-store')}</option>
-                  <option value={2}>{I18nUtils.t('group-store-admin')}</option>
-                  <option value={1}>{I18nUtils.t('group-system-admin')}</option>
+                  <option value={4}>{I18nUtils.t('group-4')}</option>
+                  <option value={3}>{I18nUtils.t('group-3')}</option>
+                  <option value={2}>{I18nUtils.t('group-2')}</option>
+                  <option value={1}>{I18nUtils.t('group-1')}</option>
                 </Input>
               </FormGroup>
             </Col>

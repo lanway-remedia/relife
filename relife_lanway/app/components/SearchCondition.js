@@ -17,13 +17,17 @@ import {
   InputGroupAddon,
   Collapse, CardBody, Card
 } from 'reactstrap'
+import queryString from 'query-string'
+
+const TIMEOUT = 500
 
 const initialState = {
   freeword: '',
   group: 0,
   store: {},
   showStoreList: false,
-  collapse: false
+  collapse: false,
+  timeout: TIMEOUT
 }
 
 class SearchCondition extends Component {
@@ -32,8 +36,31 @@ class SearchCondition extends Component {
     this.state = initialState
   }
 
+  componentDidMount() {
+    let parsed = queryString.parse(this.props.history.location.search)
+    this.setState({
+      freeword: parsed.freeword || '',
+      group: parsed.group || 0,
+      store: parsed.store ? { id: parsed.store, title: parsed.store_title } : {},
+      collapse: parsed.collapse || false,
+      timeout: parsed.collapse ? 0 : TIMEOUT
+    })
+  }
+
   onclickSubmit = () => {
-    alert(this.state.freeword)
+    let { freeword, group, store, collapse } = this.state
+    let parsed = {
+      freeword: freeword || undefined,
+      group: group != 0 ? group : undefined,
+      store: store.id,
+      store_title: store.title,
+      collapse: collapse || undefined
+    }
+    let search = queryString.stringify(parsed)
+    if (search)
+      this.props.history.push({
+        search: `?${search}`
+      })
   }
 
   handleResetForm = () => {
@@ -66,12 +93,16 @@ class SearchCondition extends Component {
   }
 
   handleShowHideForm = () => {
-    this.setState({ collapse: !this.state.collapse })
+    this.setState({
+      timeout: TIMEOUT
+    }, () => {
+      this.setState({ collapse: !this.state.collapse })
+    })
   }
 
   render() {
     let { hasFreeword, hasGroup, hasStore } = this.props
-    let { showStoreList, collapse, freeword, group, store } = this.state
+    let { showStoreList, collapse, freeword, group, store, timeout } = this.state
     return (
       <div className="filter-group mb-5">
         <label
@@ -82,7 +113,7 @@ class SearchCondition extends Component {
           {I18nUtils.t('lb-ad-search')}
           <i className={collapse ? 'fa fa-angle-up' : 'fa fa-angle-down'} aria-hidden="true" />
         </label>
-        <Collapse isOpen={collapse}>
+        <Collapse isOpen={collapse} timeout={timeout}>
           <Card>
             <CardBody>
               <StoreListModal
@@ -118,10 +149,10 @@ class SearchCondition extends Component {
                         <Label for="group">{I18nUtils.t('group-selection')}</Label>
                         <Input type="select" name="group" id="group" onChange={this.handleChange} value={group}>
                           <option value={0}>---</option>
-                          <option value={4}>{I18nUtils.t('group-user')}</option>
-                          <option value={3}>{I18nUtils.t('group-sub-store')}</option>
-                          <option value={2}>{I18nUtils.t('group-store-admin')}</option>
-                          <option value={1}>{I18nUtils.t('group-system-admin')}</option>
+                          <option value={4}>{I18nUtils.t('group-4')}</option>
+                          <option value={3}>{I18nUtils.t('group-3')}</option>
+                          <option value={2}>{I18nUtils.t('group-2')}</option>
+                          <option value={1}>{I18nUtils.t('group-1')}</option>
                         </Input>
                       </FormGroup>
                     </Col>
@@ -166,6 +197,7 @@ class SearchCondition extends Component {
 }
 
 SearchCondition.propTypes = {
+  history: PropTypes.object,
   hasFreeword: PropTypes.object,
   hasGroup: PropTypes.bool,
   hasStore: PropTypes.bool

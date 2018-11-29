@@ -16,9 +16,9 @@ import I18nUtils from '../../utils/I18nUtils'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
 import SearchCondition from '../../components/SearchCondition'
-import URLSearchParams from 'url-search-params'
 import { DefaultValue } from '../../constants'
 import { Helmet } from 'react-helmet'
+import queryString from 'query-string'
 
 class ListAccountsPage extends React.Component {
   constructor(props) {
@@ -31,13 +31,17 @@ class ListAccountsPage extends React.Component {
   }
 
   componentDidMount() {
-    let params = new URLSearchParams(this.props.history.location.search)
-    let page = params.get('page') * 1 || DefaultValue.PAGE
-    let limit = params.get('limit') *1 || DefaultValue.LIMIT
+    let parsed = queryString.parse(this.props.history.location.search)
+    let page = parsed.page * 1 || DefaultValue.PAGE
+    let limit = parsed.limit *1 || DefaultValue.LIMIT
     let data = {
       offset: (page - 1) * limit,
       limit: limit
     }
+    console.log(parsed)
+    if (parsed.freeword) data.name = parsed.freeword
+    if (parsed.group && parsed.group!=0) data.group_id = parsed.group
+    if (parsed.store) data.store_id = parsed.store
     this.props.userListRequest(data)
   }
 
@@ -94,7 +98,7 @@ class ListAccountsPage extends React.Component {
                     <td>{user.username}</td>
                     <td>{user.email}</td>
                     <td>{user.store ? user.store.title : ''}</td>
-                    <td>{user.group}</td>
+                    <td>{I18nUtils.t(`group-${user.group}`)}</td>
                     <td>
                       <Button
                         title={I18nUtils.t('edit')}

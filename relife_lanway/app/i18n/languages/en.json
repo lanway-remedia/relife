@@ -134,10 +134,10 @@
   "store-selection": "Select Store",
   "group-selection": "Select Group",
 
-  "group-system-admin": "System Admin",
-  "group-store-admin": "Store Admin",
-  "group-sub-store": "Sub store",
-  "group-user": "User",
+  "group-1": "System Admin",
+  "group-2": "Store Admin",
+  "group-3": "Sub store",
+  "group-4": "User",
 
   "btn-change-avatar": "Change Avatar",
   "btn-choose-img": "Choose Image",

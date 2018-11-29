@@ -23,19 +23,25 @@ import OutletStoreActions from '../redux/wrapper/OutletStoresRedux'
 import I18nUtils from '../utils/I18nUtils'
 import UltimatePagination from 'react-ultimate-pagination-bootstrap-4'
 
+const LIMIT = 10
+
 class StoreListModal extends Component {
   constructor(props) {
     super(props)
     this.state = {
       page: 1,
-      total: 10,
+      count: 0,
       storeList: [],
       selectedStore: {}
     }
   }
 
   componentDidMount() {
-    this.props.outletStoreListRequest({})
+    let data = {
+      offset: 0,
+      limit: LIMIT
+    }
+    this.props.outletStoreListRequest(data)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,7 +49,8 @@ class StoreListModal extends Component {
       let response = nextProps.response
       if (response.isGetStoreList) {
         this.setState({
-          storeList: response.data
+          storeList: response.data.results,
+          count: response.data.count
         })
       }
     }
@@ -55,6 +62,11 @@ class StoreListModal extends Component {
 
   onPageChange = (page) => {
     this.setState({ page })
+    let data = {
+      offset: (page - 1) * LIMIT,
+      limit: LIMIT
+    }
+    this.props.outletStoreListRequest(data)
   }
 
   focusStore = (item) => {
@@ -70,7 +82,8 @@ class StoreListModal extends Component {
   getPagedData = () => {}
 
   render() {
-    let { page, total, storeList, selectedStore } = this.state
+    let { page, count, storeList, selectedStore } = this.state
+    let pagesCount = count == 0 ? 1 : Math.ceil(count / LIMIT)
     return (
       <Modal isOpen={this.props.isOpen} toggle={this.toggle}>
         <ModalHeader toggle={this.toggle}>
@@ -85,11 +98,13 @@ class StoreListModal extends Component {
               </Button>
             </InputGroupAddon>
           </InputGroup>
-          <UltimatePagination
-            currentPage={page}
-            totalPages={total}
-            onChange={this.onPageChange}
-          />
+          {count > 0 && (
+            <UltimatePagination
+              currentPage={page}
+              totalPages={pagesCount}
+              onChange={this.onPageChange}
+            />
+          )}
           <ListGroup>
             {storeList.map((item, key) => {
               return (
