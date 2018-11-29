@@ -16,8 +16,7 @@ from mrelife.exhibitions.models import Exhibition, ExhibitionContact, Exhibition
 from mrelife.exhibitions.serializers import (
     ExhibitionContactReplySerializer,
     ExhibitionContactSerializer,
-    ExhibitionSerializer,
-    ExhibitionUpSerializer
+    ExhibitionSerializer
 )
 from mrelife.tags.models import Tag
 from mrelife.utils import result
