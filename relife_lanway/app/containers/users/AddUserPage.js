@@ -65,9 +65,7 @@ class AddUserPage extends React.Component {
     this.props.history.push('/users')
   }
 
-  matchPassword = (value) => {
-    return value && value === this.state.password
-  }
+  matchPassword = (value) => value && value === this.state.password
 
   showStoreListHandle = () => {
     this.setState({
@@ -189,6 +187,7 @@ class AddUserPage extends React.Component {
                     required: I18nUtils.t('validate-field-0'),
                     validator: 'Password does not match'
                   }}
+                  autoComplete="new-password"
                 />
               </FormGroup>
             </Col>
@@ -209,10 +208,10 @@ class AddUserPage extends React.Component {
               <FormGroup>
                 <Label for="group">{I18nUtils.t('group-selection')}</Label>
                 <Input type="select" name="group" id="group" onChange={this.handleChange} value={group}>
-                  <option value={4}>{I18nUtils.t('group-user')}</option>
-                  <option value={3}>{I18nUtils.t('group-sub-store')}</option>
-                  <option value={2}>{I18nUtils.t('group-store-admin')}</option>
-                  <option value={1}>{I18nUtils.t('group-system-admin')}</option>
+                  <option value={4}>{I18nUtils.t('group-4')}</option>
+                  <option value={3}>{I18nUtils.t('group-3')}</option>
+                  <option value={2}>{I18nUtils.t('group-2')}</option>
+                  <option value={1}>{I18nUtils.t('group-1')}</option>
                 </Input>
               </FormGroup>
             </Col>

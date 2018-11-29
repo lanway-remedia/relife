@@ -24,8 +24,14 @@ class ProfileInfoPage extends React.Component {
 
   componentDidMount() {
     document.title = `${I18nUtils.t('ud-page-title')}`
-    let data = {}
-    this.props.profileRequest(data)
+    if (!this.props.data.getProfile) {
+      let data = {}
+      this.props.profileRequest(data)
+    } else {
+      this.setState({
+        data: this.props.data.data
+      })
+    }
   }
 
   componentWillReceiveProps(nextProps) {

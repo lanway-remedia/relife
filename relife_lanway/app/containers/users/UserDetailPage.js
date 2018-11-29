@@ -127,7 +127,6 @@ class UserDetailPage extends React.Component {
 UserDetailPage.propTypes = {
   history: PropTypes.object,
   match: PropTypes.object,
-  profileRequest: PropTypes.func,
   data: PropTypes.object,
   findUserById: PropTypes.func
 }

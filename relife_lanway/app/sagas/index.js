@@ -47,20 +47,16 @@ export default function* root() {
 
     //user profile
     takeLatest(UserProfileTypes.PROFILE_REQUEST, UserProfileSagas.userProfile),
-    takeLatest(UserProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
     takeLatest(
       UserProfileTypes.EDIT_PROFILE_REQUEST,
       UserProfileSagas.editProfile
     ),
-    takeLatest(UserProfileTypes.EDIT_PROFILE_FAILURE, ErrorSagas.handleError),
     takeLatest(
       UserProfileTypes.EDIT_PROFILE_AVATAR_REQUEST,
       UserProfileSagas.editProfileAvatar
     ),
-    takeLatest(
-      UserProfileTypes.EDIT_PROFILE_AVATAR_FAILURE,
-      ErrorSagas.handleError
-    ),
+    takeLatest(UserProfileTypes.CHANGE_PASS_REQUEST, UserProfileSagas.changePass),
+    takeLatest(UserProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
 
     //OutletStore
     // Get List
@@ -192,6 +188,7 @@ export default function* root() {
     takeLatest(UsersTypes.USER_LIST_REQUEST, UsersSagas.listUser),
     takeLatest(UsersTypes.ADD_USER_REQUEST, UsersSagas.addUser),
     takeLatest(UsersTypes.EDIT_USER_REQUEST, UsersSagas.editUser),
+    takeLatest(UsersTypes.DELETE_USER_REQUEST, UsersSagas.deleteUser),
     takeLatest(UsersTypes.FIND_USER_BY_ID, UsersSagas.findUserById),
     takeLatest(UsersTypes.USERS_FAILURE, ErrorSagas.handleError)
   ]

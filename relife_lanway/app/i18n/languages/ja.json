@@ -127,6 +127,7 @@
   "hide": "Hide",
   "regular-holiday": "Regular Holiday",
   "time-serving": "Time Serving",
+  "freeword": "Free Word",
 
   "lb-ad-search": "Advanced Search",
   "lb-fil-tooltip": "Click here, you can show/hide Advanced Search content ",
@@ -141,10 +142,10 @@
   "store-selection": "Select Store",
   "group-selection": "Select Group",
 
-  "group-system-admin": "System Admin",
-  "group-store-admin": "Store Admin",
-  "group-sub-store": "Sub store",
-  "group-user": "User",
+  "group-1": "System Admin",
+  "group-2": "Store Admin",
+  "group-3": "Sub store",
+  "group-4": "User",
   "btn-choose-img": "Choose Image",
   "btn-add-new": "Add New",
   "btn-back": "Back",
@@ -177,8 +178,61 @@
   "validate-pass": "Password should be at least 8 characters and contains at least one upper case letter.",
 
   "CM001": "Something wrong.",
+  
   "AU001": "Sorry, you are not allowed to access this function.",
   "AU002": "Bạn đã đăng nhập nên không thể thực hiện thao tác này",
   "AU003": "Username or password incorrect",
-  "RP001": "yêu cầu tìm lại mật khẩu thành công, vui lòng kiểm tra email"
+  
+  "MH001": "không tìm thấy store",
+
+  "OT001": "get list data",
+  "OT002": "found data",
+  "OT003": "Not found data",
+  "OT004": "add new a outletstore successfully ",
+  "OT005": "Not created",
+  "OT006": "updated data successfully",
+  "OT007": "not updated",
+  "OT008": "deleted data successfully",
+  "OT009": "not deleted",
+
+  "EX001": "get list data",
+  "EX002": "found data",
+  "EX003": "Not found data",
+  "EX004": "add new a outletstore successfully ",
+  "EX005": "Not created",
+  "EX006": "updated data successfully",
+  "EX007": "not updated",
+  "EX008": "deleted data successfully",
+  "EX009": "not deleted",
+  
+  "US001": "không tìm thấy tài khoản",
+  "US002": "mật khẩu xác nhận không chính xác",
+  "US003": "thay đổi email thành công",
+  "US004": "Email đã tồn tại trong hệ thống",
+  "US005": "Email xác nhận email mới đã được gửi",
+  "US006": "Thay đổi email thành công",
+  "US007": "Lấy thông tin cá nhân thành công",
+  "US008": "Lấy thông tin cá nhân thất bại",
+  "US009": "Thay đổi avatar thành công",
+  "US010": "Thay đổi thông tin cá nhân thất bại",
+  "US011": "Thay đổi thông tin cá nhân thành công",
+  "US012": "Mật khẩu hiện tại không chính xác",
+  "US013": "Dữ liệu truyền lên không đầy đủ hoặc mật khẩu xác nhận không khớp",
+  "US014": "Thay đổi mật khẩu thành công",
+  "US015": "user added successfully",
+  "US016": "user updated successfully",
+
+  "MS001": "không thể gửi mail",
+
+  "RP001": "yêu cầu tìm lại mật khẩu thành công, vui lòng kiểm tra email",
+  "RP002": "token không hợp lệ hoặc đã hết hạn",
+  "RP003": "lấy lại mật khẩu thành công",
+  "RP004": "token hợp lệ",
+  
+  "RG001": "đăng ký thành công",
+  "RG002": "kích hoạt tài khoản thành công",
+  "RG003": "yêu cầu gửi link kích hoạt lại tài khoản thành công",
+
+  "FM001": "Upload file thành công",
+  "FM002": "File ko được rỗng"
 }

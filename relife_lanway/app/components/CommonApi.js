@@ -14,7 +14,7 @@ import ProfileActions from '../redux/wrapper/UserProfileRedux'
 
 let f
 
-class ErrorApi extends React.Component {
+class CommonApi extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -28,7 +28,7 @@ class ErrorApi extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
-      this.props.getProfile(nextProps.data.data)
+      this.props.getProfile(nextProps.data)
     }
   }
 
@@ -41,7 +41,7 @@ class ErrorApi extends React.Component {
   }
 }
 
-ErrorApi.propTypes = {
+CommonApi.propTypes = {
   history: PropTypes.object,
   profileRequest: PropTypes.func,
   data: PropTypes.object,
@@ -66,4 +66,4 @@ export function showError(message) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ErrorApi))
+)(withRouter(CommonApi))

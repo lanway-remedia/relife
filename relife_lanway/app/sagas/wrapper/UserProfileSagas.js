@@ -22,18 +22,27 @@ const UserProfileSagas = {
     try {
       let response = yield call(userProfileService.editUserProfile, data)
       response.data.editProfile = true
-      yield put(UserProfileActions.editProfileSuccess(response.data))
+      yield put(UserProfileActions.profileSuccess(response.data))
     } catch (err) {
-      yield put(UserProfileActions.editProfileFailure(err))
+      yield put(UserProfileActions.profileFailure(err))
     }
   },
   *editProfileAvatar({ data }) {
     try {
       let response = yield call(userProfileService.editAvatarProfile, data)
       response.data.editProfileImage = true
-      yield put(UserProfileActions.editProfileAvatarSuccess(response.data))
+      yield put(UserProfileActions.profileSuccess(response.data))
     } catch (err) {
-      yield put(UserProfileActions.editProfileAvatarFailure(err))
+      yield put(UserProfileActions.profileFailure(err))
+    }
+  },
+  *changePass ({ data }) {
+    try {
+      let response = yield call(userProfileService.changePass, data)
+      response.data.changePass = true
+      yield put(UserProfileActions.profileSuccess(response.data))
+    } catch (err) {
+      yield put(UserProfileActions.profileFailure(err))
     }
   }
 }

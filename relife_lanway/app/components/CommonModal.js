@@ -46,7 +46,7 @@ class CommonModal extends Component {
             <div>
               <Button className="mr-2" color="danger" onClick={okFunction}>
                 {I18nUtils.t('ok')}
-              </Button>
+              </Button>{' '}
               <Button color="primary" onClick={handleHide}>
                 {I18nUtils.t('cancel')}
               </Button>

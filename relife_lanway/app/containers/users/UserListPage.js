@@ -15,9 +15,11 @@ import UsersActions from '../../redux/wrapper/UsersRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
-import URLSearchParams from 'url-search-params'
+import SearchCondition from '../../components/SearchCondition'
 import { DefaultValue } from '../../constants'
 import { Helmet } from 'react-helmet'
+import queryString from 'query-string'
+import { ModalName } from '../../constants'
 
 class ListAccountsPage extends React.Component {
   constructor(props) {
@@ -30,13 +32,16 @@ class ListAccountsPage extends React.Component {
   }
 
   componentDidMount() {
-    let params = new URLSearchParams(this.props.history.location.search)
-    let page = params.get('page') * 1 || DefaultValue.PAGE
-    let limit = params.get('limit') *1 || DefaultValue.LIMIT
+    let parsed = queryString.parse(this.props.history.location.search)
+    let page = parsed.page * 1 || DefaultValue.PAGE
+    let limit = parsed.limit *1 || DefaultValue.LIMIT
     let data = {
       offset: (page - 1) * limit,
       limit: limit
     }
+    if (parsed.freeword) data.name = parsed.freeword
+    if (parsed.group && parsed.group!=0) data.group_id = parsed.group
+    if (parsed.store) data.store_id = parsed.store
     this.props.userListRequest(data)
   }
 
@@ -60,6 +65,23 @@ class ListAccountsPage extends React.Component {
     this.props.history.push(`/user/${id}`)
   }
 
+  deleteUser = (user) => {
+    this.props.show(
+      ModalName.COMMON,
+      {
+        message: I18nUtils.formatMessage({ id: 'modal-del-header' }, { name: user.username }),
+        okFunction: () => this.okFunction(user.id)
+      }
+    )
+  }
+
+  okFunction = (id) => {
+    this.props.deleteUserRequest(id)
+    this.props.hide(ModalName.COMMON)
+    let users = this.state.users.filter(user => user.id !== id)
+    this.setState({ users })
+  }
+
   render() {
     let { sortColumn, count, users } = this.state
     return (
@@ -77,6 +99,7 @@ class ListAccountsPage extends React.Component {
           </h1>
         </div>
         <div className="formTable">
+          <SearchCondition hasFreeword={{title: I18nUtils.t('username')}} hasGroup hasStore />
           <PaginationComponent count={count} />
           <Table hover responsive>
             <TableHeadComponent
@@ -92,7 +115,7 @@ class ListAccountsPage extends React.Component {
                     <td>{user.username}</td>
                     <td>{user.email}</td>
                     <td>{user.store ? user.store.title : ''}</td>
-                    <td>{user.group}</td>
+                    <td>{I18nUtils.t(`group-${user.group}`)}</td>
                     <td>
                       <Button
                         title={I18nUtils.t('edit')}
@@ -110,6 +133,7 @@ class ListAccountsPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
+                        onClick={() => this.deleteUser(user)}
                       >
                         <i className="fa fa-trash" />
                       </Button>
@@ -129,10 +153,10 @@ ListAccountsPage.propTypes = {
   history: PropTypes.object,
   processing: PropTypes.bool,
   response: PropTypes.object,
-  totalCount: PropTypes.string,
-  pageSize: PropTypes.string,
-  currentPage: PropTypes.string,
-  userListRequest: PropTypes.func
+  userListRequest: PropTypes.func,
+  deleteUserRequest: PropTypes.func,
+  show: PropTypes.func,
+  hide: PropTypes.func
 }
 
 const mapStateToProps = state => {
@@ -144,7 +168,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ show, hide }, dispatch),
-  userListRequest: data => dispatch(UsersActions.userListRequest(data))
+  userListRequest: data => dispatch(UsersActions.userListRequest(data)),
+  deleteUserRequest: id => dispatch(UsersActions.deleteUserRequest(id))
 })
 
 export default connect(
