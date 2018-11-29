@@ -5,9 +5,9 @@
 
 'use strict';
 
-var webpack = require('webpack');
+let webpack = require('webpack');
 let path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+let HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = require('./webpack.base')({
   devtool: 'eval-source-map',
