@@ -18,20 +18,24 @@ class LocationsComponent extends Component {
       required: false
     }
 
+    this.getLocation = this.getLocation.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleUpdateDistrict = this.handleUpdateDistrict.bind(this)
     this.handleSendData = this.handleSendData.bind(this)
   }
 
-  componentDidMount() {
+  getLocation() {
     const id = 1 // Type City
-    this.props.locationsRequest(id)
+    this.props.locationGetRequest(id)
+  }
+
+  componentDidMount() {
+    this.getLocation()
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
-      console.log(response)
       if (response.listLocation) {
         this.setState({
           dataCity: response.data
@@ -61,6 +65,10 @@ class LocationsComponent extends Component {
         })
       }
     }
+  }
+
+  componentWillUnmount() {
+    this.getLocation()
   }
 
   handleChange = e => {
@@ -203,7 +211,7 @@ LocationsComponent.propTypes = {
   type: PropTypes.string,
   city: PropTypes.string,
   district: PropTypes.string,
-  locationsRequest: PropTypes.func,
+  locationGetRequest: PropTypes.func,
   data: PropTypes.object,
   required: PropTypes.bool,
   onSelectedCity: PropTypes.func,
@@ -218,7 +226,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  locationsRequest: data => dispatch(LocationActions.locationsRequest(data))
+  locationGetRequest: data => dispatch(LocationActions.locationGetRequest(data))
 })
 
 export default connect(

@@ -36,8 +36,10 @@ import EditTagPage from './containers/tags/EditTagPage'
 //Categories
 import ManageCategoryListPage from './containers/categories/ManageCategoryListPage'
 import AddNewCategoryPage from './containers/categories/AddNewCategoryPage'
-import EditCategoryPage from './containers/categories/EditCategoryPage'
-import EditSubCategoryPage from './containers/categories/EditSubCategoryPage'
+//Locations
+import ManageLocationListPage from './containers/locations/ManageLocationListPage'
+import AddNewLocationPage from './containers/locations/AddNewLocationPage'
+import EditLocationPage from './containers/locations/EditLocationPage'
 //languages
 import Language from './components/Language'
 
@@ -206,6 +208,23 @@ class Routes extends React.Component {
               onClick={() => this.props.history.push('/manage-category-list')}
             />
           </Sidebar.Menu.Item>
+          <Sidebar.Menu.Item
+            title={I18nUtils.t('loc-parent-title')}
+            icon={{ className: 'fa-sitemap' }}
+          >
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/add-new-location'}
+              title={I18nUtils.t('loc-add-page-title')}
+              icon={{ className: 'fa-plus-square' }}
+              onClick={() => this.props.history.push('/add-new-location')}
+            />
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/manage-location-list'}
+              title={I18nUtils.t('loc-page-title')}
+              icon={{ className: 'fa-list-ol' }}
+              onClick={() => this.props.history.push('/manage-location-list')}
+            />
+          </Sidebar.Menu.Item>
           {/* <Sidebar.Menu.Item
             active={this.props.location.pathname == '/article'}
             onClick={() => this.props.history.push('/article')}
@@ -261,18 +280,12 @@ class Routes extends React.Component {
                   path="/profile-change-password"
                   component={requireLogin(ProfileChangePassPage)}
                 />
-                <Route
-                  path="/users"
-                  component={requireLogin(UserListPage)}
-                />
+                <Route path="/users" component={requireLogin(UserListPage)} />
                 <Route
                   path="/user/:id"
                   component={requireLogin(UserDetailPage)}
                 />
-                <Route
-                  path="/add-user"
-                  component={requireLogin(AddUserPage)}
-                />
+                <Route path="/add-user" component={requireLogin(AddUserPage)} />
                 <Route
                   path="/edit-user/:id"
                   component={requireLogin(EditUserPage)}
@@ -326,12 +339,16 @@ class Routes extends React.Component {
                   component={requireLogin(AddNewCategoryPage)}
                 />
                 <Route
-                  path="/edit-category/:id"
-                  component={requireLogin(EditCategoryPage)}
+                  path="/manage-location-list"
+                  component={requireLogin(ManageLocationListPage)}
                 />
                 <Route
-                  path="/edit-sub-category/:id"
-                  component={requireLogin(EditSubCategoryPage)}
+                  path="/add-new-location"
+                  component={requireLogin(AddNewLocationPage)}
+                />
+                <Route
+                  path="/edit-location/:id"
+                  component={requireLogin(EditLocationPage)}
                 />
               </Switch>
             </div>

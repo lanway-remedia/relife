@@ -25,43 +25,43 @@ import { Helmet } from 'react-helmet'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import { ModalName } from '../../constants'
-import CateActions from '../../redux/wrapper/CategoriesRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
+import LocationActions from '../../redux/wrapper/LocationsRedux'
 import { toast } from 'react-toastify'
 import { DefaultValue } from '../../constants'
 
-class ManageCategoryListPage extends React.Component {
+class ManageLocationListPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       count: 0,
       page: 0,
       limit: 0,
-      type: 1, //Type category (1: Parent category, 2: Sub category)
-      cateList: [],
+      type: 1, //Type locations (1: City, 2: District)
+      locationList: [],
       collapse: false,
       id: '',
       name: '',
       order: '',
-      category: ''
+      city: ''
     }
     this.toggle = this.toggle.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
-    this.addNewSubCategory = this.addNewSubCategory.bind(this)
-    this.handleAddSubCategory = this.handleAddSubCategory.bind(this)
+    this.addNewDistrictDialog = this.addNewDistrictDialog.bind(this)
+    this.handleAddDistrict = this.handleAddDistrict.bind(this)
     this.handleDialogEdit = this.handleDialogEdit.bind(this)
     this.handleEditSubmit = this.handleEditSubmit.bind(this)
     this.okDeleteFunction = this.okDeleteFunction.bind(this)
     this.handleCloseModal = this.handleCloseModal.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.getCateList = this.getCateList.bind(this)
+    this.getLocationList = this.getLocationList.bind(this)
   }
 
-  getCateList() {
+  getLocationList() {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
@@ -75,23 +75,23 @@ class ManageCategoryListPage extends React.Component {
       page: data.page,
       limit: data.limit
     })
-    this.props.cateListRequest(data)
+    this.props.locationListRequest(data)
   }
 
   componentDidMount() {
-    this.getCateList()
+    this.getLocationList()
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps.data)
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
-      console.log(response)
       if (response.isGetList) {
         if (response.data.count === 0) {
           toast.warn(I18nUtils.t('toast-no-record'))
         }
         this.setState({
-          cateList: response.data.results,
+          locationList: response.data.results,
           count: response.data.count
         })
       }
@@ -104,12 +104,12 @@ class ManageCategoryListPage extends React.Component {
             )
           )
 
-          this.forceUpdate(this.getCateList)
+          this.forceUpdate(this.getLocationList)
         }
       }
 
       if (response.isEdit) {
-        if (response.messageCode === 'CAT004') {
+        if (response.messageCode === 'LOC004') {
           toast.success(
             I18nUtils.formatMessage(
               { id: 'toast-edit-sucess' },
@@ -117,12 +117,12 @@ class ManageCategoryListPage extends React.Component {
             )
           )
         }
-        if (this.state.category) {
+        if (this.state.city) {
           this.setState({
             type: 1
           })
         }
-        this.forceUpdate(this.getCateList)
+        this.forceUpdate(this.getLocationList)
       }
 
       if (response.isDelete) {
@@ -132,7 +132,7 @@ class ManageCategoryListPage extends React.Component {
             { name: this.state.name }
           )
         )
-        this.forceUpdate(this.getCateList)
+        this.forceUpdate(this.getLocationList)
       }
     }
 
@@ -140,18 +140,18 @@ class ManageCategoryListPage extends React.Component {
   }
 
   componentWillUnmount() {
-    this.getCateList()
+    this.getLocationList()
   }
 
   toggle = () => {
     this.setState({ collapse: !this.state.collapse })
   }
 
-  addNewSubCategory = cate => {
+  addNewDistrictDialog = city => {
     const formAdd = (
       <ValidationForm
-        className="popup-category col-no-mg"
-        onSubmit={this.handleAddSubCategory}
+        className="popup-location col-no-mg"
+        onSubmit={this.handleAddDistrict}
       >
         <Row>
           <Col xs="12" md="12">
@@ -200,33 +200,34 @@ class ManageCategoryListPage extends React.Component {
     this.props.show(ModalName.COMMON, {
       modalClass: 'center-modal hide-footer',
       title: I18nUtils.formatMessage(
-        { id: 'modal-cate-add-header' },
-        { name: cate.name }
+        { id: 'modal-loc-add-header' },
+        { name: city.name }
       ),
       message: formAdd,
       hideCloseButton: true
     })
 
     this.setState({
-      category: cate.id
+      city: city.id
     })
   }
 
-  handleAddSubCategory = e => {
+  handleAddDistrict = e => {
     e.preventDefault()
     let data = new FormData()
-    data.append('type', '2') // Type Sub Category
+    data.append('type', '2') // Type District
     data.append('name', this.state.name)
+    data.append('name_en', this.state.name)
     data.append('order', this.state.order)
-    data.append('category', this.state.category)
-    this.props.cateAddRequest(data)
+    data.append('city', this.state.city)
+    this.props.locationAddRequest(data)
     this.props.hide(ModalName.COMMON)
   }
 
-  handleDialogEdit = cate => {
+  handleDialogEdit = city => {
     const formAdd = (
       <ValidationForm
-        className="popup-category col-no-mg"
+        className="popup-location col-no-mg"
         onSubmit={this.handleEditSubmit}
       >
         <Row>
@@ -237,7 +238,7 @@ class ManageCategoryListPage extends React.Component {
                 type="text"
                 name="name"
                 id="name"
-                defaultValue={cate.name}
+                defaultValue={city.name}
                 placeholder={I18nUtils.t('all-place-input')}
                 onChange={this.handleChange}
                 required
@@ -251,7 +252,7 @@ class ManageCategoryListPage extends React.Component {
                 type="text"
                 name="order"
                 id="order"
-                defaultValue={cate.order}
+                defaultValue={city.order}
                 placeholder={I18nUtils.t('all-place-input')}
                 onChange={this.handleChange}
                 required
@@ -278,22 +279,22 @@ class ManageCategoryListPage extends React.Component {
     this.props.show(ModalName.COMMON, {
       modalClass: 'center-modal hide-footer',
       title: I18nUtils.formatMessage(
-        { id: 'modal-cate-edit-header' },
-        { name: cate.name }
+        { id: 'modal-loc-edit-header' },
+        { name: city.name }
       ),
       message: formAdd,
       hideCloseButton: true
     })
 
-    if (cate.category)
+    if (city.city)
       this.setState({
-        id: cate.id,
+        id: city.id,
         type: 2,
-        category: cate.category
+        city: city.city
       })
     else
       this.setState({
-        id: cate.id
+        id: city.id
       })
   }
 
@@ -301,53 +302,54 @@ class ManageCategoryListPage extends React.Component {
     e.preventDefault()
     let data = new FormData()
 
-    data.append('type', this.state.type) // Type Category
+    data.append('type', this.state.type) // Type Location // 1: City, 2 : District
     data.append('id', this.state.id)
     data.append('name', e.target.name.value)
+    data.append('name_en', e.target.name.value)
     data.append('order', e.target.order.value)
-    if (this.state.type === 2) data.append('category', this.state.category)
+    if (this.state.type === 2) data.append('city', this.state.city)
 
-    this.props.cateEditRequest(data)
+    this.props.locationEditRequest(data)
     this.props.hide(ModalName.COMMON)
   }
 
-  handleDelete = cate => {
+  handleDelete = city => {
     this.props.show(ModalName.COMMON, {
       bodyClass: 'text-center',
       title: I18nUtils.formatMessage(
         { id: 'modal-del-header' },
-        { name: cate.name }
+        { name: city.name }
       ),
       message: I18nUtils.t('modal-del-body'),
-      okFunction: () => this.okDeleteFunction(cate)
+      okFunction: () => this.okDeleteFunction(city)
     })
   }
 
-  okDeleteFunction = cate => {
-    let type = 1 // Type 1: Parent Category
-    if (cate.category) {
-      const originCateList = this.state.cateList
-      for (let i = 0; i < originCateList.length; i++) {
-        if (originCateList[i].id === cate.category) {
-          originCateList[i].sub_categories = originCateList[
+  okDeleteFunction = city => {
+    let type = 1 // Type 1: City
+    if (city.city) {
+      const originLocationList = this.state.locationList
+      for (let i = 0; i < originLocationList.length; i++) {
+        if (originLocationList[i].id === city.city) {
+          originLocationList[i].districts = originLocationList[
             i
-          ].sub_categories.filter(s => s.id !== cate.id)
-          this.setState({ cateList: originCateList })
+          ].districts.filter(c => c.id !== city.id)
+          this.setState({ locationList: originLocationList })
         }
       }
-      type = 2 // Type 2: Sub Category
+      type = 2 // Type 2: District
     } else {
-      const originCateList = this.state.cateList
-      const cateList = originCateList.filter(c => c.id !== cate.id)
-      this.setState({ cateList, name: cate.name })
+      const originLocationList = this.state.locationList
+      const locationList = originLocationList.filter(c => c.id !== city.id)
+      this.setState({ locationList, name: city.name })
     }
 
     let data = {
-      id: cate.id,
-      type: type //Type category (1: Parent category, 2: Sub category)
+      id: city.id,
+      type: type //Type Location (1: City, 2: District)
     }
 
-    this.props.cateDeleteRequest(data)
+    this.props.locationDeleteRequest(data)
     this.props.hide(ModalName.COMMON)
   }
 
@@ -361,21 +363,21 @@ class ManageCategoryListPage extends React.Component {
   }
 
   redirectToAddNew = () => {
-    this.props.history.push('/add-new-category')
+    this.props.history.push('/add-new-location')
   }
 
   render() {
-    let { page, limit, count, cateList } = this.state
+    let { page, limit, count, locationList } = this.state
 
     return (
-      <Container fluid className="manage-cate-list">
+      <Container fluid className="manage-location-list">
         <Helmet>
-          <title>{I18nUtils.t('cate-page-title')}</title>
+          <title>{I18nUtils.t('loc-page-title')}</title>
         </Helmet>
         <div className="page-title">
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />
-            {I18nUtils.t('cate-page-title')}
+            {I18nUtils.t('loc-page-title')}
             <Button onClick={this.redirectToAddNew} color="success">
               {I18nUtils.t('btn-add-new')}
             </Button>
@@ -390,45 +392,45 @@ class ManageCategoryListPage extends React.Component {
               theadTitle="#,Name,Order,Action"
             />
             <tbody>
-              {cateList.length === 0 && (
+              {locationList.length === 0 && (
                 <tr>
                   <td colSpan="4" className="alert alert-warning">
                     {I18nUtils.t('toast-no-record')}
                   </td>
                 </tr>
               )}
-              {cateList.map((cate, key) => {
+              {locationList.map((city, key) => {
                 return (
                   <tr key={key}>
                     <td>{(page - 1) * limit + key + 1}</td>
                     <td className="name-style">
                       <div className="clearfix">
-                        {cate.name}
-                        {cate.sub_categories.length !== 0 && (
+                        {city.name}
+                        {city.districts.length !== 0 && (
                           <Button
                             color="primary"
                             onClick={this.toggle}
                             size="sm"
                             className="float-right"
-                            id={'category-' + cate.id}
+                            id={'loc-' + city.id}
                           >
-                            {I18nUtils.t('cate-sub-showhide')}
+                            {I18nUtils.t('loc-dis-showhide')}
                           </Button>
                         )}
                       </div>
 
-                      {cate.sub_categories.length !== 0 && (
+                      {city.districts.length !== 0 && (
                         <UncontrolledCollapse
-                          toggler={'category-' + cate.id}
+                          toggler={'loc-' + city.id}
                           // isOpen={this.state.collapse}
                         >
                           <ListGroup className="mt-3 clearfix">
-                            {cate.sub_categories.map((sub, idex) => {
+                            {city.districts.map((dis, idex) => {
                               return (
                                 <ListGroupItem key={idex}>
-                                  {sub.name}
+                                  {dis.name}
                                   <Badge pill color="primary" className="ml-2">
-                                    {I18nUtils.t('order')} : {sub.order}
+                                    {I18nUtils.t('order')} : {dis.order}
                                   </Badge>
                                   <Button
                                     title={I18nUtils.t('delete')}
@@ -436,7 +438,7 @@ class ManageCategoryListPage extends React.Component {
                                     outline
                                     size="sm"
                                     className="float-right"
-                                    onClick={() => this.handleDelete(sub)}
+                                    onClick={() => this.handleDelete(dis)}
                                   >
                                     <i className="fa fa-trash" />
                                   </Button>
@@ -446,7 +448,7 @@ class ManageCategoryListPage extends React.Component {
                                     outline
                                     size="sm"
                                     className="float-right mr-2"
-                                    onClick={() => this.handleDialogEdit(sub)}
+                                    onClick={() => this.handleDialogEdit(dis)}
                                   >
                                     <i className="fa fa-edit" />
                                   </Button>
@@ -457,15 +459,15 @@ class ManageCategoryListPage extends React.Component {
                         </UncontrolledCollapse>
                       )}
                     </td>
-                    <td>{cate.order}</td>
+                    <td>{city.order}</td>
                     <td>
                       <Button
-                        title={I18nUtils.t('cate-add-sub')}
+                        title={I18nUtils.t('loc-add-dis')}
                         color="success"
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.addNewSubCategory(cate)}
+                        onClick={() => this.addNewDistrictDialog(city)}
                       >
                         <i className="fa fa-plus" />
                       </Button>
@@ -475,7 +477,7 @@ class ManageCategoryListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.handleDialogEdit(cate)}
+                        onClick={() => this.handleDialogEdit(city)}
                       >
                         <i className="fa fa-edit" />
                       </Button>
@@ -485,7 +487,7 @@ class ManageCategoryListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.handleDelete(cate)}
+                        onClick={() => this.handleDelete(city)}
                       >
                         <i className="fa fa-trash" />
                       </Button>
@@ -501,39 +503,43 @@ class ManageCategoryListPage extends React.Component {
   }
 }
 
-ManageCategoryListPage.propTypes = {
+ManageLocationListPage.propTypes = {
   history: PropTypes.object,
   processing: PropTypes.bool,
   data: PropTypes.object,
-  cateListRequest: PropTypes.func,
-  cateDeleteRequest: PropTypes.func,
-  cateAddRequest: PropTypes.func,
-  cateEditRequest: PropTypes.func,
+  locationListRequest: PropTypes.func,
+  locationDeleteRequest: PropTypes.func,
+  locationAddRequest: PropTypes.func,
+  locationEditRequest: PropTypes.func,
   show: PropTypes.func,
   hide: PropTypes.func,
   name: PropTypes.string,
   id: PropTypes.string,
   order: PropTypes.string,
-  category: PropTypes.string,
-  cateList: PropTypes.object
+  city: PropTypes.string,
+  locationList: PropTypes.object
 }
 
 const mapStateToProps = state => {
   return {
-    processing: state.categories.processing,
-    data: state.categories.data
+    processing: state.locations.processing,
+    data: state.locations.data
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ show, hide }, dispatch),
-  cateListRequest: data => dispatch(CateActions.cateListRequest(data)),
-  cateDeleteRequest: data => dispatch(CateActions.cateDeleteRequest(data)),
-  cateAddRequest: data => dispatch(CateActions.cateAddRequest(data)),
-  cateEditRequest: data => dispatch(CateActions.cateEditRequest(data))
+  locationListRequest: data =>
+    dispatch(LocationActions.locationListRequest(data)),
+  locationDeleteRequest: data =>
+    dispatch(LocationActions.locationDeleteRequest(data)),
+  locationAddRequest: data =>
+    dispatch(LocationActions.locationAddRequest(data)),
+  locationEditRequest: data =>
+    dispatch(LocationActions.locationEditRequest(data))
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ManageCategoryListPage))
+)(withRouter(ManageLocationListPage))

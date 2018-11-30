@@ -51,6 +51,14 @@
   "tag-ed-page-title": "Edit '{name}'",
   "tag-title-back-list": "Back to Manage Tag List Page",
 
+  "loc-parent-title": "Location Management",
+  "loc-page-title": "Manage Location List",
+  "loc-add-page-title": "Add New City",
+  "loc-ed-page-title": "Edit '{name}'",
+  "loc-title-back-list": "Back to Manage Location List Page",
+  "loc-dis-showhide": "Show / Hide District",
+  "loc-add-dis": "Add new district",
+
   "cate-parent-title": "Category Management",
   "cate-page-title": "Manage Category List",
   "cate-add-page-title": "Add New Category",
@@ -137,7 +145,6 @@
   "lb-enable": "Enable",
   "lb-disabled": "Disabled",
 
-  "btn-change-avatar": "Change Avatar",
   "add-user": "Add User",
   "store-selection": "Select Store",
   "group-selection": "Select Group",
@@ -146,12 +153,17 @@
   "group-2": "Store Admin",
   "group-3": "Sub store",
   "group-4": "User",
+  "btn-change-avatar": "Change Avatar",
   "btn-choose-img": "Choose Image",
   "btn-add-new": "Add New",
   "btn-back": "Back",
+  "btn-update": "Update",
+  "btn-edit": "Edit",
+  "btn-delete": "Delete",
   "sub-title-img": "Upload {type} of {name}",
 
   "modal-cate-add-header": "Add New Sub Category in '{name}'",
+  "modal-cate-edit-header": "Edit '{name}' category",
   "modal-del-header": "Do you want delete '{name}'?",
   "modal-del-body": "If you want , you need to click 'OK'",
   "toast-del-sucess": "Delete {name} success",
@@ -178,11 +190,11 @@
   "validate-pass": "Password should be at least 8 characters and contains at least one upper case letter.",
 
   "CM001": "Something wrong.",
-  
+
   "AU001": "Sorry, you are not allowed to access this function.",
   "AU002": "Bạn đã đăng nhập nên không thể thực hiện thao tác này",
   "AU003": "Username or password incorrect",
-  
+
   "MH001": "không tìm thấy store",
 
   "OT001": "get list data",
@@ -204,7 +216,7 @@
   "EX007": "not updated",
   "EX008": "deleted data successfully",
   "EX009": "not deleted",
-  
+
   "US001": "không tìm thấy tài khoản",
   "US002": "mật khẩu xác nhận không chính xác",
   "US003": "thay đổi email thành công",
@@ -228,11 +240,13 @@
   "RP002": "token không hợp lệ hoặc đã hết hạn",
   "RP003": "lấy lại mật khẩu thành công",
   "RP004": "token hợp lệ",
-  
+
   "RG001": "đăng ký thành công",
   "RG002": "kích hoạt tài khoản thành công",
   "RG003": "yêu cầu gửi link kích hoạt lại tài khoản thành công",
 
   "FM001": "Upload file thành công",
-  "FM002": "File ko được rỗng"
+  "FM002": "File ko được rỗng",
+
+  "CAT002": "The name must be unique"
 }

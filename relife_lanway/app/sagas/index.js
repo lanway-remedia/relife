@@ -55,7 +55,10 @@ export default function* root() {
       UserProfileTypes.EDIT_PROFILE_AVATAR_REQUEST,
       UserProfileSagas.editProfileAvatar
     ),
-    takeLatest(UserProfileTypes.CHANGE_PASS_REQUEST, UserProfileSagas.changePass),
+    takeLatest(
+      UserProfileTypes.CHANGE_PASS_REQUEST,
+      UserProfileSagas.changePass
+    ),
     takeLatest(UserProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
 
     //OutletStore
@@ -180,9 +183,31 @@ export default function* root() {
     takeLatest(CategoryTypes.CATE_DELETE_REQUEST, CategoriesSagas.deleteCate),
     takeLatest(CategoryTypes.CATE_DELETE_FAILURE, ErrorSagas.handleError),
 
+    //Locations
+    //List Location
+    takeLatest(
+      LocationTypes.LOCATION_LIST_REQUEST,
+      LocationsSagas.listLocation
+    ),
+    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
     //Get Location
-    takeLatest(LocationTypes.LOCATIONS_REQUEST, LocationsSagas.getLocation),
-    takeLatest(LocationTypes.LOCATIONS_FAILURE, ErrorSagas.handleError),
+    takeLatest(LocationTypes.LOCATION_GET_REQUEST, LocationsSagas.getLocation),
+    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
+    //Add Location
+    takeLatest(LocationTypes.LOCATION_ADD_REQUEST, LocationsSagas.addLocation),
+    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
+    //Edit Location
+    takeLatest(
+      LocationTypes.LOCATION_EDIT_REQUEST,
+      LocationsSagas.editLocation
+    ),
+    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
+    //Delete Location
+    takeLatest(
+      LocationTypes.LOCATION_DELETE_REQUEST,
+      LocationsSagas.deleteLocation
+    ),
+    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
 
     //user
     takeLatest(UsersTypes.USER_LIST_REQUEST, UsersSagas.listUser),
