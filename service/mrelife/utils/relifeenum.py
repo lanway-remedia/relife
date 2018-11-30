@@ -52,3 +52,27 @@ class MessageCode(Enum):
     OMH007 = 'OMH007'  # update with err data
     OMH008 = 'OMH008'  # delete sussess
     OMH009 = 'OMH009'  # delete fail
+
+    CAT001 = 'CAT001'  # create success
+    CAT002 = 'CAT002'  # create with err data
+    CAT003 = 'CAT003'  # invalid data
+    CAT004 = 'CAT004'  # update success
+    CAT005 = 'CAT005'  # update error
+    CAT006 = 'CAT006'  # get list success
+    CAT007 = 'CAT007'  # delete success
+
+    TAG001 = 'TAG001'  # create success
+    TAG002 = 'TAG002'  # create with err data
+    TAG003 = 'TAG003'  # invalid data
+    TAG004 = 'TAG004'  # update success
+    TAG005 = 'TAG005'  # update error
+    TAG006 = 'TAG006'  # get list success
+    TAG007 = 'TAG007'  # delete success
+
+    LOC001 = 'LOC001'  # create success
+    LOC002 = 'LOC002'  # create with err data
+    LOC003 = 'LOC003'  # invalid data
+    LOC004 = 'LOC004'  # update success
+    LOC005 = 'LOC005'  # update error
+    LOC006 = 'LOC006'  # get list success
+    LOC007 = 'LOC007'  # delete success
