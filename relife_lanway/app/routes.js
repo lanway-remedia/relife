@@ -46,6 +46,7 @@ import I18nUtils from './utils/I18nUtils'
 import { StorageKeyConstants } from './constants'
 import { Dashboard, Header, Sidebar } from 'react-adminlte-dash'
 import 'react-toastify/dist/ReactToastify.css'
+import defaultAvatar from './images/user.png'
 
 class Routes extends React.Component {
   constructor(props) {
@@ -65,7 +66,7 @@ class Routes extends React.Component {
 
   render() {
     let { username, userimage } = this.props
-
+    userimage = userimage || defaultAvatar
     const isAuthenticated = () => {
       let isLogin = false
       var code = localStorage.getItem(StorageKeyConstants.TOKEN)
