@@ -28,7 +28,7 @@ class Category(Model):
 
     class Meta:
         db_table = 'category'
-        ordering = ['created', ]
+        ordering = ['order', ]
 
 
 class SubCategory(Model):
@@ -41,7 +41,7 @@ class SubCategory(Model):
 
     class Meta:
         db_table = 'sub_category'
-        ordering = ['created', ]
+        ordering = ['order', ]
         
     def __unicode__(self):
         return '%d: %s' % (self.id, self.name)
