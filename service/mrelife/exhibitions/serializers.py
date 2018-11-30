@@ -3,7 +3,8 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from mrelife.events.serializers import EventExhibitionSerializer
-from mrelife.exhibitions.models import Exhibition, ExhibitionContact, ExhibitionContactReply, ExhibitionTag
+from mrelife.exhibitions.models import (Exhibition, ExhibitionContact,
+                                        ExhibitionContactReply, ExhibitionTag)
 from mrelife.locations.models import District
 from mrelife.locations.serializers import DistrictSerializer
 from mrelife.users.models import User
@@ -33,8 +34,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     content = serializers.CharField()
     img_thumbnail = serializers.CharField(max_length=800, allow_blank=True, allow_null=True, read_only=True)
-    img_large = serializers.ImageField(max_length=None,allow_null=True, allow_empty_file=True,required=False)
-    #img_large = serializers.CharField(max_length=800, allow_blank=True, allow_null=True)
+    img_large = serializers.ImageField(required=True)
     latitude = serializers.CharField()
     longtitude = serializers.CharField()
     address = serializers.CharField(max_length=800)
@@ -65,7 +65,6 @@ class ExhibitionSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise serializers.ValidationError(e)
         return district_id
-        
 
     def validate(self, data):
         # Check that the start time, end time.
