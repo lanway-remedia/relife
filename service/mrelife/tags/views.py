@@ -9,6 +9,7 @@ from mrelife.utils.relifeenum import MessageCode
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.http import HttpResponse
+from rest_framework import status
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -24,8 +25,8 @@ class TagViewSet(viewsets.ModelViewSet):
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
 
-            return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
-        return Response(result.resultResponse(False, serializer.errors, MessageCode.FA001.value))
+            return Response(result.resultResponse(True, serializer.data, MessageCode.TAG001.value))
+        return Response(result.resultResponse(False, serializer.errors, MessageCode.TAG002.value), status=status.HTTP_400_BAD_REQUEST)
 
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now())
@@ -45,8 +46,8 @@ class TagViewSet(viewsets.ModelViewSet):
                 # forcibly invalidate the prefetch cache on the instance.
                 instance._prefetched_objects_cache = {}
 
-            return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
-        return Response(result.resultResponse(False, serializer.errors, MessageCode.FA001.value))
+            return Response(result.resultResponse(True, serializer.data, MessageCode.TAG004.value))
+        return Response(result.resultResponse(False, serializer.errors, MessageCode.TAG005.value), status=status.HTTP_400_BAD_REQUEST)
 
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now())
@@ -63,7 +64,7 @@ class TagViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+        return Response(result.resultResponse(True, serializer.data, MessageCode.TAG006.value))
 
     def destroy(self, request, *args, **kwargs):
         """
@@ -74,7 +75,7 @@ class TagViewSet(viewsets.ModelViewSet):
         instance.save()
         queryset = Tag.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
-        return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+        return Response(result.resultResponse(True, serializer.data, MessageCode.TAG007.value), status=status.HTTP_205_RESET_CONTENT)
 
     def export_csv(self, request, *args, **kwargs):
         """
