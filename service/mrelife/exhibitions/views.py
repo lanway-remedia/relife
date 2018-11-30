@@ -101,10 +101,10 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX008.value, ""), status=status.HTTP_200_OK)
         return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
 
-    @action(detail=False, methods=['DELETE'], url_path='deletex', url_name='deletex')
-    def Deletex(self, request, pk=None):
-        listobject = Exhibition.objects.all().filter(is_active=1)
-        for item in listobject:
-            if(item.id > 10):
-                item.delete()
-        return Response({"status": "true"})
+    # @action(detail=False, methods=['DELETE'], url_path='deletex', url_name='deletex')
+    # def Deletex(self, request, pk=None):
+    #     listobject = Exhibition.objects.all().filter(is_active=1)
+    #     for item in listobject:
+    #         if(item.id > 10):
+    #             item.delete()
+    #     return Response({"status": "true"})

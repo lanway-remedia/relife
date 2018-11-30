@@ -3,7 +3,8 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from mrelife.events.serializers import EventExhibitionSerializer
-from mrelife.exhibitions.models import Exhibition, ExhibitionContact, ExhibitionContactReply, ExhibitionTag
+from mrelife.exhibitions.models import (Exhibition, ExhibitionContact,
+                                        ExhibitionContactReply, ExhibitionTag)
 from mrelife.locations.models import District
 from mrelife.locations.serializers import DistrictSerializer
 from mrelife.users.models import User
@@ -33,7 +34,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     content = serializers.CharField()
     img_thumbnail = serializers.CharField(max_length=800, allow_blank=True, allow_null=True, read_only=True)
-    img_large = serializers.ImageField(max_length=None, allow_empty_file=False, required=True)
+    img_large = serializers.ImageField()
     latitude = serializers.CharField()
     longtitude = serializers.CharField()
     address = serializers.CharField(max_length=800)
