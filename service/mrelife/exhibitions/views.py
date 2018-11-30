@@ -4,8 +4,7 @@ from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.authentication import (BasicAuthentication,
-                                           SessionAuthentication)
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
@@ -13,11 +12,12 @@ from rest_framework.response import Response
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import EventExhibition
-from mrelife.exhibitions.models import (Exhibition, ExhibitionContact,
-                                        ExhibitionTag)
-from mrelife.exhibitions.serializers import (ExhibitionContactReplySerializer,
-                                             ExhibitionContactSerializer,
-                                             ExhibitionSerializer)
+from mrelife.exhibitions.models import Exhibition, ExhibitionContact, ExhibitionTag
+from mrelife.exhibitions.serializers import (
+    ExhibitionContactReplySerializer,
+    ExhibitionContactSerializer,
+    ExhibitionSerializer
+)
 from mrelife.tags.models import Tag
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
@@ -25,12 +25,12 @@ from mrelife.utils.relifeenum import MessageCode
 
 class EhibitionViewSet(viewsets.ModelViewSet):
 
-    queryset = Exhibition.objects.all()
+    queryset = Exhibition.objects.all().filter(is_active=1).order_by("-created")
     serializer_class = ExhibitionSerializer
     pagination_class = LimitOffsetPagination
 
     def list(self, request, *args, **kwargs):
-        self.queryset = Exhibition.objects.all().filter(is_active=1)
+        self.queryset = Exhibition.objects.all().filter(is_active=1).order_by("-created")
         return super(EhibitionViewSet, self).list(request, *args, **kwargs)
 
     def retrieve(self, request, pk=None):

@@ -23,12 +23,12 @@ class EventViewSet(viewsets.ModelViewSet):
     pagination_class = LimitOffsetPagination
 
     def list(self, request):
-        self.queryset = Event.objects.filter(is_active=1)
+        self.queryset = Event.objects.filter(is_active=1).filter(is_active=1).order_by("-created")
         return super(EventViewSet, self).list(request)
 
     def retrieve(self, request, pk=None):
         try:
-            queryset = Event.objects.all().filter(is_active=1)
+            queryset = Event.objects.all().filter(is_active=1).filter(is_active=1).order_by("-created")
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = EventSerializer(outletstoreObject)
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV002.value, ""), status=status.HTTP_200_OK)
@@ -54,7 +54,7 @@ class EventViewSet(viewsets.ModelViewSet):
         return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
-        
+
         queryset = Event.objects.all()
         event_obj = get_object_or_404(queryset, pk=pk)
         data = {"is_active": settings.IS_INACTIVE}

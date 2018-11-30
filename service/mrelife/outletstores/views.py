@@ -28,16 +28,16 @@ from mrelife.utils.relifeenum import MessageCode
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.all().filter(is_active=1)
     serializer_class = OutletStoreSerializer
-    #permission_classes = (IsAuthenticated, OutletStorePermission,)
+    permission_classes = (IsAuthenticated, OutletStorePermission,)
     pagination_class = LimitOffsetPagination
 
     def list(self, request):
-        self.queryset = OutletStore.objects.filter(is_active=1)
+        self.queryset = OutletStore.objects.filter(is_active=1).filter(is_active=1).order_by("-updated")
         return super(OutletStoreViewSet, self).list(request)
 
     def retrieve(self, request, pk=None):
         try:
-            queryset = OutletStore.objects.all().filter(is_active=1)
+            queryset = OutletStore.objects.all().filter(is_active=1).filter(is_active=1).order_by("-updated")
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreSerializer(outletstoreObject)
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OT002.value, ""), status=status.HTTP_200_OK)
