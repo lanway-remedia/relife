@@ -53,7 +53,6 @@ class ModelHouseViewSet(ModelViewSet):
                 tags: []
                 medias: []
         """
-        request.data['create_user'] = request.user.id
         obj = super(ModelHouseViewSet, self).create(request, *args, **kwargs)
         house = ModelHouse.objects.get(pk=obj.data['id'])
         if not (IsStore(request.user) or IsSub(request.user)):
