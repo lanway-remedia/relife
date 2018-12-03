@@ -90,13 +90,14 @@ class ModelHouseViewSet(ModelViewSet):
 
         ModelHouseOutletStore.objects.create(outlet_store=store, model_house=house)
 
-        medias = request.data.getlist('medias')
-        count = 0
-        for media in medias:
-            if count < 5:
-                file = default_storage.save(media.name, media)
-                ModelHouseMedia.objects.create(model_house=house, url=settings.MEDIA_URL + file)
-                count += 1
+        if 'medias' in request.POST:
+            medias = request.data.getlist('medias')
+            count = 0
+            for media in medias:
+                if count < 5:
+                    file = default_storage.save(media.name, media)
+                    ModelHouseMedia.objects.create(model_house=house, url=settings.MEDIA_URL + file)
+                    count += 1
         return obj
 
     def retrieve(self, request, *args, **kwargs):

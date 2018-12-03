@@ -1,4 +1,5 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import (CurrentUserDefault, HiddenField,
+                                        ModelSerializerm)
 
 from mrelife.examplehouses.models import (ExampleHouse, ExampleHouseCommitment,
                                           ExampleHouseStyle, ExampleHouseTag)
@@ -26,7 +27,7 @@ class ExampleHouseCommitmentSerializer(ModelSerializer):
 
 
 class ExampleHouseSerializer(ModelSerializer):
-
+    create_user = HiddenField(default=CurrentUserDefault())
     class Meta:
         model = ExampleHouse
         fields = '__all__'
