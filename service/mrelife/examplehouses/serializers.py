@@ -1,5 +1,5 @@
 from rest_framework.serializers import (CurrentUserDefault, HiddenField,
-                                        ModelSerializerm)
+                                        ModelSerializer)
 
 from mrelife.examplehouses.models import (ExampleHouse, ExampleHouseCommitment,
                                           ExampleHouseStyle, ExampleHouseTag)
