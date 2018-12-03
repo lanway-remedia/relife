@@ -52,8 +52,8 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField(max_length=255)
     content = serializers.CharField(style={'base_template': 'textarea.html'})
-    img_thumbnail = serializers.CharField(max_length=800, allow_blank=True, allow_null=True, read_only=True,default=None)
-    img_large = serializers.ImageField(max_length=None, allow_empty_file=True, allow_null=True, required=False,default=None)
+    img_thumbnail = serializers.CharField(max_length=800, allow_blank=True, allow_null=True, read_only=True)
+    img_large = serializers.FileField(required=True)
     latitude = serializers.CharField(style={'base_template': 'textarea.html'},
                                      allow_blank=True, required=False, allow_null=True)
     longitude = serializers.CharField(style={'base_template': 'textarea.html'},
@@ -88,3 +88,11 @@ class OutletStoreSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise serializers.ValidationError(e)
         return district_id
+    def validate_create_user_id(self, create_user_id):
+        try:
+            item = District.objects.get(id=create_user_id)
+            if(not item.is_active):
+                raise
+        except Exception as e:
+            raise serializers.ValidationError(e)
+        return create_user_id

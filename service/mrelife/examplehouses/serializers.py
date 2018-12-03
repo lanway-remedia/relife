@@ -26,10 +26,14 @@ class ExampleHouseCommitmentSerializer(ModelSerializer):
 
 
 class ExampleHouseSerializer(ModelSerializer):
-
     class Meta:
         model = ExampleHouse
         fields = '__all__'
+
+    def validate(self, data):
+        # Auto user to create user
+        data['create_user'] = self.context['request'].user
+        return data
 
 
 class ExampleHouseNestedSerializer(ModelSerializer):

@@ -37,7 +37,6 @@ class ExampleHouseViewSet(ModelViewSet):
             styles = []
             commitments = []
         """
-        request.data['create_user'] = request.user.id
         obj = super(ExampleHouseViewSet, self).create(request, *args, **kwargs)
         house = ExampleHouse.objects.get(pk=obj.data['id'])
         if not (IsStore(request.user) or IsSub(request.user)):

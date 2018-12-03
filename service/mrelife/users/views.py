@@ -75,9 +75,11 @@ class UserVs(ModelViewSet):
         if not IsStore(request.user):
             try:
                 group = Group.objects.get(pk=int(request.data.get('group')))
-                store = OutletStore.objects.get(pk=int(request.data.get('store')))
             except Exception:
                 group = GroupUser()
+            try:
+                store = OutletStore.objects.get(pk=int(request.data.get('store')))
+            except Exception:
                 store = None
         else:
             store = request.user.store

@@ -25,12 +25,12 @@ from mrelife.utils.relifeenum import MessageCode
 
 class EhibitionViewSet(viewsets.ModelViewSet):
 
-    queryset = Exhibition.objects.all()
+    queryset = Exhibition.objects.all().filter(is_active=1).order_by("-created")
     serializer_class = ExhibitionSerializer
     pagination_class = LimitOffsetPagination
 
     def list(self, request, *args, **kwargs):
-        self.queryset = Exhibition.objects.all().filter(is_active=1)
+        self.queryset = Exhibition.objects.all().filter(is_active=1).order_by("-created")
         return super(EhibitionViewSet, self).list(request, *args, **kwargs)
 
     def retrieve(self, request, pk=None):
@@ -61,7 +61,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         request.data['create_user_id'] = request.user.id
         queryset = Exhibition.objects.all()
         event_obj = get_object_or_404(queryset, pk=pk)
-        serializer = ExhibitionSerializer(event_obj, data=request.data)
+        serializer = ExhibitionSerializer(event_obj, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             newtags = request.data.get('newtags')
@@ -100,3 +100,11 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                 CommonFuntion.update_active(eventExhibitionObject)
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX008.value, ""), status=status.HTTP_200_OK)
         return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
+
+    # @action(detail=False, methods=['DELETE'], url_path='deletex', url_name='deletex')
+    # def Deletex(self, request, pk=None):
+    #     listobject = Exhibition.objects.all().filter(is_active=1)
+    #     for item in listobject:
+    #         if(item.id > 10):
+    #             item.delete()
+    #     return Response({"status": "true"})
