@@ -34,14 +34,17 @@ class PaginationComponent extends Component {
   }
 
   onPerpageChange = (e) => {
+    let params = new URLSearchParams(this.props.history.location.search)
     let { page } = this.state
     let { count } = this.props
     let limit = e.target.value
     if ((page - 1) * limit >= count) {
       page = Math.ceil(count / limit)
     }
+    params.set('page', page)
+    params.set('limit', limit)
     this.props.history.push({
-      search: `?page=${page}&limit=${limit}`
+      search: `?${params.toString()}`
     })
   }
 

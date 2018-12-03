@@ -16,7 +16,7 @@
     "precommit": "npm run lint -s",
     "prepush": "npm run lint -s"
   },
-  "author": "DuongNguyen",
+  "author": "NamNH",
   "devDependencies": {
     "autoprefixer": "^9.3.0",
     "babel-core": "^6.26.3",
