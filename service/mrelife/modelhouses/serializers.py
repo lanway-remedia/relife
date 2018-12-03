@@ -75,8 +75,10 @@ class ModelHouseSerializer(ModelSerializer):
         model = ModelHouse
         fields = '__all__'
 
-    def validate_create_user(self, value):
-        return self.context['request'].user
+    def validate(self, data):
+        # Auto user to create user
+        data['create_user'] = self.context['request'].user
+        return data
 
 
 class OrderModelHouseSerializer(ModelSerializer):

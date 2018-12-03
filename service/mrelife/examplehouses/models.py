@@ -34,7 +34,7 @@ class ExampleHouse(BaseModel):
                                   on_delete=CASCADE, blank=True, null=True)
 
     create_user = ForeignKey('users.User', related_name="creating_example_houses",
-                             on_delete=CASCADE, blank=True, null=True)
+                             on_delete=CASCADE)
     img_thumbnail = CharField(max_length=800, null=True, blank=True)
     img_large = ImageField(null=True, blank=True)
 
