@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from rest_framework.serializers import (CurrentUserDefault, HiddenField,
-                                        ModelSerializer)
+from rest_framework.serializers import ModelSerializer
 
 from mrelife.modelhouses.models import (ModelHouse, ModelHouseContact,
                                         ModelHouseContactReply,
@@ -47,7 +46,6 @@ class ModelHouseMediaSerializer(ModelSerializer):
 
 
 class ModelHouseTagSerializer(ModelSerializer):
-    create_user = HiddenField(default=CurrentUserDefault())
 
     class Meta:
         model = ModelHouseTag
@@ -76,6 +74,9 @@ class ModelHouseSerializer(ModelSerializer):
     class Meta:
         model = ModelHouse
         fields = '__all__'
+
+    def validate_create_user(self, value):
+        return self.context['request'].user
 
 
 class OrderModelHouseSerializer(ModelSerializer):
