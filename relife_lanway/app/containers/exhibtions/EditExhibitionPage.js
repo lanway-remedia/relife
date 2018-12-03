@@ -190,6 +190,7 @@ class EditExhibitionPage extends React.Component {
         <ValidationForm
           className="form-edit-outletstore col-no-mg"
           onSubmit={this.handleSubmit}
+          autoComplete="off"
         >
           <Row>
             <Col xs="12" md="12">

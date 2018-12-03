@@ -30,11 +30,22 @@ class LocationsComponent extends Component {
   }
 
   componentDidMount() {
-    this.getLocation()
+    if (
+      Object.keys(this.props.outletStoresData).length === 0 ||
+      Object.keys(this.props.exhibitionsData).length === 0
+    ) {
+      this.getLocation()
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.data != nextProps.data) {
+    if (
+      this.props.outletStoresData !== nextProps.outletStoresData ||
+      this.props.exhibitionsData !== nextProps.exhibitionsData
+    ) {
+      this.getLocation()
+    }
+    if (this.props.data !== nextProps.data) {
       let response = nextProps.data
       if (response.listLocation) {
         this.setState({
@@ -213,15 +224,20 @@ LocationsComponent.propTypes = {
   district: PropTypes.string,
   locationGetRequest: PropTypes.func,
   data: PropTypes.object,
+  outletStoresData: PropTypes.object,
+  exhibitionsData: PropTypes.object,
   required: PropTypes.bool,
   onSelectedCity: PropTypes.func,
-  onSelectedDistrict: PropTypes.func
+  onSelectedDistrict: PropTypes.func,
+  handleUpdateDistrict: PropTypes.func
 }
 
 const mapStateToProps = state => {
   return {
     processing: state.locations.processing,
-    data: state.locations.data
+    data: state.locations.data,
+    outletStoresData: state.outletStores.data,
+    exhibitionsData: state.exhibitions.data
   }
 }
 

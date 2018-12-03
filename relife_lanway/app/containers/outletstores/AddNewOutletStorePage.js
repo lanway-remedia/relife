@@ -40,8 +40,8 @@ class AddNewOutletStorePage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.redirectToListPage = this.redirectToListPage.bind(this)
-    this.handleSelectedCity = this.redirectToListPage.bind(this)
-    this.handleSelectedDistrict = this.redirectToListPage.bind(this)
+    this.handleSelectedCity = this.handleSelectedCity.bind(this)
+    this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
   }
 
   handleChange = e => {
@@ -69,11 +69,13 @@ class AddNewOutletStorePage extends React.Component {
   }
 
   redirectToListPage = () => {
+    // eslint-disable-next-line no-debugger
+    debugger
     this.props.history.push('/manage-outlet-store-list')
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.data != nextProps.data) {
+    if (this.props.data !== nextProps.data) {
       let data = nextProps.data
       if (data.isAddStore) {
         toast.success(
@@ -196,42 +198,9 @@ class AddNewOutletStorePage extends React.Component {
               </FormGroup>
             </Col>
             <LocationsComponent
-              required
               onSelectedCity={this.handleSelectedCity}
               onSelectedDistrict={this.handleSelectedDistrict}
             />
-            {/* <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="city">{I18nUtils.t('city')}</Label>
-                <SelectGroup
-                  name="city"
-                  id="city"
-                  required
-                  errorMessage={I18nUtils.t('lb-select')}
-                  onChange={this.handleChange}
-                >
-                  <option value="">{I18nUtils.t('lb-select')}</option>
-                  <option value="1">Hà Nội</option>
-                  <option value="2">Hồ Chí Minh</option>
-                </SelectGroup>
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="district">{I18nUtils.t('district')}</Label>
-                <SelectGroup
-                  name="district"
-                  id="district"
-                  required
-                  errorMessage={I18nUtils.t('lb-select')}
-                  onChange={this.handleChange}
-                >
-                  <option value="">{I18nUtils.t('lb-select')}</option>
-                  <option value="1">Hoàng Mai</option>
-                  <option value="2">Hai Bà Trưng</option>
-                </SelectGroup>
-              </FormGroup>
-            </Col> */}
             <Col xs="12" md="6">
               <FormGroup>
                 <Label htmlFor="zipcode">{I18nUtils.t('zipcode')}</Label>

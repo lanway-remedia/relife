@@ -39,7 +39,6 @@ import AddNewCategoryPage from './containers/categories/AddNewCategoryPage'
 //Locations
 import ManageLocationListPage from './containers/locations/ManageLocationListPage'
 import AddNewLocationPage from './containers/locations/AddNewLocationPage'
-import EditLocationPage from './containers/locations/EditLocationPage'
 //languages
 import Language from './components/Language'
 
@@ -345,10 +344,6 @@ class Routes extends React.Component {
                 <Route
                   path="/add-new-location"
                   component={requireLogin(AddNewLocationPage)}
-                />
-                <Route
-                  path="/edit-location/:id"
-                  component={requireLogin(EditLocationPage)}
                 />
               </Switch>
             </div>

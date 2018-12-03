@@ -42,7 +42,6 @@ class EditOutletStorePage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleSelectedCity = this.handleSelectedCity.bind(this)
     this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
-    this.outletStoreGetRequest = this.outletStoreGetRequest.bind(this)
   }
 
   componentDidMount() {

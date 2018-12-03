@@ -83,7 +83,6 @@ class ManageLocationListPage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.data)
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
       if (response.isGetList) {
@@ -96,7 +95,7 @@ class ManageLocationListPage extends React.Component {
         })
       }
       if (response.isAdd) {
-        if (response.messageCode === 'CAT001') {
+        if (response.messageCode === 'LOC001') {
           toast.success(
             I18nUtils.formatMessage(
               { id: 'toast-add-sucess' },
