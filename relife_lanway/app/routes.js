@@ -39,6 +39,25 @@ import AddNewCategoryPage from './containers/categories/AddNewCategoryPage'
 //Locations
 import ManageLocationListPage from './containers/locations/ManageLocationListPage'
 import AddNewLocationPage from './containers/locations/AddNewLocationPage'
+//Attributes
+import ManageContructionListPage from './containers/attributes/contructions/ManageContructionListPage'
+import AddNewContructionPage from './containers/attributes/contructions/AddNewContructionPage'
+import EditContructionPage from './containers/attributes/contructions/EditContructionPage'
+import ManageFloorListPage from './containers/attributes/floors/ManageFloorListPage'
+import AddNewFloorPage from './containers/attributes/floors/AddNewFloorPage'
+import EditFloorPage from './containers/attributes/floors/EditFloorPage'
+import ManageHouseHoldIncomeListPage from './containers/attributes/household_incomes/ManageHouseHoldIncomeListPage'
+import AddNewHouseHoldIncomePage from './containers/attributes/household_incomes/AddNewHouseHoldIncomePage'
+import EditHouseHoldIncomePage from './containers/attributes/household_incomes/EditHouseHoldIncomePage'
+import ManageHouseHoldSizeListPage from './containers/attributes/household_sizes/ManageHouseHoldSizeListPage'
+import AddNewHouldHoldSizePage from './containers/attributes/household_sizes/AddNewHouldHoldSizePage'
+import EditHouseHoldSizePage from './containers/attributes/household_sizes/EditHouseHoldSizePage'
+import ManagePriceRangerListPage from './containers/attributes/price_rangers/ManagePriceRangerListPage'
+import AddNewPriceRangerPage from './containers/attributes/price_rangers/AddNewPriceRangerPage'
+import EditPriceRangerPage from './containers/attributes/price_rangers/EditPriceRangerPage'
+import ManageStyleListPage from './containers/attributes/styles/ManageStyleListPage'
+import AddNewStylePage from './containers/attributes/styles/AddNewStylePage'
+import EditStylePage from './containers/attributes/styles/EditStylePage'
 //languages
 import Language from './components/Language'
 
@@ -224,6 +243,94 @@ class Routes extends React.Component {
               onClick={() => this.props.history.push('/manage-location-list')}
             />
           </Sidebar.Menu.Item>
+          <Sidebar.Menu.Item
+            title={I18nUtils.t('att-parent-title')}
+            icon={{ className: 'fa-tags' }}
+          >
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/add-new-contruction'}
+              title={I18nUtils.t('att-cons-add-page-title')}
+              icon={{ className: 'fa-plus-square' }}
+              onClick={() => this.props.history.push('/add-new-contruction')}
+            />
+            <Sidebar.Menu.Item
+              active={
+                this.props.location.pathname === '/manage-contruction-list'
+              }
+              title={I18nUtils.t('att-cons-page-title')}
+              icon={{ className: 'fa-list-ol' }}
+              onClick={() =>
+                this.props.history.push('/manage-contruction-list')
+              }
+            />
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/add-new-floor'}
+              title={I18nUtils.t('att-floor-add-page-title')}
+              icon={{ className: 'fa-plus-square' }}
+              onClick={() => this.props.history.push('/add-new-floor')}
+            />
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/manage-floor-list'}
+              title={I18nUtils.t('att-floor-page-title')}
+              icon={{ className: 'fa-list-ol' }}
+              onClick={() => this.props.history.push('/manage-floor-list')}
+            />
+            <Sidebar.Menu.Item
+              active={
+                this.props.location.pathname === '/add-new-household-income'
+              }
+              title={I18nUtils.t('att-hincome-add-page-title')}
+              icon={{ className: 'fa-plus-square' }}
+              onClick={() =>
+                this.props.history.push('/add-new-household-income')
+              }
+            />
+            <Sidebar.Menu.Item
+              active={
+                this.props.location.pathname === '/manage-household-income-list'
+              }
+              title={I18nUtils.t('att-hincome-page-title')}
+              icon={{ className: 'fa-list-ol' }}
+              onClick={() =>
+                this.props.history.push('/manage-household-income-list')
+              }
+            />
+            <Sidebar.Menu.Item
+              active={
+                this.props.location.pathname === '/add-new-household-size'
+              }
+              title={I18nUtils.t('att-hsize-add-page-title')}
+              icon={{ className: 'fa-plus-square' }}
+              onClick={() => this.props.history.push('/add-new-household-size')}
+            />
+            <Sidebar.Menu.Item
+              active={
+                this.props.location.pathname === '/manage-household-size-list'
+              }
+              title={I18nUtils.t('att-hsize-page-title')}
+              icon={{ className: 'fa-list-ol' }}
+              onClick={() =>
+                this.props.history.push('/manage-household-size-list')
+              }
+            />
+            <Sidebar.Menu.Item
+              active={this.props.location.pathname === '/add-new-house-style'}
+              title={I18nUtils.t('att-style-add-page-title')}
+              icon={{ className: 'fa-plus-square' }}
+              onClick={() => this.props.history.push('/add-new-house-style')}
+            />
+            <Sidebar.Menu.Item
+              active={
+                this.props.location.pathname === '/manage-house-style-list'
+              }
+              title={I18nUtils.t('att-style-page-title')}
+              icon={{ className: 'fa-list-ol' }}
+              onClick={() =>
+                this.props.history.push('/manage-house-style-list')
+              }
+            />
+          </Sidebar.Menu.Item>
+
           {/* <Sidebar.Menu.Item
             active={this.props.location.pathname == '/article'}
             onClick={() => this.props.history.push('/article')}
@@ -344,6 +451,78 @@ class Routes extends React.Component {
                 <Route
                   path="/add-new-location"
                   component={requireLogin(AddNewLocationPage)}
+                />
+                <Route
+                  path="/manage-contruction-list"
+                  component={requireLogin(ManageContructionListPage)}
+                />
+                <Route
+                  path="/add-new-contruction"
+                  component={requireLogin(AddNewContructionPage)}
+                />
+                <Route
+                  path="/edit-contruction/:id"
+                  component={requireLogin(EditContructionPage)}
+                />
+                <Route
+                  path="/manage-household-income-list"
+                  component={requireLogin(ManageHouseHoldIncomeListPage)}
+                />
+                <Route
+                  path="/add-new-household-income"
+                  component={requireLogin(AddNewHouseHoldIncomePage)}
+                />
+                <Route
+                  path="/edit-household-income/:id"
+                  component={requireLogin(EditHouseHoldIncomePage)}
+                />
+                <Route
+                  path="/manage-household-size-list"
+                  component={requireLogin(ManageHouseHoldSizeListPage)}
+                />
+                <Route
+                  path="/add-new-household-size"
+                  component={requireLogin(AddNewHouldHoldSizePage)}
+                />
+                <Route
+                  path="/edit-household-size/:id"
+                  component={requireLogin(EditHouseHoldSizePage)}
+                />
+                <Route
+                  path="/manage-floor-list"
+                  component={requireLogin(ManageFloorListPage)}
+                />
+                <Route
+                  path="/add-new-floor"
+                  component={requireLogin(AddNewFloorPage)}
+                />
+                <Route
+                  path="/edit-floor/:id"
+                  component={requireLogin(EditFloorPage)}
+                />
+                <Route
+                  path="/manage-price-ranger-list"
+                  component={requireLogin(ManagePriceRangerListPage)}
+                />
+                <Route
+                  path="/add-new-price-ranger"
+                  component={requireLogin(AddNewPriceRangerPage)}
+                />
+                <Route
+                  path="/edit-price-ranger/:id"
+                  component={requireLogin(EditPriceRangerPage)}
+                />
+                <Route
+                  path="/manage-house-style-list"
+                  component={requireLogin(ManageStyleListPage)}
+                />
+                <Route
+                  path="/add-new-house-style"
+                  component={requireLogin(AddNewStylePage)}
+                />
+                <Route
+                  path="/edit-house-style/:id"
+                  component={requireLogin(EditStylePage)}
                 />
               </Switch>
             </div>

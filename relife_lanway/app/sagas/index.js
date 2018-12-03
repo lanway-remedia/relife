@@ -16,6 +16,7 @@ import { ExhibitionsTypes } from '../redux/wrapper/ExhibitionsRedux'
 import { LocationTypes } from '../redux/wrapper/LocationsRedux'
 import { TagTypes } from '../redux/wrapper/TagsRedux'
 import { CategoryTypes } from '../redux/wrapper/CategoriesRedux'
+import { AttributeTypes } from '../redux/wrapper/AttributesRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
@@ -27,6 +28,7 @@ import ExhibitionsSagas from './wrapper/ExhibitionsSagas'
 import LocationsSagas from './wrapper/LocationsSagas'
 import TagsSagas from './wrapper/TagsSagas'
 import CategoriesSagas from './wrapper/CategoriesSagas'
+import AttributesSagas from './wrapper/AttributesSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -208,6 +210,193 @@ export default function* root() {
       LocationsSagas.deleteLocation
     ),
     takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
+
+    //Attributes
+    // Get List Contruction
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_CONTRUCTION_LIST_REQUEST,
+      AttributesSagas.listContruction
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Get Attribute Contruction by ID
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_CONTRUCTION_GET_REQUEST,
+      AttributesSagas.getContruction
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Add Attribute Contruction
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_CONTRUCTION_ADD_REQUEST,
+      AttributesSagas.addContruction
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Edit Attribute Contruction
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_CONTRUCTION_EDIT_REQUEST,
+      AttributesSagas.editContruction
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Delete Attribute Contruction
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_CONTRUCTION_DELETE_REQUEST,
+      AttributesSagas.deleteContruction
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+
+    // Get List Floor
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_FLOOR_LIST_REQUEST,
+      AttributesSagas.listFloor
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Get Attribute Floor by ID
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_FLOOR_GET_REQUEST,
+      AttributesSagas.getFloor
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Add Attribute Floor
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_FLOOR_ADD_REQUEST,
+      AttributesSagas.addFloor
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Edit Attribute Floor
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_FLOOR_EDIT_REQUEST,
+      AttributesSagas.editFloor
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Delete Attribute Floor
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_FLOOR_DELETE_REQUEST,
+      AttributesSagas.deleteFloor
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+
+    // Get List Style
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_STYLE_LIST_REQUEST,
+      AttributesSagas.listStyle
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Get Attribute Style by ID
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_STYLE_GET_REQUEST,
+      AttributesSagas.getStyle
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Add Attribute Style
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_STYLE_ADD_REQUEST,
+      AttributesSagas.addStyle
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Edit Attribute Style
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_STYLE_EDIT_REQUEST,
+      AttributesSagas.editStyle
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Delete Attribute Style
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_STYLE_DELETE_REQUEST,
+      AttributesSagas.deleteStyle
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+
+    // Get List Price
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_PRICE_LIST_REQUEST,
+      AttributesSagas.listPrice
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Get Attribute Price by ID
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_PRICE_GET_REQUEST,
+      AttributesSagas.getPrice
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Add Attribute Price
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_PRICE_ADD_REQUEST,
+      AttributesSagas.addPrice
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Edit Attribute Price
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_PRICE_EDIT_REQUEST,
+      AttributesSagas.editPrice
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Delete Attribute Price
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_PRICE_DELETE_REQUEST,
+      AttributesSagas.deletePrice
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+
+    // Get List Household Income
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_INCOME_LIST_REQUEST,
+      AttributesSagas.listHouseIncome
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Get Attribute Household Income by ID
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_INCOME_GET_REQUEST,
+      AttributesSagas.getHouseIncome
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Add Attribute Household Income
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_INCOME_ADD_REQUEST,
+      AttributesSagas.addHouseIncome
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Edit Attribute Household Income
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_INCOME_EDIT_REQUEST,
+      AttributesSagas.editHouseIncome
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Delete Attribute Household Income
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_INCOME_DELETE_REQUEST,
+      AttributesSagas.deleteHouseIncome
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+
+    // Get List Household Size
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_SIZE_LIST_REQUEST,
+      AttributesSagas.listHouseSize
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Get Attribute Household Size by ID
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_SIZE_GET_REQUEST,
+      AttributesSagas.getHouseSize
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Add Attribute Household Size
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_SIZE_ADD_REQUEST,
+      AttributesSagas.addHouseSize
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Edit Attribute Household Size
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_SIZE_EDIT_REQUEST,
+      AttributesSagas.editHouseSize
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+    //Delete Attribute Household Size
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_SIZE_DELETE_REQUEST,
+      AttributesSagas.deleteHouseSize
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
 
     //user
     takeLatest(UsersTypes.USER_LIST_REQUEST, UsersSagas.listUser),
