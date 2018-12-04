@@ -4,7 +4,8 @@ from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.authentication import (BasicAuthentication,
+                                           SessionAuthentication)
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
@@ -12,13 +13,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from mrelife.commons.common_fnc import CommonFuntion
-from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreContactReply, OutletStoreMedia
-from mrelife.outletstores.serializers import (
-    OutletStoreContactReplySerializer,
-    OutletStoreContactSerializer,
-    OutletStoreMediaSerializer,
-    OutletStoreSerializer
-)
+from mrelife.outletstores.models import (OutletStore, OutletStoreContact,
+                                         OutletStoreContactReply,
+                                         OutletStoreMedia)
+from mrelife.outletstores.serializers import (OutletStoreContactReplySerializer,
+                                              OutletStoreContactSerializer,
+                                              OutletStoreMediaSerializer,
+                                              OutletStoreSerializer)
 from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStorePermission
@@ -28,16 +29,16 @@ from mrelife.utils.relifeenum import MessageCode
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.all().filter(is_active=1)
     serializer_class = OutletStoreSerializer
-    #permission_classes = (IsAuthenticated, OutletStorePermission,)
+    permission_classes = (IsAuthenticated, OutletStorePermission,)
     pagination_class = LimitOffsetPagination
 
     def list(self, request):
-        self.queryset = OutletStore.objects.filter(is_active=1)
+        self.queryset = OutletStore.objects.filter(is_active=1).filter(is_active=1).order_by("-updated")
         return super(OutletStoreViewSet, self).list(request)
 
     def retrieve(self, request, pk=None):
         try:
-            queryset = OutletStore.objects.all().filter(is_active=1)
+            queryset = OutletStore.objects.all().filter(is_active=1).filter(is_active=1).order_by("-updated")
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreSerializer(outletstoreObject)
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OT002.value, ""), status=status.HTTP_200_OK)
@@ -46,30 +47,27 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         try:
-            request.data['create_user_id'] = request.user.id
             serializer = OutletStoreSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
+                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                                created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OT004.value, ""), status=status.HTTP_201_CREATED)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT003.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def update(self, request, pk=None):
-        request.data['create_user_id'] = request.user.id
-        queryset = OutletStore.objects.all().filter(is_active=1)
-        outletstoreObject = get_object_or_404(queryset, pk=pk)
-        serializer = OutletStoreSerializer(outletstoreObject, data=request.data)
-        if serializer.is_valid():
-            serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OT006.value, ""), status=status.HTTP_200_OK)
-        return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
-
-    def update_active(self, objectM):
-        for item in objectM:
-            item.is_active = settings.IS_INACTIVE
-            item.updated = datetime.now()
-            item.save()
+        try:
+            queryset = OutletStore.objects.all().filter(is_active=1)
+            outletstoreObject = get_object_or_404(queryset, pk=pk)
+            serializer = OutletStoreSerializer(outletstoreObject, data=request.data)
+            if serializer.is_valid():
+                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                                created=datetime.now(), updated=datetime.now())
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OT006.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT003.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def destroy(self, request, pk=None):
         try:
@@ -85,9 +83,9 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
                         outlet_store_contact_id=item.id).filter(is_active=1)
                     if(outletContact_reply):
                         CommonFuntion.update_active(outletContact_reply)
-                        self.update_active(outletContact)
+                        CommonFuntion.update_active(outletContact)
                 outletMedia = OutletStoreMedia.objects.filter(is_active=1, outlet_store_id=outletstoreObject.id)
-                self.update_active(outletMedia)
+                CommonFuntion.update_active(outletMedia)
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OT008.value, ""), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
         except Exception as e:
@@ -104,14 +102,6 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             serializer.save(updated=datetime.now())
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    @action(detail=False, methods=['DELETE'], url_path='deletex', url_name='deletex')
-    def Deletex(self, request, pk=None):
-        listobject = OutletStore.objects.all().filter(is_active=1)
-        for item in listobject:
-            if(item.id > 10):
-                item.delete()
-        return Response({"status": "true"})
 
 
 class OutletStoreContactViewSet(viewsets.ModelViewSet):

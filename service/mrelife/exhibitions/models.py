@@ -27,7 +27,7 @@ class Exhibition(Model):
 
     title = CharField(max_length=255)
     content = TextField()
-    img_thumbnail = CharField(max_length=800, null=True)
+    img_thumbnail = ImageField(null=True, blank=True)
     img_large = ImageField(null=True, blank=True)
     latitude = TextField(null=True)
     longtitude = TextField(null=True)

@@ -4,7 +4,8 @@ from django.conf import settings
 from django.core.files.storage import default_storage
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
-from rest_framework.decorators import action, api_view, detail_route, list_route, permission_classes
+from rest_framework.decorators import (action, detail_route, list_route,
+                                       permission_classes)
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.pagination import LimitOffsetPagination
@@ -15,25 +16,19 @@ from rest_framework.viewsets import ModelViewSet
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import Event, EventModelHouse
-from mrelife.modelhouses.models import (
-    ModelHouse,
-    ModelHouseMedia,
-    ModelHouseOutletStore,
-    ModelHouseTag,
-    ModelHouseUser,
-    OrderModelHouse
-)
-from mrelife.modelhouses.serializers import (
-    ModelHouseNestedSerializer,
-    ModelHouseSerializer,
-    OrderModelHouseSerializer,
-    OrderModelHouseStatusSerializer
-)
+from mrelife.modelhouses.models import (ModelHouse, ModelHouseMedia,
+                                        ModelHouseOutletStore, ModelHouseTag,
+                                        ModelHouseUser, OrderModelHouse)
+from mrelife.modelhouses.serializers import (ModelHouseNestedSerializer,
+                                             ModelHouseSerializer,
+                                             OrderModelHouseSerializer,
+                                             OrderModelHouseStatusSerializer)
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.model_house_permission import ModelHousePermission
-from mrelife.utils.order_model_house_permission import OrderMHUserListPermission, OrderMHViewadminPermission
+from mrelife.utils.order_model_house_permission import (OrderMHUserListPermission,
+                                                        OrderMHViewadminPermission)
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.relifeenum import MessageCode
 
@@ -53,7 +48,6 @@ class ModelHouseViewSet(ModelViewSet):
                 tags: []
                 medias: []
         """
-        request.data['create_user'] = request.user.id
         obj = super(ModelHouseViewSet, self).create(request, *args, **kwargs)
         house = ModelHouse.objects.get(pk=obj.data['id'])
         if not (IsStore(request.user) or IsSub(request.user)):
@@ -91,13 +85,14 @@ class ModelHouseViewSet(ModelViewSet):
 
         ModelHouseOutletStore.objects.create(outlet_store=store, model_house=house)
 
-        medias = request.data.getlist('medias')
-        count = 0
-        for media in medias:
-            if count < 5:
-                file = default_storage.save(media.name, media)
-                ModelHouseMedia.objects.create(model_house=house, url=settings.MEDIA_URL + file)
-                count += 1
+        if 'medias' in request.POST:
+            medias = request.data.getlist('medias')
+            count = 0
+            for media in medias:
+                if count < 5:
+                    file = default_storage.save(media.name, media)
+                    ModelHouseMedia.objects.create(model_house=house, url=settings.MEDIA_URL + file)
+                    count += 1
         return obj
 
     def retrieve(self, request, *args, **kwargs):
@@ -247,7 +242,7 @@ class OrderModelHouseViewSet(ModelViewSet):
     queryset = OrderModelHouse.objects.all().filter(is_active=1)
     serializer_class = OrderModelHouseSerializer
     pagination_class = LimitOffsetPagination
-    #permission_classes = (IsAuthenticated, OrderMHViewadminPermission,)
+    # permission_classes = (IsAuthenticated, OrderMHViewadminPermission,)
 
     def list(self, request):
         self.queryset = OrderModelHouse.objects.filter(is_active=1)
@@ -296,9 +291,8 @@ class OrderModelHouseViewSet(ModelViewSet):
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, ""), status=status.HTTP_404_NOT_FOUND)
 
-    @action(detail=False, list=True, pagination_class=LimitOffsetPagination, methods=['get'], url_path='self_getlist', url_name='self_getlist')
-    def selfGetlistBooking12(self, request, *args, **kwargs):
-        pagination_class = LimitOffsetPagination
+    @list_route(methods=['get'])
+    def selfGetlistBooking(self, request, pk=None):
         queryset = OrderModelHouse.objects.all().filter(is_active=1).filter(create_user_id=request.user.id)
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -308,10 +302,10 @@ class OrderModelHouseViewSet(ModelViewSet):
         serializer = OrderModelHouseSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    @list_route(methods=['GET'], pagination_class=LimitOffsetPagination)
-    def selfGetlistBooking(self, request):
-        self.queryset = OrderModelHouse.objects.all().filter(is_active=1)
-        return super(OrderModelHouseViewSet, self).list(request)
+    # @list_route(methods=['GET'], pagination_class=LimitOffsetPagination)
+    # def selfGetlistBooking(self, request):
+    #     self.queryset = OrderModelHouse.objects.all().filter(is_active=1)
+    #     return super(OrderModelHouseViewSet, self).list(request)
 
 
 class updateStatus(GenericAPIView, UpdateModelMixin):
