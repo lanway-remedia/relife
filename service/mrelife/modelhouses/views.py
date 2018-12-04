@@ -247,7 +247,7 @@ class OrderModelHouseViewSet(ModelViewSet):
     queryset = OrderModelHouse.objects.all().filter(is_active=1)
     serializer_class = OrderModelHouseSerializer
     pagination_class = LimitOffsetPagination
-    permission_classes = (IsAuthenticated, OrderMHViewadminPermission,)
+    #permission_classes = (IsAuthenticated, OrderMHViewadminPermission,)
 
     def list(self, request):
         self.queryset = OrderModelHouse.objects.filter(is_active=1)
@@ -299,6 +299,17 @@ class OrderModelHouseViewSet(ModelViewSet):
     @list_route(methods=['get'])
     def selfGetlistBooking(self, request, pk=None):
         queryset = OrderModelHouse.objects.all().filter(is_active=1).filter(create_user_id=request.user.id)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = OrderModelHouseSerializer(page, many=True)
+            data = {'status': status.HTTP_200_OK, 'result': serializer.data}
+            return self.get_paginated_response(data)
+        serializer = OrderModelHouseSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @list_route(methods=['GET'], pagination_class=LimitOffsetPagination)
+    def selfGetlistBooking(self, request):
+        self.queryset = OrderModelHouse.objects.all().filter(is_active=1)
         return super(OrderModelHouseViewSet, self).list(request)
 
 

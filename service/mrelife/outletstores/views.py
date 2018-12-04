@@ -4,7 +4,8 @@ from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.authentication import (BasicAuthentication,
+                                           SessionAuthentication)
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
@@ -12,13 +13,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from mrelife.commons.common_fnc import CommonFuntion
-from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreContactReply, OutletStoreMedia
-from mrelife.outletstores.serializers import (
-    OutletStoreContactReplySerializer,
-    OutletStoreContactSerializer,
-    OutletStoreMediaSerializer,
-    OutletStoreSerializer
-)
+from mrelife.outletstores.models import (OutletStore, OutletStoreContact,
+                                         OutletStoreContactReply,
+                                         OutletStoreMedia)
+from mrelife.outletstores.serializers import (OutletStoreContactReplySerializer,
+                                              OutletStoreContactSerializer,
+                                              OutletStoreMediaSerializer,
+                                              OutletStoreSerializer)
 from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStorePermission
@@ -101,14 +102,6 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             serializer.save(updated=datetime.now())
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    @action(detail=False, methods=['DELETE'], url_path='deletex', url_name='deletex')
-    def Deletex(self, request, pk=None):
-        listobject = OutletStore.objects.all().filter(is_active=1)
-        for item in listobject:
-            if(item.id > 10):
-                item.delete()
-        return Response({"status": "true"})
 
 
 class OutletStoreContactViewSet(viewsets.ModelViewSet):
