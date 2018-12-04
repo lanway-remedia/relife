@@ -60,13 +60,12 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
-        #request.data['create_user_id'] = request.user.id
         queryset = Exhibition.objects.all()
         event_obj = get_object_or_404(queryset, pk=pk)
         self.parser_class = (FormParser, MultiPartParser)
         serializer = ExhibitionSerializer(event_obj, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(create_user_id=request.user.id,updated=datetime.now())
             newtags = request.data.get('newtags')
             if newtags is not None:
                 for tag_name in newtags:
