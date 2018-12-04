@@ -275,6 +275,7 @@
   "FM002": "File ko được rỗng",
 
   "CAT002": "The name must be unique",
+  "CAT005": "The name must be unique",
 
   "FA001": "The title must be unique",
   "SU001": "Add new {name} success"

@@ -35,7 +35,6 @@ class EditContructionPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
-      console.log(response)
       if (response.data === undefined || response.data.length === 0) {
         toast.error(I18nUtils.t('toast-no-data'))
         this.props.history.replace('/manage-floor-list')
@@ -94,11 +93,11 @@ class EditContructionPage extends React.Component {
   render() {
     let { data } = this.state
     return (
-      <Container fluid className="edit-tags">
+      <Container fluid className="edit-attribute">
         <Helmet>
           <title>
             {I18nUtils.formatMessage(
-              { id: 'tag-ed-page-title' },
+              { id: 'att-floor-ed-page-title' },
               { name: data.title }
             )}
           </title>
@@ -107,14 +106,14 @@ class EditContructionPage extends React.Component {
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />
             {I18nUtils.formatMessage(
-              { id: 'tag-ed-page-title' },
+              { id: 'att-floor-ed-page-title' },
               { name: data.title }
             )}
           </h1>
         </div>
 
         <ValidationForm
-          className="form-edit-outletstore col-no-mg"
+          className="form-edit-attribute col-no-mg"
           onSubmit={this.handleSubmit}
         >
           <Row>

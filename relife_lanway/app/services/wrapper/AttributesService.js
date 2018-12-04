@@ -64,7 +64,7 @@ export default class AttributesService {
 
   listHouseSize(data) {
     return apiClient.get(
-      `/HouseSizes/?limit=${data.limit}&offset=${data.offset}`
+      `/attributes/household_size/?limit=${data.limit}&offset=${data.offset}`
     )
   }
   getHouseSize(data) {

@@ -93,11 +93,11 @@ class EditContructionPage extends React.Component {
   render() {
     let { data } = this.state
     return (
-      <Container fluid className="edit-tags">
+      <Container fluid className="edit-attribute">
         <Helmet>
           <title>
             {I18nUtils.formatMessage(
-              { id: 'tag-ed-page-title' },
+              { id: 'att-cons-ed-page-title' },
               { name: data.title }
             )}
           </title>
@@ -106,14 +106,14 @@ class EditContructionPage extends React.Component {
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />
             {I18nUtils.formatMessage(
-              { id: 'tag-ed-page-title' },
+              { id: 'att-cons-ed-page-title' },
               { name: data.title }
             )}
           </h1>
         </div>
 
         <ValidationForm
-          className="form-edit-outletstore col-no-mg"
+          className="form-edit-attribute col-no-mg"
           onSubmit={this.handleSubmit}
         >
           <Row>
