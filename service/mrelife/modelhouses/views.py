@@ -264,21 +264,23 @@ class OrderModelHouseViewSet(ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH003.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
-        request.data['create_user_id'] = request.user.id
+        #request.data['create_user_id'] = request.user.id
         serializer = OrderModelHouseSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
+            serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                            created=datetime.now(), updated=datetime.now())
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH004.value, ""), status=status.HTTP_201_CREATED)
         return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
-            request.data['create_user_id'] = request.user.id
+            #request.data['create_user_id'] = request.user.id
             queryset = OrderModelHouse.objects.all().filter(is_active=1)
             orderModelObject = get_object_or_404(queryset, pk=pk)
             serializer = OrderModelHouseSerializer(orderModelObject, data=request.data)
             if serializer.is_valid():
-                serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
+                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                                created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH006.value, ""), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
