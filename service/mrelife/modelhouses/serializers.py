@@ -83,7 +83,7 @@ class ModelHouseSerializer(ModelSerializer):
 
 class OrderModelHouseSerializer(ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    tel = serializers.CharField(max_length=255, read_only=True, required=False)
+    tel = serializers.CharField(max_length=13, read_only=True, required=False)
     content = serializers.CharField(required=False)
     status = serializers.BooleanField(default=True)
     create_user = UserSerializer(read_only=True)
