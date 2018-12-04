@@ -28,7 +28,8 @@ footer.cgYtLz {
 .root-wrap {
   display: block;
   padding: 22px 0;
-  min-height: 660px;
+  height: calc(100vh - 102px);
+  overflow: auto;
 }
 
 .nav-item {
