@@ -44,7 +44,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX003.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
-        #request.data['create_user_id'] = request.user.id
+        request.data['create_user_id'] = request.user.id
         self.parser_class = (FormParser, MultiPartParser)
         serializer = ExhibitionSerializer(data=request.data)
         if serializer.is_valid():
@@ -60,7 +60,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
-        #request.data['create_user_id'] = request.user.id
+        request.data['create_user_id'] = request.user.id
         queryset = Exhibition.objects.all()
         event_obj = get_object_or_404(queryset, pk=pk)
         self.parser_class = (FormParser, MultiPartParser)
