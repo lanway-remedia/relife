@@ -9,6 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.parsers import FormParser, MultiPartParser
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import EventExhibition
@@ -25,12 +26,12 @@ from mrelife.utils.relifeenum import MessageCode
 
 class EhibitionViewSet(viewsets.ModelViewSet):
 
-    queryset = Exhibition.objects.all().filter(is_active=1).order_by("-created")
+    queryset = Exhibition.objects.all().filter(is_active=1).order_by("-updated")
     serializer_class = ExhibitionSerializer
     pagination_class = LimitOffsetPagination
 
     def list(self, request, *args, **kwargs):
-        self.queryset = Exhibition.objects.all().filter(is_active=1).order_by("-created")
+        self.queryset = Exhibition.objects.all().filter(is_active=1).order_by("-updated")
         return super(EhibitionViewSet, self).list(request, *args, **kwargs)
 
     def retrieve(self, request, pk=None):
@@ -44,6 +45,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         request.data['create_user_id'] = request.user.id
+        self.parser_class = (FormParser, MultiPartParser)
         serializer = ExhibitionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
@@ -61,6 +63,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         request.data['create_user_id'] = request.user.id
         queryset = Exhibition.objects.all()
         event_obj = get_object_or_404(queryset, pk=pk)
+        self.parser_class = (FormParser, MultiPartParser)
         serializer = ExhibitionSerializer(event_obj, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
