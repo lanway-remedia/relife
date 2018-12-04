@@ -276,5 +276,8 @@
   "FM001": "Upload file thành công",
   "FM002": "File ko được rỗng",
 
-  "CAT002": "Name must be unique"
+  "CAT002": "The name must be unique",
+
+  "FA001": "The title must be unique",
+  "SU001": "Add new {name} success"
 }

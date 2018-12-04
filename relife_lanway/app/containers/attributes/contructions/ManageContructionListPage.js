@@ -26,6 +26,7 @@ class ManageContructionListPage extends React.Component {
       count: 0,
       page: 0,
       limit: 0,
+      title: '',
       dataList: []
     }
     this.handleDelete = this.handleDelete.bind(this)
@@ -54,7 +55,6 @@ class ManageContructionListPage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
       if (response.isGetList) {
@@ -69,7 +69,10 @@ class ManageContructionListPage extends React.Component {
       if (response.isDelete) {
         if (response.messageCode === 'SU001') {
           toast.success(
-            I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: '' })
+            I18nUtils.formatMessage(
+              { id: 'toast-del-sucess' },
+              { name: this.state.title }
+            )
           )
         }
         this.forceUpdate(this.getAttributeContructionList())
@@ -82,7 +85,7 @@ class ManageContructionListPage extends React.Component {
       bodyClass: 'text-center',
       title: I18nUtils.formatMessage(
         { id: 'modal-del-header' },
-        { name: cons.name }
+        { name: cons.title }
       ),
       message: I18nUtils.t('modal-del-body'),
       okFunction: () => this.okFunction(cons)
@@ -105,6 +108,9 @@ class ManageContructionListPage extends React.Component {
     this.setState({ dataList, total })
 
     this.props.attributeContructionDeleteRequest(cons.id)
+    this.setState({
+      title: cons.title
+    })
     this.props.hide(ModalName.COMMON)
   }
 
@@ -131,12 +137,12 @@ class ManageContructionListPage extends React.Component {
           <Table hover>
             <TableHeadComponent
               onSort={this.handleSort}
-              theadTitle="#,Name,Action"
+              theadTitle="#,Name,Order,Action"
             />
             <tbody>
               {dataList.length === 0 && (
                 <tr>
-                  <td colSpan="3" className="alert alert-warning">
+                  <td colSpan="4" className="alert alert-warning">
                     {I18nUtils.t('toast-no-record')}
                   </td>
                 </tr>
@@ -145,7 +151,8 @@ class ManageContructionListPage extends React.Component {
                 return (
                   <tr key={key}>
                     <td>{(page - 1) * limit + key + 1}</td>
-                    <td>{cons.name}</td>
+                    <td>{cons.title}</td>
+                    <td>{cons.order}</td>
                     <td>
                       <Button
                         title={I18nUtils.t('edit')}

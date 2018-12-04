@@ -13,7 +13,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.listContruction, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isGetList = true)
         )
@@ -26,7 +26,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.getContruction, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isGetId = true)
         )
@@ -39,7 +39,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.addContruction, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isAdd = true)
         )
@@ -52,7 +52,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.editContruction, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isEdit = true)
         )
@@ -65,7 +65,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.deleteContruction, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isDelete = true)
         )
@@ -78,7 +78,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.listFloor, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isGetList = true)
         )
@@ -91,7 +91,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.getFloor, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isGetId = true)
         )
@@ -104,7 +104,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.addFloor, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isAdd = true)
         )
@@ -117,7 +117,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.editFloor, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isEdit = true)
         )
@@ -130,7 +130,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.deleteFloor, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isDelete = true)
         )
@@ -143,7 +143,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.listPrice, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isGetList = true)
         )
@@ -156,7 +156,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.getPrice, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isGetId = true)
         )
@@ -169,7 +169,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.addPrice, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isAdd = true)
         )
@@ -182,7 +182,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.editPrice, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isEdit = true)
         )
@@ -195,7 +195,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.deletePrice, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isDelete = true)
         )
@@ -208,7 +208,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.listStyle, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isGetList = true)
         )
@@ -221,7 +221,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.getStyle, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isGetId = true)
         )
@@ -234,7 +234,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.addStyle, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isAdd = true)
         )
@@ -247,7 +247,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.editStyle, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isEdit = true)
         )
@@ -260,7 +260,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.deleteStyle, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isDelete = true)
         )
@@ -273,7 +273,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.listHouseIncome, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isGetList = true)
         )
@@ -286,7 +286,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.getHouseIncome, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isGetId = true)
         )
@@ -299,7 +299,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.addHouseIncome, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isAdd = true)
         )
@@ -312,7 +312,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.editHouseIncome, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isEdit = true)
         )
@@ -325,7 +325,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.deleteHouseIncome, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isDelete = true)
         )
@@ -338,7 +338,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.listHouseSize, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isGetList = true)
         )
@@ -351,7 +351,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.getHouseSize, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isGetId = true)
         )
@@ -364,7 +364,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.addHouseSize, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isAdd = true)
         )
@@ -377,7 +377,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.editHouseSize, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isEdit = true)
         )
@@ -390,7 +390,7 @@ const AttributesSagas = {
     try {
       let response = yield call(attributesService.deleteHouseSize, data)
       yield put(
-        AttributeActions.attributetSuccess(
+        AttributeActions.attributeSuccess(
           response.data,
           (response.data.isDelete = true)
         )

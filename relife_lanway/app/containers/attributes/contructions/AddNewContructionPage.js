@@ -18,7 +18,8 @@ class AddNewContructionPage extends React.Component {
     super(props)
     this.state = {
       data: [],
-      name: ''
+      title: '',
+      order: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -41,11 +42,11 @@ class AddNewContructionPage extends React.Component {
       if (data.isAdd) {
         if (data.messageCode === 'SU001') {
           toast.success(
-            I18nUtils.formatMessage(
-              { id: 'toast-add-sucess' },
-              { name: this.state.name }
-            )
+            I18nUtils.formatMessage({ id: 'SU001' }, { name: this.state.title })
           )
+        }
+        if (data.messageCode === 'FA001') {
+          toast.error(I18nUtils.t('FA001'))
         }
       }
     }
@@ -54,7 +55,8 @@ class AddNewContructionPage extends React.Component {
   handleSubmit = e => {
     e.preventDefault()
     let data = new FormData()
-    data.append('name', this.state.name)
+    data.append('title', this.state.title)
+    data.append('order', this.state.order)
     this.props.attributeContructionAddRequest(data)
   }
 
@@ -77,13 +79,27 @@ class AddNewContructionPage extends React.Component {
           <Row>
             <Col xs="12" md="6">
               <FormGroup>
-                <Label htmlFor="name">{I18nUtils.t('name')}</Label>
+                <Label htmlFor="name">{I18nUtils.t('title')}</Label>
                 <TextInput
                   type="text"
-                  name="name"
-                  id="name"
+                  name="title"
+                  id="title"
                   placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.name}
+                  value={this.state.title}
+                  onChange={this.handleChange}
+                  required
+                />
+              </FormGroup>
+            </Col>
+            <Col xs="12" md="6">
+              <FormGroup>
+                <Label htmlFor="name">{I18nUtils.t('order')}</Label>
+                <TextInput
+                  type="text"
+                  name="order"
+                  id="order"
+                  placeholder={I18nUtils.t('all-place-input')}
+                  value={this.state.order}
                   onChange={this.handleChange}
                   required
                 />
@@ -116,8 +132,8 @@ AddNewContructionPage.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    processing: state.tags.processing,
-    data: state.tags.data
+    processing: state.attributes.processing,
+    data: state.attributes.data
   }
 }
 

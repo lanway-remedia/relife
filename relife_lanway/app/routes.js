@@ -228,7 +228,7 @@ class Routes extends React.Component {
           </Sidebar.Menu.Item>
           <Sidebar.Menu.Item
             title={I18nUtils.t('loc-parent-title')}
-            icon={{ className: 'fa-sitemap' }}
+            icon={{ className: 'fa-map-signs' }}
           >
             <Sidebar.Menu.Item
               active={this.props.location.pathname === '/add-new-location'}
@@ -245,7 +245,7 @@ class Routes extends React.Component {
           </Sidebar.Menu.Item>
           <Sidebar.Menu.Item
             title={I18nUtils.t('att-parent-title')}
-            icon={{ className: 'fa-tags' }}
+            icon={{ className: 'fa-sitemap' }}
           >
             <Sidebar.Menu.Item
               active={this.props.location.pathname === '/add-new-contruction'}
