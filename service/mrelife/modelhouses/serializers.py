@@ -95,7 +95,7 @@ class OrderModelHouseSerializer(ModelSerializer):
     #create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     model_house = ModelHouseSerializer(read_only=True)
     model_house_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
-    is_active = serializers.BooleanField(default=True, required=False)
+    is_active = serializers.BooleanField(default=True, required=False,read_only=True)
 
     class Meta:
         model = OrderModelHouse
