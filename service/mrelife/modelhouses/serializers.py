@@ -1,16 +1,11 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from mrelife.modelhouses.models import (
-    ModelHouse,
-    ModelHouseContact,
-    ModelHouseContactReply,
-    ModelHouseMedia,
-    ModelHouseOutletStore,
-    ModelHouseTag,
-    ModelHouseUser,
-    OrderModelHouse
-)
+from mrelife.modelhouses.models import (ModelHouse, ModelHouseContact,
+                                        ModelHouseContactReply,
+                                        ModelHouseMedia, ModelHouseOutletStore,
+                                        ModelHouseTag, ModelHouseUser,
+                                        OrderModelHouse)
 from mrelife.users.serializers import UserSerializer
 
 
@@ -79,6 +74,11 @@ class ModelHouseSerializer(ModelSerializer):
     class Meta:
         model = ModelHouse
         fields = '__all__'
+
+    def validate(self, data):
+        # Auto user to create user
+        data['create_user'] = self.context['request'].user
+        return data
 
 
 class OrderModelHouseSerializer(ModelSerializer):
