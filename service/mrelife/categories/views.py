@@ -11,10 +11,11 @@ from django.core.exceptions import ValidationError
 from rest_framework.decorators import action
 import csv
 from django.http import HttpResponse
+from rest_framework import status
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.filter(is_active=settings.IS_ACTIVE)
+    queryset = Category.objects.filter(is_active=settings.IS_ACTIVE).order_by('order')
     serializer_class = CategorySerializer
 
     def create(self, request, type=None):
@@ -26,7 +27,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         # type = request.data.get('type')
         if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
 
-            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
+            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.CAT003.value), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         if (int(type) == settings.SUB_CATEGORY):
             serializer = SubCategorySerializer(data=request.data)
         else:
@@ -35,9 +36,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
             self.perform_create(serializer)
 
             serializer = self.get_serializer(self.queryset, many=True)  # return list all Category
-            return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+            return Response(result.resultResponse(True, serializer.data, MessageCode.CAT001.value))
 
-        return Response(result.resultResponse(False, serializer.errors, MessageCode.FA001.value))
+        return Response(result.resultResponse(False, serializer.errors, MessageCode.CAT002.value), status=status.HTTP_400_BAD_REQUEST)
 
     def perform_create(self, serializer):
         serializer.save(created=datetime.now(), updated=datetime.now())
@@ -49,14 +50,16 @@ class CategoryViewSet(viewsets.ModelViewSet):
         type = 2: update Sub Category.
         """
         partial = kwargs.pop('partial', False)
-        instance = self.get_object()
+        
         # type = request.data.get('type')
         if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
-            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
+            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.CAT003.value), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         if (int(type) == settings.SUB_CATEGORY):
-            subCat = SubCategory.objects.get(pk=pk)
-            serializer = SubCategorySerializer(subCat, data=request.data, partial=partial)
+            instance = SubCategory.objects.get(pk=pk)
+            serializer = SubCategorySerializer(instance, data=request.data, partial=partial)
+
         else:
+            instance = self.get_object()
             serializer = self.get_serializer(instance, data=request.data, partial=partial)
         if serializer.is_valid():
             self.perform_update(serializer)
@@ -67,8 +70,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
                 instance._prefetched_objects_cache = {}
 
             serializer = self.get_serializer(self.queryset, many=True)  # return list all Category
-            return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
-        return Response(result.resultResponse(False, serializer.errors, MessageCode.FA001.value))
+            return Response(result.resultResponse(True, serializer.data, MessageCode.CAT004.value))
+        return Response(result.resultResponse(False, serializer.errors, MessageCode.CAT005.value), status=status.HTTP_400_BAD_REQUEST)
 
     def perform_update(self, serializer):
         serializer.save(updated=datetime.now())
@@ -82,12 +85,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
         # type = request.query_params.get('type')
 
         if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
-            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
+            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.CAT003.value), status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
         if (int(type) == settings.SUB_CATEGORY):
-            queryset = SubCategory.objects.filter(is_active=settings.IS_ACTIVE)
+            queryset = SubCategory.objects.filter(is_active=settings.IS_ACTIVE).order_by('order')
         else:
-            queryset = Category.objects.filter(is_active=settings.IS_ACTIVE)
+            queryset = Category.objects.filter(is_active=settings.IS_ACTIVE).order_by('order')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -95,7 +98,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+        return Response(result.resultResponse(True, serializer.data, MessageCode.CAT006.value))
 
     def destroy(self, request, type=None, *args, **kwargs):
         """
@@ -105,7 +108,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         """
         # type = request.data.get('type')
         if(type is None or int(type) not in [settings.SUB_CATEGORY, settings.ROOT_CATEGORY]):
-            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.FA001.value))
+            return Response(result.resultResponse(False, ValidationError("Type category is required"), MessageCode.CAT003.value), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         if(int(type) == settings.SUB_CATEGORY):
             subCatID = kwargs['pk']
             subCat = SubCategory.objects.get(pk=subCatID)
@@ -120,7 +123,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
             instance.save()
             queryset = Category.objects.filter(is_active=settings.IS_ACTIVE)
         serializer = self.get_serializer(queryset, many=True)
-        return Response(result.resultResponse(True, serializer.data, MessageCode.SU001.value))
+        return Response(result.resultResponse(True, serializer.data, MessageCode.CAT007.value), status=status.HTTP_205_RESET_CONTENT)
 
     def perform_delete(self, instance):
         instance.is_active = settings.IS_INACTIVE

@@ -4,22 +4,30 @@ from io import BytesIO
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group
 from django.core.files.storage import default_storage as storage
-from django.db.models import (CASCADE, BooleanField, CharField, DateTimeField,
-                              ForeignKey, ImageField, IntegerField, Model,
-                              TextField)
+from django.db.models import (
+    CASCADE,
+    BooleanField,
+    CharField,
+    DateTimeField,
+    ForeignKey,
+    ImageField,
+    IntegerField,
+    Model,
+    TextField
+)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from PIL import Image
 
 from mrelife.locations.models import District
 from mrelife.tags.models import Tag
-from PIL import Image
 
 
 class Exhibition(Model):
 
     title = CharField(max_length=255)
     content = TextField()
-    img_thumbnail = CharField(max_length=800, null=True)
+    img_thumbnail = ImageField(null=True, blank=True)
     img_large = ImageField(null=True, blank=True)
     latitude = TextField(null=True)
     longtitude = TextField(null=True)
@@ -39,17 +47,22 @@ class Exhibition(Model):
         ordering = ['created', ]
 
     def save(self, *args, **kwargs):
-        super(Exhibition, self).save(*args, **kwargs)
-        self.create_img_thumbnail()
+        if not self.pk:
+            super(Exhibition, self).save(*args, **kwargs)
+            self.img_thumbnail = self.create_img_thumbnail()
+            self.save()
+        else:
+            self.img_thumbnail = self.create_img_thumbnail()
+            super(Exhibition, self).save(*args, **kwargs)
 
     def create_img_thumbnail(self):
         if not self.img_large:
-            return ""
+            return None
         file_path = self.img_large.name
         filename_base, filename_ext = os.path.splitext(file_path)
         thumb_file_path = "%s_thumb.jpg" % filename_base
         if storage.exists(thumb_file_path):
-            return "exists"
+            return settings.MEDIA_URL + thumb_file_path
         try:
             # resize the original image and return url path of the thumbnail
             f = storage.open(file_path, 'r')
@@ -75,11 +88,10 @@ class Exhibition(Model):
             image.save(out_im2, "JPEG")
             f_thumb.write(out_im2.getvalue())
             f_thumb.close()
-            self.img_thumbnail = settings.MEDIA_URL + thumb_file_path
-            self.save()
-            return "success"
+
+            return settings.MEDIA_URL + thumb_file_path
         except:
-            return "error"
+            return None
 
 
 class ExhibitionContact(Model):
