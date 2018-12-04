@@ -1,11 +1,16 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from mrelife.modelhouses.models import (ModelHouse, ModelHouseContact,
-                                        ModelHouseContactReply,
-                                        ModelHouseMedia, ModelHouseOutletStore,
-                                        ModelHouseTag, ModelHouseUser,
-                                        OrderModelHouse)
+from mrelife.modelhouses.models import (
+    ModelHouse,
+    ModelHouseContact,
+    ModelHouseContactReply,
+    ModelHouseMedia,
+    ModelHouseOutletStore,
+    ModelHouseTag,
+    ModelHouseUser,
+    OrderModelHouse
+)
 from mrelife.users.serializers import UserSerializer
 
 
@@ -87,7 +92,7 @@ class OrderModelHouseSerializer(ModelSerializer):
     content = serializers.CharField(required=False)
     status = serializers.BooleanField(default=True)
     create_user = UserSerializer(read_only=True)
-    create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
+    #create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     model_house = ModelHouseSerializer(read_only=True)
     model_house_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     is_active = serializers.BooleanField(default=True, required=False)
@@ -95,7 +100,7 @@ class OrderModelHouseSerializer(ModelSerializer):
     class Meta:
         model = OrderModelHouse
         fields = ('id', 'tel', 'content', 'status',
-                  'create_user', 'create_user_id', 'model_house', 'model_house_id','is_active')
+                  'create_user',  'model_house', 'model_house_id', 'is_active')
 
     def validate_model_house_id(self, model_house_id):
         try:
