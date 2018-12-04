@@ -72,12 +72,12 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     outlet_store_contact = OutletStoreContactSerializer(many=True, read_only=True, required=False)
     district = DistrictSerializer(read_only=True)
     create_user = UserSerializer(read_only=True)
-    create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
+    #create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
 
     class Meta:
         model = OutletStore
         fields = ('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'longitude', 'address', 'district_id', 'district',
-                  'tel', 'email', 'zipcode', 'home_page', 'traffic', 'time_serving', 'regular_holiday', 'create_user_id', 'create_user',
+                  'tel', 'email', 'zipcode', 'home_page', 'traffic', 'time_serving', 'regular_holiday', 'create_user',
                   'is_active', 'outlet_store_media', 'outlet_store_contact')
 
     def validate_district_id(self, district_id):
@@ -88,11 +88,11 @@ class OutletStoreSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise serializers.ValidationError(e)
         return district_id
-    def validate_create_user_id(self, create_user_id):
-        try:
-            item = District.objects.get(id=create_user_id)
-            if(not item.is_active):
-                raise
-        except Exception as e:
-            raise serializers.ValidationError(e)
-        return create_user_id
+    # def validate_create_user_id(self, create_user_id):
+    #     try:
+    #         item = District.objects.get(id=create_user_id)
+    #         if(not item.is_active):
+    #             raise
+    #     except Exception as e:
+    #         raise serializers.ValidationError(e)
+    #     return create_user_id
