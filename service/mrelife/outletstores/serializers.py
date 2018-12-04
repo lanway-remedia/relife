@@ -6,7 +6,9 @@ from rest_framework.validators import UniqueValidator
 
 from mrelife.locations.models import District
 from mrelife.locations.serializers import DistrictSerializer
-from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreContactReply, OutletStoreMedia
+from mrelife.outletstores.models import (OutletStore, OutletStoreContact,
+                                         OutletStoreContactReply,
+                                         OutletStoreMedia)
 from mrelife.users.models import User
 from mrelife.users.serializers import UserSerializer
 
@@ -53,7 +55,8 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     content = serializers.CharField(style={'base_template': 'textarea.html'})
     img_thumbnail = serializers.CharField(max_length=800, allow_blank=True, allow_null=True, read_only=True)
-    img_large = serializers.FileField(required=True)
+    img_large = serializers.FileField(max_length=None, use_url=True, allow_null=True,
+                                      allow_empty_file=True, required=False)
     latitude = serializers.CharField(style={'base_template': 'textarea.html'},
                                      allow_blank=True, required=False, allow_null=True)
     longitude = serializers.CharField(style={'base_template': 'textarea.html'},
