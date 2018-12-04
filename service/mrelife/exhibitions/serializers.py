@@ -59,8 +59,6 @@ class ExhibitionSerializer(serializers.ModelSerializer):
 
     def validate_district_id(self, district_id):
         try:
-            if(not district_id):
-                raise
             item = District.objects.get(id=district_id)
             if(not item.is_active):
                 raise

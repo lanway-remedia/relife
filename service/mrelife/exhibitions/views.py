@@ -44,8 +44,9 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX003.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
-        #request.data['create_user_id'] = request.user.id
         self.parser_class = (FormParser, MultiPartParser)
+        if( not request.user.id):
+            request.data['create_user_id'] = request.user.id
         serializer = ExhibitionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
