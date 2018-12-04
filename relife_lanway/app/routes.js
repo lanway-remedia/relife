@@ -48,6 +48,9 @@ import { Dashboard, Header, Sidebar } from 'react-adminlte-dash'
 import 'react-toastify/dist/ReactToastify.css'
 import defaultAvatar from './images/user.png'
 
+import 'react-perfect-scrollbar/dist/css/styles.css'
+import PerfectScrollbar from 'react-perfect-scrollbar'
+
 class Routes extends React.Component {
   constructor(props) {
     super(props)
@@ -100,14 +103,15 @@ class Routes extends React.Component {
     ]
 
     const sb = () => {
-      return [
-        <Sidebar.UserPanel name={username} image={userimage} online key="1" />,
-        // <Sidebar.Search
-        //   name={''}
-        //   placeholder={I18nUtils.t('search-lbl').toLowerCase()}
-        //   onClick={() => this.props.history.push('/search')}
-        //   key="2"
-        // />,
+      return (
+        <PerfectScrollbar style={{height: 'calc(100vh - 50px)'}}>
+        <Sidebar.UserPanel name={username} image={userimage} online key="1" />
+        {/* <Sidebar.Search
+           name={''}
+           placeholder={I18nUtils.t('search-lbl').toLowerCase()}
+           onClick={() => this.props.history.push('/search')}
+           key="2"
+        />, */}
         <Sidebar.Menu header={I18nUtils.t('nav-main-lbl')} key="3">
           <Sidebar.Menu.Item
             active={this.props.location.pathname === '/'}
@@ -213,7 +217,8 @@ class Routes extends React.Component {
             title={I18nUtils.t('nav-article-lbl')}
           /> */}
         </Sidebar.Menu>
-      ]
+        </PerfectScrollbar>
+      )
     }
 
     const footer = () => [
