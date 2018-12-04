@@ -92,10 +92,10 @@ class OrderModelHouseSerializer(ModelSerializer):
     content = serializers.CharField(required=False)
     status = serializers.BooleanField(default=True)
     create_user = UserSerializer(read_only=True)
-    #create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     model_house = ModelHouseSerializer(read_only=True)
     model_house_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     is_active = serializers.BooleanField(default=True, required=False,read_only=True)
+    #create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
 
     class Meta:
         model = OrderModelHouse
