@@ -248,7 +248,7 @@ class OrderModelHouseViewSet(ModelViewSet):
     queryset = OrderModelHouse.objects.all().filter(is_active=1).order_by("-updated")
     serializer_class = OrderModelHouseSerializer
     pagination_class = LimitOffsetPagination
-    #permission_classes = (IsAuthenticated, OrderMHViewadminPermission,)
+    permission_classes = (IsAuthenticated, OrderMHViewadminPermission,)
 
     def list(self, request):
         self.queryset = OrderModelHouse.objects.filter(is_active=1).order_by("-updated")
