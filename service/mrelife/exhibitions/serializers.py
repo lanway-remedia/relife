@@ -48,14 +48,14 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     exhibition_contact_reply = ExhibitionContactReplySerializer(many=True, read_only=True, required=False)
     exhibition_event = EventExhibitionSerializer(many=True, read_only=True, required=False)
     exhibition_tag = ExhibitionTagSerializer(many=True, read_only=True, required=False)
-    create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False, default=0)
+    #create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False, default=0)
     district = DistrictSerializer(read_only=True)
     create_user = UserSerializer(read_only=True)
 
     class Meta:
         model = Exhibition
         fields = ('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'district_id', 'longtitude', 'address', 'district', 'zipcode', 'num_attend', 'start_time', 'end_time',
-                  'create_user_id', 'create_user', 'is_active', 'exhibition_tag', 'exhibition_contact', 'exhibition_contact_reply', 'exhibition_event')
+                  'create_user', 'is_active', 'exhibition_tag', 'exhibition_contact', 'exhibition_contact_reply', 'exhibition_event')
 
     def validate_district_id(self, district_id):
         try:
@@ -66,14 +66,14 @@ class ExhibitionSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(e)
         return district_id
 
-    def validate_create_user_id(self, create_user_id):
-        try:
-            item = User.objects.get(id=create_user_id)
-            if(not item.is_active):
-                raise
-        except Exception as e:
-            raise serializers.ValidationError(e)
-        return create_user_id
+    # def validate_create_user_id(self, create_user_id):
+    #     try:
+    #         item = User.objects.get(id=create_user_id)
+    #         if(not item.is_active):
+    #             raise
+    #     except Exception as e:
+    #         raise serializers.ValidationError(e)
+    #     return create_user_id
 
     def validate_img_large(self, img_large):
         try:

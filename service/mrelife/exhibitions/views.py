@@ -7,9 +7,9 @@ from rest_framework import status, viewsets
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.parsers import FormParser, MultiPartParser
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import EventExhibition
@@ -47,7 +47,8 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         self.parser_class = (FormParser, MultiPartParser)
         serializer = ExhibitionSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(create_user_id=request.user.id,is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
+            serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                            created=datetime.now(), updated=datetime.now())
             tags = request.data.get('tags')
             if tags is not None:
                 for tag_name in tags:
