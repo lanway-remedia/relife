@@ -12,7 +12,7 @@ from mrelife.utils.relifeenum import MessageCode
 
 
 class LocationViewSet(viewsets.ModelViewSet):
-    queryset = City.objects.all().order_by('-order')
+    queryset = City.objects.all().order_by('order')
     serializer_class = CitySerializer
 
     def create(self, request, type=None):
@@ -78,9 +78,9 @@ class LocationViewSet(viewsets.ModelViewSet):
         if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
             return Response(result.resultResponse(False, ValidationError("Type location is required"), MessageCode.LOC003.value), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         if (int(type) == settings.DISTRICT):
-            queryset = District.objects.filter(is_active=settings.IS_ACTIVE).order_by('-order')
+            queryset = District.objects.filter(is_active=settings.IS_ACTIVE).order_by('order')
         else:
-            queryset = City.objects.filter(is_active=settings.IS_ACTIVE).order_by('-order')
+            queryset = City.objects.filter(is_active=settings.IS_ACTIVE).order_by('order')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
