@@ -38,7 +38,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     latitude = serializers.CharField()
     longtitude = serializers.CharField()
     address = serializers.CharField(max_length=800)
-    district_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
+    district_id = serializers.IntegerField(write_only=True, required=False, allow_null=False, default=0)
     zipcode = serializers.CharField(max_length=255, allow_blank=True)
     num_attend = serializers.IntegerField()
     start_time = serializers.DateTimeField(input_formats=['%Y/%m/%d', ], format="%Y/%m/%d", required=True)
@@ -48,7 +48,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     exhibition_contact_reply = ExhibitionContactReplySerializer(many=True, read_only=True, required=False)
     exhibition_event = EventExhibitionSerializer(many=True, read_only=True, required=False)
     exhibition_tag = ExhibitionTagSerializer(many=True, read_only=True, required=False)
-    create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
+    create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False, default=0)
     district = DistrictSerializer(read_only=True)
     create_user = UserSerializer(read_only=True)
 
@@ -59,6 +59,8 @@ class ExhibitionSerializer(serializers.ModelSerializer):
 
     def validate_district_id(self, district_id):
         try:
+            if(not district_id):
+                raise
             item = District.objects.get(id=district_id)
             if(not item.is_active):
                 raise
