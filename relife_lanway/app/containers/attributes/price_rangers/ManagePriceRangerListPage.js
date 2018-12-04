@@ -75,7 +75,7 @@ class ManagePriceRangerListPage extends React.Component {
             )
           )
         }
-        this.forceUpdate(this.getAttributeHouseSizeList())
+        this.forceUpdate(this.getAttributePriceRangerList())
       }
     }
   }

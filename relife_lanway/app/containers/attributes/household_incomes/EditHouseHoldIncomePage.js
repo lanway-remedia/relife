@@ -37,7 +37,7 @@ class EditHouseHoldIncomePage extends React.Component {
       let response = nextProps.data
       if (response.data === undefined || response.data.length === 0) {
         toast.error(I18nUtils.t('toast-no-data'))
-        this.props.history.replace('/manage-floor-list')
+        this.props.history.replace('/manage-household-income-list')
       } else {
         if (response.isGetId)
           this.setState({

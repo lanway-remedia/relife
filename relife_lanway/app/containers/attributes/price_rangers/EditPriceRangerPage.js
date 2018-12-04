@@ -37,7 +37,7 @@ class EditPriceRangerPage extends React.Component {
       let response = nextProps.data
       if (response.data === undefined || response.data.length === 0) {
         toast.error(I18nUtils.t('toast-no-data'))
-        this.props.history.replace('/manage-floor-list')
+        this.props.history.replace('/manage-price-ranger-list')
       } else {
         if (response.isGetId)
           this.setState({
@@ -64,7 +64,7 @@ class EditPriceRangerPage extends React.Component {
   }
 
   redirectToListPage = () => {
-    this.props.history.push('/manage-household-size-list')
+    this.props.history.push('/manage-price-ranger-list')
   }
 
   handleChange = e => {

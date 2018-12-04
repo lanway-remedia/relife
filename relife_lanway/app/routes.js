@@ -124,224 +124,253 @@ class Routes extends React.Component {
 
     const sb = () => {
       return (
-        <PerfectScrollbar style={{height: 'calc(100vh - 50px)'}}>
-        <Sidebar.UserPanel name={username} image={userimage} online key="1" />
-        {/* <Sidebar.Search
+        <PerfectScrollbar style={{ height: 'calc(100vh - 50px)' }}>
+          <Sidebar.UserPanel name={username} image={userimage} online key="1" />
+          {/* <Sidebar.Search
            name={''}
            placeholder={I18nUtils.t('search-lbl').toLowerCase()}
            onClick={() => this.props.history.push('/search')}
            key="2"
         />, */}
-        <Sidebar.Menu header={I18nUtils.t('nav-main-lbl')} key="3">
-          <Sidebar.Menu.Item
-            active={this.props.location.pathname === '/'}
-            icon={{ className: 'fa-user' }}
-            title={I18nUtils.t('ud-page-title')}
-            onClick={() => this.props.history.push('/')}
-          />
-          <Sidebar.Menu.Item
-            title={I18nUtils.t('um-parent-title')}
-            icon={{ className: 'fa-users' }}
-          >
+          <Sidebar.Menu header={I18nUtils.t('nav-main-lbl')} key="3">
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/add-user'}
-              title={I18nUtils.t('au-page-title')}
-              icon={{ className: 'fa-plus-square' }}
-              onClick={() => this.props.history.push('/add-user')}
+              active={this.props.location.pathname === '/'}
+              icon={{ className: 'fa-user' }}
+              title={I18nUtils.t('ud-page-title')}
+              onClick={() => this.props.history.push('/')}
             />
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/users'}
-              title={I18nUtils.t('la-page-title')}
-              icon={{ className: 'fa-list-ol' }}
-              onClick={() => this.props.history.push('/users')}
-            />
-          </Sidebar.Menu.Item>
-          <Sidebar.Menu.Item
-            title={I18nUtils.t('ots-parent-title')}
-            icon={{ className: 'fa-trello' }}
-          >
+              title={I18nUtils.t('um-parent-title')}
+              icon={{ className: 'fa-users' }}
+            >
+              <Sidebar.Menu.Item
+                active={this.props.location.pathname === '/add-user'}
+                title={I18nUtils.t('au-page-title')}
+                icon={{ className: 'fa-plus-square' }}
+                onClick={() => this.props.history.push('/add-user')}
+              />
+              <Sidebar.Menu.Item
+                active={this.props.location.pathname === '/users'}
+                title={I18nUtils.t('la-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() => this.props.history.push('/users')}
+              />
+            </Sidebar.Menu.Item>
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/add-new-outlet-store'}
-              title={I18nUtils.t('ots-add-page-title')}
-              icon={{ className: 'fa-plus-square' }}
-              onClick={() => this.props.history.push('/add-new-outlet-store')}
-            />
+              title={I18nUtils.t('ots-parent-title')}
+              icon={{ className: 'fa-trello' }}
+            >
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname === '/add-new-outlet-store'
+                }
+                title={I18nUtils.t('ots-add-page-title')}
+                icon={{ className: 'fa-plus-square' }}
+                onClick={() => this.props.history.push('/add-new-outlet-store')}
+              />
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname === '/manage-outlet-store-list'
+                }
+                title={I18nUtils.t('otsl-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() =>
+                  this.props.history.push('/manage-outlet-store-list')
+                }
+              />
+            </Sidebar.Menu.Item>
             <Sidebar.Menu.Item
-              active={
-                this.props.location.pathname === '/manage-outlet-store-list'
-              }
-              title={I18nUtils.t('otsl-page-title')}
-              icon={{ className: 'fa-list-ol' }}
-              onClick={() =>
-                this.props.history.push('/manage-outlet-store-list')
-              }
-            />
-          </Sidebar.Menu.Item>
-          <Sidebar.Menu.Item
-            title={I18nUtils.t('exh-parent-title')}
-            icon={{ className: 'fa-camera-retro' }}
-          >
+              title={I18nUtils.t('exh-parent-title')}
+              icon={{ className: 'fa-camera-retro' }}
+            >
+              <Sidebar.Menu.Item
+                active={this.props.location.pathname === '/add-new-exhibition'}
+                title={I18nUtils.t('exh-add-page-title')}
+                icon={{ className: 'fa-plus-square' }}
+                onClick={() => this.props.history.push('/add-new-exhibition')}
+              />
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname === '/manage-exhibition-list'
+                }
+                title={I18nUtils.t('exh-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() =>
+                  this.props.history.push('/manage-exhibition-list')
+                }
+              />
+            </Sidebar.Menu.Item>
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/add-new-exhibition'}
-              title={I18nUtils.t('exh-add-page-title')}
-              icon={{ className: 'fa-plus-square' }}
-              onClick={() => this.props.history.push('/add-new-exhibition')}
-            />
+              title={I18nUtils.t('tag-parent-title')}
+              icon={{ className: 'fa-tags' }}
+            >
+              <Sidebar.Menu.Item
+                active={this.props.location.pathname === '/add-new-tag'}
+                title={I18nUtils.t('tag-add-page-title')}
+                icon={{ className: 'fa-plus-square' }}
+                onClick={() => this.props.history.push('/add-new-tag')}
+              />
+              <Sidebar.Menu.Item
+                active={this.props.location.pathname === '/manage-tag-list'}
+                title={I18nUtils.t('tag-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() => this.props.history.push('/manage-tag-list')}
+              />
+            </Sidebar.Menu.Item>
             <Sidebar.Menu.Item
-              active={
-                this.props.location.pathname === '/manage-exhibition-list'
-              }
-              title={I18nUtils.t('exh-page-title')}
-              icon={{ className: 'fa-list-ol' }}
-              onClick={() => this.props.history.push('/manage-exhibition-list')}
-            />
-          </Sidebar.Menu.Item>
-          <Sidebar.Menu.Item
-            title={I18nUtils.t('tag-parent-title')}
-            icon={{ className: 'fa-tags' }}
-          >
+              title={I18nUtils.t('cate-parent-title')}
+              icon={{ className: 'fa-link' }}
+            >
+              <Sidebar.Menu.Item
+                active={this.props.location.pathname === '/add-new-category'}
+                title={I18nUtils.t('cate-add-page-title')}
+                icon={{ className: 'fa-plus-square' }}
+                onClick={() => this.props.history.push('/add-new-category')}
+              />
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname === '/manage-category-list'
+                }
+                title={I18nUtils.t('cate-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() => this.props.history.push('/manage-category-list')}
+              />
+            </Sidebar.Menu.Item>
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/add-new-tag'}
-              title={I18nUtils.t('tag-add-page-title')}
-              icon={{ className: 'fa-plus-square' }}
-              onClick={() => this.props.history.push('/add-new-tag')}
-            />
+              title={I18nUtils.t('loc-parent-title')}
+              icon={{ className: 'fa-map-signs' }}
+            >
+              <Sidebar.Menu.Item
+                active={this.props.location.pathname === '/add-new-location'}
+                title={I18nUtils.t('loc-add-page-title')}
+                icon={{ className: 'fa-plus-square' }}
+                onClick={() => this.props.history.push('/add-new-location')}
+              />
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname === '/manage-location-list'
+                }
+                title={I18nUtils.t('loc-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() => this.props.history.push('/manage-location-list')}
+              />
+            </Sidebar.Menu.Item>
             <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/manage-tag-list'}
-              title={I18nUtils.t('tag-page-title')}
-              icon={{ className: 'fa-list-ol' }}
-              onClick={() => this.props.history.push('/manage-tag-list')}
-            />
-          </Sidebar.Menu.Item>
-          <Sidebar.Menu.Item
-            title={I18nUtils.t('cate-parent-title')}
-            icon={{ className: 'fa-link' }}
-          >
-            <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/add-new-category'}
-              title={I18nUtils.t('cate-add-page-title')}
-              icon={{ className: 'fa-plus-square' }}
-              onClick={() => this.props.history.push('/add-new-category')}
-            />
-            <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/manage-category-list'}
-              title={I18nUtils.t('cate-page-title')}
-              icon={{ className: 'fa-list-ol' }}
-              onClick={() => this.props.history.push('/manage-category-list')}
-            />
-          </Sidebar.Menu.Item>
-          <Sidebar.Menu.Item
-            title={I18nUtils.t('loc-parent-title')}
-            icon={{ className: 'fa-map-signs' }}
-          >
-            <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/add-new-location'}
-              title={I18nUtils.t('loc-add-page-title')}
-              icon={{ className: 'fa-plus-square' }}
-              onClick={() => this.props.history.push('/add-new-location')}
-            />
-            <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/manage-location-list'}
-              title={I18nUtils.t('loc-page-title')}
-              icon={{ className: 'fa-list-ol' }}
-              onClick={() => this.props.history.push('/manage-location-list')}
-            />
-          </Sidebar.Menu.Item>
-          <Sidebar.Menu.Item
-            title={I18nUtils.t('att-parent-title')}
-            icon={{ className: 'fa-sitemap' }}
-          >
-            <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/add-new-contruction'}
-              title={I18nUtils.t('att-cons-add-page-title')}
-              icon={{ className: 'fa-plus-square' }}
-              onClick={() => this.props.history.push('/add-new-contruction')}
-            />
-            <Sidebar.Menu.Item
-              active={
-                this.props.location.pathname === '/manage-contruction-list'
-              }
-              title={I18nUtils.t('att-cons-page-title')}
-              icon={{ className: 'fa-list-ol' }}
-              onClick={() =>
-                this.props.history.push('/manage-contruction-list')
-              }
-            />
-            <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/add-new-floor'}
-              title={I18nUtils.t('att-floor-add-page-title')}
-              icon={{ className: 'fa-plus-square' }}
-              onClick={() => this.props.history.push('/add-new-floor')}
-            />
-            <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/manage-floor-list'}
-              title={I18nUtils.t('att-floor-page-title')}
-              icon={{ className: 'fa-list-ol' }}
-              onClick={() => this.props.history.push('/manage-floor-list')}
-            />
-            <Sidebar.Menu.Item
-              active={
-                this.props.location.pathname === '/add-new-household-income'
-              }
-              title={I18nUtils.t('att-hincome-add-page-title')}
-              icon={{ className: 'fa-plus-square' }}
-              onClick={() =>
-                this.props.history.push('/add-new-household-income')
-              }
-            />
-            <Sidebar.Menu.Item
-              active={
-                this.props.location.pathname === '/manage-household-income-list'
-              }
-              title={I18nUtils.t('att-hincome-page-title')}
-              icon={{ className: 'fa-list-ol' }}
-              onClick={() =>
-                this.props.history.push('/manage-household-income-list')
-              }
-            />
-            <Sidebar.Menu.Item
-              active={
-                this.props.location.pathname === '/add-new-household-size'
-              }
-              title={I18nUtils.t('att-hsize-add-page-title')}
-              icon={{ className: 'fa-plus-square' }}
-              onClick={() => this.props.history.push('/add-new-household-size')}
-            />
-            <Sidebar.Menu.Item
-              active={
-                this.props.location.pathname === '/manage-household-size-list'
-              }
-              title={I18nUtils.t('att-hsize-page-title')}
-              icon={{ className: 'fa-list-ol' }}
-              onClick={() =>
-                this.props.history.push('/manage-household-size-list')
-              }
-            />
-            <Sidebar.Menu.Item
-              active={this.props.location.pathname === '/add-new-house-style'}
-              title={I18nUtils.t('att-style-add-page-title')}
-              icon={{ className: 'fa-plus-square' }}
-              onClick={() => this.props.history.push('/add-new-house-style')}
-            />
-            <Sidebar.Menu.Item
-              active={
-                this.props.location.pathname === '/manage-house-style-list'
-              }
-              title={I18nUtils.t('att-style-page-title')}
-              icon={{ className: 'fa-list-ol' }}
-              onClick={() =>
-                this.props.history.push('/manage-house-style-list')
-              }
-            />
-          </Sidebar.Menu.Item>
+              title={I18nUtils.t('att-parent-title')}
+              icon={{ className: 'fa-sitemap' }}
+            >
+              <Sidebar.Menu.Item
+                active={this.props.location.pathname === '/add-new-contruction'}
+                title={I18nUtils.t('att-cons-add-page-title')}
+                icon={{ className: 'fa-plus-square' }}
+                onClick={() => this.props.history.push('/add-new-contruction')}
+              />
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname === '/manage-contruction-list'
+                }
+                title={I18nUtils.t('att-cons-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() =>
+                  this.props.history.push('/manage-contruction-list')
+                }
+              />
+              <Sidebar.Menu.Item
+                active={this.props.location.pathname === '/add-new-floor'}
+                title={I18nUtils.t('att-floor-add-page-title')}
+                icon={{ className: 'fa-plus-square' }}
+                onClick={() => this.props.history.push('/add-new-floor')}
+              />
+              <Sidebar.Menu.Item
+                active={this.props.location.pathname === '/manage-floor-list'}
+                title={I18nUtils.t('att-floor-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() => this.props.history.push('/manage-floor-list')}
+              />
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname === '/add-new-household-income'
+                }
+                title={I18nUtils.t('att-hincome-add-page-title')}
+                icon={{ className: 'fa-plus-square' }}
+                onClick={() =>
+                  this.props.history.push('/add-new-household-income')
+                }
+              />
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname ===
+                  '/manage-household-income-list'
+                }
+                title={I18nUtils.t('att-hincome-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() =>
+                  this.props.history.push('/manage-household-income-list')
+                }
+              />
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname === '/add-new-household-size'
+                }
+                title={I18nUtils.t('att-hsize-add-page-title')}
+                icon={{ className: 'fa-plus-square' }}
+                onClick={() =>
+                  this.props.history.push('/add-new-household-size')
+                }
+              />
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname === '/manage-household-size-list'
+                }
+                title={I18nUtils.t('att-hsize-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() =>
+                  this.props.history.push('/manage-household-size-list')
+                }
+              />
+              <Sidebar.Menu.Item
+                active={this.props.location.pathname === '/add-new-house-style'}
+                title={I18nUtils.t('att-style-add-page-title')}
+                icon={{ className: 'fa-plus-square' }}
+                onClick={() => this.props.history.push('/add-new-house-style')}
+              />
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname === '/manage-house-style-list'
+                }
+                title={I18nUtils.t('att-style-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() =>
+                  this.props.history.push('/manage-house-style-list')
+                }
+              />
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname === '/add-new-price-ranger'
+                }
+                title={I18nUtils.t('att-price-add-page-title')}
+                icon={{ className: 'fa-plus-square' }}
+                onClick={() => this.props.history.push('/add-new-price-ranger')}
+              />
+              <Sidebar.Menu.Item
+                active={
+                  this.props.location.pathname === '/manage-price-ranger-list'
+                }
+                title={I18nUtils.t('att-price-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() =>
+                  this.props.history.push('/manage-price-ranger-list')
+                }
+              />
+            </Sidebar.Menu.Item>
 
-          {/* <Sidebar.Menu.Item
+            {/* <Sidebar.Menu.Item
             active={this.props.location.pathname == '/article'}
             onClick={() => this.props.history.push('/article')}
             icon={{ className: 'fa-pencil' }}
             title={I18nUtils.t('nav-article-lbl')}
           /> */}
-        </Sidebar.Menu>
+          </Sidebar.Menu>
         </PerfectScrollbar>
       )
     }
