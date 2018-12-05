@@ -1,11 +1,16 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from mrelife.modelhouses.models import (ModelHouse, ModelHouseContact,
-                                        ModelHouseContactReply,
-                                        ModelHouseMedia, ModelHouseOutletStore,
-                                        ModelHouseTag, ModelHouseUser,
-                                        OrderModelHouse)
+from mrelife.modelhouses.models import (
+    ModelHouse,
+    ModelHouseContact,
+    ModelHouseContactReply,
+    ModelHouseMedia,
+    ModelHouseOutletStore,
+    ModelHouseTag,
+    ModelHouseUser,
+    OrderModelHouse
+)
 from mrelife.users.serializers import UserSerializer
 
 
@@ -83,23 +88,23 @@ class ModelHouseSerializer(ModelSerializer):
 
 class OrderModelHouseSerializer(ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    tel = serializers.CharField(max_length=255, read_only=True, required=False)
-    content = serializers.CharField(style={'base_template': 'textarea.html'}, required=False)
+    tel = serializers.CharField(max_length=13, read_only=True, required=False)
+    content = serializers.CharField(required=False)
     status = serializers.BooleanField(default=True)
-    is_active = serializers.BooleanField(default=True, required=False)
     create_user = UserSerializer(read_only=True)
-    create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     model_house = ModelHouseSerializer(read_only=True)
     model_house_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
+    is_active = serializers.BooleanField(default=True, required=False,read_only=True)
+    #create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
 
     class Meta:
         model = OrderModelHouse
-        fields = ('id', 'tel', 'content', 'status', 'is_active',
-                  'create_user', 'create_user_id', 'model_house', 'model_house_id')
+        fields = ('id', 'tel', 'content', 'status',
+                  'create_user',  'model_house', 'model_house_id', 'is_active')
 
     def validate_model_house_id(self, model_house_id):
         try:
-            item = ModelHouse.objects.get(id=district_id)
+            item = ModelHouse.objects.get(id=model_house_id)
             if(not item.is_active):
                 raise
         except Exception as e:

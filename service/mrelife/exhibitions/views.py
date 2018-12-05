@@ -7,6 +7,7 @@ from rest_framework import status, viewsets
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -25,12 +26,12 @@ from mrelife.utils.relifeenum import MessageCode
 
 class EhibitionViewSet(viewsets.ModelViewSet):
 
-    queryset = Exhibition.objects.all().filter(is_active=1).order_by("-created")
+    queryset = Exhibition.objects.all().filter(is_active=1).order_by("-updated")
     serializer_class = ExhibitionSerializer
     pagination_class = LimitOffsetPagination
 
     def list(self, request, *args, **kwargs):
-        self.queryset = Exhibition.objects.all().filter(is_active=1).order_by("-created")
+        self.queryset = Exhibition.objects.all().filter(is_active=1).order_by("-updated")
         return super(EhibitionViewSet, self).list(request, *args, **kwargs)
 
     def retrieve(self, request, pk=None):
@@ -43,10 +44,11 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX003.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
-        request.data['create_user_id'] = request.user.id
+        self.parser_class = (FormParser, MultiPartParser)
         serializer = ExhibitionSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
+            serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                            created=datetime.now(), updated=datetime.now())
             tags = request.data.get('tags')
             if tags is not None:
                 for tag_name in tags:
@@ -58,12 +60,12 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
-        request.data['create_user_id'] = request.user.id
         queryset = Exhibition.objects.all()
         event_obj = get_object_or_404(queryset, pk=pk)
+        self.parser_class = (FormParser, MultiPartParser)
         serializer = ExhibitionSerializer(event_obj, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(create_user_id=request.user.id,updated=datetime.now())
             newtags = request.data.get('newtags')
             if newtags is not None:
                 for tag_name in newtags:
@@ -100,11 +102,3 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                 CommonFuntion.update_active(eventExhibitionObject)
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX008.value, ""), status=status.HTTP_200_OK)
         return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
-
-    # @action(detail=False, methods=['DELETE'], url_path='deletex', url_name='deletex')
-    # def Deletex(self, request, pk=None):
-    #     listobject = Exhibition.objects.all().filter(is_active=1)
-    #     for item in listobject:
-    #         if(item.id > 10):
-    #             item.delete()
-    #     return Response({"status": "true"})

@@ -1,18 +1,18 @@
 from datetime import datetime
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from rest_framework import generics, serializers, status, viewsets
+from rest_framework.response import Response
+
 from mrelife.locations.models import City, District
 from mrelife.locations.serializers import CitySerializer, DistrictSerializer
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework import serializers
-from django.core.exceptions import ValidationError
 
 
 class LocationViewSet(viewsets.ModelViewSet):
-    queryset = City.objects.all()
+    queryset = City.objects.all().order_by('order')
     serializer_class = CitySerializer
 
     def create(self, request, type=None):
@@ -43,7 +43,7 @@ class LocationViewSet(viewsets.ModelViewSet):
         type = 2: update data District.
         """
         partial = kwargs.pop('partial', False)
-        
+
         #type = request.data.get('type')
         if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
             return Response(result.resultResponse(False, ValidationError("Type location is required"), MessageCode.LOC003.value), status=status.HTTP_405_METHOD_NOT_ALLOWED)
