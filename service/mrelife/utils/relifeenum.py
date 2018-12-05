@@ -8,14 +8,14 @@ class MessageCode(Enum):
     SU001 = 'SU001'  # Success
     FA001 = 'FA001'  # Error
 
-    OL001 = 'OL001'  # get detail
-    OL002 = 'OL002'  # get detail. not found request
-    OL003 = 'OL002'  # create susscess
-    OL004 = 'OL004'  # create with err data
-    OL005 = 'OL005'  # update sussess
-    OL006 = 'OL006'  # update with err data
-    OL007 = 'OL007'  # delete sussess
-    OL008 = 'OL008'  # delete fail
+    OS001 = 'OS001'  # get detail
+    OS002 = 'OS002'  # get detail. not found request
+    OS003 = 'OS002'  # create susscess
+    OS004 = 'OS004'  # create with err data
+    OS005 = 'OS005'  # update sussess
+    OS006 = 'OS006'  # update with err data
+    OS007 = 'OS007'  # delete sussess
+    OS008 = 'OS008'  # delete fail
 
     EX001 = 'EX001'  # get detail
     EX002 = 'EX002'  # get detail. not found request
