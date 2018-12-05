@@ -1,26 +1,25 @@
 from datetime import datetime
 
 from django.conf import settings
+from django.db import transaction
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from django.db import transaction
 from rest_framework import status, viewsets
-from rest_framework.authentication import (BasicAuthentication,
-                                           SessionAuthentication)
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import EventExhibition
-from mrelife.exhibitions.models import (Exhibition, ExhibitionContact,
-                                        ExhibitionTag)
-from mrelife.exhibitions.serializers import (ExhibitionContactReplySerializer,
-                                             ExhibitionContactSerializer,
-                                             ExhibitionSerializer)
+from mrelife.exhibitions.models import Exhibition, ExhibitionContact, ExhibitionTag
+from mrelife.exhibitions.serializers import (
+    ExhibitionContactReplySerializer,
+    ExhibitionContactSerializer,
+    ExhibitionSerializer
+)
 from mrelife.tags.models import Tag
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
@@ -31,7 +30,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
     queryset = Exhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = ExhibitionSerializer
     pagination_class = LimitOffsetPagination
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
         self.queryset = Exhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by("-updated")
@@ -52,7 +51,8 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             self.parser_class = (FormParser, MultiPartParser)
             serializer = ExhibitionSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
+                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                                created=datetime.now(), updated=datetime.now())
                 tags = request.data.get('tags')
                 if tags is not None:
                     for tag_name in tags:
@@ -68,7 +68,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         except Exception as e:
             transaction.set_rollback(True)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX005.value, print(e)), status=status.HTTP_400_BAD_REQUEST)
-    
+
     @transaction.atomic
     def update(self, request, pk=None):
         try:
@@ -118,9 +118,9 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                 if(eventExhibitionObject):
                     CommonFuntion.update_active(eventExhibitionObject)
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX008.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, "not found data. id not exit"), status=status.HTTP_404_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, ""), status=status.HTTP_400_BAD_REQUEST)
     # @action(detail=False, methods=['DELETE'], url_path='deletex', url_name='deletex')
     # def Deletex(self, request, pk=None):
     #     listobject = Exhibition.objects.all().filter(is_active=1)
