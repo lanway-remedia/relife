@@ -259,9 +259,9 @@ class OrderModelHouseViewSet(ModelViewSet):
             queryset = OrderModelHouse.objects.all()
             orderModelObject = get_object_or_404(queryset, pk=pk)
             serializer = OrderModelHouseSerializer(orderModelObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH002.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH001.value, ""), status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH003.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH002.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         #request.data['create_user_id'] = request.user.id
@@ -269,8 +269,8 @@ class OrderModelHouseViewSet(ModelViewSet):
         if serializer.is_valid():
             serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                             created=datetime.now(), updated=datetime.now())
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH004.value, ""), status=status.HTTP_201_CREATED)
-        return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH003.value, ""), status=status.HTTP_201_CREATED)
+        return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
@@ -281,10 +281,10 @@ class OrderModelHouseViewSet(ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH006.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH005.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH006.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def destroy(self, request, pk=None):
         try:
@@ -294,10 +294,10 @@ class OrderModelHouseViewSet(ModelViewSet):
             serializer = OrderModelHouseSerializer(orderModelObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH008.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH007.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH008.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH008.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     # @list_route(methods=['get'])
     # def selfGetlistBooking(self, request, pk=None):
@@ -329,7 +329,7 @@ class updateStatus(GenericAPIView, UpdateModelMixin):
             serializer = OrderModelHouseSerializer(orderModelObject, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH006.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH009.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH010.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH010.value, ""), status=status.HTTP_404_NOT_FOUND)

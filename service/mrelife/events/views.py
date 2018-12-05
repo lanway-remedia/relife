@@ -35,9 +35,9 @@ class EventViewSet(viewsets.ModelViewSet):
             queryset = Event.objects.all()
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = EventSerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV002.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV001.value, ""), status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV003.value, e), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV002.value, e), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -45,10 +45,10 @@ class EventViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV004.value, ""), status=status.HTTP_201_CREATED)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV003.value, ""), status=status.HTTP_201_CREATED)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV005.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV004.value, e), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
@@ -57,10 +57,10 @@ class EventViewSet(viewsets.ModelViewSet):
             serializer = EventSerializer(event_obj, data=request.data)
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id)
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV006.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV005.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV007.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV006.value, e), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         try:
@@ -78,7 +78,7 @@ class EventViewSet(viewsets.ModelViewSet):
                             is_active=1, event_contact_reply=eventContactObject.id)
                         if(eventContactReplyObject):
                             CommonFuntion.update_active(eventContactReplyObject)
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV008.value, ""), status=status.HTTP_200_NO_CONTENT)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV009.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV007.value, ""), status=status.HTTP_200_NO_CONTENT)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV008.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV009.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV008.value, e), status=status.HTTP_400_BAD_REQUEST)
