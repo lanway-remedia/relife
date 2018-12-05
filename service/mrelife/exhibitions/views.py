@@ -29,7 +29,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
     queryset = Exhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = ExhibitionSerializer
     pagination_class = LimitOffsetPagination
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
         self.queryset = Exhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by("-updated")
@@ -49,8 +49,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             self.parser_class = (FormParser, MultiPartParser)
             serializer = ExhibitionSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save(create_user_id=1, is_active=settings.IS_ACTIVE,
-                                created=datetime.now(), updated=datetime.now())
+                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
                 tags = request.data.get('tags')
                 if tags is not None:
                     for tag_name in tags:
