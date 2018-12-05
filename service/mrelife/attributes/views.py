@@ -11,7 +11,7 @@ from django.http import HttpResponse
 
 
 class ContructionViewSet(viewsets.ModelViewSet):
-    queryset = Contruction.objects.all()
+    queryset = Contruction.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order')
     serializer_class = ContructionSerializer
 
     def create(self, request, *args, **kwargs):
@@ -55,7 +55,7 @@ class ContructionViewSet(viewsets.ModelViewSet):
         """
         Get list contruction attributes.
         """
-        queryset = Contruction.objects.filter(is_active=settings.IS_ACTIVE)
+        queryset = Contruction.objects.filter(is_active=settings.IS_ACTIVE).order_by('order')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -104,7 +104,7 @@ class ContructionViewSet(viewsets.ModelViewSet):
 
 
 class PriceRangeViewSet(viewsets.ModelViewSet):
-    queryset = PriceRange.objects.all()
+    queryset = PriceRange.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order')
     serializer_class = PriceRangeSerializer
 
     def create(self, request, *args, **kwargs):
@@ -147,7 +147,7 @@ class PriceRangeViewSet(viewsets.ModelViewSet):
         """
         Get list price attributes.
         """
-        queryset = PriceRange.objects.filter(is_active=settings.IS_ACTIVE)
+        queryset = PriceRange.objects.filter(is_active=settings.IS_ACTIVE).order_by('order')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -196,7 +196,7 @@ class PriceRangeViewSet(viewsets.ModelViewSet):
 
 
 class FloorViewSet(viewsets.ModelViewSet):
-    queryset = Floor.objects.all()
+    queryset = Floor.objects.filter(is_active=settings.IS_ACTIVE).order_by('order')
     serializer_class = FloorSerializer
 
     def create(self, request, *args, **kwargs):
@@ -239,7 +239,7 @@ class FloorViewSet(viewsets.ModelViewSet):
         """
         Get list floor attributes
         """
-        queryset = Floor.objects.filter(is_active=settings.IS_ACTIVE)
+        queryset = Floor.objects.filter(is_active=settings.IS_ACTIVE).order_by('order')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -288,7 +288,7 @@ class FloorViewSet(viewsets.ModelViewSet):
 
 
 class StyleViewSet(viewsets.ModelViewSet):
-    queryset = Style.objects.all()
+    queryset = Style.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order')
     serializer_class = StyleSerializer
 
     def create(self, request, *args, **kwargs):
@@ -331,7 +331,7 @@ class StyleViewSet(viewsets.ModelViewSet):
         """
         Get list style attributes
         """
-        queryset = Style.objects.filter(is_active=settings.IS_ACTIVE)
+        queryset = Style.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -380,7 +380,7 @@ class StyleViewSet(viewsets.ModelViewSet):
 
 
 class HouseHoldIncomeViewSet(viewsets.ModelViewSet):
-    queryset = HouseHoldIncome.objects.all()
+    queryset = HouseHoldIncome.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order')
     serializer_class = HouseHoldIncomeSerializer
 
     def create(self, request, *args, **kwargs):
@@ -423,7 +423,7 @@ class HouseHoldIncomeViewSet(viewsets.ModelViewSet):
         """
         Get list household_income attributes.
         """
-        queryset = HouseHoldIncome.objects.filter(is_active=settings.IS_ACTIVE)
+        queryset = HouseHoldIncome.objects.filter(is_active=settings.IS_ACTIVE).order_by('order')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -464,7 +464,7 @@ class HouseHoldIncomeViewSet(viewsets.ModelViewSet):
         Export household_income attribute to csv.
         """
         resource = HouseHoldIncomeResource()
-        queryset = HouseHoldIncome.objects.filter(is_active=settings.IS_ACTIVE)
+        queryset = HouseHoldIncome.objects.filter(is_active=settings.IS_ACTIVE).order_by('order')
         dataset = resource.export(queryset)
         response = HttpResponse(dataset.csv, content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="household_incomes.csv"'
@@ -472,7 +472,7 @@ class HouseHoldIncomeViewSet(viewsets.ModelViewSet):
 
 
 class HouseHoldSizeViewSet(viewsets.ModelViewSet):
-    queryset = HouseHoldSize.objects.all()
+    queryset = HouseHoldSize.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order')
     serializer_class = HouseHoldSizeSerializer
 
     def create(self, request, *args, **kwargs):
@@ -515,7 +515,7 @@ class HouseHoldSizeViewSet(viewsets.ModelViewSet):
         """
         Get list household_size attributes
         """
-        queryset = HouseHoldSize.objects.filter(is_active=settings.IS_ACTIVE)
+        queryset = HouseHoldSize.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order')
 
         page = self.paginate_queryset(queryset)
         if page is not None:

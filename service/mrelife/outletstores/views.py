@@ -27,13 +27,13 @@ from mrelife.utils.relifeenum import MessageCode
 
 
 class OutletStoreViewSet(viewsets.ModelViewSet):
-    queryset = OutletStore.objects.all().filter(is_active=1)
+    queryset = OutletStore.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = OutletStoreSerializer
     permission_classes = (IsAuthenticated, OutletStorePermission,)
     pagination_class = LimitOffsetPagination
 
     def list(self, request):
-        self.queryset = OutletStore.objects.filter(is_active=1).filter(is_active=1).order_by("-updated")
+        self.queryset = OutletStore.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         return super(OutletStoreViewSet, self).list(request)
 
     def retrieve(self, request, pk=None):
@@ -54,7 +54,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OT004.value, ""), status=status.HTTP_201_CREATED)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT003.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT005.value, ""), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
@@ -67,7 +67,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OT006.value, ""), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT003.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT007.value, ""), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         try:
@@ -86,30 +86,18 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
                         CommonFuntion.update_active(outletContact)
                 outletMedia = OutletStoreMedia.objects.filter(is_active=1, outlet_store_id=outletstoreObject.id)
                 CommonFuntion.update_active(outletMedia)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OT008.value, ""), status=status.HTTP_200_OK)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OT008.value, ""), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
-
-    # , permission_classes=[IsAuthenticated])
-    @action(detail=True, methods=['post'], url_path='update_name', url_name='update_name')
-    def update_name(self, request, pk=None):
-        "update tilte to outletstore"
-        queryset = OutletStore.objects.all().filter(is_active=1)
-        outletstoreObject = get_object_or_404(queryset, pk=pk)
-        serializer = OutletStoreSerializer(outletstoreObject, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save(updated=datetime.now())
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OT009.value, ""), status=status.HTTP_400_BAD_REQUEST)
 
 
 class OutletStoreContactViewSet(viewsets.ModelViewSet):
-    queryset = OutletStoreContact.objects.filter(is_active=1)
+    queryset = OutletStoreContact.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = OutletStoreContactSerializer
 
     def list(self, request):
-        queryset = OutletStoreContact.objects.filter(is_active=1)
+        queryset = OutletStoreContact.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         serializer = OutletStoreContactSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -158,11 +146,11 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
 
 
 class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
-    queryset = OutletStoreContactReply.objects.filter(is_active=1)
+    queryset = OutletStoreContactReply.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = OutletStoreContactReplySerializer
 
     def list(self, request):
-        queryset = OutletStoreContactReply.objects.filter(is_active=1)
+        queryset = OutletStoreContactReply.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         serializer = OutletStoreContactReplySerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -212,11 +200,11 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
 
 
 class OutletStoreContactViewSet(viewsets.ModelViewSet):
-    queryset = OutletStoreContact.objects.filter(is_active=1)
+    queryset = OutletStoreContact.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = OutletStoreContactSerializer
 
     def list(self, request):
-        queryset = OutletStoreContact.objects.filter(is_active=1)
+        queryset = OutletStoreContact.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         serializer = OutletStoreContactSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -265,13 +253,12 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
 
 
 class OutletStoreMediaViewSet(viewsets.ModelViewSet):
-    queryset = OutletStoreMedia.objects.filter(is_active=1)
+    queryset = OutletStoreMedia.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = OutletStoreMediaSerializer
 
     def list(self, request):
-        queryset = OutletStoreMedia.objects.filter(is_active=1)
-        serializer = OutletStoreMediaSerializer(queryset, many=True)
-        return Response(serializer.data)
+        self.queryset = OutletStoreMedia.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
+        super(OutletStoreMediaViewSet, self).list(request)
 
     def retrieve(self, request, pk=None):
         queryset = OutletStoreMedia.objects.all().filter(id=self.kwargs['pk'])
