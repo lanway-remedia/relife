@@ -41,9 +41,9 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             queryset = Exhibition.objects.all()
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = ExhibitionSerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX002.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX001.value, ""), status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX003.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX002.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     @transaction.atomic
     def create(self, request):
@@ -63,11 +63,11 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                 queryset = Exhibition.objects.all()
                 outletstoreObject = get_object_or_404(queryset, pk=serializer.data['id'])
                 serializer = ExhibitionSerializer(outletstoreObject)
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX004.value, ""), status=status.HTTP_201_CREATED)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX003.value, ""), status=status.HTTP_201_CREATED)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             transaction.set_rollback(True)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX005.value, print(e)), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX004.value, print(e)), status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def update(self, request, pk=None):
@@ -97,11 +97,11 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                 queryset = Exhibition.objects.all()
                 outletstoreObject = get_object_or_404(queryset, pk=serializer.data['id'])
                 serializer = ExhibitionSerializer(outletstoreObject)
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX006.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX005.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             transaction.set_rollback(True)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX007.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX006.value, e), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         try:
@@ -117,10 +117,10 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                     eventExhibitionObject = EventExhibition.objects.filter(is_active=1, exhibition_id=pk)
                 if(eventExhibitionObject):
                     CommonFuntion.update_active(eventExhibitionObject)
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX008.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX007.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX008.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, ""), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX008.value, ""), status=status.HTTP_400_BAD_REQUEST)
     # @action(detail=False, methods=['DELETE'], url_path='deletex', url_name='deletex')
     # def Deletex(self, request, pk=None):
     #     listobject = Exhibition.objects.all().filter(is_active=1)
