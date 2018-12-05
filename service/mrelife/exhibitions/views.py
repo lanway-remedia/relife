@@ -26,12 +26,13 @@ from mrelife.utils.relifeenum import MessageCode
 
 class EhibitionViewSet(viewsets.ModelViewSet):
 
-    queryset = Exhibition.objects.all().filter(is_active=1).order_by("-updated")
+    queryset = Exhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = ExhibitionSerializer
     pagination_class = LimitOffsetPagination
+    #permission_classes = (IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
-        self.queryset = Exhibition.objects.all().filter(is_active=1).order_by("-updated")
+        self.queryset = Exhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by("-updated")
         return super(EhibitionViewSet, self).list(request, *args, **kwargs)
 
     def retrieve(self, request, pk=None):
@@ -44,71 +45,77 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX003.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
-        self.parser_class = (FormParser, MultiPartParser)
-        serializer = ExhibitionSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
-                            created=datetime.now(), updated=datetime.now())
-            tags = request.data.get('tags')
-            if tags is not None:
-                for tag_name in tags:
-                    if not (tag_name == '' or tag_name is None):
-                        tag, created = Tag.objects.get_or_create(name=tag_name)
-                        ExhibitionTag.objects.create(
-                            tag_id=tag.id, exhibition_id=serializer.data['id'], created=datetime.now(), updated=datetime.now())
-            queryset = Exhibition.objects.all()
-            outletstoreObject = get_object_or_404(queryset, pk=serializer.data['id'])
-            serializer = ExhibitionSerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX004.value, ""), status=status.HTTP_201_CREATED)
-        return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+        try:
+            self.parser_class = (FormParser, MultiPartParser)
+            serializer = ExhibitionSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(create_user_id=1, is_active=settings.IS_ACTIVE,
+                                created=datetime.now(), updated=datetime.now())
+                tags = request.data.get('tags')
+                if tags is not None:
+                    for tag_name in tags:
+                        if not (tag_name == '' or tag_name is None):
+                            tag, created = Tag.objects.get_or_create(name=tag_name)
+                            ExhibitionTag.objects.create(
+                                tag_id=tag.id, exhibition_id=serializer.data['id'], created=datetime.now(), updated=datetime.now())
+                queryset = Exhibition.objects.all()
+                outletstoreObject = get_object_or_404(queryset, pk=serializer.data['id'])
+                serializer = ExhibitionSerializer(outletstoreObject)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX004.value, ""), status=status.HTTP_201_CREATED)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX005.value, ""), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
-        queryset = Exhibition.objects.all()
-        event_obj = get_object_or_404(queryset, pk=pk)
-        self.parser_class = (FormParser, MultiPartParser)
-        serializer = ExhibitionSerializer(event_obj, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save(create_user_id=request.user.id, updated=datetime.now())
-            newtags = request.data.get('newtags')
-            if newtags is not None:
-                for tag_name in newtags:
-                    if not (tag_name == '' or tag_name is None):
-                        tag, created = Tag.objects.get_or_create(name=tag_name)
-                        ExhibitionTag.objects.create(
-                            tag_id=tag.id, exhibition_id=serializer.data['id'], created=datetime.now(), updated=datetime.now())
-            removetags = request.data.get('removetags')
-            if removetags is not None:
-                for tag_id in removetags:
-                    exhibitiontags = ExhibitionTag.objects.all().filter(tag_id=tag_id).filter(exhibition_id=pk)
-                    if(exhibitiontags is not None):
-                        for exhibitiontag in exhibitiontags:
-                            exhibitiontag.is_active = 0
-                            exhibitiontag.updated = datetime.now()
-                            exhibitiontag.save()
+        try:
             queryset = Exhibition.objects.all()
-            outletstoreObject = get_object_or_404(queryset, pk=serializer.data['id'])
-            serializer = ExhibitionSerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX006.value, ""), status=status.HTTP_200_OK)
-        return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            event_obj = get_object_or_404(queryset, pk=pk)
+            self.parser_class = (FormParser, MultiPartParser)
+            serializer = ExhibitionSerializer(event_obj, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save(create_user_id=request.user.id, updated=datetime.now())
+                newtags = request.data.get('newtags')
+                if newtags is not None:
+                    for tag_name in newtags:
+                        if not (tag_name == '' or tag_name is None):
+                            tag, created = Tag.objects.get_or_create(name=tag_name)
+                            ExhibitionTag.objects.create(
+                                tag_id=tag.id, exhibition_id=serializer.data['id'], created=datetime.now(), updated=datetime.now())
+                removetags = request.data.get('removetags')
+                if removetags is not None:
+                    for tag_id in removetags:
+                        exhibitiontags = ExhibitionTag.objects.all().filter(tag_id=tag_id, exhibition_id=pk)
+                        if(exhibitiontags is not None):
+                            for exhibitiontag in exhibitiontags:
+                                exhibitiontag.is_active = 0
+                                exhibitiontag.updated = datetime.now()
+                                exhibitiontag.save()
+                queryset = Exhibition.objects.all()
+                outletstoreObject = get_object_or_404(queryset, pk=serializer.data['id'])
+                serializer = ExhibitionSerializer(outletstoreObject)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX006.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX007.value, e), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
-        queryset = Exhibition.objects.all()
-        exhibitionObject = get_object_or_404(queryset, pk=pk)
-        data = {"is_active": settings.IS_INACTIVE}
-        serializer = ExhibitionSerializer(exhibitionObject, data=data, partial=True)
-        if serializer.is_valid():
-            serializer.save(updated=datetime.now())
-            exhibitonContactObject = ExhibitionContact.objects.filter(
-                is_active=1, exhibition_id=pk)
-            if(exhibitonContactObject):
-                CommonFuntion.update_active(exhibitonContactObject)
-            eventExhibitionObject = EventExhibition.objects.filter(
-                is_active=1, exhibition_id=pk)
-            if(eventExhibitionObject):
-                CommonFuntion.update_active(eventExhibitionObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX008.value, ""), status=status.HTTP_200_OK)
-        return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
-
+        try:
+            queryset = Exhibition.objects.all()
+            exhibitionObject = get_object_or_404(queryset, pk=pk)
+            data = {"is_active": settings.IS_INACTIVE}
+            serializer = ExhibitionSerializer(exhibitionObject, data=data, partial=True)
+            if serializer.is_valid():
+                serializer.save(updated=datetime.now())
+                exhibitonContactObject = ExhibitionContact.objects.filter(is_active=1, exhibition_id=pk)
+                if(exhibitonContactObject):
+                    CommonFuntion.update_active(exhibitonContactObject)
+                    eventExhibitionObject = EventExhibition.objects.filter(is_active=1, exhibition_id=pk)
+                if(eventExhibitionObject):
+                    CommonFuntion.update_active(eventExhibitionObject)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX008.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
+        except Exception as e:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, "not found data. id not exit"), status=status.HTTP_404_BAD_REQUEST)
     # @action(detail=False, methods=['DELETE'], url_path='deletex', url_name='deletex')
     # def Deletex(self, request, pk=None):
     #     listobject = Exhibition.objects.all().filter(is_active=1)
