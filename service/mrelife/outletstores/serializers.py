@@ -63,7 +63,7 @@ class OutletStoreSerializer(serializers.ModelSerializer):
                                       allow_blank=True, required=False, allow_null=True)
     address = serializers.CharField(max_length=800)
     tel = serializers.CharField(max_length=13)
-    email = serializers.EmailField(max_length=100, allow_null=True, read_only=True)
+    email = serializers.EmailField(max_length=100, allow_null=True)
     zipcode = serializers.CharField(max_length=8, allow_blank=True, allow_null=True)
     home_page = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     traffic = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)

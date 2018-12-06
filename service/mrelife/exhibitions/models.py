@@ -110,7 +110,7 @@ class ExhibitionContact(Model):
 
 class ExhibitionContactReply(Model):
 
-    exhibition_contact = ForeignKey(Exhibition, related_name='exhibition_contact_reply', on_delete=CASCADE)
+    exhibition_contact = ForeignKey(ExhibitionContact, related_name='exhibition_contact_reply', on_delete=CASCADE)
     create_user = ForeignKey('users.User', on_delete=CASCADE)
     comment = CharField(max_length=255)
     is_active = BooleanField(default=True)

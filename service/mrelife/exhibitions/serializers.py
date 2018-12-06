@@ -10,16 +10,21 @@ from mrelife.users.models import User
 from mrelife.users.serializers import UserSerializer
 
 
-class ExhibitionContactSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ExhibitionContact
-        fields = '__all__'
-
-
 class ExhibitionContactReplySerializer(serializers.ModelSerializer):
+    create_user = UserSerializer(read_only=True)
     class Meta:
         model = ExhibitionContactReply
         fields = '__all__'
+
+
+class ExhibitionContactSerializer(serializers.ModelSerializer):
+
+    exhibition_contact_reply = ExhibitionContactReplySerializer(many=True,read_only=True)
+    create_user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = ExhibitionContact
+        fields = ('id', 'exhibition_contact_reply', 'comment', 'is_active', 'created', 'updated',  'create_user')
 
 
 class ExhibitionTagSerializer(serializers.ModelSerializer):
@@ -45,7 +50,6 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     end_time = serializers.DateTimeField(input_formats=['%Y/%m/%d', ], format="%Y/%m/%d", required=True)
     is_active = serializers.BooleanField(default=True)
     exhibition_contact = ExhibitionContactSerializer(many=True, read_only=True, required=False)
-    exhibition_contact_reply = ExhibitionContactReplySerializer(many=True, read_only=True, required=False)
     exhibition_event = EventExhibitionSerializer(many=True, read_only=True, required=False)
     exhibition_tag = ExhibitionTagSerializer(many=True, read_only=True, required=False)
     #create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False, default=0)
@@ -55,7 +59,7 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exhibition
         fields = ('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'district_id', 'longtitude', 'address', 'district', 'zipcode', 'num_attend', 'start_time', 'end_time',
-                  'create_user', 'is_active', 'exhibition_tag', 'exhibition_contact', 'exhibition_contact_reply', 'exhibition_event')
+                  'create_user', 'is_active', 'exhibition_tag', 'exhibition_contact', 'exhibition_event')
 
     def validate_district_id(self, district_id):
         try:

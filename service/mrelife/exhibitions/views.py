@@ -5,7 +5,8 @@ from django.db import transaction
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.authentication import (BasicAuthentication,
+                                           SessionAuthentication)
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
@@ -14,12 +15,11 @@ from rest_framework.response import Response
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import EventExhibition
-from mrelife.exhibitions.models import Exhibition, ExhibitionContact, ExhibitionTag
-from mrelife.exhibitions.serializers import (
-    ExhibitionContactReplySerializer,
-    ExhibitionContactSerializer,
-    ExhibitionSerializer
-)
+from mrelife.exhibitions.models import (Exhibition, ExhibitionContact,
+                                        ExhibitionContactReply, ExhibitionTag)
+from mrelife.exhibitions.serializers import (ExhibitionContactReplySerializer,
+                                             ExhibitionContactSerializer,
+                                             ExhibitionSerializer)
 from mrelife.tags.models import Tag
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
@@ -30,7 +30,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
     queryset = Exhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = ExhibitionSerializer
     pagination_class = LimitOffsetPagination
-    permission_classes = (IsAuthenticated,)
+    #permission_classes = (IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
         self.queryset = Exhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by("-updated")
@@ -103,6 +103,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             transaction.set_rollback(True)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX006.value, e), status=status.HTTP_400_BAD_REQUEST)
 
+    @transaction.atomic
     def destroy(self, request, pk=None):
         try:
             queryset = Exhibition.objects.all()
@@ -111,15 +112,20 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             serializer = ExhibitionSerializer(exhibitionObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
-                exhibitonContactObject = ExhibitionContact.objects.filter(is_active=1, exhibition_id=pk)
-                if(exhibitonContactObject):
-                    CommonFuntion.update_active(exhibitonContactObject)
-                    eventExhibitionObject = EventExhibition.objects.filter(is_active=1, exhibition_id=pk)
-                if(eventExhibitionObject):
-                    CommonFuntion.update_active(eventExhibitionObject)
+                eCObjectlist = ExhibitionContact.objects.filter(is_active=1, exhibition_id=pk)
+                for item in eCObjectlist:
+                    ExhibitionContactReply.objects.select_related().filter(exhibition_contact_id=item.id).update(
+                        is_active=settings.IS_INACTIVE, updated=datetime.now())
+                ExhibitionContact.objects.select_related().filter(exhibition_id=pk).update(
+                    is_active=settings.IS_INACTIVE, updated=datetime.now())
+                EventExhibition.objects.select_related().filter(exhibition_id=pk).update(
+                    is_active=settings.IS_INACTIVE, updated=datetime.now())
+                ExhibitionTag.objects.select_related().filter(exhibition_id=pk).update(
+                    is_active=settings.IS_INACTIVE, updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX007.value, ""), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX008.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
+            transaction.set_rollback(True)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX008.value, ""), status=status.HTTP_400_BAD_REQUEST)
     # @action(detail=False, methods=['DELETE'], url_path='deletex', url_name='deletex')
     # def Deletex(self, request, pk=None):
