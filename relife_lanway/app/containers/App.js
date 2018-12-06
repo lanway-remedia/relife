@@ -9,6 +9,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import HotSwappingIntlProvider from '../containers/HotSwappingIntlProvider'
 import LocaleComponent from '../utils/LocaleComponent'
 import CommonModal from '../components/CommonModal'
+import FormModal from '../components/FormModal'
 import CommonApi from '../components/CommonApi'
 import Routes from '../routes'
 import user from '../images/user.png'
@@ -29,13 +30,16 @@ export default class App extends React.Component {
     }
   }
 
-  getProfile = (profile) => {
-    if ((profile.getProfile || profile.editProfileImage) && (this.state.userimage != profile.data.profile_image)) {
+  getProfile = profile => {
+    if (
+      (profile.getProfile || profile.editProfileImage) &&
+      this.state.userimage != profile.data.profile_image
+    ) {
       this.setState({
         userimage: profile.data.profile_image
       })
     }
-    if (profile.getProfile && (this.state.username != profile.data.username)) {
+    if (profile.getProfile && this.state.username != profile.data.username) {
       this.setState({
         username: profile.data.username
       })
@@ -51,6 +55,7 @@ export default class App extends React.Component {
             <LocaleComponent />
             <Routes username={username} userimage={userimage} />
             <CommonModal />
+            <FormModal />
             <CommonApi getProfile={profile => this.getProfile(profile)} />
           </div>
         </Router>

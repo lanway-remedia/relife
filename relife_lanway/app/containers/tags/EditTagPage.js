@@ -44,6 +44,16 @@ class EditTagPage extends React.Component {
           name: response.data.name
         })
       }
+      if (response.isEdit) {
+        if (response.messageCode === 'SU001') {
+          toast.success(
+            I18nUtils.formatMessage(
+              { id: 'toast-edit-sucess' },
+              { name: response.data.name }
+            )
+          )
+        }
+      }
     }
   }
 

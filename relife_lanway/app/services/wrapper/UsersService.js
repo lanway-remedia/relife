@@ -7,11 +7,9 @@ import apiClient from '../../shared/apiClient'
 
 export default class UsersService {
   listUser(data) {
+    let search = new URLSearchParams(data)
     return apiClient.get(
-      `/users/v1/users/?limit=${data.limit}&offset=${data.offset}
-        ${data.name ? `&name=${data.name}` : ''}
-        ${data.group_id ? `&group_id=${data.group_id}` : ''}
-        ${data.store_id ? `&store_id=${data.store_id}` : ''}`
+      `/users/v1/users/?${search.toString()}`
     )
   }
 
