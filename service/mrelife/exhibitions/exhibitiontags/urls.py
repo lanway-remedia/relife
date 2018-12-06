@@ -7,7 +7,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from mrelife.exhibitions.exhibitiontags import views
 
 router = routers.SimpleRouter()
-router.register(r'', views.EhibitionTagViewSet)
+router.register(r'', views.ExhibitionTagViewSet)
 
 urlpatterns = [
     path('', include(router.urls))
