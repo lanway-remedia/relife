@@ -13,7 +13,7 @@ from mrelife.utils.relifeenum import MessageCode
 
 
 class LocationViewSet(viewsets.ModelViewSet):
-    queryset = City.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order', 'created', 'updated')
+    queryset = City.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order')
     serializer_class = CitySerializer
 
     def create(self, request, type=None):
@@ -79,9 +79,9 @@ class LocationViewSet(viewsets.ModelViewSet):
         if(type is None or int(type) not in [settings.DISTRICT, settings.CITY]):
             return Response(result.resultResponse(False, ValidationError("Type location is required"), MessageCode.LOC003.value), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         if (int(type) == settings.DISTRICT):
-            queryset = District.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order', 'created', 'updated')
+            queryset = District.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order')
         else:
-            queryset = City.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order', 'created', 'updated')
+            queryset = City.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -108,8 +108,9 @@ class LocationViewSet(viewsets.ModelViewSet):
             districtID = kwargs['pk']
             district = District.objects.filter(pk=districtID).update(
                 is_active=settings.IS_INACTIVE, updated=datetime.now())
-            queryset = District.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order', 'created', 'updated')
-            Response(CommonFuntion.resultResponse(True, "", MessageCode.LOC007.value, ""),
+            queryset = District.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order')
+            serializer = self.get_serializer(queryset, many=True)
+            Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.LOC007.value, ""),
                      status=status.HTTP_200_OK)
         else:
             instance = self.get_object()
@@ -118,7 +119,7 @@ class LocationViewSet(viewsets.ModelViewSet):
             instance.is_active = settings.IS_INACTIVE
             instance.updated = datetime.now()
             instance.save()
-            queryset = City.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order', 'created', 'updated')
+            queryset = City.objects.all().filter(is_active=settings.IS_ACTIVE).order_by('order')
         serializer = self.get_serializer(queryset, many=True)
         return Response(result.resultResponse(True, serializer.data, MessageCode.LOC007.value), status=status.HTTP_200_OK)
 
