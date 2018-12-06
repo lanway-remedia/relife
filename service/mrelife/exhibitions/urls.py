@@ -5,7 +5,7 @@ from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from mrelife.exhibitions import views
-from mrelife.exhibitions.exhibitiontags.views import EhibitionTagViewSet
+from mrelife.exhibitions.exhibitiontags.views import ExhibitionTagViewSet
 
 
 router = routers.SimpleRouter()
