@@ -3,6 +3,11 @@ from rest_framework.validators import UniqueValidator
 
 from mrelife.locations.models import City, District
 
+class FilteredListSerializer(serializers.ListSerializer):
+    
+    def to_representation(self, data):
+        data = data.filter(is_active=True)
+        return super(FilteredListSerializer, self).to_representation(data)
 
 class CityOfDistrictSerializer(serializers.ModelSerializer):
     # validate name is unique
@@ -36,6 +41,7 @@ class DistrictSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = District
+        list_serializer_class = FilteredListSerializer
         fields = ('id', 'name', 'name_en', 'order', 'city')
 
     def create(self, validated_data):
