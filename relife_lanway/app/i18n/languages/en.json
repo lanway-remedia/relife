@@ -256,6 +256,14 @@
   "OT008": "deleted data successfully",
   "OT009": "not deleted",
 
+  "TAG001": "Create successfully",
+  "TAG002": "Not created",
+  "TAG003": "Invalid data",
+  "TAG004": "Update successfully",
+  "TAG005": "Update error",
+  "TAG006": "Get list successfully",
+  "TAG007": "Delete successfully",
+
   "EX001": "Get exhibition's information detail successfully",
   "EX002": "Not found exhibition's information  detail",
   "EX003": "Created new a exhibition successfully",
@@ -300,5 +308,13 @@
   "CAT005": "The name must be unique",
 
   "FA001": "The title must be unique",
-  "SU001": "Add new {name} success"
+  "SU001": "Add new {name} success",
+
+  "LOC001": "Create successfully",
+  "LOC002": "Not created",
+  "LOC003": "Invalid data",
+  "LOC004": "Update successfully",
+  "LOC005": "Update error",
+  "LOC006": "Get list successfully",
+  "LOC007": "Delete successfully"
 }

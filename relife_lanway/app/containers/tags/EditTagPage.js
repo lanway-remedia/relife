@@ -45,13 +45,16 @@ class EditTagPage extends React.Component {
         })
       }
       if (response.isEdit) {
-        if (response.messageCode === 'SU001') {
+        if (response.messageCode === 'TAG004') {
           toast.success(
             I18nUtils.formatMessage(
               { id: 'toast-edit-sucess' },
               { name: response.data.name }
             )
           )
+        }
+        if (response.messageCode === 'TAG005') {
+          toast.success(I18nUtils.t('TAG005'))
         }
       }
     }
