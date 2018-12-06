@@ -6,7 +6,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Container, Button, Table } from 'reactstrap'
+import {
+  Container,
+  Button,
+  Row,
+  Col,
+  FormGroup,
+  Label,
+  Table
+} from 'reactstrap'
+import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Helmet } from 'react-helmet'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
@@ -27,11 +36,15 @@ class ManageContructionListPage extends React.Component {
       page: 0,
       limit: 0,
       title: '',
+      order: '',
       dataList: []
     }
     this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
+    this.formHtml = this.formHtml.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   getAttributeContructionList() {
@@ -66,6 +79,35 @@ class ManageContructionListPage extends React.Component {
           count: response.data.count
         })
       }
+      if (response.isGetId) {
+        console.log('isGetId')
+      }
+      if (response.isAdd) {
+        if (response.messageCode === 'SU001') {
+          toast.success(
+            I18nUtils.formatMessage({ id: 'SU001' }, { name: this.state.title })
+          )
+        }
+        if (response.messageCode === 'FA001') {
+          toast.error(I18nUtils.t('FA001'))
+        }
+
+        this.forceUpdate(this.getAttributeContructionList())
+      }
+      if (response.isEdit) {
+        if (response.messageCode === 'SU001') {
+          toast.success(
+            I18nUtils.formatMessage(
+              { id: 'SU001' },
+              { name: response.data.title }
+            )
+          )
+        }
+        if (response.messageCode === 'FA001') {
+          toast.error(I18nUtils.t('FA001'))
+        }
+        this.forceUpdate(this.getAttributeContructionList())
+      }
       if (response.isDelete) {
         if (response.messageCode === 'SU001') {
           toast.success(
@@ -80,6 +122,139 @@ class ManageContructionListPage extends React.Component {
     }
   }
 
+  formHtml = att => {
+    let attId = ''
+    let attTitle = ''
+    let attOrder = ''
+    if (att) {
+      attId = att.id
+      attTitle = att.title
+      attOrder = att.order
+    }
+    return (
+      <ValidationForm
+        className="popup-category col-no-mg"
+        onSubmit={this.handleSubmit}
+      >
+        <Row>
+          <TextInput
+            type="hidden"
+            name="idAtt"
+            id="idAtt"
+            placeholder={I18nUtils.t('all-place-input')}
+            defaultValue={attId}
+            required
+          />
+          <Col xs="12" md="12">
+            <FormGroup>
+              <Label htmlFor="title">{I18nUtils.t('title')}</Label>
+              <TextInput
+                type="text"
+                name="title"
+                id="title"
+                placeholder={I18nUtils.t('all-place-input')}
+                defaultValue={att === null ? this.state.title : attTitle}
+                required
+              />
+            </FormGroup>
+          </Col>
+          <Col xs="12" md="12">
+            <FormGroup>
+              <Label htmlFor="order">{I18nUtils.t('order')}</Label>
+              <TextInput
+                type="text"
+                name="order"
+                id="order"
+                placeholder={I18nUtils.t('all-place-input')}
+                defaultValue={att === null ? this.state.order : attOrder}
+                required
+              />
+            </FormGroup>
+          </Col>
+          <Col xs="12" md="12" className="col-footer">
+            <div className="btns-group text-right pt-4">
+              <Button color="success">{I18nUtils.t('btn-add-new')}</Button>
+              <Button
+                title={I18nUtils.t('ots-title-back-list')}
+                onClick={this.handleCloseModal}
+                color="danger"
+              >
+                {I18nUtils.t('close')}
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </ValidationForm>
+    )
+  }
+
+  handleDialog = att => {
+    let modalTitle = ''
+    if (att.title) {
+      modalTitle = I18nUtils.formatMessage(
+        { id: 'att-cons-ed-page-title' },
+        { name: att.title }
+      )
+      this.setState(
+        {
+          title: att.title,
+          order: att.order
+        },
+        () => {
+          this.showDetailModal(modalTitle, att)
+        }
+      )
+    } else {
+      modalTitle = I18nUtils.t('att-cons-add-page-title')
+      this.setState(
+        {
+          title: '',
+          order: ''
+        },
+        () => {
+          this.showDetailModal(modalTitle)
+        }
+      )
+    }
+  }
+
+  showDetailModal = (modalTitle, att) => {
+    this.props.show(ModalName.COMMON, {
+      modalClass: 'center-modal hide-footer',
+      title: modalTitle,
+      message: this.formHtml(att, this.handleChange),
+      hideCloseButton: true
+    })
+  }
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+
+    //console.log([e.target.name], e.target.value)
+  }
+
+  handleSubmit = e => {
+    e.preventDefault()
+    console.log(e.target.idAtt.value.length)
+    let data = new FormData()
+    if (e.target.idAtt.value.length === 0) {
+      data.append('title', e.target.title.value)
+      data.append('order', e.target.order.value)
+      this.props.attributeContructionAddRequest(data)
+    } else {
+      data.append('id', e.target.idAtt.value)
+      data.append('title', e.target.title.value)
+      data.append('order', e.target.order.value)
+      this.props.attributeContructionEditRequest(data)
+    }
+  }
+
+  handleCloseModal = () => {
+    this.props.hide(ModalName.COMMON)
+  }
+
   handleDelete = cons => {
     this.props.show(ModalName.COMMON, {
       bodyClass: 'text-center',
@@ -88,7 +263,7 @@ class ManageContructionListPage extends React.Component {
         { name: cons.title }
       ),
       message: I18nUtils.t('modal-del-body'),
-      okFunction: () => this.okFunction(cons)
+      okFunction: () => this.okDeleteFunction(cons)
     })
   }
 
@@ -126,7 +301,7 @@ class ManageContructionListPage extends React.Component {
           <h1>
             <i className="fa fa-signal" aria-hidden="true" />
             {I18nUtils.t('att-cons-page-title')}
-            <Button onClick={this.redirectToAddNew} color="success">
+            <Button onClick={this.handleDialog} color="success">
               {I18nUtils.t('btn-add-new')}
             </Button>
           </h1>
@@ -160,7 +335,7 @@ class ManageContructionListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.redirectToEdit(cons)}
+                        onClick={() => this.handleDialog(cons)}
                       >
                         <i className="fa fa-edit" />
                       </Button>
@@ -191,6 +366,8 @@ ManageContructionListPage.propTypes = {
   processing: PropTypes.bool,
   data: PropTypes.object,
   attributeContructionListRequest: PropTypes.func,
+  attributeContructionAddRequest: PropTypes.func,
+  attributeContructionEditRequest: PropTypes.func,
   attributeContructionDeleteRequest: PropTypes.func,
   show: PropTypes.func,
   hide: PropTypes.func
@@ -207,6 +384,12 @@ const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ show, hide }, dispatch),
   attributeContructionListRequest: data =>
     dispatch(AttributeActions.attributeContructionListRequest(data)),
+  attributeContructionGetRequest: data =>
+    dispatch(AttributeActions.attributeContructionGetRequest(data)),
+  attributeContructionAddRequest: data =>
+    dispatch(AttributeActions.attributeContructionAddRequest(data)),
+  attributeContructionEditRequest: data =>
+    dispatch(AttributeActions.attributeContructionEditRequest(data)),
   attributeContructionDeleteRequest: data =>
     dispatch(AttributeActions.attributeContructionDeleteRequest(data))
 })

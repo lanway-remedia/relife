@@ -75,13 +75,8 @@ class EditOutletStorePage extends React.Component {
         })
       }
 
-      if (response.messageCode === 'OT006' && response.isEditStore) {
-        toast.success(
-          I18nUtils.formatMessage(
-            { id: 'toast-edit-sucess' },
-            { name: this.state.title }
-          )
-        )
+      if (response.messageCode === 'OS005' && response.isEditStore) {
+        toast.success(I18nUtils.t('OS005'))
       }
     }
   }

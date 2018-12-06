@@ -96,13 +96,8 @@ class EditExhibitionPage extends React.Component {
         })
       }
 
-      if (response.messageCode === 'EX006') {
-        toast.success(
-          I18nUtils.formatMessage(
-            { id: 'toast-edit-sucess' },
-            { name: this.state.title }
-          )
-        )
+      if (response.messageCode === 'EX005') {
+        toast.success(I18nUtils.t('EX005'))
       }
     }
   }

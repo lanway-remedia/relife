@@ -58,6 +58,8 @@ import EditPriceRangerPage from './containers/attributes/price_rangers/EditPrice
 import ManageStyleListPage from './containers/attributes/styles/ManageStyleListPage'
 import AddNewStylePage from './containers/attributes/styles/AddNewStylePage'
 import EditStylePage from './containers/attributes/styles/EditStylePage'
+//Invoice
+import ReleaseInvoicePage from './containers/invoices/ReleaseInvoicePage'
 //languages
 import Language from './components/Language'
 
@@ -260,12 +262,6 @@ class Routes extends React.Component {
               icon={{ className: 'fa-sitemap' }}
             >
               <Sidebar.Menu.Item
-                active={this.props.location.pathname === '/add-new-contruction'}
-                title={I18nUtils.t('att-cons-add-page-title')}
-                icon={{ className: 'fa-plus-square' }}
-                onClick={() => this.props.history.push('/add-new-contruction')}
-              />
-              <Sidebar.Menu.Item
                 active={
                   this.props.location.pathname === '/manage-contruction-list'
                 }
@@ -276,26 +272,10 @@ class Routes extends React.Component {
                 }
               />
               <Sidebar.Menu.Item
-                active={this.props.location.pathname === '/add-new-floor'}
-                title={I18nUtils.t('att-floor-add-page-title')}
-                icon={{ className: 'fa-plus-square' }}
-                onClick={() => this.props.history.push('/add-new-floor')}
-              />
-              <Sidebar.Menu.Item
                 active={this.props.location.pathname === '/manage-floor-list'}
                 title={I18nUtils.t('att-floor-page-title')}
                 icon={{ className: 'fa-list-ol' }}
                 onClick={() => this.props.history.push('/manage-floor-list')}
-              />
-              <Sidebar.Menu.Item
-                active={
-                  this.props.location.pathname === '/add-new-household-income'
-                }
-                title={I18nUtils.t('att-hincome-add-page-title')}
-                icon={{ className: 'fa-plus-square' }}
-                onClick={() =>
-                  this.props.history.push('/add-new-household-income')
-                }
               />
               <Sidebar.Menu.Item
                 active={
@@ -310,16 +290,6 @@ class Routes extends React.Component {
               />
               <Sidebar.Menu.Item
                 active={
-                  this.props.location.pathname === '/add-new-household-size'
-                }
-                title={I18nUtils.t('att-hsize-add-page-title')}
-                icon={{ className: 'fa-plus-square' }}
-                onClick={() =>
-                  this.props.history.push('/add-new-household-size')
-                }
-              />
-              <Sidebar.Menu.Item
-                active={
                   this.props.location.pathname === '/manage-household-size-list'
                 }
                 title={I18nUtils.t('att-hsize-page-title')}
@@ -327,12 +297,6 @@ class Routes extends React.Component {
                 onClick={() =>
                   this.props.history.push('/manage-household-size-list')
                 }
-              />
-              <Sidebar.Menu.Item
-                active={this.props.location.pathname === '/add-new-house-style'}
-                title={I18nUtils.t('att-style-add-page-title')}
-                icon={{ className: 'fa-plus-square' }}
-                onClick={() => this.props.history.push('/add-new-house-style')}
               />
               <Sidebar.Menu.Item
                 active={
@@ -346,14 +310,6 @@ class Routes extends React.Component {
               />
               <Sidebar.Menu.Item
                 active={
-                  this.props.location.pathname === '/add-new-price-ranger'
-                }
-                title={I18nUtils.t('att-price-add-page-title')}
-                icon={{ className: 'fa-plus-square' }}
-                onClick={() => this.props.history.push('/add-new-price-ranger')}
-              />
-              <Sidebar.Menu.Item
-                active={
                   this.props.location.pathname === '/manage-price-ranger-list'
                 }
                 title={I18nUtils.t('att-price-page-title')}
@@ -363,7 +319,17 @@ class Routes extends React.Component {
                 }
               />
             </Sidebar.Menu.Item>
-
+            <Sidebar.Menu.Item
+              title={I18nUtils.t('inv-parent-title')}
+              icon={{ className: 'fa-money' }}
+            >
+              <Sidebar.Menu.Item
+                active={this.props.location.pathname === '/release-invoice'}
+                title={I18nUtils.t('inv-page-title')}
+                icon={{ className: 'fa-list-ol' }}
+                onClick={() => this.props.history.push('/release-invoice')}
+              />
+            </Sidebar.Menu.Item>
             {/* <Sidebar.Menu.Item
             active={this.props.location.pathname == '/article'}
             onClick={() => this.props.history.push('/article')}
@@ -557,6 +523,10 @@ class Routes extends React.Component {
                 <Route
                   path="/edit-house-style/:id"
                   component={requireLogin(EditStylePage)}
+                />
+                <Route
+                  path="/release-invoice"
+                  component={requireLogin(ReleaseInvoicePage)}
                 />
               </Switch>
             </div>

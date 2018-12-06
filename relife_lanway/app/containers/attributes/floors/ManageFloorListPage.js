@@ -32,6 +32,7 @@ class ManageFloorListPage extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
+    // this.openFormModal = this.openFormModal.bind(this)
   }
 
   getAttributeFloorList() {
@@ -114,6 +115,23 @@ class ManageFloorListPage extends React.Component {
     this.props.hide(ModalName.COMMON)
   }
 
+  // openFormModal = att => {
+  //   this.props.show(ModalName.FORMMODAL, {
+  //     bodyClass: 'text-center',
+  //     title: I18nUtils.formatMessage(
+  //       { id: 'modal-del-header' },
+  //       { name: att.title }
+  //     ),
+  //     message: typeof att === 'object' ? att : null,
+  //     saveFunction: () => this.handleSubmit(att),
+  //     handleHide: () => this.handleHideModal()
+  //   })
+  // }
+
+  // handleHideModal = () => {
+  //   this.props.hide(ModalName.FORMMODAL)
+  // }
+
   render() {
     let { page, limit, count, dataList } = this.state
 
@@ -129,6 +147,9 @@ class ManageFloorListPage extends React.Component {
             <Button onClick={this.redirectToAddNew} color="success">
               {I18nUtils.t('btn-add-new')}
             </Button>
+            {/* <Button onClick={() => this.openFormModal('add')} color="danger">
+              Open FormModal
+            </Button> */}
           </h1>
         </div>
         <FilterGroupComponent inputTitle="Name" />
@@ -174,6 +195,12 @@ class ManageFloorListPage extends React.Component {
                       >
                         <i className="fa fa-trash" />
                       </Button>
+                      {/* <Button
+                        onClick={() => this.openFormModal(att)}
+                        color="danger"
+                      >
+                        Open FormModal
+                      </Button> */}
                     </td>
                   </tr>
                 )
