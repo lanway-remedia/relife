@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { show } from 'redux-modal'
 import { bindActionCreators } from 'redux'
-import { ModalName } from '../constants'
+import { ModalName, StorageKeyConstants } from '../constants'
 import ProfileActions from '../redux/wrapper/UserProfileRedux'
 
 let f
@@ -23,7 +23,8 @@ class CommonApi extends React.Component {
 
   componentWillMount() {
     f = this
-    this.props.profileRequest({})
+    if (localStorage.getItem(StorageKeyConstants.TOKEN))
+      this.props.profileRequest({})
   }
 
   componentWillReceiveProps(nextProps) {

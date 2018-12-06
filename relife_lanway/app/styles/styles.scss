@@ -18,7 +18,9 @@
 @import './containers/outletstores/addNewOutletStore';
 @import './containers/outletstores/manageOutletStoreList';
 @import './containers/categories/manageCategoryList';
-@import './containers/categories/popup_category';
+@import './containers/categories/popupCategory';
+@import './containers/locations/manageLocationList';
+@import './containers/locations/popupLocation';
 
 //Common
 @import 'common';

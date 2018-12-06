@@ -31,7 +31,6 @@ import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
 import { toast } from 'react-toastify'
-import URLSearchParams from 'url-search-params'
 import { DefaultValue } from '../../constants'
 
 class ManageCategoryListPage extends React.Component {
@@ -52,15 +51,17 @@ class ManageCategoryListPage extends React.Component {
     this.toggle = this.toggle.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
-    this.redirectToEdit = this.redirectToEdit.bind(this)
     this.addNewSubCategory = this.addNewSubCategory.bind(this)
     this.handleAddSubCategory = this.handleAddSubCategory.bind(this)
+    this.handleDialogEdit = this.handleDialogEdit.bind(this)
+    this.handleEditSubmit = this.handleEditSubmit.bind(this)
     this.okDeleteFunction = this.okDeleteFunction.bind(this)
     this.handleCloseModal = this.handleCloseModal.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.getCateList = this.getCateList.bind(this)
   }
 
-  componentDidMount() {
+  getCateList() {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
@@ -77,9 +78,14 @@ class ManageCategoryListPage extends React.Component {
     this.props.cateListRequest(data)
   }
 
+  componentDidMount() {
+    this.getCateList()
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
+      console.log(response)
       if (response.isGetList) {
         if (response.data.count === 0) {
           toast.warn(I18nUtils.t('toast-no-record'))
@@ -90,31 +96,55 @@ class ManageCategoryListPage extends React.Component {
         })
       }
       if (response.isAdd) {
-        if (response.messageCode === 'SU001')
+        if (response.messageCode === 'CAT001') {
           toast.success(
             I18nUtils.formatMessage(
               { id: 'toast-add-sucess' },
               { name: this.state.name }
             )
           )
+
+          this.forceUpdate(this.getCateList)
+        }
+      }
+
+      if (response.isEdit) {
+        if (response.messageCode === 'CAT004') {
+          toast.success(
+            I18nUtils.formatMessage(
+              { id: 'toast-edit-sucess' },
+              { name: this.state.name }
+            )
+          )
+        }
+        if (this.state.category) {
+          this.setState({
+            type: 1
+          })
+        }
+        this.forceUpdate(this.getCateList)
+      }
+
+      if (response.isDelete) {
+        toast.success(
+          I18nUtils.formatMessage(
+            { id: 'toast-del-sucess' },
+            { name: this.state.name }
+          )
+        )
+        this.forceUpdate(this.getCateList)
       }
     }
+
+    return null
+  }
+
+  componentWillUnmount() {
+    this.getCateList()
   }
 
   toggle = () => {
     this.setState({ collapse: !this.state.collapse })
-  }
-
-  handleDelete = cate => {
-    this.props.show(ModalName.COMMON, {
-      bodyClass: 'text-center',
-      title: I18nUtils.formatMessage(
-        { id: 'modal-del-header' },
-        { name: cate.name }
-      ),
-      message: I18nUtils.t('modal-del-body'),
-      okFunction: () => this.okDeleteFunction(cate)
-    })
   }
 
   addNewSubCategory = cate => {
@@ -182,12 +212,6 @@ class ManageCategoryListPage extends React.Component {
     })
   }
 
-  handleChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
-  }
-
   handleAddSubCategory = e => {
     e.preventDefault()
     let data = new FormData()
@@ -196,18 +220,107 @@ class ManageCategoryListPage extends React.Component {
     data.append('order', this.state.order)
     data.append('category', this.state.category)
     this.props.cateAddRequest(data)
-  }
-
-  handleCloseModal = () => {
     this.props.hide(ModalName.COMMON)
   }
 
-  redirectToAddNew = () => {
-    this.props.history.push('/add-new-category')
+  handleDialogEdit = cate => {
+    const formAdd = (
+      <ValidationForm
+        className="popup-category col-no-mg"
+        onSubmit={this.handleEditSubmit}
+      >
+        <Row>
+          <Col xs="12" md="12">
+            <FormGroup>
+              <Label htmlFor="name">{I18nUtils.t('name')}</Label>
+              <TextInput
+                type="text"
+                name="name"
+                id="name"
+                defaultValue={cate.name}
+                placeholder={I18nUtils.t('all-place-input')}
+                onChange={this.handleChange}
+                required
+              />
+            </FormGroup>
+          </Col>
+          <Col xs="12" md="12">
+            <FormGroup>
+              <Label htmlFor="order">{I18nUtils.t('order')}</Label>
+              <TextInput
+                type="text"
+                name="order"
+                id="order"
+                defaultValue={cate.order}
+                placeholder={I18nUtils.t('all-place-input')}
+                onChange={this.handleChange}
+                required
+                pattern="\d*"
+              />
+            </FormGroup>
+          </Col>
+          <Col xs="12" md="12" className="col-footer">
+            <div className="btns-group text-right pt-4">
+              <Button color="success">{I18nUtils.t('btn-edit')}</Button>
+              <Button
+                title={I18nUtils.t('ots-title-back-list')}
+                onClick={this.handleCloseModal}
+                color="danger"
+              >
+                {I18nUtils.t('close')}
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </ValidationForm>
+    )
+
+    this.props.show(ModalName.COMMON, {
+      modalClass: 'center-modal hide-footer',
+      title: I18nUtils.formatMessage(
+        { id: 'modal-cate-edit-header' },
+        { name: cate.name }
+      ),
+      message: formAdd,
+      hideCloseButton: true
+    })
+
+    if (cate.category)
+      this.setState({
+        id: cate.id,
+        type: 2,
+        category: cate.category
+      })
+    else
+      this.setState({
+        id: cate.id
+      })
   }
 
-  redirectToEdit = cate => {
-    this.props.history.push(`/edit-category/${cate.id}`)
+  handleEditSubmit = e => {
+    e.preventDefault()
+    let data = new FormData()
+
+    data.append('type', this.state.type) // Type Category
+    data.append('id', this.state.id)
+    data.append('name', e.target.name.value)
+    data.append('order', e.target.order.value)
+    if (this.state.type === 2) data.append('category', this.state.category)
+
+    this.props.cateEditRequest(data)
+    this.props.hide(ModalName.COMMON)
+  }
+
+  handleDelete = cate => {
+    this.props.show(ModalName.COMMON, {
+      bodyClass: 'text-center',
+      title: I18nUtils.formatMessage(
+        { id: 'modal-del-header' },
+        { name: cate.name }
+      ),
+      message: I18nUtils.t('modal-del-body'),
+      okFunction: () => this.okDeleteFunction(cate)
+    })
   }
 
   okDeleteFunction = cate => {
@@ -226,7 +339,7 @@ class ManageCategoryListPage extends React.Component {
     } else {
       const originCateList = this.state.cateList
       const cateList = originCateList.filter(c => c.id !== cate.id)
-      this.setState({ cateList })
+      this.setState({ cateList, name: cate.name })
     }
 
     let data = {
@@ -236,9 +349,19 @@ class ManageCategoryListPage extends React.Component {
 
     this.props.cateDeleteRequest(data)
     this.props.hide(ModalName.COMMON)
-    toast.success(
-      I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: cate.name })
-    )
+  }
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+  handleCloseModal = () => {
+    this.props.hide(ModalName.COMMON)
+  }
+
+  redirectToAddNew = () => {
+    this.props.history.push('/add-new-category')
   }
 
   render() {
@@ -323,7 +446,7 @@ class ManageCategoryListPage extends React.Component {
                                     outline
                                     size="sm"
                                     className="float-right mr-2"
-                                    onClick={() => this.redirectToEditSub(sub)}
+                                    onClick={() => this.handleDialogEdit(sub)}
                                   >
                                     <i className="fa fa-edit" />
                                   </Button>
@@ -352,7 +475,7 @@ class ManageCategoryListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.redirectToEdit(cate)}
+                        onClick={() => this.handleDialogEdit(cate)}
                       >
                         <i className="fa fa-edit" />
                       </Button>
@@ -385,8 +508,14 @@ ManageCategoryListPage.propTypes = {
   cateListRequest: PropTypes.func,
   cateDeleteRequest: PropTypes.func,
   cateAddRequest: PropTypes.func,
+  cateEditRequest: PropTypes.func,
   show: PropTypes.func,
-  hide: PropTypes.func
+  hide: PropTypes.func,
+  name: PropTypes.string,
+  id: PropTypes.string,
+  order: PropTypes.string,
+  category: PropTypes.string,
+  cateList: PropTypes.object
 }
 
 const mapStateToProps = state => {
@@ -400,7 +529,8 @@ const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ show, hide }, dispatch),
   cateListRequest: data => dispatch(CateActions.cateListRequest(data)),
   cateDeleteRequest: data => dispatch(CateActions.cateDeleteRequest(data)),
-  cateAddRequest: data => dispatch(CateActions.cateAddRequest(data))
+  cateAddRequest: data => dispatch(CateActions.cateAddRequest(data)),
+  cateEditRequest: data => dispatch(CateActions.cateEditRequest(data))
 })
 
 export default connect(

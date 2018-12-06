@@ -16,7 +16,7 @@
     "precommit": "npm run lint -s",
     "prepush": "npm run lint -s"
   },
-  "author": "DuongNguyen",
+  "author": "NamNH",
   "devDependencies": {
     "autoprefixer": "^9.3.0",
     "babel-core": "^6.26.3",
@@ -78,7 +78,6 @@
     "lightbox-react": "^0.1.5",
     "lodash": "^4.17.11",
     "moment": "^2.20.1",
-    "query-string": "^6.2.0",
     "react": "^16.5.2",
     "react-adminlte-dash": "^0.4.0",
     "react-animated-css": "^1.0.4",
@@ -96,6 +95,7 @@
     "react-intl": "^2.4.0",
     "react-ladda": "^5.0.7",
     "react-moment": "^0.7.0",
+    "react-perfect-scrollbar": "^1.4.2",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-scroll": "^1.5.5",
@@ -107,7 +107,7 @@
     "redux-saga": "^0.15.6",
     "reduxsauce": "^0.7.0",
     "save": "^2.3.2",
-    "url-search-params": "^0.10.0",
+    "url-search-params-polyfill": "^5.0.0",
     "validator": "^10.9.0"
   }
 }
