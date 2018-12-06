@@ -8,11 +8,11 @@ class MessageCode(Enum):
     SU001 = 'SU001'  # Success
     FA001 = 'FA001'  # Error
 
-    OS001 = 'OS001'  # get detail
-    OS002 = 'OS002'  # get detail. not found request
-    OS003 = 'OS002'  # create susscess
-    OS004 = 'OS004'  # create with err data
-    OS005 = 'OS005'  # update sussess
+    OS001 = 'OS001'  # get outletstore's information detail successfully
+    OS002 = 'OS002'  # get outletstore's information detail failly
+    OS003 = 'OS002'  # add new a outletstore  successfully
+    OS004 = 'OS004'  # not add new ouletstore
+    OS005 = 'OS005'  # update information
     OS006 = 'OS006'  # update with err data
     OS007 = 'OS007'  # delete sussess
     OS008 = 'OS008'  # delete fail
@@ -78,3 +78,4 @@ class MessageCode(Enum):
     LOC005 = 'LOC005'  # update error
     LOC006 = 'LOC006'  # get list success
     LOC007 = 'LOC007'  # delete success
+    LOC008 = 'LOC008'  # delete failed
