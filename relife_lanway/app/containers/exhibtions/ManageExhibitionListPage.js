@@ -17,7 +17,6 @@ import FilterGroupComponent from '../../components/FilterGroupComponent'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
 import { toast } from 'react-toastify'
-import URLSearchParams from 'url-search-params'
 import { DefaultValue } from '../../constants'
 
 class ManageExhibitionListPage extends React.Component {
@@ -32,9 +31,10 @@ class ManageExhibitionListPage extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
+    this.getExhList = this.getExhList.bind(this)
   }
 
-  componentDidMount() {
+  getExhList() {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
@@ -50,6 +50,10 @@ class ManageExhibitionListPage extends React.Component {
     this.props.exhibitionListRequest(data)
   }
 
+  componentDidMount() {
+    this.getExhList()
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
@@ -61,6 +65,16 @@ class ManageExhibitionListPage extends React.Component {
           exhList: response.data.results,
           count: response.data.count
         })
+      }
+
+      if (response.messageCode === 'EX008') {
+        toast.success(
+          I18nUtils.formatMessage(
+            { id: 'toast-del-sucess' },
+            { name: response.data.title }
+          )
+        )
+        this.forceUpdate(this.getExhList)
       }
     }
   }
@@ -94,9 +108,6 @@ class ManageExhibitionListPage extends React.Component {
 
     this.props.exhibitionDeleteRequest(exh.id)
     this.props.hide(ModalName.COMMON)
-    toast.success(
-      I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: exh.title })
-    )
   }
 
   render() {

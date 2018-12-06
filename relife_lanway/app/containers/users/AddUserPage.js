@@ -40,7 +40,7 @@ class AddUserPage extends React.Component {
         this.setState({
           id: response.id
         }, () => {
-          this.props.show(ModalName.COMMON, { message: I18nUtils.t('US015'), closeFunction: () => this.closeFunction()})
+          this.props.show(ModalName.COMMON, { message: I18nUtils.t('US015'), closeFunction: () => this.closeFunction() })
         })
       }
     }
@@ -54,6 +54,8 @@ class AddUserPage extends React.Component {
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
+    }, () => {
+      if (this.state.group == 1 || this.state.group == 4) this.setState({ store: {} })
     })
   }
 
@@ -198,7 +200,7 @@ class AddUserPage extends React.Component {
                 <InputGroup>
                   <Input type="text" name="store" id="store" value={store.title || ''} disabled />
                   <InputGroupAddon addonType="append">
-                    <Button type="button" color="secondary" onClick={this.showStoreListHandle}>{I18nUtils.t('store-selection')}</Button>
+                    <Button type="button" color="secondary" disabled={group == 1 || group == 4} onClick={this.showStoreListHandle}>{I18nUtils.t('store-selection')}</Button>
                   </InputGroupAddon>
                 </InputGroup>
               </FormGroup>
