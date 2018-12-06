@@ -67,7 +67,7 @@ class ManageExhibitionListPage extends React.Component {
         })
       }
 
-      if (response.messageCode === 'EX008') {
+      if (response.messageCode === 'EX007') {
         toast.success(
           I18nUtils.formatMessage(
             { id: 'toast-del-sucess' },
