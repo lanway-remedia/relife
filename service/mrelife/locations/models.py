@@ -21,7 +21,7 @@ class City(Model):
 
     class Meta:
         db_table = 'city'
-        #ordering = ['order', ]
+        ordering = ['order', ]
 
 class District(Model):
     city = ForeignKey(City, related_name='districts', on_delete=CASCADE)
@@ -34,7 +34,7 @@ class District(Model):
 
     class Meta:
         db_table = 'district'
-        #ordering = ['order', ]
+        ordering = ['order', ]
         
     def __unicode__(self):
         return '%d: %s' % (self.id, self.name)
