@@ -11,7 +11,7 @@ router = routers.SimpleRouter()
 router.register(r'', views.EventViewSet)
 
 urlpatterns = [
-    re_path(r'^modelhouse/', include('mrelife.events.eventmodelhouses.urls')),
+    #re_path(r'^modelhouse/', include('mrelife.events.eventmodelhouses.urls')),
     path('', include(router.urls))
 ]+static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
