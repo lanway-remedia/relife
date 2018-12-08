@@ -4,6 +4,7 @@ from django.conf import settings
 
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework import routers
+from mrelife.events.eventmodelhouses import urls
 
 from mrelife.events import views
 
@@ -11,8 +12,7 @@ router = routers.SimpleRouter()
 router.register(r'', views.EventViewSet)
 
 urlpatterns = [
-    #re_path(r'^modelhouse/', include('mrelife.events.eventmodelhouses.urls')),
+    re_path(r'^modelhouse/', include('mrelife.events.eventmodelhouses.urls')),
     path('', include(router.urls))
-]+static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-
+]
 urlpatterns = format_suffix_patterns(urlpatterns)
