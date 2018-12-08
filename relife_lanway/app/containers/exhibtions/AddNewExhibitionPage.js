@@ -16,11 +16,7 @@ import {
   InputGroup,
   InputGroupAddon
 } from 'reactstrap'
-import {
-  ValidationForm,
-  TextInput,
-  SelectGroup
-} from 'react-bootstrap4-form-validation'
+import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Helmet } from 'react-helmet'
 import I18nUtils from '../../utils/I18nUtils'
 import ExhibitionActions from '../../redux/wrapper/ExhibitionsRedux'
@@ -30,6 +26,7 @@ import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 
 import ImageUploadComponent from './../../components/ImageUploadComponent'
+import LocationsComponent from '../../components/LocationsComponent'
 
 class AddNewExhibitionPage extends React.Component {
   constructor(props) {
@@ -50,6 +47,8 @@ class AddNewExhibitionPage extends React.Component {
     this.redirectToListPage = this.redirectToListPage.bind(this)
     this.handleChangeFromDate = this.handleChangeFromDate.bind(this)
     this.handleChangeToDate = this.handleChangeToDate.bind(this)
+    this.handleSelectedCity = this.handleSelectedCity.bind(this)
+    this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
   }
 
   handleChange = e => {
@@ -76,6 +75,18 @@ class AddNewExhibitionPage extends React.Component {
     })
   }
 
+  handleSelectedCity = cityId => {
+    this.setState({
+      city: cityId
+    })
+  }
+
+  handleSelectedDistrict = districtId => {
+    this.setState({
+      district: districtId
+    })
+  }
+
   redirectToListPage = () => {
     this.props.history.push('/manage-exhibition-list')
   }
@@ -83,13 +94,14 @@ class AddNewExhibitionPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let data = nextProps.data
-      if (data.isAddStore) {
-        toast.success(
-          I18nUtils.formatMessage(
-            { id: 'toast-add-sucess' },
-            { name: this.state.title }
+      if (data.isAdd) {
+        if (data.messageCode === 'EX003')
+          toast.success(
+            I18nUtils.formatMessage(
+              { id: 'toast-add-sucess' },
+              { name: this.state.title }
+            )
           )
-        )
       }
     }
   }
@@ -129,6 +141,7 @@ class AddNewExhibitionPage extends React.Component {
         <ValidationForm
           className="form-add-outletstore col-no-mg"
           onSubmit={this.handleSubmit}
+          autoComplete="off"
         >
           <Row>
             <Col xs="12" md="12">
@@ -202,38 +215,11 @@ class AddNewExhibitionPage extends React.Component {
                 />
               </FormGroup>
             </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="city">{I18nUtils.t('city')}</Label>
-                <SelectGroup
-                  name="city"
-                  id="city"
-                  required
-                  errorMessage={I18nUtils.t('lb-select')}
-                  onChange={this.handleChange}
-                >
-                  <option value="">{I18nUtils.t('lb-select')}</option>
-                  <option value="1">Hà Nội</option>
-                  <option value="2">Hồ Chí Minh</option>
-                </SelectGroup>
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="district">{I18nUtils.t('district')}</Label>
-                <SelectGroup
-                  name="district"
-                  id="district"
-                  required
-                  errorMessage={I18nUtils.t('lb-select')}
-                  onChange={this.handleChange}
-                >
-                  <option value="">{I18nUtils.t('lb-select')}</option>
-                  <option value="1">Hoàng Mai</option>
-                  <option value="2">Hai Bà Trưng</option>
-                </SelectGroup>
-              </FormGroup>
-            </Col>
+            <LocationsComponent
+              required
+              onSelectedCity={this.handleSelectedCity}
+              onSelectedDistrict={this.handleSelectedDistrict}
+            />
             <Col xs="12" md="6">
               <FormGroup>
                 <Label htmlFor="zipcode">{I18nUtils.t('zipcode')}</Label>

@@ -17,7 +17,6 @@ import {
   InputGroupAddon,
   Collapse, CardBody, Card
 } from 'reactstrap'
-import queryString from 'query-string'
 
 const TIMEOUT = 500
 
@@ -25,42 +24,42 @@ const initialState = {
   freeword: '',
   group: 0,
   store: {},
-  showStoreList: false,
-  collapse: false,
-  timeout: TIMEOUT
+  showStoreList: false
 }
 
 class SearchCondition extends Component {
   constructor(props) {
     super(props)
-    this.state = initialState
+    this.state = { 
+      ...initialState,
+      collapse: false,
+      timeout: TIMEOUT
+    }
   }
 
   componentDidMount() {
-    let parsed = queryString.parse(this.props.history.location.search)
+    let params = new URLSearchParams(this.props.history.location.search)
     this.setState({
-      freeword: parsed.freeword || '',
-      group: parsed.group || 0,
-      store: parsed.store ? { id: parsed.store, title: parsed.store_title } : {},
-      collapse: parsed.collapse || false,
-      timeout: parsed.collapse ? 0 : TIMEOUT
+      freeword: params.get('freeword') || '',
+      group: params.get('group') || 0,
+      store: params.get('store') ? { id: params.get('store'), title: params.get('store_title') } : {},
+      collapse: !!(params.get('freeword') || params.get('group') || params.get('store')),
+      timeout: params.get('freeword') || params.get('group') || params.get('store') ? 0 : TIMEOUT
     })
   }
 
   onclickSubmit = () => {
-    let { freeword, group, store, collapse } = this.state
+    let { freeword, group, store } = this.state
     let parsed = {
-      freeword: freeword || undefined,
-      group: group != 0 ? group : undefined,
-      store: store.id,
-      store_title: store.title,
-      collapse: collapse || undefined
+      ...(freeword && {freeword: freeword}),
+      ...(group && group != 0 && {group: group}),
+      ...(store.id && {store: store.id}),
+      ...(store.title && {store_title: store.title})
     }
-    let search = queryString.stringify(parsed)
-    if (search)
-      this.props.history.push({
-        search: `?${search}`
-      })
+    let search = new URLSearchParams(parsed)
+    this.props.history.push({
+      search: `?${search.toString()}`
+    })
   }
 
   handleResetForm = () => {

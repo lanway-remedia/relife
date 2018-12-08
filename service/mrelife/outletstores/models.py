@@ -49,7 +49,6 @@ class OutletStore(Model):
         ordering = ['created', ]
 
     def save(self, *args, **kwargs):
-        self.create_img_thumbnail()
         if not self.pk:
             super(OutletStore, self).save(*args, **kwargs)
             self.img_thumbnail = self.create_img_thumbnail()

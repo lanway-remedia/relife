@@ -6,7 +6,6 @@ import I18nUtils from './../utils/I18nUtils'
 import { Label, Input } from 'reactstrap'
 import UltimatePagination from 'react-ultimate-pagination-bootstrap-4'
 import { DefaultValue } from '../constants'
-import queryString from 'query-string'
 
 class PaginationComponent extends Component {
   constructor(props) {
@@ -18,32 +17,34 @@ class PaginationComponent extends Component {
   }
 
   componentWillMount() {
-    let parsed = queryString.parse(this.props.history.location.search)
+    let params = new URLSearchParams(this.props.history.location.search)
     this.setState({
-      page: parsed.page * 1 || DefaultValue.PAGE,
-      limit: parsed.limit *1 || DefaultValue.LIMIT
+      page: params.get('page') * 1 || DefaultValue.PAGE,
+      limit: params.get('limit') * 1 || DefaultValue.LIMIT
     })
   }
 
   onPageChange = page => {
-    let parsed = queryString.parse(this.props.history.location.search)
-    parsed.page = page
-    parsed.limit = this.state.limit
-    let search = queryString.stringify(parsed)
+    let params = new URLSearchParams(this.props.history.location.search)
+    params.set('page', page)
+    params.set('limit', this.state.limit)
     this.props.history.push({
-      search: `?${search}`
+      search: `?${params.toString()}`
     })
   }
 
-  onPerpageChange = (e) => {
+  onPerpageChange = e => {
+    let params = new URLSearchParams(this.props.history.location.search)
     let { page } = this.state
     let { count } = this.props
     let limit = e.target.value
     if ((page - 1) * limit >= count) {
       page = Math.ceil(count / limit)
     }
+    params.set('page', page)
+    params.set('limit', limit)
     this.props.history.push({
-      search: `?page=${page}&limit=${limit}`
+      search: `?${params.toString()}`
     })
   }
 
@@ -55,7 +56,7 @@ class PaginationComponent extends Component {
       <div className="toolbar mb-5">
         <div className="total">
           <span>
-            {limit > count &&
+            {limit >= count &&
               I18nUtils.formatMessage(
                 { id: 'toolbar-totalRecords' },
                 { limit: count, total: count }

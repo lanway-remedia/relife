@@ -20,7 +20,8 @@ export default () => {
     exhibitions: require('./wrapper/ExhibitionsRedux').reducer,
     locations: require('./wrapper/LocationsRedux').reducer,
     tags: require('./wrapper/TagsRedux').reducer,
-    categories: require('./wrapper/CategoriesRedux').reducer
+    categories: require('./wrapper/CategoriesRedux').reducer,
+    attributes: require('./wrapper/AttributesRedux').reducer
   })
 
   return configureStore(rootReducer, rootSaga)

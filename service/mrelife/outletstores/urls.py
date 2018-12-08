@@ -1,20 +1,18 @@
-from django.urls import include, path
+from django.urls import include, path, re_path
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from mrelife.outletstores import views
+from mrelife.outletstores import views
+from mrelife.outletstores.ouletstorecontacts import urls
 
 router = routers.SimpleRouter()
-router.register(r'medias', views.OutletStoreMediaViewSet)
-router.register(r'contacts_reply', views.OutletStoreContactReplyViewSet)
-router.register(r'contacts', views.OutletStoreContactViewSet)
+# router.register(r'medias', views.OutletStoreMediaViewSet)
 router.register(r'', views.OutletStoreViewSet)
 
 urlpatterns = [
-    # path('get/', csrf_exempt(views.OutletStoreList.as_view())),
-    # path('add/', csrf_exempt(views.OutletStoreCreate.as_view())),
-    # path('update/<int:pk>/', csrf_exempt(views.OutletStoreUpdate.as_view())),
-
+    re_path(r'^contact/', include('mrelife.outletstores.ouletstorecontacts.urls')),
+    re_path(r'^contacts_reply/', include('mrelife.outletstores.outletstorecontactreplys.urls')),
     path('', include(router.urls)),
 ]
 
