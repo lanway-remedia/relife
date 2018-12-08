@@ -31,4 +31,4 @@ class ExhibitionContactSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ExhibitionContact
-        fields = ('id', 'content', 'create_user', 'create_user_id', 'exhibition_id', 'exhibition', 'exhibition_contact_reply')
+        fields = ('id', 'content', 'create_user', 'create_user_id', 'exhibition_id', 'exhibition', 'exhibition_contact_reply','is_active')
