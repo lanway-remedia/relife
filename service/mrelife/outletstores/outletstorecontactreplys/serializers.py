@@ -16,7 +16,7 @@ class OutletStoreContactReplySerializer(serializers.ModelSerializer):
     outlet_store_contact_id = serializers.PrimaryKeyRelatedField(queryset=OutletStoreContact.objects.filter(is_active=1), write_only=True)
     #outlet_store_contact = OutletStoreContactSerializer(read_only=True)
     user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_active=1), write_only=True)
-    user = UserSerializer(read_only=True, many=True)
+    user = UserSerializer(read_only=True)
     comment = serializers.CharField(max_length=255)
     is_active = serializers.BooleanField(default=True)
 
