@@ -8,7 +8,7 @@ from mrelife.locations.models import District
 from mrelife.locations.serializers import DistrictSerializer
 from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreContactReply
 from mrelife.outletstores.serializers import OutletStoreSerializer
-from mrelife.outletstores.ouletstorecontacts.serializers import OutletStoreContactReplySerializer
+from mrelife.outletstores.outletstorecontactreplys.serializers import OutletStoreContactReplySerializer
 from mrelife.users.models import User
 from mrelife.users.serializers import UserSerializer
 
