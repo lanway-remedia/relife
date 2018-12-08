@@ -35,7 +35,6 @@ class MessageCode(Enum):
     OSCR007 = 'OSCR007'  # delete sussess
     OSCR008 = 'OSCR008'  # delete fail
 
-
     EX001 = 'EX001'  # get detail
     EX002 = 'EX002'  # get detail. not found request
     EX003 = 'EX003'  # create susscess
@@ -44,6 +43,24 @@ class MessageCode(Enum):
     EX006 = 'EX006'  # update with err data
     EX007 = 'EX007'  # delete sussess
     EX008 = 'EX008'  # delete fail
+
+    EXC001 = 'EXC001'  # get detail
+    EXC002 = 'EXC002'  # get detail. not found request
+    EXC003 = 'EXC003'  # create susscess
+    EXC004 = 'EXC004'  # create with err data
+    EXC005 = 'EXC005'  # update sussess
+    EXC006 = 'EXC006'  # update with err data
+    EXC007 = 'EXC007'  # delete sussess
+    EXC008 = 'EXC008'  # delete fail
+
+    EXCR001 = 'EXCR001'  # get detail
+    EXCR002 = 'EXCR002'  # get detail. not found request
+    EXCR003 = 'EXCR003'  # create susscess
+    EXCR004 = 'EXCR004'  # create with err data
+    EXCR005 = 'EXCR005'  # update sussess
+    EXCR006 = 'EXCR006'  # update with err data
+    EXCR007 = 'EXCR007'  # delete sussess
+    EXCR008 = 'EXCR008'  # delete fail
 
     EV001 = 'EV001'  # get detail
     EV002 = 'EV002'  # get detail. not found request

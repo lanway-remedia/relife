@@ -32,9 +32,9 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
             queryset = ExhibitionContactReply.objects.all()
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = ExhibitionContactReplySerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVMH001.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXCR001.value, ""), status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH002.value, e), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR002.value, e), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -42,10 +42,10 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVMH003.value, ""), status=status.HTTP_201_CREATED)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXCR003.value, ""), status=status.HTTP_201_CREATED)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH004.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR004.value, e), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
@@ -54,10 +54,10 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
             serializer = ExhibitionContactReplySerializer(event_obj, data=request.data)
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id)
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVMH005.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXCR005.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH006.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR006.value, e), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         try:
@@ -67,7 +67,7 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
             serializer = ExhibitionContactReplySerializer(event_obj, data=data, partial=True)
             if(serializer.is_valid()):
                 serializer.save(updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVMH007.value, ""), status=status.HTTP_200_NO_CONTENT)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH008.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXCR007.value, ""), status=status.HTTP_200_NO_CONTENT)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR008.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH008.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR008.value, e), status=status.HTTP_400_BAD_REQUEST)
