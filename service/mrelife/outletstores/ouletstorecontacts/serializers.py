@@ -31,7 +31,7 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
     outlet_store = OutletStoreSerializer(read_only=True, many=True)
     create_user = UserSerializer(read_only=True, many=True)
     comment = serializers.CharField(max_length=255)
-   # outlet_store_contact_relpy = OutletStoreContactReplySerializer(many=True, read_only=True, required=False)
+    #outlet_store_contact_relpy = OutletStoreContactReplySerializer(many=True, read_only=True, required=False)
     is_active = serializers.BooleanField(default=True)
 
     class Meta:
