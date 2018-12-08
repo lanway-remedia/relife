@@ -8,7 +8,7 @@ from mrelife.locations.models import District
 from mrelife.locations.serializers import DistrictSerializer
 from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreContactReply
 from mrelife.outletstores.serializers import OutletStoreSerializer
-from mrelife.outletstores.outletstorecontactreplys.serializers import OutletStoreContactReplySerializer
+#from mrelife.outletstores.outletstorecontactreplys.serializers import OutletStoreContactReplySerializer
 from mrelife.users.models import User
 from mrelife.users.serializers import UserSerializer
 
@@ -31,9 +31,9 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
     outlet_store = OutletStoreSerializer(read_only=True, many=True)
     create_user = UserSerializer(read_only=True, many=True)
     comment = serializers.CharField(max_length=255)
-    outlet_store_contact_relpy = OutletStoreContactReplySerializer(many=True, read_only=True, required=False)
+   # outlet_store_contact_relpy = OutletStoreContactReplySerializer(many=True, read_only=True, required=False)
     is_active = serializers.BooleanField(default=True)
 
     class Meta:
         model = OutletStoreContact
-        fields = ('id', 'comment', 'create_user', 'outlet_store_id', 'create_user_id', 'outlet_store', 'outlet_store_contact_relpy', 'is_active')
+        fields = ('id', 'comment', 'create_user', 'outlet_store_id', 'create_user_id', 'outlet_store', 'is_active')
