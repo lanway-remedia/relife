@@ -7,7 +7,7 @@ from rest_framework.validators import UniqueValidator
 from mrelife.locations.models import District
 from mrelife.locations.serializers import DistrictSerializer
 from mrelife.outletstores.models import OutletStoreContact, OutletStoreContactReply
-from mrelife.outletstores.ouletstorecontacts.serializers import OutletStoreContactSerializer
+#from mrelife.outletstores.ouletstorecontacts.serializers import OutletStoreContactSerializer
 from mrelife.users.models import User
 from mrelife.users.serializers import UserSerializer
 
