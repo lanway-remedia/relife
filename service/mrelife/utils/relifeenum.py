@@ -54,6 +54,15 @@ class MessageCode(Enum):
     EV007 = 'EV007'  # delete sussess
     EV008 = 'EV008'  # get detail
 
+    EVMH001 = 'EVMH001'  # get detail
+    EVMH002 = 'EVMH002'  # get detail. not found request
+    EVMH003 = 'EVMH003'  # create susscess
+    EVMH004 = 'EVMH004'  # create with err data
+    EVMH005 = 'EVMH005'  # update sussess
+    EVMH006 = 'EVMH006'  # update with err data
+    EVMH007 = 'EVMH007'  # delete sussess
+    EVMH008 = 'EVMH008'  # get detail
+
     EXT001 = 'EXT001'  # get detail
     EXT002 = 'EXT002'  # get detail. not found request
     EXT003 = 'EXT004'  # create susscess
