@@ -23,7 +23,7 @@ from mrelife.utils.relifeenum import MessageCode
 class OutletStoreContactViewSet(viewsets.ModelViewSet):
     queryset = OutletStoreContact.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = OutletStoreContactSerializer
-    #permission_classes = (IsAuthenticated, OutletStorePermission,)
+    # permission_classes = (IsAuthenticated, OutletStorePermission,)
     pagination_class = LimitOffsetPagination
 
     def list(self, request):
