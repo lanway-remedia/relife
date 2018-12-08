@@ -8,7 +8,6 @@ from mrelife.outletstores.ouletstorecontacts import urls
 
 router = routers.SimpleRouter()
 # router.register(r'medias', views.OutletStoreMediaViewSet)
-# router.register(r'contacts_reply', views.OutletStoreContactReplyViewSet)
 router.register(r'', views.OutletStoreViewSet)
 
 urlpatterns = [

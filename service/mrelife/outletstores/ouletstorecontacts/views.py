@@ -73,8 +73,7 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             serializer = OutletStoreContactSerializer(outletstoreObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
-                outletContactreply = OutletStoreContactReply.objects.filter(
-                    is_active=1, outlet_store_contact_id=outletstoreObject.id).update(is_active=settings.IS_INACTIVE, updated=datetime.now())
+                OutletStoreContactReply.objects.filter(is_active=1, outlet_store_contact_id=outletstoreObject.id).update(is_active=settings.IS_INACTIVE, updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC007.value, ""), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC008.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
         except Exception as e:
