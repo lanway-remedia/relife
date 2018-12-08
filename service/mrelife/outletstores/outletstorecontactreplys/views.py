@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from mrelife.commons.common_fnc import CommonFuntion
-from mrelife.outletstores.outletstorecontactreplys.models import OutletStoreContactReply
+from mrelife.outletstores.models import OutletStoreContactReply
 from mrelife.outletstores.outletstorecontactreplys.serializers import OutletStoreContactReplySerializer
 from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
