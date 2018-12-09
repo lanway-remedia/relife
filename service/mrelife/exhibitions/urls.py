@@ -13,6 +13,8 @@ router.register(r'', views.EhibitionViewSet)
 
 urlpatterns = [
     re_path(r'^tags/', include('mrelife.exhibitions.exhibitiontags.urls')),
+    re_path(r'^contacts/', include('mrelife.exhibitions.exhibitioncontacts.urls')),
+    re_path(r'^contact_replys/', include('mrelife.exhibitions.exhibitioncontactreplys.urls')),
     path('', include(router.urls))
     
 

@@ -3,11 +3,12 @@ from django.conf.urls.static import static
 from django.urls import include, path, re_path
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
+from mrelife.events.eventcontactreplys import urls
 
-from mrelife.outletstores.outletstoremedias import views
+from mrelife.events.eventcontactreplys import views
 
 router = routers.SimpleRouter()
-router.register(r'', views.OutletStoreMediaViewSet)
+router.register(r'', views.EventContactReplyViewSet)
 
 urlpatterns = [
     path('', include(router.urls))

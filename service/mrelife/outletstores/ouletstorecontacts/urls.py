@@ -4,10 +4,10 @@ from django.urls import include, path, re_path
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from mrelife.outletstores.outletstoremedias import views
+from mrelife.outletstores.ouletstorecontacts import views
 
 router = routers.SimpleRouter()
-router.register(r'', views.OutletStoreMediaViewSet)
+router.register(r'', views.OutletStoreContactViewSet)
 
 urlpatterns = [
     path('', include(router.urls))

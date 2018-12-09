@@ -4,12 +4,12 @@ from django.urls import include, path, re_path
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from mrelife.outletstores.outletstoremedias import views
+from mrelife.events.eventcontacts import views
 
 router = routers.SimpleRouter()
-router.register(r'', views.OutletStoreMediaViewSet)
+router.register(r'', views.EventContactViewSet)
 
 urlpatterns = [
     path('', include(router.urls))
 
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
