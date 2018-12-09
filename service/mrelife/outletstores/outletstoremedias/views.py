@@ -35,9 +35,9 @@ class OutletStoreMediaViewSet(viewsets.ModelViewSet):
             queryset = OutletStoreMedia.objects.all().filter(is_active=1).filter(is_active=1).order_by("-updated")
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreMediaSerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC001.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSM001.value, ""), status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC002.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSM002.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -45,10 +45,10 @@ class OutletStoreMediaViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC003.value, ""), status=status.HTTP_201_CREATED)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSM003.value, ""), status=status.HTTP_201_CREATED)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSM004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, ""), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSM004.value, ""), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
@@ -58,10 +58,10 @@ class OutletStoreMediaViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC005.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSM005.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSM006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC006.value, ""), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSM006.value, ""), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         try:
@@ -71,7 +71,7 @@ class OutletStoreMediaViewSet(viewsets.ModelViewSet):
             serializer = OutletStoreMediaSerializer(outletstoreObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC007.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC008.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSM007.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSM008.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC008.value, ""), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSM008.value, ""), status=status.HTTP_400_BAD_REQUEST)

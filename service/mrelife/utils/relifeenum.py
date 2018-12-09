@@ -26,19 +26,28 @@ class MessageCode(Enum):
     OSC007 = 'OSC007'  # delete sussess
     OSC008 = 'OSC008'  # delete fail
 
-    OSCR001 = 'OSCR001'  # get outletstore contact's information detail successfully
-    OSCR002 = 'OSCR002'  # get outletstore contact's information detail failly
+    OSCR001 = 'OSCR001'  # get outletstore contact reply's information detail successfully
+    OSCR002 = 'OSCR002'  # get outletstore contact reply's information detail failly
     OSCR003 = 'OSCR002'  # add new a outletstore contact  successfully
-    OSCR004 = 'OSCR004'  # not add new outletstore contact
+    OSCR004 = 'OSCR004'  # not add new outletstore contact reply
     OSCR005 = 'OSCR005'  # update information
     OSCR006 = 'OSCR006'  # update with err data
     OSCR007 = 'OSCR007'  # delete sussess
     OSCR008 = 'OSCR008'  # delete fail
 
-    EX001 = 'EX001'  # get detail
-    EX002 = 'EX002'  # get detail. not found request
-    EX003 = 'EX003'  # create susscess
-    EX004 = 'EX004'  # create with err data
+    OSM001 = 'OSM001'  # get outletstore media's information detail successfully
+    OSM002 = 'OSM002'  # get outletstore media's information detail failly
+    OSM003 = 'OSM002'  # add new a outletstore media  successfully
+    OSM004 = 'OSM004'  # not add new outletstore media
+    OSM005 = 'OSM005'  # update information
+    OSM006 = 'OSM006'  # update with err data
+    OSM007 = 'OSM007'  # delete sussess
+    OSM008 = 'OSM008'  # delete fail
+
+    EX001 = 'EX001'  # get exhibition's information detail successfully
+    EX002 = 'EX002'  # get exhibition's information detail failly
+    EX003 = 'EX003'  # created exhibiton successfully
+    EX004 = 'EX004'  # not add new exhibiton media
     EX005 = 'EX005'  # update sussess
     EX006 = 'EX006'  # update with err data
     EX007 = 'EX007'  # delete sussess
