@@ -2,9 +2,10 @@ from datetime import datetime
 
 from django.conf import settings
 from django.core.files.storage import default_storage
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
-from rest_framework.decorators import action, detail_route, permission_classes, list_route
+from rest_framework.decorators import action, detail_route, list_route, permission_classes
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.pagination import LimitOffsetPagination
@@ -244,44 +245,46 @@ class ModelHouseViewSet(ModelViewSet):
 
 
 class OrderModelHouseViewSet(ModelViewSet):
-    queryset = OrderModelHouse.objects.all().filter(is_active=1)
+    queryset = OrderModelHouse.objects.all().filter(is_active=1).order_by("-updated")
     serializer_class = OrderModelHouseSerializer
     pagination_class = LimitOffsetPagination
     permission_classes = (IsAuthenticated, OrderMHViewadminPermission,)
 
     def list(self, request):
-        self.queryset = OrderModelHouse.objects.filter(is_active=1)
+        self.queryset = OrderModelHouse.objects.filter(is_active=1).order_by("-updated")
         return super(OrderModelHouseViewSet, self).list(request)
 
     def retrieve(self, request, pk=None):
         try:
-            queryset = OrderModelHouse.objects.all().filter(is_active=1)
+            queryset = OrderModelHouse.objects.all()
             orderModelObject = get_object_or_404(queryset, pk=pk)
             serializer = OrderModelHouseSerializer(orderModelObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH002.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH001.value, ""), status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH003.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH002.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
-        request.data['create_user_id'] = request.user.id
+        #request.data['create_user_id'] = request.user.id
         serializer = OrderModelHouseSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH004.value, ""), status=status.HTTP_201_CREATED)
-        return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH005.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                            created=datetime.now(), updated=datetime.now())
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH003.value, ""), status=status.HTTP_201_CREATED)
+        return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
-            request.data['create_user_id'] = request.user.id
+            #request.data['create_user_id'] = request.user.id
             queryset = OrderModelHouse.objects.all().filter(is_active=1)
             orderModelObject = get_object_or_404(queryset, pk=pk)
             serializer = OrderModelHouseSerializer(orderModelObject, data=request.data)
             if serializer.is_valid():
-                serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH006.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                                created=datetime.now(), updated=datetime.now())
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH005.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH006.value, ""), status=status.HTTP_404_NOT_FOUND)
 
     def destroy(self, request, pk=None):
         try:
@@ -291,14 +294,25 @@ class OrderModelHouseViewSet(ModelViewSet):
             serializer = OrderModelHouseSerializer(orderModelObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH008.value, ""), status=status.HTTP_200_NO_CONTENT)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH007.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH008.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH008.value, ""), status=status.HTTP_404_NOT_FOUND)
 
-    @list_route(methods=['get'])
-    def selfGetlistBooking(self, request, pk=None):
-        queryset = OrderModelHouse.objects.all().filter(is_active=1).filter(create_user_id=request.user.id)
+    # @list_route(methods=['get'])
+    # def selfGetlistBooking(self, request, pk=None):
+    #     queryset = OrderModelHouse.objects.all().filter(is_active=1).filter(create_user_id=request.user.id)
+    #     page = self.paginate_queryset(queryset)
+    #     if page is not None:
+    #         serializer = OrderModelHouseSerializer(page, many=True)
+    #         data = {'status': status.HTTP_200_OK, 'result': serializer.data}
+    #         return self.get_paginated_response(data)
+    #     serializer = OrderModelHouseSerializer(queryset, many=True)
+    #     return Response(serializer.data)
+
+    @list_route(methods=['GET'], pagination_class=LimitOffsetPagination)
+    def selfGetlistBooking(self, request):
+        self.queryset = OrderModelHouse.objects.all().filter(is_active=1, create_user_id=request.user.id).order_by("-updated")
         return super(OrderModelHouseViewSet, self).list(request)
 
 
@@ -315,7 +329,7 @@ class updateStatus(GenericAPIView, UpdateModelMixin):
             serializer = OrderModelHouseSerializer(orderModelObject, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH006.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH009.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH010.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH007.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH010.value, ""), status=status.HTTP_404_NOT_FOUND)

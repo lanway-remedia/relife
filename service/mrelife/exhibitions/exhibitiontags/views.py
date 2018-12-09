@@ -16,15 +16,15 @@ from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
 
 
-class EhibitionTagViewSet(viewsets.ModelViewSet):
+class ExhibitionTagViewSet(viewsets.ModelViewSet):
 
-    queryset = ExhibitionTag.objects.all()
+    queryset = ExhibitionTag.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = ExhibitionTagSerializer
     pagination_class = LimitOffsetPagination
 
     def list(self, request, *args, **kwargs):
-        self.queryset = ExhibitionTag.objects.all().filter(is_active=1)
-        return super(EhibitionTagViewSet, self).list(request, *args, **kwargs)
+        self.queryset = ExhibitionTag.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
+        return super(ExhibitionTagViewSet, self).list(request, *args, **kwargs)
 
     def retrieve(self, request, pk=None):
         try:
