@@ -11,8 +11,9 @@ router = routers.SimpleRouter()
 router.register(r'', views.OutletStoreViewSet)
 
 urlpatterns = [
-    re_path(r'^contact/', include('mrelife.outletstores.ouletstorecontacts.urls')),
-    re_path(r'^contacts_reply/', include('mrelife.outletstores.outletstorecontactreplys.urls')),
+    re_path(r'^contacts/', include('mrelife.outletstores.ouletstorecontacts.urls')),
+    re_path(r'^contact_replys/', include('mrelife.outletstores.outletstorecontactreplys.urls')),
+    re_path(r'^medias/', include('mrelife.outletstores.outletstoremedias.urls')),
     path('', include(router.urls)),
 ]
 
