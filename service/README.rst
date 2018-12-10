@@ -57,6 +57,7 @@ MIGRATE DEFAULT GROUP
 To create a superuser, run:
 
 - docker-compose -f production.yml run --rm django python manage.py createsuperuser
+- docker-compose run --rm django python manage.py createsuperuser
 
 If you need a shell, run:
 

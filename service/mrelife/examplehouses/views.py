@@ -11,10 +11,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from mrelife.examplehouses.models import (ExampleHouse, ExampleHouseCommitment,
-                                        ExampleHouseStyle, ExampleHouseTag)
-from mrelife.examplehouses.serializers import (ExampleHouseNestedSerializer,
-                                             ExampleHouseSerializer)
+from mrelife.examplehouses.models import ExampleHouse, ExampleHouseCommitment, ExampleHouseStyle, ExampleHouseTag
+from mrelife.examplehouses.serializers import ExampleHouseNestedSerializer, ExampleHouseSerializer
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
@@ -28,6 +26,29 @@ class ExampleHouseViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated, ModelHousePermission,)
     parser_class = (FormParser, MultiPartParser, JSONParser)
     pagination_class = LimitOffsetPagination
+
+    def list(self, request, *args, **kwargs):
+        response = super(ExampleHouseViewSet, self).list(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
+
+    def retrieve(self, request, *args, **kwargs):
+        self.serializer_class = ExampleHouseNestedSerializer
+        response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
 
     def create(self, request, *args, **kwargs):
         """
@@ -82,13 +103,38 @@ class ExampleHouseViewSet(ModelViewSet):
                     pass
         return obj
 
-    def retrieve(self, request, *args, **kwargs):
-        self.serializer_class = ExampleHouseNestedSerializer
-        return super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-
     def update(self, request, *args, **kwargs):
-        obj = super(ExampleHouseViewSet, self).update(request, *args, **kwargs)
-        return obj
+        response = super(ExampleHouseViewSet, self).update(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
+
+    def partial_update(self, request, *args, **kwargs):
+        response = super(ExampleHouseViewSet, self).partial_update(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
+
+    def destroy(self, request, *args, **kwargs):
+        response = super(ExampleHouseViewSet, self).destroy(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
 
     @detail_route(methods=['post'])
     def add_tag(self, request, *args, **kwargs):
@@ -104,7 +150,15 @@ class ExampleHouseViewSet(ModelViewSet):
                     tag, created = Tag.objects.get_or_create(name=tag_name)
                     if created or not house.tags.filter(tag=tag).exists():
                         ExampleHouseTag.objects.create(tag=tag, example_house=house)
-        return super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
 
     @detail_route(methods=['post'])
     def remove_tag(self, request, *args, **kwargs):
@@ -121,7 +175,15 @@ class ExampleHouseViewSet(ModelViewSet):
                     _tag.delete()
                 except Exception:
                     pass
-        return super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
 
     @detail_route(methods=['post'])
     def add_style(self, request, *args, **kwargs):
@@ -137,7 +199,15 @@ class ExampleHouseViewSet(ModelViewSet):
                     style, created = ExampleHouseStyle.objects.get_or_create(style_id=style, example_house=house)
                 except Exception:
                     pass
-        return super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
 
     @detail_route(methods=['post'])
     def remove_style(self, request, *args, **kwargs):
@@ -154,7 +224,15 @@ class ExampleHouseViewSet(ModelViewSet):
                     _style.delete()
                 except Exception:
                     pass
-        return super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
 
     @detail_route(methods=['post'])
     def add_commitment(self, request, *args, **kwargs):
@@ -171,7 +249,15 @@ class ExampleHouseViewSet(ModelViewSet):
                         commitment_id=commitment, example_house=house)
                 except Exception:
                     pass
-        return super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
 
     @detail_route(methods=['post'])
     def remove_commitment(self, request, *args, **kwargs):
@@ -188,4 +274,12 @@ class ExampleHouseViewSet(ModelViewSet):
                     _commitment.delete()
                 except Exception:
                     pass
-        return super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
