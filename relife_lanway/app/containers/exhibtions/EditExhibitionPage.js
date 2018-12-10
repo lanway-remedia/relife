@@ -24,7 +24,6 @@ import { Helmet } from 'react-helmet'
 import { toast } from 'react-toastify'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
-import 'react-datepicker/dist/react-datepicker.css'
 import LocationsComponent from '../../components/LocationsComponent'
 
 class EditExhibitionPage extends React.Component {
