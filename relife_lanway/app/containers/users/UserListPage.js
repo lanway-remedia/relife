@@ -18,7 +18,6 @@ import PaginationComponent from '../../components/PaginationComponent'
 import SearchCondition from '../../components/SearchCondition'
 import { DefaultValue } from '../../constants'
 import { Helmet } from 'react-helmet'
-import queryString from 'query-string'
 import { ModalName } from '../../constants'
 
 class ListAccountsPage extends React.Component {
@@ -32,16 +31,20 @@ class ListAccountsPage extends React.Component {
   }
 
   componentDidMount() {
-    let parsed = queryString.parse(this.props.history.location.search)
-    let page = parsed.page * 1 || DefaultValue.PAGE
-    let limit = parsed.limit *1 || DefaultValue.LIMIT
+    let params = new URLSearchParams(this.props.history.location.search)
+    let page = params.get('page') * 1 || DefaultValue.PAGE
+    let limit = params.get('limit') *1 || DefaultValue.LIMIT
+    let name = params.get('freeword')
+    let group_id = params.get('group')
+    let store_id = params.get('store')
     let data = {
       offset: (page - 1) * limit,
-      limit: limit
+      limit: limit,
+      ...(name && {name: name}),
+      ...(group_id && {group_id: group_id}),
+      ...(store_id && {store_id: store_id})
     }
-    if (parsed.freeword) data.name = parsed.freeword
-    if (parsed.group && parsed.group!=0) data.group_id = parsed.group
-    if (parsed.store) data.store_id = parsed.store
+    console.log(data)
     this.props.userListRequest(data)
   }
 

@@ -38,13 +38,15 @@ class AddNewTagPage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let data = nextProps.data
-      if (data.isAddStore) {
-        toast.success(
-          I18nUtils.formatMessage(
-            { id: 'toast-add-sucess' },
-            { name: this.state.name }
+      if (data.isAdd) {
+        if (data.messageCode === 'SU001') {
+          toast.success(
+            I18nUtils.formatMessage(
+              { id: 'toast-add-sucess' },
+              { name: this.state.name }
+            )
           )
-        )
+        }
       }
     }
   }

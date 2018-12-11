@@ -5,4 +5,5 @@
 
 export default class ModalName {
   static COMMON = 'common'
+  static FORMMODAL = 'formmodal'
 }

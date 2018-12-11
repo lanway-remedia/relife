@@ -4,6 +4,7 @@ import I18nUtils from '../utils/I18nUtils'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Col, FormGroup, Label, Input } from 'reactstrap'
+import { SelectGroup } from 'react-bootstrap4-form-validation'
 import LocationActions from '../redux/wrapper/LocationsRedux'
 
 class LocationsComponent extends Component {
@@ -13,22 +14,39 @@ class LocationsComponent extends Component {
       dataCity: [],
       dataDistrict: [],
       city: '',
-      district: ''
+      district: '',
+      required: false
     }
 
+    this.getLocation = this.getLocation.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleUpdateDistrict = this.handleUpdateDistrict.bind(this)
+    this.handleSendData = this.handleSendData.bind(this)
+  }
+
+  getLocation() {
+    const id = 1 // Type City
+    this.props.locationGetRequest(id)
   }
 
   componentDidMount() {
-    const id = 1 // Type City
-    this.props.locationsRequest(id)
+    if (
+      Object.keys(this.props.outletStoresData).length === 0 ||
+      Object.keys(this.props.exhibitionsData).length === 0
+    ) {
+      this.getLocation()
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.data != nextProps.data) {
+    if (
+      this.props.outletStoresData !== nextProps.outletStoresData ||
+      this.props.exhibitionsData !== nextProps.exhibitionsData
+    ) {
+      this.getLocation()
+    }
+    if (this.props.data !== nextProps.data) {
       let response = nextProps.data
-      console.log(response)
       if (response.listLocation) {
         this.setState({
           dataCity: response.data
@@ -52,13 +70,27 @@ class LocationsComponent extends Component {
           district: nextProps.district
         })
       }
+      if (nextProps.required) {
+        this.setState({
+          required: true
+        })
+      }
     }
+  }
+
+  componentWillUnmount() {
+    this.getLocation()
   }
 
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     })
+  }
+
+  handleSendData = () => {
+    this.props.onSelectedCity(this.state.city)
+    this.props.onSelectedDistrict(this.state.district)
   }
 
   handleUpdateDistrict = () => {
@@ -77,56 +109,108 @@ class LocationsComponent extends Component {
   }
 
   render() {
-    const { dataCity, dataDistrict, city, district } = this.state
+    const { dataCity, dataDistrict, city, district, required } = this.state
     const isCity = city
     return (
       <React.Fragment>
         <Col xs="12" md="6">
           <FormGroup>
-            <Label for={'city'}>{I18nUtils.t('city')}</Label>
-            <Input
-              type="select"
-              name="city"
-              id="city"
-              onChange={this.handleChange}
-              onMouseLeave={this.handleUpdateDistrict}
-              value={city}
-            >
-              <option value="0">{I18nUtils.t('lb-select')}</option>
-              {dataCity.map((city, key) => {
-                return (
-                  <option key={key} value={city.id}>
-                    {city.name}
-                  </option>
-                )
-              })}
-            </Input>
+            <Label for="city">{I18nUtils.t('city')}</Label>
+            {required && (
+              <SelectGroup
+                type="select"
+                name="city"
+                id="city"
+                onChange={this.handleChange}
+                onMouseLeave={this.handleUpdateDistrict}
+                value={city}
+                required
+                errorMessage={I18nUtils.t('lb-select')}
+              >
+                <option value="0">{I18nUtils.t('lb-select')}</option>
+                {dataCity.map((city, key) => {
+                  return (
+                    <option key={key} value={city.id}>
+                      {city.name}
+                    </option>
+                  )
+                })}
+              </SelectGroup>
+            )}
+            {!required && (
+              <Input
+                type="select"
+                name="city"
+                id="city"
+                onChange={this.handleChange}
+                onMouseLeave={this.handleUpdateDistrict}
+                value={city}
+              >
+                <option value="0">{I18nUtils.t('lb-select')}</option>
+                {dataCity.map((city, key) => {
+                  return (
+                    <option key={key} value={city.id}>
+                      {city.name}
+                    </option>
+                  )
+                })}
+              </Input>
+            )}
           </FormGroup>
         </Col>
         <Col xs="12" md="6">
           <FormGroup>
-            <Label for={'district'}>{I18nUtils.t('district')}</Label>
-            <Input
-              type="select"
-              name="district"
-              id="district"
-              onChange={this.handleChange}
-              value={district}
-            >
-              {isCity === '0' || isCity === '' ? (
-                <option value="0">{I18nUtils.t('lb-district')}</option>
-              ) : (
-                <option value="0">{I18nUtils.t('lb-select')}</option>
-              )}
-              {dataDistrict.length > 0 &&
-                dataDistrict.map((dis, key) => {
-                  return (
-                    <option key={key} value={dis.id}>
-                      {dis.name}
-                    </option>
-                  )
-                })}
-            </Input>
+            <Label for="district">{I18nUtils.t('district')}</Label>
+            {required && (
+              <SelectGroup
+                type="select"
+                name="district"
+                id="district"
+                onChange={this.handleChange}
+                value={district}
+                required
+                errorMessage={I18nUtils.t('lb-select')}
+                onMouseLeave={this.handleSendData}
+              >
+                {isCity === '0' || isCity === '' ? (
+                  <option value="0">{I18nUtils.t('lb-district')}</option>
+                ) : (
+                  <option value="0">{I18nUtils.t('lb-select')}</option>
+                )}
+                {dataDistrict.length > 0 &&
+                  dataDistrict.map((dis, key) => {
+                    return (
+                      <option key={key} value={dis.id}>
+                        {dis.name}
+                      </option>
+                    )
+                  })}
+              </SelectGroup>
+            )}
+            {!required && (
+              <Input
+                type="select"
+                name="district"
+                id="district"
+                onChange={this.handleChange}
+                value={district}
+                onMouseLeave={this.handleSendData}
+              >
+                {isCity === '0' || isCity === '' ? (
+                  <option value="0">{I18nUtils.t('lb-district')}</option>
+                ) : (
+                  <option value="0">{I18nUtils.t('lb-select')}</option>
+                )}
+                {dataDistrict.length > 0 &&
+                  dataDistrict.map((dis, key) => {
+                    return (
+                      <option key={key} value={dis.id}>
+                        {dis.name}
+                      </option>
+                    )
+                  })}
+              </Input>
+            )}
           </FormGroup>
         </Col>
       </React.Fragment>
@@ -138,19 +222,27 @@ LocationsComponent.propTypes = {
   type: PropTypes.string,
   city: PropTypes.string,
   district: PropTypes.string,
-  locationsRequest: PropTypes.func,
-  data: PropTypes.object
+  locationGetRequest: PropTypes.func,
+  data: PropTypes.object,
+  outletStoresData: PropTypes.object,
+  exhibitionsData: PropTypes.object,
+  required: PropTypes.bool,
+  onSelectedCity: PropTypes.func,
+  onSelectedDistrict: PropTypes.func,
+  handleUpdateDistrict: PropTypes.func
 }
 
 const mapStateToProps = state => {
   return {
     processing: state.locations.processing,
-    data: state.locations.data
+    data: state.locations.data,
+    outletStoresData: state.outletStores.data,
+    exhibitionsData: state.exhibitions.data
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  locationsRequest: data => dispatch(LocationActions.locationsRequest(data))
+  locationGetRequest: data => dispatch(LocationActions.locationGetRequest(data))
 })
 
 export default connect(

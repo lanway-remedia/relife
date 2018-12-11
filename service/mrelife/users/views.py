@@ -8,7 +8,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
 from rest_framework.decorators import list_route
-from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
@@ -56,7 +56,26 @@ class UserVs(ModelViewSet):
         if name is not None:
             self.queryset = self.queryset.filter(Q(username__contains=name) | Q(
                 first_name__contains=name) | Q(last_name__contains=name))
-        return super(UserVs, self).list(request, *args, **kwargs)
+        response = super(UserVs, self).list(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super(UserVs, self).retrieve(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
 
     def create(self, request, *args, **kwargs):
         """
@@ -69,8 +88,8 @@ class UserVs(ModelViewSet):
                 store: int
                 other field is optional
         """
-        obj = super(UserVs, self).create(request, *args, **kwargs)
-        user = User.objects.get(pk=obj.data['id'])
+        response = super(UserVs, self).create(request, *args, **kwargs)
+        user = User.objects.get(pk=response.data['id'])
         group = request.user.group
         if not IsStore(request.user):
             try:
@@ -86,10 +105,17 @@ class UserVs(ModelViewSet):
         user.group = group
         user.store = store
         user.save()
-        obj.data['group'] = group.id
+        response.data['group'] = group.id
         if store is not None:
-            obj.data['store'] = store.id
-        return obj
+            response.data['store'] = store.id
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
 
     def update(self, request, *args, **kwargs):
         """
@@ -99,7 +125,37 @@ class UserVs(ModelViewSet):
                 username: not changing with this action
         """
         self.serializer_class = UserWithoutRequireInfoSerializer
-        return super(UserVs, self).update(request, *args, **kwargs)
+        response = super(UserVs, self).update(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
+
+    def partial_update(self, request, *args, **kwargs):
+        response = super(UserVs, self).partial_update(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
+
+    def destroy(self, request, *args, **kwargs):
+        response = super(UserVs, self).destroy(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        return response
 
 
 class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
@@ -110,6 +166,26 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = (IsAuthenticated,)
+
+    def list(self, request, *args, **kwargs):
+        self.queryset = User.objects.filter(pk=request.user.id)
+        self.serializer_class = UserSerializer
+        response = super(ProfileVs, self).list(request, *args, **kwargs)
+        if response.status_code > 299:
+            response.data = {
+                'status': False,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data
+            }
+        else:
+            response.data = {
+                'status': True,
+                'messageCode': '',
+                'messageParams': {},
+                'data': response.data[0]
+            }
+        return response
 
     def create(self, request, *args, **kwargs):
         user = User.objects.get(pk=request.user.id)
@@ -125,17 +201,6 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
         return Response({
             'status': True,
             'messageCode': 'US011',
-            'messageParams': {},
-            'data': serializer.data
-        }, status.HTTP_200_OK)
-
-    def list(self, request, *args, **kwargs):
-        user = User.objects.get(pk=request.user.id)
-        serializer = UserSerializer(user)
-
-        return Response({
-            'status': True,
-            'messageCode': 'US007',
             'messageParams': {},
             'data': serializer.data
         }, status.HTTP_200_OK)
