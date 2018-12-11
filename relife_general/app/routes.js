@@ -5,13 +5,15 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Route, Redirect, withRouter, Switch } from 'react-router-dom'
+import { Route, withRouter, Switch } from 'react-router-dom'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
 
-// import LoginPage from './containers/LoginPage'
+//auths
+import LoginPage from './containers/auths/LoginPage'
+
 import HomePage from './containers/HomePage'
 import ArticlePage from './containers/ArticlePage'
 // import ForgotPasswordPage from './containers/ForgotPasswordPage'
@@ -20,7 +22,7 @@ import ArticlePage from './containers/ArticlePage'
 
 // import AppUtils from './utils/AppUtils'
 // import I18nUtils from './utils/I18nUtils'
-import StorageKeyConstants from './constants/StorageKeyConstants'
+// import StorageKeyConstants from './constants/StorageKeyConstants'
 
 // import { Dashboard, Header, Sidebar } from 'react-adminlte-dash'
 
@@ -45,24 +47,24 @@ class Routes extends React.Component {
   }
 
   render() {
-    const isAuthenticated = () => {
-      let isLogin = false
-      var code = localStorage.getItem(StorageKeyConstants.TOKEN)
+    // const isAuthenticated = () => {
+    //   let isLogin = false
+    //   var code = localStorage.getItem(StorageKeyConstants.TOKEN)
 
-      if (code && code != '') {
-        isLogin = true
-      }
+    //   if (code && code != '') {
+    //     isLogin = true
+    //   }
 
-      return isLogin
-    }
+    //   return isLogin
+    // }
 
-    const requireLogin = Component => props => {
-      return isAuthenticated() ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/login" />
-      )
-    }
+    // const requireLogin = Component => props => {
+    //   return isAuthenticated() ? (
+    //     <Component {...props} />
+    //   ) : (
+    //     <Redirect to="/login" />
+    //   )
+    // }
 
     // const nav = () => [
     //   <li className="nav-item" key="1">
@@ -115,52 +117,33 @@ class Routes extends React.Component {
     //   </span>
     // ]
 
-    // let hideMenu =
-    //   this.props.location.pathname.includes('/login') ||
-    //   this.props.location.pathname.includes('/forgot-password')
-
+    let hideMenu =
+      this.props.location.pathname.includes('/login') ||
+      this.props.location.pathname.includes('/forgot-password') ||
+      this.props.location.pathname.includes('/change-password')
     return (
+      <div className="wrapper">
+      {!hideMenu ?
       <React.Fragment>
         <Header />
         <Navbar />
         <div className="content-wrapper">
           <Container>
             <Switch>
-              <Route exact path="/" component={requireLogin(HomePage)} />
-              <Route path="/article" component={requireLogin(ArticlePage)} />
-              <Route path="/article" component={requireLogin(ArticlePage)} />
+              <Route exact path="/" component={HomePage} />
+              <Route path="/article" component={ArticlePage} />
             </Switch>
           </Container>
         </div>
         <Footer />
       </React.Fragment>
-      // <div className="wrapper">
-      //   {!hideMenu ? (
-      //     <Dashboard
-      //       navbarChildren={nav()}
-      //       sidebarChildren={sb()}
-      //       footerChildren={footer()}
-      //       theme={this.state.theme}
-      //       logoLg={<span>{I18nUtils.t('app-title')}</span>}
-      //       logoSm={<span>{I18nUtils.t('app-title-acronym')}</span>}
-      //       sidebarMini
-      //     >
-      //       <div className="root-wrap">
-      //         <Switch>
-      //           <Route exact path="/" component={requireLogin(HomePage)} />
-      //           <Route path="/article" component={requireLogin(ArticlePage)} />
-      //         </Switch>
-      //       </div>
-      //     </Dashboard>
-      //   ) : (
-      //     <React.Fragment>
-      //       <Switch>
-      //         <Route exact path="/login" component={LoginPage} />
-      //         <Route path="/forgot-password" component={ForgotPasswordPage} />
-      //       </Switch>
-      //     </React.Fragment>
-      //   )}
-      // </div>
+       : 
+      <React.Fragment>
+        <Switch>
+          <Route exact path="/login" component={LoginPage} />
+        </Switch>
+      </React.Fragment>}
+      </div>
     )
   }
 }

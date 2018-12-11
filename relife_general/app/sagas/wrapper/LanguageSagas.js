@@ -6,9 +6,9 @@
 import { put } from 'redux-saga/effects'
 import _ from 'lodash'
 
-import ListLanguagesActions from '../redux/language/ListLanguagesRedux'
-import SetLanguageActions from '../redux/language/SetLanguageRedux'
-import { languageService } from '../services'
+import ListLanguagesActions from '../../redux/wrapper/ListLanguagesRedux'
+import SetLanguageActions from '../../redux/wrapper/SetLanguageRedux'
+import { languageService } from '../../services'
 
 const LanguageSagas = {
   *list() {

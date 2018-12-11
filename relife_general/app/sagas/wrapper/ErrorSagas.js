@@ -5,7 +5,7 @@
 
 import { call } from 'redux-saga/effects'
 
-import I18nUtils from '../utils/I18nUtils'
+import I18nUtils from '../../utils/I18nUtils'
 
 const ErrorSagas = {
   *handleError(action) {

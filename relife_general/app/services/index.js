@@ -2,8 +2,8 @@
  * @author Nam NH
  * Center point to export instances of services
  */
-import LanguageService from './LanguageService'
-import LoginService from './LoginService'
+import LanguageService from './wrapper/LanguageService'
+import AuthsService from './wrapper/AuthsService'
 
 export const languageService = new LanguageService()
-export const loginService = new LoginService()
+export const authsService = new AuthsService()

@@ -1,5 +1,5 @@
 /**
- * @author Cuonglb
+ * @author HanhTD
  * Task Confirmation
  */
 
@@ -7,12 +7,14 @@ import { createReducer, createActions } from 'reduxsauce'
 
 /* ------------- Types and Action Creators ------------- */
 const { Types, Creators } = createActions({
-  loginRequest: ['email', 'password'],
-  loginSuccess: ['data'],
-  loginFailure: ['error']
+  loginRequest: ['data'],
+  forgotPasswordRequest: ['data'],
+  resetPasswordRequest: ['data'],
+  authsSuccess: ['data'],
+  authsFailure: ['error']
 })
 
-export const LoginTypes = Types
+export const AuthsTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
@@ -23,7 +25,7 @@ export const INITIAL_STATE = {
 }
 
 /* ------------- Reducers ------------- */
-export const request = (state) => {
+export const request = state => {
   return { ...state, processing: true }
 }
 
@@ -38,6 +40,8 @@ export const failure = (state, { error }) => {
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGIN_REQUEST]: request,
-  [Types.LOGIN_SUCCESS]: success,
-  [Types.LOGIN_FAILURE]: failure
+  [Types.FORGOT_PASSWORD_REQUEST]: request,
+  [Types.RESET_PASSWORD_REQUEST]: request,
+  [Types.AUTHS_SUCCESS]: success,
+  [Types.AUTHS_FAILURE]: failure
 })

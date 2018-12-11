@@ -4,7 +4,7 @@
  */
 
 import AbstractDataService from './AbstractDataService'
-import { StorageKeyConstants, BooleanString } from '../constants'
+import { StorageKeyConstants, BooleanString } from '../../constants'
 
 export default class LanguageService extends AbstractDataService {
   constructor() {

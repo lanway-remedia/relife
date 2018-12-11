@@ -6,22 +6,24 @@
 import { takeLatest } from 'redux-saga/effects'
 
 /* ------------- Types ------------- */
-import { ListLanguagesTypes } from '../redux/language/ListLanguagesRedux'
-import { SetLanguageTypes } from '../redux/language/SetLanguageRedux'
-import { LoginTypes } from '../redux/login/LoginRedux'
+import { ListLanguagesTypes } from '../redux/wrapper/ListLanguagesRedux'
+import { SetLanguageTypes } from '../redux/wrapper/SetLanguageRedux'
+import { AuthsTypes } from '../redux/wrapper/AuthsRedux'
 /* ------------- Sagas ------------- */
-import ErrorSagas from '../sagas/ErrorSagas'
-import LanguageSagas from '../sagas/LanguageSagas'
-import LoginSagas from '../sagas/LoginSagas'
+import ErrorSagas from './wrapper/ErrorSagas'
+import LanguageSagas from './wrapper/LanguageSagas'
+import AuthsSagas from './wrapper/AuthsSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function * root () {
   yield [
+    //language
     takeLatest(SetLanguageTypes.SET_LANGUAGE_REQUEST, LanguageSagas.set),
     takeLatest(SetLanguageTypes.SET_LANGUAGE_FAILURE, ErrorSagas.handleError),
     takeLatest(ListLanguagesTypes.LIST_LANGUAGES_REQUEST, LanguageSagas.list),
     takeLatest(ListLanguagesTypes.LIST_LANGUAGES_FAILURE, ErrorSagas.handleError),
 
-    takeLatest(LoginTypes.LOGIN_REQUEST, LoginSagas.login),
-    takeLatest(LoginTypes.LOGIN_FAILURE, ErrorSagas.handleError)
+    //authentication
+    takeLatest(AuthsTypes.LOGIN_REQUEST, AuthsSagas.login),
+    takeLatest(AuthsTypes.AUTHS_FAILURE, ErrorSagas.handleError),
   ]
 }
