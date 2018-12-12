@@ -36,6 +36,7 @@ class RegisterSerializer(Serializer):
     username = CharField(required=True)
     password1 = CharField(required=True)
     password2 = CharField(required=True)
+    domain = CharField(required=True)
 
     def validate(self, attrs):
         """
