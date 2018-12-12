@@ -1,0 +1,21 @@
+//Variable and Mixins
+@import './vendors/variables';
+@import './vendors/mixins';
+
+//Components
+@import './components/header';
+@import './components/language';
+@import './components/backGround';
+@import './components/spaceList';
+@import './components/paginationComponent';
+@import './components/profileImage';
+@import './components/imageUploadComponent';
+
+//Containers
+@import './containers/auths/loginPage';
+@import './containers/auths/forgotPasswordPage';
+@import './containers/profiles/userDashboardPage';
+@import './containers/profiles/userEditProfile';
+
+//Common
+@import 'common';

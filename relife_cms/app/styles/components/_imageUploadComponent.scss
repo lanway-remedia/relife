@@ -1,0 +1,16 @@
+.upload-container {
+  &.upload-image {
+    .btn {
+      margin-top: -24px;
+    }
+
+    .upload-title {
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      margin: 7px 0 0 12px;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+  }
+}
