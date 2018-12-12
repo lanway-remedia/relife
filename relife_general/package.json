@@ -101,6 +101,7 @@
     "reduxsauce": "^0.7.0",
     "save": "^2.3.2",
     "url-search-params": "^0.10.0",
-    "react-bootstrap4-form-validation": "^1.0.9"
+    "react-bootstrap4-form-validation": "^1.0.9",
+    "validator": "^10.9.0"
   }
 }

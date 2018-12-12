@@ -13,6 +13,7 @@ import Navbar from './components/Navbar'
 
 //auths
 import LoginPage from './containers/auths/LoginPage'
+import ForgotPasswordPage from './containers/auths/ForgotPasswordPage'
 
 import HomePage from './containers/HomePage'
 import ArticlePage from './containers/ArticlePage'
@@ -141,6 +142,7 @@ class Routes extends React.Component {
       <React.Fragment>
         <Switch>
           <Route exact path="/login" component={LoginPage} />
+          <Route path="/forgot-password" component={ForgotPasswordPage} />
         </Switch>
       </React.Fragment>}
       </div>

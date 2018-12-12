@@ -65,7 +65,8 @@ class LoginPage extends React.Component {
         <div className="login-content">
           <div className="form-center">
             <div className="form-logo">
-              <div className="form-body">
+            </div>
+            <div className="form-body">
                 <ValidationForm onSubmit={this.handleSubmit}>
                   <FormGroup>
                     <Label for="username">{I18nUtils.t('username')}</Label>
@@ -116,7 +117,6 @@ class LoginPage extends React.Component {
                     <Button color="primary">{I18nUtils.t('login')}</Button>
                   </FormGroup>
                 </ValidationForm>
-              </div>
             </div>
           </div>
         </div>
