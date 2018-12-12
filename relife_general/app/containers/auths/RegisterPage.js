@@ -13,7 +13,6 @@ import I18nUtils from '../../utils/I18nUtils'
 import {ValidationForm, TextInput} from 'react-bootstrap4-form-validation'
 import {Button, FormGroup, Label} from 'reactstrap'
 import AppUtils from '../../utils/AppUtils'
-import Facebook from '../../components/Facebook'
 
 class RegisterPage extends React.Component {
     constructor(props) {
@@ -124,9 +123,6 @@ class RegisterPage extends React.Component {
                                 </FormGroup>
                                 <FormGroup className="btns-group">
                                     <Button color="primary">{I18nUtils.t('register')}</Button>
-                                </FormGroup>
-                                <FormGroup>
-                                    <Facebook />
                                 </FormGroup>
                             </ValidationForm>
                         </div>

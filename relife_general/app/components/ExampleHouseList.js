@@ -11,9 +11,9 @@ import {
     Row, Col, Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle, Button
 } from 'reactstrap'
-import I18nUtils from '../utils/I18nUtils'
+// import I18nUtils from '../utils/I18nUtils'
 
-class CoWorkingList extends React.Component {
+class ExampleHouseList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -64,17 +64,8 @@ class CoWorkingList extends React.Component {
   }
 }
 
-CoWorkingList.propTypes = {
+ExampleHouseList.propTypes = {
     history: PropTypes.object,
 }
 
-const mapStateToProps = () => {
-//     return {}
-}
-
-const mapDispatchToProps = () => ({})
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(CoWorkingList))
+export default connect()(withRouter(ExampleHouseList))

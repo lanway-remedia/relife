@@ -9,8 +9,7 @@ import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import BackGround from '../components/BackGround'
-import CoWorkingList from '../components/CoWorkingList'
-import TopMenu from '../components/TopMenu'
+import ExampleHouseList from '../components/ExampleHouseList'
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -20,10 +19,9 @@ class HomePage extends React.Component {
 
     render() {
         return [
-            <TopMenu key={1} />,
             <BackGround key="1" />,
             <Container key="2">
-                <CoWorkingList />
+                <ExampleHouseList />
             </Container>
         ]
     }
