@@ -7,7 +7,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Container } from 'reactstrap'
+import { Row, Col, Button } from 'reactstrap'
+// import defaultAvatar from '../images/user.png'
+import I18nUtils from '../utils/I18nUtils'
 
 class Header extends React.Component {
   constructor(props) {
@@ -15,10 +17,21 @@ class Header extends React.Component {
     this.state = {}
   }
 
+  goLoginPage = () => {
+    this.props.history.push('/login')
+  }
+
   render() {
     return (
       <header>
-        <Container>It's Header</Container>
+        <Row noGutters>
+          <Col xs="12" sm="9" />
+          <Col xs="12" sm="3">
+            <Button color="link" onClick={() => this.goLoginPage()}>
+              {I18nUtils.t('login')}
+            </Button>{' '}
+          </Col>
+        </Row>
       </header>
     )
   }

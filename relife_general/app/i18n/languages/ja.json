@@ -1,60 +1,7 @@
 {
-  "app-title": "Re:スタイル",
-  "app-title-acronym": "Re",
-  "nav-main-lbl": "メインナビゲーション",
-  "nav-home-lbl": "ホーム",
-  "nav-article-lbl": "記事",
+  "app-title": "Re:life",
 
-  "en_US": "英語",
-  "ja_JP": "日本語",
-
-  "search-lbl": "検索",
-
-  "ud-page-title": "User Dashboard",
-  "ud-info": "User Info",
-  "ud-change": "Change Password",
-
-  "la-page-title": "List Account",
-
-  "all-place-name": "Please input name here",
-  "all-place-email": "Please input email here",
-  "all-place-phone": "Please input phone here",
-  "all-place-address": "Please input address here",
-  "all-place-password": "Please input password here",
-  "all-place-currentPassword": "Please input current password here",
-  "all-place-changePassword": "Please input want password change here",
-  "all-place-oldPassword": "Please input old password here",
-  "all-place-confirmPassword": "Please input confirm password here",
-  "all-place-newPassword": "Please input new password here",
-
-  "name": "Name",
-  "email": "Email",
-  "address": "Address",
-  "phone": "Phone",
-  "password": "Password",
-  "currentPassword": "Current Password",
-  "newPassword": "New Password",
-  "oldPassword": "Old Password",
-  "changePassword": "Change Password",
-  "confirmPassword": "Confirm Password",
-  "forgotPassword": "Forgot Password",
-  "submit": "Submit",
-  "reset": "Reset",
-  "send": "Send",
-  "cancel": "Cancel",
-  "update": "Update",
-  "save": "Save",
-  "search": "Search",
-  "edit": "Edit",
-  "delete": "Delete",
-  "login": "Login",
-
-  "toolbar-totalRecords": "Showing {limit} in {total} records",
-  "toolbar-limit": "Visible",
-
-  "login-page-title": "RE:STYLE SYSTEM LOGIN PAGE",
-
-  "forgotpassword-page-title": "RE:STYLE SYSTEM FORGOT PASSWORD PAGE",
-  "forgot-back-login": "Back to Login Page",
-  "forgot-text": "In here, you can get your forgotten password if you provide email..."
+  "en_US": "English",
+  "ja_JP": "Japanese",
+  "login": "Login"
 }

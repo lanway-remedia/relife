@@ -3,27 +3,28 @@
  * Webpack config for production environment
  */
 
-'use strict';
+'use strict'
 
-var webpack = require('webpack');
-let path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var StatsPlugin = require('stats-webpack-plugin')
+let webpack = require('webpack')
+let path = require('path')
+let HtmlWebpackPlugin = require('html-webpack-plugin')
+let ExtractTextPlugin = require('extract-text-webpack-plugin')
+let StatsPlugin = require('stats-webpack-plugin')
+let UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = require('./webpack.base')({
-  entry: [
-    'babel-polyfill',
-    path.join(__dirname, '../app/index.js')
-  ],
+  entry: ['babel-polyfill', path.join(__dirname, '../app/index.js')],
   output: {
-    publicPath: process.env.BASENAME ? ('/' + process.env.BASENAME + '/') : '/',
+    publicPath: process.env.BASENAME ? '/' + process.env.BASENAME + '/' : '/',
     path: path.join(__dirname, '../build_prod'),
     filename: '[name]-[hash].min.js'
   },
   eslint: {
     failOnWarning: false,
     failOnError: true
+  },
+  optimization: {
+    minimizer: [new UglifyJsPlugin()]
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -35,13 +36,6 @@ module.exports = require('./webpack.base')({
 
     // extracts the css from the js files and puts them on a separate .css file.
     new ExtractTextPlugin('[name]-[hash].min.css'),
-
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false,
-        screw_ie8: true
-      }
-    }),
 
     // creates a stats.json
     new StatsPlugin('webpack.stats.json', {

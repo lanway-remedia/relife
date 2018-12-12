@@ -1,0 +1,67 @@
+.cms-login-index,
+.cms-forgotpassword-index {
+  #root,
+  .root-content,
+  .wrapper {
+    height: 100%;
+  }
+}
+.login-page {
+  display: block;
+  height: 100%;
+  width: 100%;
+
+  .login-content {
+    display: block;
+    height: 100%;
+
+    .form-center {
+      display: block;
+      max-width: 790px;
+      margin: 0 auto;
+      border: 1px solid $border-color-2;
+      overflow: hidden;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+
+      .form-header {
+        background: $navi;
+        padding: 22px;
+
+        h3 {
+          color: $text-white-color;
+          margin: 0;
+          font-size: 14px;
+          text-transform: uppercase;
+        }
+      }
+
+      .form-body {
+        display: block;
+        padding: 60px 40px 50px;
+
+        .form-group {
+          margin: 0 0 20px;
+
+          .input-group-text {
+            min-width: 40px;
+            text-align: center;
+            justify-content: center;
+          }
+
+          &.btns-group {
+            margin: 0;
+            text-align: right;
+
+            .btn {
+              color: $text-white-color;
+            }
+          }
+        }
+      }
+    }
+  }
+}
