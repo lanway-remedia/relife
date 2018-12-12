@@ -5,14 +5,13 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Route, Redirect, withRouter, Switch} from 'react-router-dom'
-import {ToastContainer} from 'react-toastify'
-//header
+import { Route, Redirect, withRouter, Switch } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import { Row, Col } from 'reactstrap'
+//header & navigation
 import Header from './components/Header'
-//homepage
-import HomePage from './containers/HomePage'
+import Navigation from './components/Navigation'
 //auths
-import RegisterPage from './containers/auths/RegisterPage'
 import LoginPage from './containers/auths/LoginPage'
 import ResetPasswordPage from './containers/auths/ResetPasswordPage'
 import ForgotPasswordPage from './containers/auths/ForgotPasswordPage'
@@ -21,7 +20,7 @@ import ProfileInfoPage from './containers/profiles/ProfileInfoPage'
 import ProfileEditPage from './containers/profiles/ProfileEditPage'
 import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
 
-import {StorageKeyConstants} from './constants'
+import { StorageKeyConstants } from './constants'
 import 'react-toastify/dist/ReactToastify.css'
 
 class Routes extends React.Component {
@@ -56,46 +55,54 @@ class Routes extends React.Component {
             return isAuthenticated() ? (
                 <Component {...props} />
             ) : (
-                <Redirect to="/login" />
-            )
+                    <Redirect to="/login" />
+                )
         }
+
+        let hideMenu =
+            this.props.location.pathname.includes('/login') ||
+            this.props.location.pathname.includes('/forgot-password') ||
+            this.props.location.pathname.includes('/email-confirm')
 
         return (
             <div className="wrapper">
                 <React.Fragment>
                     <ToastContainer />
-                    <Header />
-                    <Switch>
-                        <Route exact path="/login" component={LoginPage} />
-                        <Route path="/forgot-password" component={ForgotPasswordPage} />
-                        <Route
-                            path="/email-confirm/:uidb64/:token_key"
-                            component={ResetPasswordPage}
-                        />
-                        <Route
-                            exact
-                            path="/"
-                            component={HomePage}
-                        />
-                        <Route
-                            exact
-                            path="/register"
-                            component={RegisterPage}
-                        />
-                        <Route
-                            exact
-                            path="/profile"
-                            component={requireLogin(ProfileInfoPage)}
-                        />
-                        <Route
-                            path="/profile-edit"
-                            component={requireLogin(ProfileEditPage)}
-                        />
-                        <Route
-                            path="/profile-change-password"
-                            component={requireLogin(ProfileChangePassPage)}
-                        />
-                    </Switch>
+                    {!hideMenu && <Header />}
+                    {hideMenu ? (
+                        <Switch>
+                            <Route exact path="/login" component={LoginPage} />
+                            <Route path="/forgot-password" component={ForgotPasswordPage} />
+                            <Route
+                                path="/email-confirm/:uidb64/:token_key"
+                                component={ResetPasswordPage}
+                            />
+                        </Switch>
+                    ) : (
+                            <Row>
+                                <Col xs="12" md="2">
+                                    <Navigation />
+                                </Col>
+                                <Col xs="12" md="10">
+                                    <Switch>
+                                        <Route
+                                            exact
+                                            path="/profile"
+                                            component={requireLogin(ProfileInfoPage)}
+                                        />
+                                        <Route
+                                            path="/profile-edit"
+                                            component={requireLogin(ProfileEditPage)}
+                                        />
+                                        <Route
+                                            path="/profile-change-password"
+                                            component={requireLogin(ProfileChangePassPage)}
+                                        />
+                                    </Switch>
+                                </Col>
+                            </Row>
+                        )}
+
                 </React.Fragment>
             </div>
         )

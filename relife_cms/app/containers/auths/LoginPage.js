@@ -107,14 +107,6 @@ class LoginPage extends React.Component {
                     {I18nUtils.t('forgotPassword')}
                   </Link>
                 </FormGroup>
-                <FormGroup>
-                  <Link
-                    to="/register"
-                    title={I18nUtils.t('register')}
-                  >
-                    {I18nUtils.t('register')}
-                  </Link>
-                </FormGroup>
                 <FormGroup className="btns-group">
                   <Button color="primary">{I18nUtils.t('login')}</Button>
                 </FormGroup>
