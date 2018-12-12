@@ -21,7 +21,17 @@ export default class CategoriesService {
     }
   }
   editCate(data) {
-    return apiClient.put(`/categories/${data.get('id')}/`, data)
+    if (data.get('type') === '1') {
+      return apiClient.put(
+        `/categories/${data.get('id')}/${data.get('type')}`,
+        data
+      )
+    } else if (data.get('type') === '2') {
+      return apiClient.put(
+        `/categories/${data.get('id')}/${data.get('type')}`,
+        data
+      )
+    }
   }
   deleteCate(data) {
     if (data.type === 1) {
@@ -29,6 +39,5 @@ export default class CategoriesService {
     } else if (data.type === 2) {
       return apiClient.delete(`/categories/${data.id}/${data.type}`)
     }
-    // return apiClient.delete(`/categories/${data.id}`)
   }
 }

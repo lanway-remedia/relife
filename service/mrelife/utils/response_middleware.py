@@ -7,7 +7,8 @@ class ModifyResponseMiddleWare(object):
 
     def __call__(self, request):
         response = self.get_response(request)
-        if response.status_code == 200:
+        print(response.content)
+        if response.status_code < 299:
             try:
                 if not "messageCode" in response.data:
                     data = {

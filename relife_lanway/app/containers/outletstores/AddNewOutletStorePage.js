@@ -7,16 +7,13 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Container, Button, Row, Col, FormGroup, Label } from 'reactstrap'
-import {
-  ValidationForm,
-  TextInput,
-  SelectGroup
-} from 'react-bootstrap4-form-validation'
+import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Helmet } from 'react-helmet'
 import I18nUtils from '../../utils/I18nUtils'
 import validator from 'validator'
 import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
 import { toast } from 'react-toastify'
+import LocationsComponent from '../../components/LocationsComponent'
 
 import ImageUploadComponent from './../../components/ImageUploadComponent'
 
@@ -43,6 +40,8 @@ class AddNewOutletStorePage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.redirectToListPage = this.redirectToListPage.bind(this)
+    this.handleSelectedCity = this.handleSelectedCity.bind(this)
+    this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
   }
 
   handleChange = e => {
@@ -57,12 +56,26 @@ class AddNewOutletStorePage extends React.Component {
     })
   }
 
+  handleSelectedCity = cityId => {
+    this.setState({
+      city: cityId
+    })
+  }
+
+  handleSelectedDistrict = districtId => {
+    this.setState({
+      district: districtId
+    })
+  }
+
   redirectToListPage = () => {
+    // eslint-disable-next-line no-debugger
+    debugger
     this.props.history.push('/manage-outlet-store-list')
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.data != nextProps.data) {
+    if (this.props.data !== nextProps.data) {
       let data = nextProps.data
       if (data.isAddStore) {
         toast.success(
@@ -91,7 +104,7 @@ class AddNewOutletStorePage extends React.Component {
     data.append('time_serving', this.state.timeServing)
     data.append('content', this.state.content)
     data.append('city', this.state.city)
-    data.append('district', this.state.district)
+    data.append('district_id', this.state.district)
     data.append('img_large', this.state.thumbnailImage)
     this.props.outletStoreAddRequest(data)
   }
@@ -184,38 +197,10 @@ class AddNewOutletStorePage extends React.Component {
                 />
               </FormGroup>
             </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="city">{I18nUtils.t('city')}</Label>
-                <SelectGroup
-                  name="city"
-                  id="city"
-                  required
-                  errorMessage={I18nUtils.t('lb-select')}
-                  onChange={this.handleChange}
-                >
-                  <option value="">{I18nUtils.t('lb-select')}</option>
-                  <option value="1">Hà Nội</option>
-                  <option value="2">Hồ Chí Minh</option>
-                </SelectGroup>
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="district">{I18nUtils.t('district')}</Label>
-                <SelectGroup
-                  name="district"
-                  id="district"
-                  required
-                  errorMessage={I18nUtils.t('lb-select')}
-                  onChange={this.handleChange}
-                >
-                  <option value="">{I18nUtils.t('lb-select')}</option>
-                  <option value="1">Hoàng Mai</option>
-                  <option value="2">Hai Bà Trưng</option>
-                </SelectGroup>
-              </FormGroup>
-            </Col>
+            <LocationsComponent
+              onSelectedCity={this.handleSelectedCity}
+              onSelectedDistrict={this.handleSelectedDistrict}
+            />
             <Col xs="12" md="6">
               <FormGroup>
                 <Label htmlFor="zipcode">{I18nUtils.t('zipcode')}</Label>
