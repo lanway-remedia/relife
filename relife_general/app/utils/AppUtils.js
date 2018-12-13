@@ -8,6 +8,6 @@ export default class AppUtils {
 
     static logout(history) {
         localStorage.removeItem(StorageKeyConstants.TOKEN)
-        history.push('/login')
+        history.push('/')
     }
 }

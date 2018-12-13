@@ -171,6 +171,9 @@
   "freeword": "Free Word",
   "idinvoice": "ID Invoice",
   "outletstore": "Outlet Store",
+  "sign-out" :  "Sign out",
+  "booking-history" : "Booking history",
+  "became-store": "Became store owner",
 
   "lb-ad-search": "Advanced Search",
   "lb-fil-tooltip": "Click here, you can show/hide Advanced Search content ",

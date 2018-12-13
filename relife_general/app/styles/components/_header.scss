@@ -6,8 +6,29 @@ header {
     border-radius: 0;
     padding: 8px 35px;
     font-size: 1rem;
+    float:right;
+    margin-right: 2px;
   }
   .btn-login:hover {
     background: #067236;
   }
+  .profile-info {
+    padding-top: 10px;
+
+    .profile-name {
+      display: inline-block;
+      float:right;
+    }
+    .profile-image {
+      float: right;
+      display: inline-block;
+      .avatar-img {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        margin-top: 5px;
+      }
+    }
+  }
+
 }

@@ -6,12 +6,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import ProfileActions from '../../redux/wrapper/ProfileRedux'
-import { Container, Row, Col, Button, Label } from 'reactstrap'
+import { Container, Row, Col, Label } from 'reactstrap'
 import I18nUtils from '../../utils/I18nUtils'
-
-import user from '../../images/user.png'
+import avatarDefault from '../../images/user.png'
 
 class ProfileInfoPage extends React.Component {
   constructor(props) {
@@ -53,63 +52,74 @@ class ProfileInfoPage extends React.Component {
 
   render() {
     let { profileImage, data } = this.state
-    let fullName = data.first_name + ' ' + data.last_name
     if (data.profile_image != null) profileImage = data.profile_image
-    else profileImage = user
+    else profileImage = avatarDefault
     return (
       <Container className="user-dashboard-content">
-        <div className="account-avatar">
-          <div className="avatar">
-            <img src={profileImage} alt={data.username} />
-          </div>
-          <div className="info">
-            <p>
-              {I18nUtils.formatMessage({ id: 'ud-hi' }, { name: fullName })}
-            </p>
-            <p>{I18nUtils.t('ud-welcome')}</p>
-          </div>
-        </div>
-        <div className="account-info">
-          <Row>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('username')}:</Label>
-              <span>{data.username}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('email')}:</Label>
-              <span>{data.email}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('fname')}:</Label>
-              <span>{data.first_name}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('lname')}:</Label>
-              <span>{data.last_name}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('phone')}:</Label>
-              <span>{data.tel}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('address')}:</Label>
-              <span>{data.address}</span>
-            </Col>
-            <Col xs="12" md="12" className="mt-3">
-              <div className="btns-group text-left">
-                <Button
-                  color="primary"
-                  onClick={() => this.redirectToEditPage(data)}
-                >
-                  {I18nUtils.t('ud-btn-editprofile')}
-                </Button>
-                <Button onClick={this.redirectToChangePass} color="warning">
-                  {I18nUtils.t('changePassword')}
-                </Button>
+        <Row>
+          <Col xs="6" md="3">
+            <div className="user-profile-sidebar">
+              <div className="user-profile-top">
+                <div className="avatar">
+                  <img src={profileImage} alt={data.username} />
+                </div>
+                <div className="user-profile-name">
+                  {data.username}
+                </div>
               </div>
-            </Col>
-          </Row>
-        </div>
+
+              <div className="user-profile-action">
+                <Link to="/profile-edit">
+                  <i className="fa fa-angle-down" aria-hidden="true" />
+                  {I18nUtils.t('ud-btn-editprofile')}
+                </Link>
+              </div>
+              <div className="user-profile-action">
+                <Link to="/profile-change-password">
+                  {I18nUtils.t('changePassword')}
+                </Link>
+              </div>
+              <div className="user-profile-action">
+                <Link to="">
+                  {I18nUtils.t('booking-history')}
+                </Link>
+              </div>
+              <div className="user-profile-action">
+                <Link to="">
+                  {I18nUtils.t('became-store')}
+                </Link>
+              </div>
+            </div>
+          </Col>
+          <Col xs="6" md="9">
+            <div className="user-profile-content">
+              <Col xs="12" md="6">
+                <Label>{I18nUtils.t('username')}:</Label>
+                <span>{data.username}</span>
+              </Col>
+              <Col xs="12" md="6">
+                <Label>{I18nUtils.t('email')}:</Label>
+                <span>{data.email}</span>
+              </Col>
+              <Col xs="12" md="6">
+                <Label>{I18nUtils.t('fname')}:</Label>
+                <span>{data.first_name}</span>
+              </Col>
+              <Col xs="12" md="6">
+                <Label>{I18nUtils.t('lname')}:</Label>
+                <span>{data.last_name}</span>
+              </Col>
+              <Col xs="12" md="6">
+                <Label>{I18nUtils.t('phone')}:</Label>
+                <span>{data.tel}</span>
+              </Col>
+              <Col xs="12" md="6">
+                <Label>{I18nUtils.t('address')}:</Label>
+                <span>{data.address}</span>
+              </Col>
+            </div>
+          </Col>
+        </Row>
       </Container>
     )
   }

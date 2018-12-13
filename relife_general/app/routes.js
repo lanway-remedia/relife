@@ -23,7 +23,7 @@ import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
 
 import {StorageKeyConstants} from './constants'
 import 'react-toastify/dist/ReactToastify.css'
-
+import defaultAvatar from './images/user.png'
 class Routes extends React.Component {
     constructor(props) {
         super(props)
@@ -41,6 +41,8 @@ class Routes extends React.Component {
     }
 
     render() {
+        let { username, userimage } = this.props
+        userimage = userimage || defaultAvatar
         const isAuthenticated = () => {
             let isLogin = false
             var code = localStorage.getItem(StorageKeyConstants.TOKEN)
@@ -48,7 +50,6 @@ class Routes extends React.Component {
             if (code && code != '') {
                 isLogin = true
             }
-
             return isLogin
         }
 
@@ -69,7 +70,11 @@ class Routes extends React.Component {
                 {!hideMenu ? (
                 <React.Fragment>
                     <ToastContainer />
-                    <Header />
+                    <Header 
+                        isAuthenticated={isAuthenticated()}
+                        name={username}
+                        image={userimage}
+                    />
                     <Switch>
                         <Route exact path="/login" component={LoginPage} />
                         <Route path="/forgot-password" component={ForgotPasswordPage} />

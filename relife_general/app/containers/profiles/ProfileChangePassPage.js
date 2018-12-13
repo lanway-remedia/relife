@@ -5,7 +5,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import ProfileActions from '../../redux/wrapper/ProfileRedux'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Container, Row, Col, Button, FormGroup, Label } from 'reactstrap'
@@ -13,11 +13,12 @@ import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import { ModalName } from '../../constants'
 import I18nUtils from '../../utils/I18nUtils'
-
+import avatarDefault from '../../images/user.png'
 class ProfileChangePassPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      profileImage: null,
       data: [],
       id: '',
       currentPassword: '',
@@ -65,12 +66,12 @@ class ProfileChangePassPage extends React.Component {
   }
 
   closeFunction = () => {
-    this.props.history.push(`/`)
+    this.props.history.push(`/profile`)
     this.props.hide(ModalName.COMMON)
   }
 
   redirectToProfile = () => {
-    this.props.history.push('/')
+    this.props.history.push('/profile')
   }
 
   handleChange = e => {
@@ -82,94 +83,125 @@ class ProfileChangePassPage extends React.Component {
   matchPassword = (value) => value && value === this.state.newPassword
 
   render() {
-    let { data } = this.state
-    let fullName = data.first_name + ' ' + data.last_name
+    let { profileImage, data } = this.state
+    if (data.profile_image != null) profileImage = data.profile_image
+    else profileImage = avatarDefault
     return (
-      <Container className="user-edit-profile">
-        <div className="account-avatar">
-          <div className="info ed">
-            <p>
-              {I18nUtils.formatMessage({ id: 'ucp-hi' }, { name: fullName })}
-            </p>
-            <p>{I18nUtils.t('ucp-welcome')}</p>
-          </div>
-        </div>
-        <ValidationForm className="form-user-info" onSubmit={this.handleSubmit}>
-          <Row>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="currentPassword">
-                  {I18nUtils.t('currentPassword')}
-                </Label>
-                <TextInput
-                  type="password"
-                  name="currentPassword"
-                  id="currentPassword"
-                  placeholder={I18nUtils.t('all-place-currentPassword')}
-                  value={this.state.currentPassword}
-                  onChange={this.handleChange}
-                  required
-                  pattern="(?=.*[A-Z]).{8,}"
-                  errorMessage={{
-                    required: I18nUtils.t('validate-field-0'),
-                    pattern: I18nUtils.t('validate-pass')
-                  }}
-                  autoComplete="new-password"
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="fname">{I18nUtils.t('newPassword')}</Label>
-                <TextInput
-                  type="password"
-                  name="newPassword"
-                  id="newPassword"
-                  placeholder={I18nUtils.t('all-place-newPassword')}
-                  value={this.state.newPassword}
-                  onChange={this.handleChange}
-                  required
-                  pattern="(?=.*[A-Z]).{8,}"
-                  errorMessage={{
-                    required: I18nUtils.t('validate-field-0'),
-                    pattern: I18nUtils.t('validate-pass')
-                  }}
-                  autoComplete="new-password"
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="email">{I18nUtils.t('confirmNewPassword')}</Label>
-                <TextInput
-                  type="password"
-                  name="confirmNewPassword"
-                  id="confirmNewPassword"
-                  placeholder={I18nUtils.t('all-place-confirmNewPassword')}
-                  value={this.state.confirmNewPassword}
-                  onChange={this.handleChange}
-                  required
-                  validator={this.matchPassword}
-                  errorMessage={{
-                    required: I18nUtils.t('validate-field-0'),
-                    validator: 'Password does not match'
-                  }}
-                  autoComplete="new-password"
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="12">
-              <div className="btns-group text-left">
-                <Button color="success">{I18nUtils.t('changePassword')}</Button>
-                <Button onClick={this.redirectToProfile} color="danger">
-                  {I18nUtils.t('back')}
-                </Button>
+      <Container className="user-dashboard-content">
+        <Row>
+          <Col xs="6" md="3">
+              <div className="user-profile-sidebar">
+                <div className="user-profile-top">
+                  <div className="avatar">
+                    <img src={profileImage} alt={data.username} />
+                  </div>
+                  <div className="user-profile-name">
+                    {data.username}
+                  </div>
+                </div>
+
+                <div className="user-profile-action">
+                  <Link to="/profile-edit">
+                    <i className="fa fa-angle-down" aria-hidden="true" />
+                    {I18nUtils.t('ud-btn-editprofile')}
+                  </Link>
+                </div>
+                <div className="user-profile-action">
+                  <Link to="/profile-change-password">
+                    {I18nUtils.t('changePassword')}
+                  </Link>
+                </div>
+                <div className="user-profile-action">
+                  <Link to="">
+                    {I18nUtils.t('booking-history')}
+                  </Link>
+                </div>
+                <div className="user-profile-action">
+                  <Link to="">
+                    {I18nUtils.t('became-store')}
+                  </Link>
+                </div>
               </div>
-            </Col>
-          </Row>
-        </ValidationForm>
+          </Col>
+          <Col xs="6" md="9">
+          <ValidationForm className="form-user-info" onSubmit={this.handleSubmit}>
+            <Row>
+              <Col xs="12" md="6">
+                <FormGroup>
+                  <Label for="currentPassword">
+                    {I18nUtils.t('currentPassword')}
+                  </Label>
+                  <TextInput
+                    type="password"
+                    name="currentPassword"
+                    id="currentPassword"
+                    placeholder={I18nUtils.t('all-place-currentPassword')}
+                    value={this.state.currentPassword}
+                    onChange={this.handleChange}
+                    required
+                    pattern="(?=.*[A-Z]).{8,}"
+                    errorMessage={{
+                      required: I18nUtils.t('validate-field-0'),
+                      pattern: I18nUtils.t('validate-pass')
+                    }}
+                    autoComplete="new-password"
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs="12" md="6">
+                <FormGroup>
+                  <Label for="fname">{I18nUtils.t('newPassword')}</Label>
+                  <TextInput
+                    type="password"
+                    name="newPassword"
+                    id="newPassword"
+                    placeholder={I18nUtils.t('all-place-newPassword')}
+                    value={this.state.newPassword}
+                    onChange={this.handleChange}
+                    required
+                    pattern="(?=.*[A-Z]).{8,}"
+                    errorMessage={{
+                      required: I18nUtils.t('validate-field-0'),
+                      pattern: I18nUtils.t('validate-pass')
+                    }}
+                    autoComplete="new-password"
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="12" md="6">
+                <FormGroup>
+                  <Label for="email">{I18nUtils.t('confirmNewPassword')}</Label>
+                  <TextInput
+                    type="password"
+                    name="confirmNewPassword"
+                    id="confirmNewPassword"
+                    placeholder={I18nUtils.t('all-place-confirmNewPassword')}
+                    value={this.state.confirmNewPassword}
+                    onChange={this.handleChange}
+                    required
+                    validator={this.matchPassword}
+                    errorMessage={{
+                      required: I18nUtils.t('validate-field-0'),
+                      validator: 'Password does not match'
+                    }}
+                    autoComplete="new-password"
+                  />
+                </FormGroup>
+              </Col>
+              <Col xs="12" md="12">
+                <div className="btns-group text-left">
+                  <Button color="success">{I18nUtils.t('changePassword')}</Button>
+                  <Button onClick={this.redirectToProfile} color="danger">
+                    {I18nUtils.t('back')}
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          </ValidationForm>
+          </Col>
+        </Row>
       </Container>
     )
   }
