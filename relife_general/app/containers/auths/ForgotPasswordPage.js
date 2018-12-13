@@ -82,8 +82,8 @@ class ForgotPasswordPage extends React.Component {
               width="100%"
             />
         </div>
-        <h6 className="form-account_title">管理システムログイン</h6>
-        <p className="form_note">メールアドレスを入力して送信ボタンをクリックください。</p>
+        <h6 className="form-account_title">{I18nUtils.t('forgotPassword')}</h6>
+        <p className="form_note">{I18nUtils.t('forgot-text')}</p>
         <ValidationForm
           onSubmit={this.handleSubmit}
         >

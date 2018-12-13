@@ -224,7 +224,7 @@
   "register-page-title": "RE:LIFE GENERAL SITE REGISTER PAGE",
   "forgotpassword-page-title": "RE:LIFE GENERAL SITE FORGOT PASSWORD PAGE",
   "forgot-back-login": "Back to Login Page",
-  "forgot-text": "In here, you can get your forgotten password if you provide email...",
+  "forgot-text": "Please enter your e-mail address and click the send button.",
 
   "validate-email": "Invalid email address.",
   "validate-field-0": "Please fill out this field.",

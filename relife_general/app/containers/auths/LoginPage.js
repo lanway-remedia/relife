@@ -69,7 +69,7 @@ class LoginPage extends React.Component {
               width="100%"
             />
         </div>
-        <h6 className="form-account_title">管理システムログイン</h6>
+        <h6 className="form-account_title">{I18nUtils.t('login')}</h6>
         <ValidationForm onSubmit={this.handleSubmit}>
           <FormGroup className="form-account_label">
             <Label for="username">{I18nUtils.t('username')}</Label>
