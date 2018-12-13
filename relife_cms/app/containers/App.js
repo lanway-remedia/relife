@@ -12,6 +12,7 @@ import CommonModal from '../components/CommonModal'
 import CommonApi from '../components/CommonApi'
 import Routes from '../routes'
 import user from '../images/user.png'
+import 'font-awesome/css/font-awesome.css'
 import '../styles/bootstrap.scss'
 import '../styles/styles.scss'
 

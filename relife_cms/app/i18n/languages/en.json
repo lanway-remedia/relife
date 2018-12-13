@@ -1,4 +1,11 @@
 {
+  "logo": "Re:Life",
+  "logo-lw": "Lanway Inc",
+  "home": "Home",
+  "go-home": "Click here go to Home",
+  "h-mail": "Mail {count}",
+  "h-noti": "Notifycation {count}",
+
   "app-title": "Re:Style",
   "app-title-acronym": "Re",
   "nav-main-lbl": "MAIN NAVIGATION",

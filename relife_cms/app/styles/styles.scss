@@ -4,6 +4,8 @@
 
 //Components
 @import './components/header';
+@import './components/footer';
+@import './components/navigation';
 @import './components/language';
 @import './components/backGround';
 @import './components/spaceList';
@@ -12,6 +14,7 @@
 @import './components/imageUploadComponent';
 
 //Containers
+@import './containers/auths/authsPage';
 @import './containers/auths/loginPage';
 @import './containers/auths/forgotPasswordPage';
 @import './containers/profiles/userDashboardPage';
