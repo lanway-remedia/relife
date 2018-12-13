@@ -131,6 +131,7 @@ body.cms-index-auth {
     text-align: center;
     a {
       color: $text-primary-color;
+      font-size: 12px;
 
       &:hover {
         @include default-hover();
