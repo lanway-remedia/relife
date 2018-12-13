@@ -13,29 +13,37 @@ import I18nUtils from '../../utils/I18nUtils'
 import {ValidationForm, TextInput} from 'react-bootstrap4-form-validation'
 import {Button, FormGroup, Label} from 'reactstrap'
 import AppUtils from '../../utils/AppUtils'
-
+// import { validator } from 'validator'
+import { toast } from 'react-toastify'
+import formLogo from '../../images/form-logo.png'
 class RegisterPage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             email: '',
             username: '',
-            password: ''
+            password: '',
+            confirmPassword: ''
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
     componentDidMount() {
-        document.body.classList.add('cms-login-index')
+        document.body.classList.add('login-index')
     }
     componentWillUnmount() {
-        document.body.classList.remove('cms-login-index')
+        document.body.classList.remove('login-index')
     }
     componentWillReceiveProps(nextProps) {
         if (this.props.data != nextProps.data) {
             let data = nextProps.data.data
             if (data.token) {
-                AppUtils.login(this.props.history, data.token, '/')
+                AppUtils.login(this.props.history, data.token, '/login')
+                toast.success(
+                    I18nUtils.formatMessage(
+                        { id: 'toast-register-sucess' },
+                    )
+                )
             }
         }
     }
@@ -47,11 +55,17 @@ class RegisterPage extends React.Component {
     handleSubmit = e => {
         e.preventDefault()
         let data = {
-            email: this.state.email,
+            mail: this.state.email,
             username: this.state.username,
-            password: this.state.password
+            password1: this.state.password,
+            password2: this.state.confirmPassword,
+            domain: window.location.origin + '/'
         }
         this.props.registerRequest(data)
+    }
+    matchPassword = (value) => value && value === this.state.password
+    redirectBack = () => {
+        this.props.history.back()
     }
     render() {
         return (
@@ -61,8 +75,11 @@ class RegisterPage extends React.Component {
                 </Helmet>
                 <div className="login-content">
                     <div className="form-center">
-                        <div className="form-header">
-                            <h3>{I18nUtils.t('register-page-title')}</h3>
+                        <div className="form-logo">
+                            <img src={formLogo}
+                                alt="logo" 
+                                width="100%"
+                            />
                         </div>
                         <div className="form-body">
                             <ValidationForm onSubmit={this.handleSubmit}>
@@ -121,7 +138,26 @@ class RegisterPage extends React.Component {
                                         value={this.state.password}
                                     />
                                 </FormGroup>
+                                <FormGroup>
+                                    <Label for="confirmPassword">{I18nUtils.t('confirmPassword')}</Label>
+                                    <TextInput
+                                        type="password"
+                                        name="confirmPassword"
+                                        id="confirmPassword"
+                                        placeholder={I18nUtils.t('all-place-confirmPassword')}
+                                        value={this.state.confirmPassword}
+                                        onChange={this.handleChange}
+                                        required
+                                        validator={this.matchPassword}
+                                        errorMessage={{
+                                            required: I18nUtils.t('validate-field-0'),
+                                            validator: 'Password does not match'
+                                          }}
+                                        autoComplete="new-password"
+                                    />
+                                </FormGroup>
                                 <FormGroup className="btns-group">
+                                    <Button color="danger" onClick={this.redirectBack}>{I18nUtils.t('back')}</Button>
                                     <Button color="primary">{I18nUtils.t('register')}</Button>
                                 </FormGroup>
                             </ValidationForm>

@@ -20,6 +20,9 @@ class Header extends React.Component {
   goLoginPage = () => {
     this.props.history.push('/login')
   }
+  goRegisterPage = () => {
+    this.props.history.push('/register')
+  }
 
   render() {
     return (
@@ -27,7 +30,8 @@ class Header extends React.Component {
         <Row noGutters>
           <Col xs="12" sm="9" />
           <Col xs="12" sm="3">
-            <Button color="link" onClick={() => this.goLoginPage()}>{I18nUtils.t('login')}</Button>{' '}
+            <Button className="btn-login" onClick={() => this.goLoginPage()}>{I18nUtils.t('login')}</Button>{' '}
+            <Button className="btn-login" onClick={() => this.goRegisterPage()}>{I18nUtils.t('register')}</Button>{' '}
           </Col>
         </Row>
       </header>

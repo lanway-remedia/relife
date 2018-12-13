@@ -1,4 +1,13 @@
 header {
   height: 60px;
-  margin-bottom: 20px;
+  background: #f3f3f3;
+  .btn-login {
+    background: #067236;
+    border-radius: 0;
+    padding: 8px 35px;
+    font-size: 1rem;
+  }
+  .btn-login:hover {
+    background: #067236;
+  }
 }

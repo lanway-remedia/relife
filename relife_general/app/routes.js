@@ -59,9 +59,14 @@ class Routes extends React.Component {
                 <Redirect to="/login" />
             )
         }
-
+        let hideMenu =
+            this.props.location.pathname.includes('/login') ||
+            this.props.location.pathname.includes('/forgot-password') ||
+            this.props.location.pathname.includes('/email-confirm') ||
+            this.props.location.pathname.includes('/register')
         return (
             <div className="wrapper">
+                {!hideMenu ? (
                 <React.Fragment>
                     <ToastContainer />
                     <Header />
@@ -79,11 +84,6 @@ class Routes extends React.Component {
                         />
                         <Route
                             exact
-                            path="/register"
-                            component={RegisterPage}
-                        />
-                        <Route
-                            exact
                             path="/profile"
                             component={requireLogin(ProfileInfoPage)}
                         />
@@ -97,6 +97,20 @@ class Routes extends React.Component {
                         />
                     </Switch>
                 </React.Fragment>
+                ) : (
+                <React.Fragment>
+                    <ToastContainer />
+                    <Switch>
+                    <Route exact path="/login" component={LoginPage} />
+                    <Route exact path="/register" component={RegisterPage} />
+                    <Route path="/forgot-password" component={ForgotPasswordPage} />
+                    <Route
+                        path="/email-confirm/:uidb64/:token_key"
+                        component={ResetPasswordPage}
+                    />
+                    </Switch>
+                </React.Fragment>
+                )}
             </div>
         )
     }
