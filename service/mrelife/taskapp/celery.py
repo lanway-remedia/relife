@@ -1,8 +1,9 @@
 import os
 
-from celery import Celery
-from django.apps import apps, AppConfig
+from django.apps import AppConfig, apps
 from django.conf import settings
+
+from celery import Celery
 
 if not settings.configured:
     # set the default Django settings module for the 'celery' program.

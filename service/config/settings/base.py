@@ -1,3 +1,4 @@
+from celery.schedules import crontab
 """
 Base settings to build other settings files upon.
 """
@@ -73,7 +74,6 @@ THIRD_PARTY_APPS = [
     'import_export'
 ]
 LOCAL_APPS = [
-    # Your stuff: custom apps go here
     'mrelife.users.apps.UsersAppConfig',
     'mrelife.tags.apps.TagsConfig',
     'mrelife.categories.apps.CategoriesConfig',
@@ -250,6 +250,13 @@ CELERYD_TASK_TIME_LIMIT = 5 * 60
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#task-soft-time-limit
 # TODO: set to whatever value is adequate in your circumstances
 CELERYD_TASK_SOFT_TIME_LIMIT = 60
+# CELERYBEAT_SCHEDULE = {
+#     'add-every-firt-day-of-month': {
+#         'task': 'mrelife.fees.tasks.add_fee',
+#         'schedule': crontab(0, 0, day_of_month='1'),
+#     },
+# }
+
 
 # django-compressor
 # ------------------------------------------------------------------------------
