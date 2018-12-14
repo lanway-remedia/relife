@@ -47,6 +47,8 @@ class UserWithoutRequireInfoSerializer(ModelSerializer):
 
 
 class ProfileSerializer(ModelSerializer):
+    store = OutletStoreSerializer(read_only=True)
+
     class Meta:
         model = User
         exclude = ('password', 'username')
