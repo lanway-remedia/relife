@@ -9,6 +9,7 @@ import {Route, Redirect, withRouter, Switch} from 'react-router-dom'
 import {ToastContainer} from 'react-toastify'
 //header
 import Header from './components/Header'
+import Footer from './components/Footer'
 //homepage
 import HomePage from './containers/HomePage'
 //auths
@@ -101,6 +102,7 @@ class Routes extends React.Component {
                             component={requireLogin(ProfileChangePassPage)}
                         />
                     </Switch>
+                    <Footer />
                 </React.Fragment>
                 ) : (
                 <React.Fragment>

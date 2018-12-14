@@ -1,11 +1,18 @@
 header {
   height: 60px;
   background: #f3f3f3;
+
+  a {
+    color: #222;
+  }
+  button {
+    font-size: 1.4rem;
+  }
   .btn-login {
     background: #067236;
     border-radius: 0;
     padding: 8px 35px;
-    font-size: 1rem;
+    font-size: 1.5rem;
     float:right;
     margin-right: 2px;
   }
@@ -13,8 +20,7 @@ header {
     background: #067236;
   }
   .profile-info {
-    padding-top: 10px;
-
+    font-size: 1.3rem;
     .profile-name {
       display: inline-block;
       float:right;
@@ -22,6 +28,8 @@ header {
     .profile-image {
       float: right;
       display: inline-block;
+      padding-top: 15px;
+      
       .avatar-img {
         width: 25px;
         height: 25px;

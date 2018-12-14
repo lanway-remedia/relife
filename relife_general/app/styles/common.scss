@@ -1,3 +1,9 @@
+html {
+  font-size: 62.5%;
+}
+body { 
+  font-size: 1.0rem; 
+}
 img {
   object-fit: cover;
 }
@@ -258,4 +264,20 @@ footer.cgYtLz {
 
 .icon {
   width: 20px;
+}
+
+.fl {
+  float: left;
+}
+
+@media screen and (min-width:768px) {
+  .sp{
+    display: none !important;
+  }
+}
+
+@media screen and (max-width:768px) {
+  .pc{
+    display: none !important;
+  }
 }

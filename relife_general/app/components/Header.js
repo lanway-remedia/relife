@@ -7,10 +7,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import { Row, Col, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Container, Nav, NavDropdown, MenuItem } from 'reactstrap'
+import { Row, Col, Button, DropdownToggle, DropdownMenu, DropdownItem, Container, Collapse,
+  Navbar,
+  NavbarToggler,
+  Nav,
+  UncontrolledDropdown } from 'reactstrap'
 // import defaultAvatar from '../images/user.png'
 import I18nUtils from '../utils/I18nUtils'
-import { ProfileTypes } from './../redux/wrapper/ProfileRedux'
 import AppUtils from '../utils/AppUtils'
 import logo from '../images/form-logo.png'
 class Header extends React.Component {
@@ -55,21 +58,33 @@ class Header extends React.Component {
             ) : (
               <Col xs="12" sm="4">
                 <div className="profile-info">
+                  <div className="profile-name">
+                    <Navbar light expand="md" style={{paddingLeft: `0px`}}>
+                      <NavbarToggler onClick={this.toggle} />
+                      <Collapse isOpen={this.state.isOpen} navbar>
+                        <Nav className="ml-auto" navbar>
+                          <UncontrolledDropdown nav inNavbar>
+                            <DropdownToggle nav caret>
+                              {name}
+                            </DropdownToggle>
+                            <DropdownMenu right>
+                              <DropdownItem>
+                                <Link to="/profile">{I18nUtils.t('profile-info')}</Link>
+                              </DropdownItem>
+                              <DropdownItem divider />
+                              <DropdownItem onClick={() => AppUtils.logout(this.props.history)}>
+                                {I18nUtils.t('sign-out')}
+                              </DropdownItem>
+                            </DropdownMenu>
+                          </UncontrolledDropdown>
+                        </Nav>
+                      </Collapse>
+                    </Navbar>
+                  </div>
                   <div className="profile-image">
                     <img className="avatar-img" src={image} />
                   </div>
-                  <div className="profile-name">
-                    <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                      <DropdownToggle color="success" className="btn-username-dropdown" caret>
-                        {name}
-                      </DropdownToggle>
-                      <DropdownMenu>
-                        <DropdownItem><Link to="/profile">{I18nUtils.t('ud-page-title')}</Link></DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem onClick={() => AppUtils.logout(this.props.history)}>{I18nUtils.t('sign-out')}</DropdownItem>
-                      </DropdownMenu>
-                    </ButtonDropdown>
-                  </div>
+                  <div className="clearfix" />
                 </div>
               </Col>
             )}

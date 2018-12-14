@@ -22,7 +22,8 @@ class HomePage extends React.Component {
             <BackGround key="1" />,
             <Container key="2">
                 <ExampleHouseList />
-            </Container>
+            </Container>,
+
         ]
     }
 }
