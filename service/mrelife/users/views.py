@@ -4,11 +4,13 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
 from django.core.files.storage import default_storage
 from django.db.models import Q
+from django.http import Http404
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
 from rest_framework.decorators import list_route
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
+from rest_framework.mixins import (CreateModelMixin, ListModelMixin,
+                                   RetrieveModelMixin)
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
@@ -25,11 +27,11 @@ from mrelife.users.serializers import (PasswordSerializer, ProfileSerializer,
 from mrelife.utils.groups import GroupUser, IsStore
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.relifepermissions import AdminOrStoreOrDenyPermission
+from mrelife.utils.response import response_404
 from mrelife.utils.validates import email_exist
 from url_filter.integrations.drf import DjangoFilterBackend
 
 User = get_user_model()
-
 
 class UserVs(ModelViewSet):
     """
@@ -132,18 +134,14 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
     permission_classes = (IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
-        self.queryset = User.objects.filter(pk=request.user.id)
-        self.serializer_class = UserSerializer
-        response = super(ProfileVs, self).list(request, *args, **kwargs)
+        try:
+            self.queryset = User.objects.filter(pk=request.user.id)
+            self.serializer_class = UserSerializer
+            response = super(ProfileVs, self).list(request, *args, **kwargs)
+            return response
+        except Http404:
+            return response_404('PP404')
 
-        else:
-            response.data = {
-                'status': True,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data[0]
-            }
-        return response
 
     def create(self, request, *args, **kwargs):
         user = User.objects.get(pk=request.user.id)
