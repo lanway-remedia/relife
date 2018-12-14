@@ -67,7 +67,9 @@ class LoginPage extends React.Component {
         <div className="form-logo">
           <img src={logo} alt="logo" width="100%" />
         </div>
-        <h6 className="form-account_title">管理システムログイン</h6>
+        <h6 className="form-account_title">
+          {I18nUtils.t('login-page-subtitle')}
+        </h6>
         <ValidationForm onSubmit={this.handleSubmit}>
           <FormGroup className="form-account_label">
             <Label for="username">{I18nUtils.t('username')}</Label>
@@ -112,8 +114,11 @@ class LoginPage extends React.Component {
             </Button>
           </FormGroup>
           <FormGroup className="noti-link">
-            <Link to="/forgot-password" title={I18nUtils.t('forgotPassword')}>
-              {I18nUtils.t('forgotPassword')}
+            <Link
+              to="/forgot-password"
+              title={I18nUtils.t('login-page-forgot')}
+            >
+              {I18nUtils.t('login-page-forgot')}
             </Link>
           </FormGroup>
         </ValidationForm>
