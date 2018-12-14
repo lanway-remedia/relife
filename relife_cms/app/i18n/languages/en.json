@@ -140,8 +140,8 @@
   "lname": "Last Name",
   "fname": "First Name",
   "fullName": "Full Name",
-  "created-date": "Created Date(From - To)",
-  "start-date": "Start Date(From - To)",
+  "created-date": "Created Date (From - To)",
+  "start-date": "Start Date (From - To)",
   "password": "Password",
   "currentPassword": "Current Password",
   "newPassword": "New Password",
@@ -192,6 +192,7 @@
   "lb-district": "Please select city",
   "lb-enable": "Enable",
   "lb-disabled": "Disabled",
+  "lb-req": "Required",
 
   "add-user": "Add User",
   "store-selection": "Select Store",

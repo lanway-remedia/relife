@@ -2,10 +2,14 @@
 @import './vendors/variables';
 @import './vendors/mixins';
 
+//Vendor
+@import './vendors/datepicker';
+
 //Components
 @import './components/header';
 @import './components/footer';
 @import './components/navigation';
+@import './components/filterGroup';
 @import './components/language';
 @import './components/backGround';
 @import './components/spaceList';
