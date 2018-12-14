@@ -5,7 +5,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import ProfileActions from '../../redux/wrapper/ProfileRedux'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Container, Row, Col, Button, FormGroup, Label } from 'reactstrap'
@@ -13,6 +13,7 @@ import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import { ModalName } from '../../constants'
 import I18nUtils from '../../utils/I18nUtils'
+import Sidebar from '../../components/Sidebar'
 import avatarDefault from '../../images/user.png'
 class ProfileChangePassPage extends React.Component {
   constructor(props) {
@@ -90,38 +91,7 @@ class ProfileChangePassPage extends React.Component {
       <Container className="user-dashboard-content">
         <Row>
           <Col xs="6" md="3">
-              <div className="user-profile-sidebar">
-                <div className="user-profile-top">
-                  <div className="avatar">
-                    <img src={profileImage} alt={data.username} />
-                  </div>
-                  <div className="user-profile-name">
-                    {data.username}
-                  </div>
-                </div>
-
-                <div className="user-profile-action">
-                  <Link to="/profile-edit">
-                    <i className="fa fa-angle-down" aria-hidden="true" />
-                    {I18nUtils.t('ud-btn-editprofile')}
-                  </Link>
-                </div>
-                <div className="user-profile-action">
-                  <Link to="/profile-change-password">
-                    {I18nUtils.t('changePassword')}
-                  </Link>
-                </div>
-                <div className="user-profile-action">
-                  <Link to="">
-                    {I18nUtils.t('booking-history')}
-                  </Link>
-                </div>
-                <div className="user-profile-action">
-                  <Link to="">
-                    {I18nUtils.t('became-store')}
-                  </Link>
-                </div>
-              </div>
+            <Sidebar profileImage={profileImage} username={data.username} />
           </Col>
           <Col xs="6" md="9">
           <ValidationForm className="form-user-info" onSubmit={this.handleSubmit}>

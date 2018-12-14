@@ -10,7 +10,7 @@ import {withRouter} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import BackGround from '../components/BackGround'
 import ExampleHouseList from '../components/ExampleHouseList'
-
+import 'font-awesome/css/font-awesome.css'
 class HomePage extends React.Component {
     constructor(props) {
         super(props)

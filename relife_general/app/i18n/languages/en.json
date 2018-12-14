@@ -19,6 +19,7 @@
   "ud-btn-editprofile": "Edit Profile",
   "ud-change-avatar": "Click to change avatar",
   "ud-welcome": "Welcome to user profile page. In here, you can view account info, edit account profile and change password!",
+  "profile-info": "Profile info",
 
   "ed-title": "Edit '{username}'",
   "ed-welcome": "In here, you can edit profile yourself",
@@ -233,6 +234,8 @@
   "validate-field-0": "Please fill out this field.",
   "validate-field-3": "Username more than 3 characters.",
   "validate-pass": "Password should be at least 8 characters and contains at least one upper case letter.",
+
+
 
   "CM001": "Something wrong.",
 
