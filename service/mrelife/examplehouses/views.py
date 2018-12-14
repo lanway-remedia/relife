@@ -1,8 +1,4 @@
-from datetime import datetime
-
-from django.conf import settings
-from django.core.files.storage import default_storage
-from django.shortcuts import get_object_or_404
+from django.http import Http404
 from rest_framework import status
 from rest_framework.decorators import detail_route
 from rest_framework.pagination import LimitOffsetPagination
@@ -15,9 +11,9 @@ from mrelife.examplehouses.models import ExampleHouse, ExampleHouseCommitment, E
 from mrelife.examplehouses.serializers import ExampleHouseNestedSerializer, ExampleHouseSerializer
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
-from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
+from mrelife.utils.groups import IsStore, IsSub
 from mrelife.utils.model_house_permission import ModelHousePermission
-from mrelife.utils.querys import get_or_none
+from mrelife.utils.response import response_404
 
 
 class ExampleHouseViewSet(ModelViewSet):
@@ -28,27 +24,20 @@ class ExampleHouseViewSet(ModelViewSet):
     pagination_class = LimitOffsetPagination
 
     def list(self, request, *args, **kwargs):
-        response = super(ExampleHouseViewSet, self).list(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
-        return response
+        try:
+            response = super(ExampleHouseViewSet, self).list(request, *args, **kwargs)
+            return response
+        except Http404:
+            return response_404('EX404')
+        
 
     def retrieve(self, request, *args, **kwargs):
-        self.serializer_class = ExampleHouseNestedSerializer
-        response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
-        return response
+        try:
+            self.serializer_class = ExampleHouseNestedSerializer
+            response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+            return response
+        except Http404:
+            return response_404('EX404')
 
     def create(self, request, *args, **kwargs):
         """
@@ -70,12 +59,8 @@ class ExampleHouseViewSet(ModelViewSet):
 
         if store is None:
             house.delete()
-            return Response({
-                'status': False,
-                'messageCode': 'MH001',
-                'messageParams': {},
-                'data': {}
-            }, status=status.HTTP_404_NOT_FOUND)
+            return response_404('EX404')
+
         house.store = store
         house.save()
 
@@ -104,37 +89,25 @@ class ExampleHouseViewSet(ModelViewSet):
         return obj
 
     def update(self, request, *args, **kwargs):
-        response = super(ExampleHouseViewSet, self).update(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
-        return response
+        try:
+            response = super(ExampleHouseViewSet, self).update(request, *args, **kwargs)
+            return response
+        except Http404:
+            return response_404('EX404')
 
     def partial_update(self, request, *args, **kwargs):
-        response = super(ExampleHouseViewSet, self).partial_update(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
-        return response
+        try:
+            response = super(ExampleHouseViewSet, self).partial_update(request, *args, **kwargs)
+            return response
+        except Http404:
+            return response_404('EX404')
 
     def destroy(self, request, *args, **kwargs):
-        response = super(ExampleHouseViewSet, self).destroy(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
-        return response
+        try:
+            response = super(ExampleHouseViewSet, self).destroy(request, *args, **kwargs)
+            return response
+        except Http404:
+            return response_404('EX404')
 
     @detail_route(methods=['post'])
     def add_tag(self, request, *args, **kwargs):
@@ -142,7 +115,11 @@ class ExampleHouseViewSet(ModelViewSet):
             POST:
                 tags: []
         """
-        house = ExampleHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ExampleHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('EX404')
+        
         tags = request.data.get('tags')
         if tags is not None:
             for tag_name in tags:
@@ -151,13 +128,6 @@ class ExampleHouseViewSet(ModelViewSet):
                     if created or not house.tags.filter(tag=tag).exists():
                         ExampleHouseTag.objects.create(tag=tag, example_house=house)
         response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
         return response
 
     @detail_route(methods=['post'])
@@ -166,7 +136,11 @@ class ExampleHouseViewSet(ModelViewSet):
             POST:
                 tags: []
         """
-        house = ExampleHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ExampleHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('EX404')
+
         tags = request.data.get('tags')
         if tags is not None:
             for tag in tags:
@@ -176,13 +150,6 @@ class ExampleHouseViewSet(ModelViewSet):
                 except Exception:
                     pass
         response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
         return response
 
     @detail_route(methods=['post'])
@@ -191,7 +158,11 @@ class ExampleHouseViewSet(ModelViewSet):
             POST:
                 styles: []
         """
-        house = ExampleHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ExampleHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('EX404')
+
         styles = request.data.get('styles')
         if styles is not None:
             for style in styles:
@@ -200,13 +171,6 @@ class ExampleHouseViewSet(ModelViewSet):
                 except Exception:
                     pass
         response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
         return response
 
     @detail_route(methods=['post'])
@@ -215,7 +179,11 @@ class ExampleHouseViewSet(ModelViewSet):
             POST:
                 styles: []
         """
-        house = ExampleHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ExampleHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('EX404')
+
         styles = request.data.get('styles')
         if styles is not None:
             for style in styles:
@@ -225,13 +193,6 @@ class ExampleHouseViewSet(ModelViewSet):
                 except Exception:
                     pass
         response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
         return response
 
     @detail_route(methods=['post'])
@@ -240,7 +201,11 @@ class ExampleHouseViewSet(ModelViewSet):
             POST:
                 commitments: []
         """
-        house = ExampleHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ExampleHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('EX404')
+
         commitments = request.data.get('commitments')
         if commitments is not None:
             for commitment in commitments:
@@ -250,13 +215,6 @@ class ExampleHouseViewSet(ModelViewSet):
                 except Exception:
                     pass
         response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
         return response
 
     @detail_route(methods=['post'])
@@ -265,7 +223,11 @@ class ExampleHouseViewSet(ModelViewSet):
             POST:
                 commitments: []
         """
-        house = ExampleHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ExampleHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('EX404')
+
         commitments = request.data.get('commitments')
         if commitments is not None:
             for commitment in commitments:
@@ -275,11 +237,4 @@ class ExampleHouseViewSet(ModelViewSet):
                 except Exception:
                     pass
         response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
         return response

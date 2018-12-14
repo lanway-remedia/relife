@@ -57,24 +57,12 @@ class UserVs(ModelViewSet):
             self.queryset = self.queryset.filter(Q(username__contains=name) | Q(
                 first_name__contains=name) | Q(last_name__contains=name))
         response = super(UserVs, self).list(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
+
         return response
 
     def retrieve(self, request, *args, **kwargs):
         response = super(UserVs, self).retrieve(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
+
         return response
 
     def create(self, request, *args, **kwargs):
@@ -108,13 +96,7 @@ class UserVs(ModelViewSet):
         response.data['group'] = group.id
         if store is not None:
             response.data['store'] = store.id
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
+
         return response
 
     def update(self, request, *args, **kwargs):
@@ -126,35 +108,17 @@ class UserVs(ModelViewSet):
         """
         self.serializer_class = UserWithoutRequireInfoSerializer
         response = super(UserVs, self).update(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
+
         return response
 
     def partial_update(self, request, *args, **kwargs):
         response = super(UserVs, self).partial_update(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
+
         return response
 
     def destroy(self, request, *args, **kwargs):
         response = super(UserVs, self).destroy(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
+
         return response
 
 
@@ -171,13 +135,7 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
         self.queryset = User.objects.filter(pk=request.user.id)
         self.serializer_class = UserSerializer
         response = super(ProfileVs, self).list(request, *args, **kwargs)
-        if response.status_code > 299:
-            response.data = {
-                'status': False,
-                'messageCode': '',
-                'messageParams': {},
-                'data': response.data
-            }
+
         else:
             response.data = {
                 'status': True,
