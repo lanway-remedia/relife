@@ -4,11 +4,11 @@
 
 import apiClient from '../../shared/apiClient'
 
-export default class ProfileService {
-  getProfile() {
+export default class UserProfileService {
+  getUserProfile() {
     return apiClient.get(`/users/v1/profile/`)
   }
-  editProfile(data) {
+  editUserProfile(data) {
     return apiClient.post(`/users/v1/profile/`, data)
   }
   editAvatarProfile(data) {

@@ -6,7 +6,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import ProfileActions from '../../redux/wrapper/ProfileRedux'
+import ProfileActions from '../../redux/wrapper/UserProfileRedux'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Container, Row, Col, Button, FormGroup, Label } from 'reactstrap'
 import { bindActionCreators } from 'redux'
@@ -59,7 +59,10 @@ class ProfileChangePassPage extends React.Component {
       }
       if (nextProps.data.changePass) {
         if (nextProps.data.messageCode)
-        this.props.show(ModalName.COMMON, { message: I18nUtils.t(nextProps.data.messageCode), closeFunction: () => this.closeFunction() })
+          this.props.show(ModalName.COMMON, {
+            message: I18nUtils.t(nextProps.data.messageCode),
+            closeFunction: () => this.closeFunction()
+          })
       }
     }
   }
@@ -79,13 +82,22 @@ class ProfileChangePassPage extends React.Component {
     })
   }
 
-  matchPassword = (value) => value && value === this.state.newPassword
+  matchPassword = value => value && value === this.state.newPassword
 
   render() {
     let { data } = this.state
     let fullName = data.first_name + ' ' + data.last_name
     return (
-      <Container className="user-edit-profile">
+      <Container fluid className="user-edit-profile">
+        <div className="page-title">
+          <h1>
+            <i className="fa fa-signal" aria-hidden="true" />
+            {I18nUtils.formatMessage(
+              { id: 'ucp-title' },
+              { username: data.username }
+            )}
+          </h1>
+        </div>
         <div className="account-avatar">
           <div className="info ed">
             <p>
@@ -181,12 +193,12 @@ ProfileChangePassPage.propTypes = {
   profileRequest: PropTypes.func,
   changePassRequest: PropTypes.func,
   show: PropTypes.func,
-  hide:PropTypes.func
+  hide: PropTypes.func
 }
 
 const mapStateToProps = state => {
   return {
-    data: state.profile.data
+    data: state.userProfile.data
   }
 }
 

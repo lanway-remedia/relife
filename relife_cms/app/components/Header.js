@@ -20,7 +20,9 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
+import AppUtils from '../utils/AppUtils'
 import I18nUtils from '../utils/I18nUtils'
+import ProfileActions from '../redux/wrapper/UserProfileRedux'
 
 import logo from '../images/logo.png'
 import avatar from '../images/user.png'
@@ -30,15 +32,45 @@ class Header extends React.Component {
     super(props)
     this.state = {
       hsearch: '',
-      dropdownOpen: false
+      dropdownOpen: false,
+      data: {},
+      name: '',
+      profileImage: ''
     }
     this.toggle = this.toggle.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSearch = this.handleSearch.bind(this)
   }
 
-  goLoginPage = () => {
-    this.props.history.push('/login')
+  getUserInfo() {
+    this.props.profileRequest({})
+  }
+
+  componentDidMount() {
+    this.getUserInfo()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data != nextProps.data) {
+      let response = nextProps.data
+      if (response.getProfile) {
+        this.setState({
+          data: response.data,
+          name:
+            response.data.first_name + ' ' + response.data.last_name ||
+            response.data.username,
+          profileImage: response.data.profile_image || avatar
+        })
+      }
+    }
+
+    return null
+  }
+
+  toggle() {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    })
   }
 
   handleChange = e => {
@@ -51,10 +83,12 @@ class Header extends React.Component {
     console.log('Search')
   }
 
-  toggle() {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen
-    })
+  changeToEdit = () => {
+    this.props.history.push('/profile-edit')
+  }
+
+  handleLogout = () => {
+    AppUtils.logout(this.props.history)
   }
 
   render() {
@@ -105,15 +139,20 @@ class Header extends React.Component {
                     toggle={this.toggle}
                   >
                     <DropdownToggle>
-                      <span>Hinosima Name</span>
-                      <img alt="asdasd" src={avatar} />
+                      <span>{this.state.name}</span>
+                      <img
+                        alt={this.state.name}
+                        src={this.state.profileImage}
+                      />
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem to="/account-setting">
-                        Account Setting
+                      <DropdownItem onClick={this.changeToEdit}>
+                        {I18nUtils.t('asetting')}
                       </DropdownItem>
                       <DropdownItem divider />
-                      <DropdownItem to="/logout">Logout</DropdownItem>
+                      <DropdownItem onClick={this.handleLogout}>
+                        {I18nUtils.t('logout')}
+                      </DropdownItem>
                     </DropdownMenu>
                   </ButtonDropdown>
                 </div>
@@ -142,10 +181,6 @@ class Header extends React.Component {
                   </Link>
                 </div>
               </div>
-
-              {/* <Button color="link" onClick={() => this.goLoginPage()}>
-                {I18nUtils.t('login')}
-              </Button> */}
             </Col>
           </Row>
         </Container>
@@ -155,7 +190,23 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  history: PropTypes.object
+  history: PropTypes.object,
+  profileRequest: PropTypes.func,
+  data: PropTypes.object
 }
 
-export default connect()(withRouter(Header))
+const mapStateToProps = state => {
+  return {
+    processing: state.userProfile.processing,
+    data: state.userProfile.data
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  profileRequest: data => dispatch(ProfileActions.profileRequest(data))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Header))

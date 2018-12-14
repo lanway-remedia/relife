@@ -1,5 +1,7 @@
 footer {
   background: #2e3230;
+  position: relative;
+  z-index: 500;
 
   .col-footer {
     color: $text-white-color;

@@ -11,11 +11,10 @@ const { Types, Creators } = createActions({
   editProfileAvatarRequest: ['data'],
   changePassRequest: ['data'],
   profileSuccess: ['data'],
-  profileFailure: ['error'],
-
+  profileFailure: ['error']
 })
 
-export const ProfileTypes = Types
+export const UserProfileTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */

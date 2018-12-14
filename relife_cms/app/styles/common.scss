@@ -7,6 +7,12 @@
     overflow: hidden;
     position: relative;
     background: #ececec;
+
+    .main-content {
+      z-index: 800;
+      transition: 0.3s ease-in-out, width 0.3s ease-in-out;
+      margin-left: 230px;
+    }
   }
 }
 

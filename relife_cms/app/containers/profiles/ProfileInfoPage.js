@@ -7,7 +7,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import ProfileActions from '../../redux/wrapper/ProfileRedux'
+import ProfileActions from '../../redux/wrapper/UserProfileRedux'
 import { Container, Row, Col, Button, Label } from 'reactstrap'
 import I18nUtils from '../../utils/I18nUtils'
 
@@ -23,6 +23,7 @@ class ProfileInfoPage extends React.Component {
   }
 
   componentDidMount() {
+    document.title = `${I18nUtils.t('ud-page-title')}`
     this.props.profileRequest({})
   }
 
@@ -57,7 +58,13 @@ class ProfileInfoPage extends React.Component {
     if (data.profile_image != null) profileImage = data.profile_image
     else profileImage = user
     return (
-      <Container className="user-dashboard-content">
+      <Container fluid className="user-dashboard-content">
+        <div className="page-title">
+          <h1>
+            <i className="fa fa-signal" aria-hidden="true" />
+            {I18nUtils.t('ud-page-title')}
+          </h1>
+        </div>
         <div className="account-avatar">
           <div className="avatar">
             <img src={profileImage} alt={data.username} />
@@ -125,8 +132,8 @@ ProfileInfoPage.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    processing: state.profile.processing,
-    data: state.profile.data
+    processing: state.userProfile.processing,
+    data: state.userProfile.data
   }
 }
 

@@ -38,7 +38,6 @@ class Routes extends React.Component {
   }
 
   render() {
-    let { username, userimage } = this.props
     const isAuthenticated = () => {
       let isLogin = false
       var code = localStorage.getItem(StorageKeyConstants.TOKEN)
@@ -65,7 +64,7 @@ class Routes extends React.Component {
     return (
       <div className="wrapper">
         <React.Fragment>
-          {!hideMenu && <Header username={username} userimage={userimage} />}
+          {!hideMenu && <Header />}
           {hideMenu ? (
             <Switch>
               <Route exact path="/login" component={LoginPage} />
@@ -78,31 +77,33 @@ class Routes extends React.Component {
           ) : (
             <div className="main-wrapper">
               <Navigation />
-              <Container fluid>
-                <Row>
-                  <Col xs="12" md="10">
-                    <Switch>
-                      <Route
-                        exact
-                        path="/"
-                        component={requireLogin(ProfileInfoPage)}
-                      />
-                      <Route
-                        path="/profile"
-                        component={requireLogin(ProfileInfoPage)}
-                      />
-                      <Route
-                        path="/profile-edit"
-                        component={requireLogin(ProfileEditPage)}
-                      />
-                      <Route
-                        path="/profile-change-password"
-                        component={requireLogin(ProfileChangePassPage)}
-                      />
-                    </Switch>
-                  </Col>
-                </Row>
-              </Container>
+              <div className="main-content">
+                <Container fluid>
+                  <Row>
+                    <Col xs="12" md="10">
+                      <Switch>
+                        <Route
+                          exact
+                          path="/"
+                          component={requireLogin(ProfileInfoPage)}
+                        />
+                        <Route
+                          path="/profile"
+                          component={requireLogin(ProfileInfoPage)}
+                        />
+                        <Route
+                          path="/profile-edit"
+                          component={requireLogin(ProfileEditPage)}
+                        />
+                        <Route
+                          path="/profile-change-password"
+                          component={requireLogin(ProfileChangePassPage)}
+                        />
+                      </Switch>
+                    </Col>
+                  </Row>
+                </Container>
+              </div>
             </div>
           )}
           {!hideMenu && <Footer />}

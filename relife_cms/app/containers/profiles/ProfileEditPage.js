@@ -6,7 +6,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import ProfileActions from '../../redux/wrapper/ProfileRedux'
+import ProfileActions from '../../redux/wrapper/UserProfileRedux'
 import ProfileImage from '../../components/ProfileImage'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Container, Row, Col, Button, FormGroup, Label } from 'reactstrap'
@@ -46,7 +46,10 @@ class ProfileEditPage extends React.Component {
       //update profile or update profile image
       if (nextProps.data.editProfile || nextProps.data.editProfileImage) {
         if (nextProps.data.messageCode)
-        this.props.show(ModalName.COMMON, { message: I18nUtils.t(nextProps.data.messageCode), closeFunction: () => this.closeFunction() })
+          this.props.show(ModalName.COMMON, {
+            message: I18nUtils.t(nextProps.data.messageCode),
+            closeFunction: () => this.closeFunction()
+          })
       }
       //get profile info
       if (nextProps.data.getProfile) {
@@ -55,26 +58,16 @@ class ProfileEditPage extends React.Component {
     }
   }
 
-  setProfile = (data) => {
+  setProfile = data => {
     this.setState({
       data: data.data,
       id: data.data.id,
       group: data.data.group,
       profileImage: data.data.profile_image,
-      fname:
-        data.data.first_name === null
-          ? ''
-          : data.data.first_name,
-      lname:
-        data.data.last_name === null
-          ? ''
-          : data.data.last_name,
-      email:
-        data.data.email === null ? '' : data.data.email,
-      address:
-        data.data.address === null
-          ? ''
-          : data.data.address,
+      fname: data.data.first_name === null ? '' : data.data.first_name,
+      lname: data.data.last_name === null ? '' : data.data.last_name,
+      email: data.data.email === null ? '' : data.data.email,
+      address: data.data.address === null ? '' : data.data.address,
       phone: data.data.tel === null ? '' : data.data.tel
     })
   }
@@ -108,7 +101,10 @@ class ProfileEditPage extends React.Component {
       address: this.state.address
     }
 
-    if (this.state.profileImage != null && typeof this.state.profileImage != 'string') {
+    if (
+      this.state.profileImage != null &&
+      typeof this.state.profileImage != 'string'
+    ) {
       let formData = new FormData()
       formData.append('file', this.state.profileImage)
       this.props.editProfileAvatarRequest(formData)
@@ -126,7 +122,16 @@ class ProfileEditPage extends React.Component {
     let fullName = data.first_name + ' ' + data.last_name
 
     return (
-      <Container className="user-edit-profile">
+      <Container fluid className="user-edit-profile">
+        <div className="page-title">
+          <h1>
+            <i className="fa fa-signal" aria-hidden="true" />
+            {I18nUtils.formatMessage(
+              { id: 'ed-title' },
+              { username: data.username }
+            )}
+          </h1>
+        </div>
         <div className="account-avatar">
           <div className="info ed">
             <p>
@@ -238,8 +243,8 @@ ProfileEditPage.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    processing: state.profile.processing,
-    data: state.profile.data
+    processing: state.userProfile.processing,
+    data: state.userProfile.data
   }
 }
 

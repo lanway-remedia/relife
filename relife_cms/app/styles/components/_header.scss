@@ -57,6 +57,7 @@ header {
         padding: 10px 10px 10px 20px;
         @include no-radius;
         @include no-border;
+        min-width: 10rem;
 
         &:focus {
           box-shadow: none;

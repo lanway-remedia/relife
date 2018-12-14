@@ -4,8 +4,10 @@
  */
 import LanguageService from './wrapper/LanguageService'
 import AuthsService from './wrapper/AuthsService'
-import ProfileService from './wrapper/ProfileService'
+import UsersService from './wrapper/UsersService'
+import UserProfileService from './wrapper/UserProfileService'
 
 export const languageService = new LanguageService()
 export const authsService = new AuthsService()
-export const profileService = new ProfileService()
+export const usersService = new UsersService()
+export const userProfileService = new UserProfileService()

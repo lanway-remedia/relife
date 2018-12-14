@@ -9,12 +9,14 @@ import { takeLatest } from 'redux-saga/effects'
 import { ListLanguagesTypes } from '../redux/wrapper/ListLanguagesRedux'
 import { SetLanguageTypes } from '../redux/wrapper/SetLanguageRedux'
 import { AuthsTypes } from '../redux/wrapper/AuthsRedux'
-import { ProfileTypes } from '../redux/wrapper/ProfileRedux'
+import { UsersTypes } from '../redux/wrapper/UsersRedux'
+import { UserProfileTypes } from '../redux/wrapper/UserProfileRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
 import AuthsSagas from './wrapper/AuthsSagas'
-import ProfileSagas from './wrapper/ProfileSagas'
+import UsersSagas from './wrapper/UsersSagas'
+import UserProfileSagas from './wrapper/UserProfileSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -35,16 +37,27 @@ export default function* root() {
     takeLatest(AuthsTypes.AUTHS_FAILURE, ErrorSagas.handleError),
 
     //user profile
-    takeLatest(ProfileTypes.PROFILE_REQUEST, ProfileSagas.getProfile),
+    takeLatest(UserProfileTypes.PROFILE_REQUEST, UserProfileSagas.userProfile),
     takeLatest(
-      ProfileTypes.EDIT_PROFILE_REQUEST,
-      ProfileSagas.editProfile
+      UserProfileTypes.EDIT_PROFILE_REQUEST,
+      UserProfileSagas.editProfile
     ),
     takeLatest(
-      ProfileTypes.EDIT_PROFILE_AVATAR_REQUEST,
-      ProfileSagas.editProfileAvatar
+      UserProfileTypes.EDIT_PROFILE_AVATAR_REQUEST,
+      UserProfileSagas.editProfileAvatar
     ),
-    takeLatest(ProfileTypes.CHANGE_PASS_REQUEST, ProfileSagas.changePass),
-    takeLatest(ProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError)
+    takeLatest(
+      UserProfileTypes.CHANGE_PASS_REQUEST,
+      UserProfileSagas.changePass
+    ),
+    takeLatest(UserProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
+
+    //user
+    takeLatest(UsersTypes.USER_LIST_REQUEST, UsersSagas.listUser),
+    takeLatest(UsersTypes.ADD_USER_REQUEST, UsersSagas.addUser),
+    takeLatest(UsersTypes.EDIT_USER_REQUEST, UsersSagas.editUser),
+    takeLatest(UsersTypes.DELETE_USER_REQUEST, UsersSagas.deleteUser),
+    takeLatest(UsersTypes.FIND_USER_BY_ID, UsersSagas.findUserById),
+    takeLatest(UsersTypes.USERS_FAILURE, ErrorSagas.handleError)
   ]
 }

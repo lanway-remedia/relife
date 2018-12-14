@@ -38,6 +38,10 @@
   "la-page-title": "List User",
   "au-page-title": "Add new user",
 
+  "mnh-profile": "User Profile",
+  "mni-profile": "Profile Info",
+  "mni-cpass": "Change Password",
+
   "ots-parent-title": "Outlet Store Management",
   "otsl-page-title": "Manage Outlet Store List",
   "ots-add-page-title": "Add New Outlet Store",
@@ -160,6 +164,8 @@
   "edit": "Edit",
   "delete": "Delete",
   "login": "ログイン",
+  "logout": "Logout",
+  "asetting": "Account Setting",
   "back": "Back",
   "status": "Status",
   "city": "City",

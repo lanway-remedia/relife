@@ -10,7 +10,7 @@ import { withRouter, Link } from 'react-router-dom'
 import {} from 'reactstrap'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-perfect-scrollbar/dist/css/styles.css'
-// import I18nUtils from '../utils/I18nUtils'
+import I18nUtils from '../utils/I18nUtils'
 
 class Navigation extends React.Component {
   constructor(props) {
@@ -28,6 +28,17 @@ class Navigation extends React.Component {
         <div className="sb-content">
           <PerfectScrollbar>
             <ul className="sb-list">
+              <li className="mn-head">{I18nUtils.t('mnh-profile')}</li>
+              <li className="item">
+                <Link to="/" title="Menu 1">
+                  {I18nUtils.t('mni-profile')}
+                </Link>
+              </li>
+              <li className="item">
+                <Link to="/" title="Menu 1">
+                  {I18nUtils.t('mni-cpass')}
+                </Link>
+              </li>
               <li className="mn-head">Header Menu</li>
               <li className="item">
                 <Link to="/" title="Menu 1">
