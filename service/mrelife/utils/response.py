@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_404_NOT_FOUND
 
 
-def response_404(code, message='', data={}):
+def response_404(code, message='', data=''):
     """
         Return 404
     """
