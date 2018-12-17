@@ -10,11 +10,13 @@ import { ListLanguagesTypes } from '../redux/wrapper/ListLanguagesRedux'
 import { SetLanguageTypes } from '../redux/wrapper/SetLanguageRedux'
 import { AuthsTypes } from '../redux/wrapper/AuthsRedux'
 import { ProfileTypes } from '../redux/wrapper/ProfileRedux'
+import { LocationTypes } from '../redux/wrapper/LocationsRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
 import AuthsSagas from './wrapper/AuthsSagas'
 import ProfileSagas from './wrapper/ProfileSagas'
+import LocationsSagas from './wrapper/LocationsSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -45,6 +47,14 @@ export default function* root() {
       ProfileSagas.editProfileAvatar
     ),
     takeLatest(ProfileTypes.CHANGE_PASS_REQUEST, ProfileSagas.changePass),
-    takeLatest(ProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError)
+    takeLatest(ProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
+
+    //Locations
+    //List Location
+    takeLatest(
+      LocationTypes.LOCATION_LIST_REQUEST,
+      LocationsSagas.listLocation
+    ),
+    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
   ]
 }

@@ -1,11 +1,32 @@
 html {
   font-size: 62.5%;
 }
+
 body { 
   font-size: 1.0rem; 
 }
+
 img {
   object-fit: cover;
+}
+
+a.btn-default{
+  text-decoration: none;
+}
+
+a.btn-default:hover{
+  color: #fff;
+  background: #2c9a5c;
+}
+
+button.btn-default:hover{
+  background: #2c9a5c;
+}
+
+.btn-default {
+  border-radius: 0px;
+  background: #057235;
+  color: #fff;
 }
 
 .wrapper {
