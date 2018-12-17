@@ -14,6 +14,7 @@ import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import I18nUtils from '../../utils/I18nUtils'
 import { ModalName } from '../../constants'
+import { Helmet } from 'react-helmet'
 
 class ProfileEditPage extends React.Component {
   constructor(props) {
@@ -123,109 +124,112 @@ class ProfileEditPage extends React.Component {
 
     return (
       <Container fluid className="user-edit-profile">
+        <Helmet>
+          <title>{I18nUtils.t('ed-parent-title')}</title>
+        </Helmet>
         <div className="page-title">
           <h1>
-            <i className="fa fa-signal" aria-hidden="true" />
             {I18nUtils.formatMessage(
               { id: 'ed-title' },
-              { username: data.username }
+              { username: fullName }
             )}
           </h1>
         </div>
-        <div className="account-avatar">
-          <div className="info ed">
-            <p>
-              {I18nUtils.formatMessage({ id: 'ud-hi' }, { name: fullName })}
-            </p>
-            <p>{I18nUtils.t('ed-welcome')}</p>
+        <div className="box-group">
+          <div className="box-title">
+            <h4>{I18nUtils.t('ed-welcome')}</h4>
+          </div>
+          <div className="box-content">
+            <ValidationForm
+              className="form-user-info"
+              onSubmit={this.handleSubmit}
+            >
+              <Row>
+                <Col xs="12" md="12">
+                  <ProfileImage
+                    defaultAvatar
+                    profileImage={profileImage}
+                    size={90}
+                    onProfileChange={image => this.handleProfileChange(image)}
+                  />
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="fname">{I18nUtils.t('fname')}</Label>
+                    <TextInput
+                      type="text"
+                      name="fname"
+                      id="fname"
+                      placeholder={I18nUtils.t('all-place-fname')}
+                      value={this.state.fname}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="fname">{I18nUtils.t('lname')}</Label>
+                    <TextInput
+                      type="text"
+                      name="lname"
+                      id="lname"
+                      placeholder={I18nUtils.t('all-place-lname')}
+                      value={this.state.lname}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="email">{I18nUtils.t('email')}</Label>
+                    <TextInput
+                      type="text"
+                      name="email"
+                      id="email"
+                      placeholder={I18nUtils.t('all-place-email')}
+                      value={this.state.email}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="phone">{I18nUtils.t('phone')}</Label>
+                    <TextInput
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      placeholder={I18nUtils.t('all-place-phone')}
+                      value={this.state.phone}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="12">
+                  <FormGroup>
+                    <Label for="address">{I18nUtils.t('address')}</Label>
+                    <TextInput
+                      type="text"
+                      name="address"
+                      id="address"
+                      placeholder={I18nUtils.t('all-place-address')}
+                      value={this.state.address}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="12">
+                  <div className="btns-group text-left">
+                    <Button color="success">{I18nUtils.t('edit')}</Button>
+                    <Button onClick={this.redirectToProfile} color="danger">
+                      {I18nUtils.t('back')}
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            </ValidationForm>
           </div>
         </div>
-        <ValidationForm className="form-user-info" onSubmit={this.handleSubmit}>
-          <Row>
-            <Col xs="12" md="12">
-              <ProfileImage
-                defaultAvatar
-                profileImage={profileImage}
-                size={90}
-                onProfileChange={image => this.handleProfileChange(image)}
-              />
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="fname">{I18nUtils.t('fname')}</Label>
-                <TextInput
-                  type="text"
-                  name="fname"
-                  id="fname"
-                  placeholder={I18nUtils.t('all-place-fname')}
-                  value={this.state.fname}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="fname">{I18nUtils.t('lname')}</Label>
-                <TextInput
-                  type="text"
-                  name="lname"
-                  id="lname"
-                  placeholder={I18nUtils.t('all-place-lname')}
-                  value={this.state.lname}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="email">{I18nUtils.t('email')}</Label>
-                <TextInput
-                  type="text"
-                  name="email"
-                  id="email"
-                  placeholder={I18nUtils.t('all-place-email')}
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="phone">{I18nUtils.t('phone')}</Label>
-                <TextInput
-                  type="text"
-                  name="phone"
-                  id="phone"
-                  placeholder={I18nUtils.t('all-place-phone')}
-                  value={this.state.phone}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-
-            <Col xs="12" md="12">
-              <FormGroup>
-                <Label for="address">{I18nUtils.t('address')}</Label>
-                <TextInput
-                  type="text"
-                  name="address"
-                  id="address"
-                  placeholder={I18nUtils.t('all-place-address')}
-                  value={this.state.address}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="12">
-              <div className="btns-group text-left">
-                <Button color="success">{I18nUtils.t('edit')}</Button>
-                <Button onClick={this.redirectToProfile} color="danger">
-                  {I18nUtils.t('back')}
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </ValidationForm>
       </Container>
     )
   }

@@ -27,21 +27,26 @@
   "ud-change-avatar": "Click to change avatar",
   "ud-welcome": "Welcome to user profile page. In here, you can view account info, edit account profile and change password!",
 
+  "ed-parent-title": "Edit Profile Page",
   "ed-title": "Edit '{username}'",
   "ed-welcome": "In here, you can edit profile yourself",
 
   "ucp-page-title": "Change password page",
-  "ucp-title": "Change password '{username}'",
+  "ucp-title": "Change password",
   "ucp-hi": "Hi, {name}",
   "ucp-welcome": "In here, you can change your password",
 
-  "la-page-title": "List User",
+  "la-parent-title": "Manage User List Page",
+  "la-page-title": "Manage User List",
   "au-page-title": "Add new user",
 
   "mnh-profile-page": "User Profile Page",
   "mnh-profile": "User Profile",
   "mni-profile": "Profile Info",
   "mni-cpass": "Change Password",
+  "mnh-user": "User Management",
+  "mni-user-add": "Add new User",
+  "mni-user-list": "Manage User List",
 
   "ots-parent-title": "Outlet Store Management",
   "otsl-page-title": "Manage Outlet Store List",
@@ -137,6 +142,8 @@
   "address": "Address",
   "phone": "Phone",
   "username": "Username",
+  "group": "Group",
+  "store": "Store",
   "lname": "Last Name",
   "fname": "First Name",
   "fullName": "Full Name",
@@ -184,6 +191,7 @@
   "freeword": "Free Word",
   "idinvoice": "ID Invoice",
   "outletstore": "Outlet Store",
+  "action": "Action",
 
   "lb-ad-search": "Advanced Search",
   "lb-fil-tooltip": "Click here, you can show/hide Advanced Search content ",
@@ -240,6 +248,9 @@
   "forgotpassword-page-title": "RE:STYLE SYSTEM FORGOT PASSWORD PAGE",
   "forgot-back-login": "Back to Login Page",
   "forgot-text": "Please enter your e-mail address and click the send button.",
+
+  "al-calendar-h": "Wrong Date",
+  "al-calendar-b": "Todate needs larger than Fromdate",
 
   "validate-email": "Invalid email address.",
   "validate-field-0": "Please fill out this field.",

@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom'
 import ProfileActions from '../../redux/wrapper/UserProfileRedux'
 import { Container, Row, Col, Button, Label } from 'reactstrap'
 import I18nUtils from '../../utils/I18nUtils'
-
+import { Helmet } from 'react-helmet'
 import user from '../../images/user.png'
 
 class ProfileInfoPage extends React.Component {
@@ -59,63 +59,65 @@ class ProfileInfoPage extends React.Component {
     else profileImage = user
     return (
       <Container fluid className="user-dashboard-content">
+        <Helmet>
+          <title>{I18nUtils.t('ud-parent-title')}</title>
+        </Helmet>
         <div className="page-title">
-          <h1>
-            <i className="fa fa-signal" aria-hidden="true" />
-            {I18nUtils.t('ud-page-title')}
-          </h1>
+          <h1>{I18nUtils.t('ud-page-title')}</h1>
         </div>
-        <div className="account-avatar">
-          <div className="avatar">
-            <img src={profileImage} alt={data.username} />
-          </div>
-          <div className="info">
-            <p>
+        <div className="box-group">
+          <div className="box-title">
+            <h4>
               {I18nUtils.formatMessage({ id: 'ud-hi' }, { name: fullName })}
-            </p>
-            <p>{I18nUtils.t('ud-welcome')}</p>
+            </h4>
           </div>
-        </div>
-        <div className="account-info">
-          <Row>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('username')}:</Label>
-              <span>{data.username}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('email')}:</Label>
-              <span>{data.email}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('fname')}:</Label>
-              <span>{data.first_name}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('lname')}:</Label>
-              <span>{data.last_name}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('phone')}:</Label>
-              <span>{data.tel}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('address')}:</Label>
-              <span>{data.address}</span>
-            </Col>
-            <Col xs="12" md="12" className="mt-3">
-              <div className="btns-group text-left">
-                <Button
-                  color="primary"
-                  onClick={() => this.redirectToEditPage(data)}
-                >
-                  {I18nUtils.t('ud-btn-editprofile')}
-                </Button>
-                <Button onClick={this.redirectToChangePass} color="warning">
-                  {I18nUtils.t('changePassword')}
-                </Button>
+          <div className="box-content">
+            <div className="account-avatar">
+              <div className="avatar">
+                <img src={profileImage} alt={fullName} />
               </div>
-            </Col>
-          </Row>
+              <div className="info">
+                <p>{I18nUtils.t('ud-welcome')}</p>
+              </div>
+            </div>
+            <div className="account-info">
+              <Row>
+                <Col xs="12" md="6">
+                  <Label>{I18nUtils.t('email')}:</Label>
+                  <span>{data.email}</span>
+                </Col>
+                <Col xs="12" md="6">
+                  <Label>{I18nUtils.t('phone')}:</Label>
+                  <span>{data.tel}</span>
+                </Col>
+                <Col xs="12" md="6">
+                  <Label>{I18nUtils.t('fname')}:</Label>
+                  <span>{data.first_name}</span>
+                </Col>
+                <Col xs="12" md="6">
+                  <Label>{I18nUtils.t('lname')}:</Label>
+                  <span>{data.last_name}</span>
+                </Col>
+                <Col xs="12" md="6">
+                  <Label>{I18nUtils.t('address')}:</Label>
+                  <span>{data.address}</span>
+                </Col>
+                <Col xs="12" md="12" className="mt-3">
+                  <div className="btns-group text-left">
+                    <Button
+                      color="success"
+                      onClick={() => this.redirectToEditPage(data)}
+                    >
+                      {I18nUtils.t('ud-btn-editprofile')}
+                    </Button>
+                    <Button onClick={this.redirectToChangePass} color="danger">
+                      {I18nUtils.t('changePassword')}
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          </div>
         </div>
       </Container>
     )

@@ -32,7 +32,7 @@ class PaginationComponent extends Component {
     })
   }
 
-  onPerpageChange = (e) => {
+  onPerpageChange = e => {
     let { page } = this.state
     let { count } = this.props
     let limit = e.target.value
@@ -49,7 +49,7 @@ class PaginationComponent extends Component {
     let { page, limit } = this.state
     let pagesCount = count == 0 ? 1 : Math.ceil(count / limit)
     return (
-      <div className="toolbar mb-5">
+      <div className="toolbar">
         <div className="total">
           <span>
             {I18nUtils.formatMessage(

@@ -22,8 +22,9 @@ const UsersSagas = {
   *addUser({ data }) {
     try {
       let response = yield call(usersService.addUser, data)
-      response.data.addUser = true
-      yield put(UsersActions.usersSuccess(response.data))
+      yield put(
+        UsersActions.usersSuccess(response.data, (response.data.addUser = true))
+      )
     } catch (err) {
       yield put(UsersActions.usersFailure(err))
     }

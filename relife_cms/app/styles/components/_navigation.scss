@@ -3,15 +3,17 @@
   height: 100%;
   top: 0;
   left: 0;
-  min-height: 100vh;
+  min-height: calc(100vh - 124px);
   z-index: 900;
   transition: 0.3s ease-in-out, width 0.3s ease-in-out;
   transform: translate(0, 0);
   width: 215px;
-  padding: 30px 0 0 15px;
+  padding: 30px 0 30px 15px;
+  overflow: hidden;
 
   .sb-content {
     background: $bkg-white-color;
+    max-height: 100%;
 
     .sb-list {
       margin: 0;

@@ -89,11 +89,10 @@ class ListAccountsPage extends React.Component {
     return (
       <Container fluid className="list-user-content">
         <Helmet>
-          <title>{I18nUtils.t('la-page-title')}</title>
+          <title>{I18nUtils.t('la-parent-title')}</title>
         </Helmet>
         <div className="page-title">
           <h1>
-            <i className="fa fa-signal" aria-hidden="true" />
             {I18nUtils.t('la-page-title')}
             <Button color="success" onClick={this.addUser}>
               {I18nUtils.t('add-user')}

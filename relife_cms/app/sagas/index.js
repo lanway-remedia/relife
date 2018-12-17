@@ -11,12 +11,14 @@ import { SetLanguageTypes } from '../redux/wrapper/SetLanguageRedux'
 import { AuthsTypes } from '../redux/wrapper/AuthsRedux'
 import { UsersTypes } from '../redux/wrapper/UsersRedux'
 import { UserProfileTypes } from '../redux/wrapper/UserProfileRedux'
+import { OutletStoresTypes } from '../redux/wrapper/OutletStoresRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
 import AuthsSagas from './wrapper/AuthsSagas'
 import UsersSagas from './wrapper/UsersSagas'
 import UserProfileSagas from './wrapper/UserProfileSagas'
+import OutletStoresSagas from './wrapper/OutletStoresSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -51,6 +53,53 @@ export default function* root() {
       UserProfileSagas.changePass
     ),
     takeLatest(UserProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
+
+    //OutletStore
+    // Get List
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_LIST_REQUEST,
+      OutletStoresSagas.listStore
+    ),
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_LIST_FAILURE,
+      ErrorSagas.handleError
+    ),
+    //Get Store by ID
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_GET_REQUEST,
+      OutletStoresSagas.getStore
+    ),
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_GET_FAILURE,
+      ErrorSagas.handleError
+    ),
+    //Add Store
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_ADD_REQUEST,
+      OutletStoresSagas.addStore
+    ),
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_ADD_FAILURE,
+      ErrorSagas.handleError
+    ),
+    //Edit Store
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_EDIT_REQUEST,
+      OutletStoresSagas.editStore
+    ),
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_EDIT_FAILURE,
+      ErrorSagas.handleError
+    ),
+    //Delete Store
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_DELETE_REQUEST,
+      OutletStoresSagas.deleteStore
+    ),
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORE_DELETE_FAILURE,
+      ErrorSagas.handleError
+    ),
 
     //user
     takeLatest(UsersTypes.USER_LIST_REQUEST, UsersSagas.listUser),

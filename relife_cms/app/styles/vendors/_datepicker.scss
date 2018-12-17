@@ -180,16 +180,16 @@
 
 .react-datepicker__current-month {
   background: $bkg-text-color;
-  padding: 4px 0;
+  padding: 10px 0;
   border-radius: 3px;
 }
 
 .react-datepicker__current-month,
 .react-datepicker-time__header {
   margin-top: 0;
-  color: #000;
-  font-weight: bold;
-  font-size: 0.944rem;
+  color: $text-white-color;
+  font-size: 0.6875rem;
+  font-family: $font-W6;
 }
 
 .react-datepicker-time__header {
@@ -204,35 +204,66 @@
   text-align: center;
   cursor: pointer;
   position: absolute;
-  top: 10px;
+  top: 6px;
   width: 0;
   padding: 0;
-  border: 0.45rem solid transparent;
+  border: 0 none;
   z-index: 1;
-  height: 10px;
-  width: 10px;
+  height: 24px;
+  width: 24px;
   text-indent: -999em;
   overflow: hidden;
+  background: #666c68;
+}
+
+.react-datepicker__navigation--previous,
+.react-datepicker__navigation--next {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #fff;
 }
 
 .react-datepicker__navigation--previous {
-  left: 10px;
-  border-right-color: #ccc;
+  left: 6px;
+  // border-right-color: #ccc;
+}
+
+.react-datepicker__navigation--previous::before {
+  content: '\f104';
+  text-indent: 0;
+  display: block;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  line-height: 24px;
 }
 
 .react-datepicker__navigation--previous:hover {
-  border-right-color: #b3b3b3;
+  background: $bkg-primary-color;
 }
 
 .react-datepicker__navigation--previous--disabled,
 .react-datepicker__navigation--previous--disabled:hover {
-  border-right-color: #e6e6e6;
+  background: #e6e6e6;
   cursor: default;
 }
 
 .react-datepicker__navigation--next {
-  right: 10px;
-  border-left-color: #ccc;
+  right: 6px;
+}
+
+.react-datepicker__navigation--next:before {
+  content: '\f105';
+  text-indent: 0;
+  display: block;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  line-height: 24px;
 }
 
 .react-datepicker__navigation--next--with-time:not(.react-datepicker__navigation--next--with-today-button) {
@@ -240,12 +271,12 @@
 }
 
 .react-datepicker__navigation--next:hover {
-  border-left-color: #b3b3b3;
+  background: $bkg-primary-color;
 }
 
 .react-datepicker__navigation--next--disabled,
 .react-datepicker__navigation--next--disabled:hover {
-  border-left-color: #e6e6e6;
+  background: #e6e6e6;
   cursor: default;
 }
 

@@ -3,7 +3,7 @@
 
   .main-wrapper {
     padding: 1.875rem 0;
-    min-height: calc(100vh - 82px);
+    min-height: calc(100vh - 124px);
     // overflow: hidden;
     position: relative;
     background: #ececec;
@@ -96,14 +96,14 @@ a:focus {
 
   &.btn-act {
     min-width: 0;
-    margin-right: 15px;
-    width: 32px;
-    height: 32px;
+    display: block;
+    height: 24px;
     text-align: center;
+    margin: 0 0 5px;
 
     &.last-child,
     &:last-child {
-      margin-right: 0;
+      margin: 0;
     }
   }
 }
@@ -182,11 +182,6 @@ a:focus {
   .react-datepicker {
     font-size: 1.1rem;
     border: 5px solid #7c7c7c;
-  }
-
-  .react-datepicker__current-month,
-  .react-datepicker-time__header {
-    font-size: 1.2rem;
   }
 }
 

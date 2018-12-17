@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import I18nUtils from '../utils/I18nUtils'
 import {
+  Table,
   Button,
   Row,
   Col,
@@ -23,17 +24,26 @@ import moment from 'moment'
 import DatePicker from 'react-datepicker'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
-import { ModalName } from '../constants'
+import { ModalName, DefaultValue } from '../constants'
+import TableHeadComponent from '../components/TableHeadComponent'
+import PaginationComponent from '../components/PaginationComponent'
+import UsersActions from '../redux/wrapper/UsersRedux'
 
 class TestPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      toDate: moment()
+      toDate: moment(),
+      isDate: false,
+      title: '',
+      count: 0,
+      users: []
     }
     this.handleChangeFromDate = this.handleChangeFromDate.bind(this)
     this.handleChangeToDate = this.handleChangeToDate.bind(this)
+    this.handleCompareFromDate = this.handleCompareFromDate.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleResetForm = this.handleResetForm.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
@@ -49,29 +59,75 @@ class TestPage extends React.Component {
     })
   }
 
+  handleCompareFromDate = () => {
+    const { fromDate, toDate } = this.state
+    if (toDate < fromDate) {
+      this.props.show(ModalName.COMMON, {
+        bodyClass: 'text-center',
+        title: I18nUtils.t('al-calendar-h'),
+        message: I18nUtils.t('al-calendar-b')
+      })
+      this.setState({
+        isDate: false
+      })
+    } else {
+      this.setState({
+        isDate: true
+      })
+    }
+  }
+
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     })
   }
 
-  handleSubmit = e => {
-    console.log('Submit')
-    console.log(e)
+  handleResetForm = e => {
+    // this.myFormRef.reset()
+    e.preventDefault()
   }
 
-  handleDelete = tag => {
-    this.props.show(ModalName.COMMON, {
-      bodyClass: 'text-center',
-      title: I18nUtils.formatMessage(
-        { id: 'modal-del-header' },
-        { name: tag.name }
-      ),
-      message: I18nUtils.t('modal-del-body')
-    })
+  handleSubmit = e => {
+    e.preventDefault()
+    if (this.state.isDate) console.log('Submit')
+  }
+
+  getUserList() {
+    let params = new URLSearchParams(this.props.history.location.search)
+    let page = params.get('page') * 1 || DefaultValue.PAGE
+    let limit = params.get('limit') * 1 || DefaultValue.LIMIT
+    let name = params.get('freeword')
+    let group_id = params.get('group')
+    let store_id = params.get('store')
+    let data = {
+      offset: (page - 1) * limit,
+      limit: limit,
+      ...(name && { name: name }),
+      ...(group_id && { group_id: group_id }),
+      ...(store_id && { store_id: store_id })
+    }
+    this.props.userListRequest(data)
+  }
+
+  componentDidMount() {
+    this.getUserList()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.response != nextProps.response) {
+      let response = nextProps.response
+      if (response.listUser) {
+        this.setState({
+          users: response.data.results,
+          count: response.data.count
+        })
+      }
+    }
   }
 
   render() {
+    let { count, users } = this.state
     return (
       <div className="test-page">
         <div className="page-title">
@@ -80,12 +136,17 @@ class TestPage extends React.Component {
             <Button color="success">{I18nUtils.t('btn-add-new')}</Button>
           </h1>
         </div>
+        {/* Filter Start */}
         <div className="filter-group">
           <div className="filter-title">
             <h4>{I18nUtils.t('lb-ad-search')}</h4>
           </div>
           <div className="filter-body">
-            <ValidationForm onSubmit={this.handleSubmit} autoComplete="off">
+            <ValidationForm
+              ref={el => (this.myFormRef = el)}
+              onSubmit={this.handleSubmit}
+              autoComplete="off"
+            >
               <Row>
                 <Col xs="12" md="6">
                   <FormGroup>
@@ -137,6 +198,7 @@ class TestPage extends React.Component {
                         name="toDate"
                         autoComplete="off"
                         popperPlacement="bottom"
+                        onBlur={this.handleCompareFromDate}
                       />
                     </InputGroup>
                   </FormGroup>
@@ -165,6 +227,55 @@ class TestPage extends React.Component {
             </ValidationForm>
           </div>
         </div>
+        {/* Filter End */}
+        {/* Box Start */}
+        <div className="box-group">
+          <div className="box-title">
+            <h4>Result</h4>
+          </div>
+          <div className="box-content">
+            <div className="formTable">
+              <PaginationComponent count={count} />
+              <Table hover responsive>
+                <TableHeadComponent theadTitle="#,Name,Email,Store,Group,Action" />
+                <tbody>
+                  {users.map((user, key) => {
+                    return (
+                      <tr key={key}>
+                        <td>{user.id}</td>
+                        <td>{user.username}</td>
+                        <td>{user.email}</td>
+                        <td>{user.store ? user.store.title : ''}</td>
+                        <td>{I18nUtils.t(`group-${user.group}`)}</td>
+                        <td>
+                          <Button
+                            title={I18nUtils.t('edit')}
+                            color="success"
+                            size="sm"
+                            className="btn-act"
+                            onClick={() => this.editUser(user.id)}
+                          >
+                            {I18nUtils.t('edit')}
+                          </Button>
+                          <Button
+                            title={I18nUtils.t('delete')}
+                            color="secondary"
+                            size="sm"
+                            className="btn-act"
+                            onClick={() => this.deleteUser(user)}
+                          >
+                            {I18nUtils.t('delete')}
+                          </Button>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </Table>
+            </div>
+          </div>
+        </div>
+        {/* Box End */}
       </div>
     )
   }
@@ -172,11 +283,28 @@ class TestPage extends React.Component {
 
 TestPage.propTypes = {
   history: PropTypes.object,
+  processing: PropTypes.bool,
+  response: PropTypes.object,
+  userListRequest: PropTypes.func,
+  deleteUserRequest: PropTypes.func,
   show: PropTypes.func,
   hide: PropTypes.func
 }
+
+const mapStateToProps = state => {
+  return {
+    processing: state.users.processing,
+    response: state.users.data
+  }
+}
+
 const mapDispatchToProps = dispatch => ({
-  ...bindActionCreators({ show, hide }, dispatch)
+  ...bindActionCreators({ show, hide }, dispatch),
+  userListRequest: data => dispatch(UsersActions.userListRequest(data)),
+  deleteUserRequest: id => dispatch(UsersActions.deleteUserRequest(id))
 })
 
-export default connect(mapDispatchToProps)(withRouter(TestPage))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(TestPage))

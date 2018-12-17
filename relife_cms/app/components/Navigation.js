@@ -30,13 +30,33 @@ class Navigation extends React.Component {
             <ul className="sb-list">
               <li className="mn-head">{I18nUtils.t('mnh-profile')}</li>
               <li className="item">
-                <Link to="/" title="Menu 1">
+                <Link to="/profile" title={I18nUtils.t('mni-profile')}>
                   {I18nUtils.t('mni-profile')}
                 </Link>
               </li>
               <li className="item">
-                <Link to="/" title="Menu 1">
+                <Link
+                  to="/profile-change-password"
+                  title={I18nUtils.t('mni-cpass')}
+                >
                   {I18nUtils.t('mni-cpass')}
+                </Link>
+              </li>
+              <li className="mn-head">{I18nUtils.t('mnh-user')}</li>
+              <li className="item">
+                <Link to="/add-user" title="{I18nUtils.t('mni-user-add')}">
+                  {I18nUtils.t('mni-user-add')}
+                </Link>
+              </li>
+              <li className="item">
+                <Link to="/users" title="{I18nUtils.t('mni-user-list')}">
+                  {I18nUtils.t('mni-user-list')}
+                </Link>
+              </li>
+              <li className="mn-head">Header Menu 2</li>
+              <li className="item">
+                <Link to="/manage-user-list" title="Menu 2-1">
+                  Menu 2-1
                 </Link>
               </li>
               <li className="mn-head">Header Menu</li>

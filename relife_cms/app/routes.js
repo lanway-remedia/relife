@@ -6,7 +6,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Route, Redirect, withRouter, Switch } from 'react-router-dom'
-import { Container } from 'reactstrap'
 //header & navigation
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -19,6 +18,12 @@ import ForgotPasswordPage from './containers/auths/ForgotPasswordPage'
 import ProfileInfoPage from './containers/profiles/ProfileInfoPage'
 import ProfileEditPage from './containers/profiles/ProfileEditPage'
 import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
+//users
+import UserListPage from './containers/users/UserListPage'
+import UserDetailPage from './containers/users/UserDetailPage'
+import AddUserPage from './containers/users/AddUserPage'
+import EditUserPage from './containers/users/EditUserPage'
+import ResetPassUserPage from './containers/users/ResetPassUserPage'
 
 //Test page
 import TestPage from './containers/TestPage'
@@ -81,28 +86,44 @@ class Routes extends React.Component {
             <div className="main-wrapper">
               <Navigation />
               <div className="main-content">
-                <Container fluid>
-                  <Switch>
-                    <Route
-                      exact
-                      path="/"
-                      component={requireLogin(ProfileInfoPage)}
-                    />
-                    <Route
-                      path="/profile"
-                      component={requireLogin(ProfileInfoPage)}
-                    />
-                    <Route
-                      path="/profile-edit"
-                      component={requireLogin(ProfileEditPage)}
-                    />
-                    <Route
-                      path="/profile-change-password"
-                      component={requireLogin(ProfileChangePassPage)}
-                    />
-                    <Route path="/test" component={requireLogin(TestPage)} />
-                  </Switch>
-                </Container>
+                <Switch>
+                  <Route
+                    exact
+                    path="/"
+                    component={requireLogin(ProfileInfoPage)}
+                  />
+                  <Route
+                    path="/profile"
+                    component={requireLogin(ProfileInfoPage)}
+                  />
+                  <Route
+                    path="/profile-edit"
+                    component={requireLogin(ProfileEditPage)}
+                  />
+                  <Route
+                    path="/profile-change-password"
+                    component={requireLogin(ProfileChangePassPage)}
+                  />
+                  <Route path="/users" component={requireLogin(UserListPage)} />
+                  <Route
+                    path="/user/:id"
+                    component={requireLogin(UserDetailPage)}
+                  />
+                  <Route
+                    path="/add-user"
+                    component={requireLogin(AddUserPage)}
+                  />
+                  <Route
+                    path="/edit-user/:id"
+                    component={requireLogin(EditUserPage)}
+                  />
+                  <Route
+                    path="/reset-password-user/:id"
+                    component={requireLogin(ResetPassUserPage)}
+                  />
+                  <Route path="/test" component={requireLogin(TestPage)} />
+                  <Route path="/test" component={requireLogin(TestPage)} />
+                </Switch>
               </div>
             </div>
           )}

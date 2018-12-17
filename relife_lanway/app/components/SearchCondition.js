@@ -103,6 +103,7 @@ class SearchCondition extends Component {
     let { hasFreeword, hasGroup, hasStore } = this.props
     let { showStoreList, collapse, freeword, group, store, timeout } = this.state
     return (
+      
       <div className="filter-group mb-5">
         <label
           className="lb-search"
