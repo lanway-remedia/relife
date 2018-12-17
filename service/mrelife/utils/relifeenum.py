@@ -109,6 +109,15 @@ class MessageCode(Enum):
     OMH009 = 'OMH009'  # feild status update success
     OMH010 = 'OMH010'  # not update fiedl status
 
+    MHR001 = 'MHR001'  # get model house review detail
+    MHR002 = 'MHR002'  # get detail. not found request
+    MHR003 = 'MHR003'  # create susscess
+    MHR004 = 'MHR004'  # create with err data
+    MHR005 = 'MHR005'  # update sussess
+    MHR006 = 'MHR006'  # update with err data
+    MHR007 = 'MHR007'  # delete sussess
+    MHR008 = 'MHR008'  # delete fail
+
     CAT001 = 'CAT001'  # create success
     CAT002 = 'CAT002'  # create with err data
     CAT003 = 'CAT003'  # invalid data

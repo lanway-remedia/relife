@@ -4,14 +4,14 @@ from io import BytesIO
 from django.core.files.storage import default_storage as storage
 from django.db.models import (CASCADE, BooleanField, CharField, DateTimeField,
                               ForeignKey, ImageField, Model, SmallIntegerField,
-                              TextField)
+                              TextField,IntegerField)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image
 
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class ModelHouse(Model):
 
@@ -163,4 +163,18 @@ class OrderModelHouse(Model):
 
     class Meta:
         db_table = 'order_model_house'
+        ordering = ['created', ]
+
+class ModelhouseReview(Model):
+    rating = IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
+    review = TextField()
+    model_house = ForeignKey(ModelHouse, related_name='model_house_review', on_delete=CASCADE)
+    create_user = ForeignKey('users.User', related_name='create_user_model_house_review', on_delete=CASCADE)
+    update_user = ForeignKey('users.User', related_name='update_user_model_house_review', on_delete=CASCADE)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
+    class Meta:
+        db_table = 'model_house_review'
         ordering = ['created', ]
