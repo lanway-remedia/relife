@@ -257,6 +257,7 @@ class RegisterView(APIView):
         domain = serializer.data['domain']
         user = User.objects.create(username=username, email=email, group=GroupUser())
         user.set_password(serializer.data['password1'])
+        user.save()
         # Generate token
         token_key = default_token_generator.make_token(user)
 
