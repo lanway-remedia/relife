@@ -4,18 +4,10 @@ from io import BytesIO
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group
 from django.core.files.storage import default_storage as storage
-from django.db.models import (
-    CASCADE,
-    SET_NULL,
-    BooleanField,
-    CharField,
-    DateTimeField,
-    ForeignKey,
-    ImageField,
-    IntegerField,
-    Model,
-    TextField
-)
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models import (CASCADE, SET_NULL, BooleanField, CharField,
+                              DateTimeField, ForeignKey, ImageField,
+                              IntegerField, Model, TextField)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image
@@ -137,4 +129,19 @@ class OutletStoreContactReply(Model):
 
     class Meta:
         db_table = 'outlet_store_contact_reply'
+        ordering = ['created', ]
+
+
+class OutletStoreReview(Model):
+    rating = IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
+    review = TextField()
+    outlet_store = ForeignKey(OutletStore, related_name='outlet_store_review', on_delete=CASCADE)
+    create_user = ForeignKey('users.User', related_name='create_user_outletstore_review', on_delete=CASCADE)
+    update_user = ForeignKey('users.User', related_name='update_user_outletstore_review', on_delete=CASCADE)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
+    class Meta:
+        db_table = 'outlet_store_review'
         ordering = ['created', ]
