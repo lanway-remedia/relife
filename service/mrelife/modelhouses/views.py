@@ -53,7 +53,7 @@ class ModelHouseViewSet(ModelViewSet):
             response = super(ModelHouseViewSet, self).list(request, *args, **kwargs)
             return response
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
 
     def retrieve(self, request, *args, **kwargs):
         try:
@@ -61,7 +61,7 @@ class ModelHouseViewSet(ModelViewSet):
             response = super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
             return response
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
 
     def create(self, request, *args, **kwargs):
         """
@@ -119,21 +119,21 @@ class ModelHouseViewSet(ModelViewSet):
             response = super(ModelHouseViewSet, self).update(request, *args, **kwargs)
             return response
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
 
     def partial_update(self, request, *args, **kwargs):
         try:
             response = super(ModelHouseViewSet, self).partial_update(request, *args, **kwargs)
             return response
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
 
     def destroy(self, request, *args, **kwargs):
         try:
             response = super(ModelHouseViewSet, self).destroy(request, *args, **kwargs)
             return response
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
 
     @detail_route(methods=['post'])
     def add_event(self, request, *args, **kwargs):
@@ -144,7 +144,7 @@ class ModelHouseViewSet(ModelViewSet):
         try:
             house = ModelHouse.objects.get(pk=kwargs['pk'])
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
         events = request.data.get('events')
         if events is not None:
             for event in events:
@@ -165,7 +165,7 @@ class ModelHouseViewSet(ModelViewSet):
         try:
             house = ModelHouse.objects.get(pk=kwargs['pk'])
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
         events = request.data.get('events')
         if events is not None:
             for event in events:
@@ -186,7 +186,7 @@ class ModelHouseViewSet(ModelViewSet):
         try:
             house = ModelHouse.objects.get(pk=kwargs['pk'])
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
         tags = request.data.get('tags')
         if tags is not None:
             for tag_name in tags:
@@ -206,7 +206,7 @@ class ModelHouseViewSet(ModelViewSet):
         try:
             house = ModelHouse.objects.get(pk=kwargs['pk'])
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
         tags = request.data.get('tags')
         if tags is not None:
             for tag in tags:
@@ -227,7 +227,7 @@ class ModelHouseViewSet(ModelViewSet):
         try:
             house = ModelHouse.objects.get(pk=kwargs['pk'])
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
         medias = request.data.getlist('medias')
         count = 0
         for media in medias:
@@ -247,7 +247,7 @@ class ModelHouseViewSet(ModelViewSet):
         try:
             house = ModelHouse.objects.get(pk=kwargs['pk'])
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
         medias = request.data.get('medias')
         if medias is not None:
             for media in medias:
@@ -268,7 +268,7 @@ class ModelHouseViewSet(ModelViewSet):
         try:
             house = ModelHouse.objects.get(pk=kwargs['pk'])
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
         users = request.data.get('users')
         if users is not None:
             for user in users:
@@ -289,7 +289,7 @@ class ModelHouseViewSet(ModelViewSet):
         try:
             house = ModelHouse.objects.get(pk=kwargs['pk'])
         except Http404:
-            return response_404('EX404')
+            return response_404('MH404')
         users = request.data.get('users')
         if users is not None:
             for user in users:
