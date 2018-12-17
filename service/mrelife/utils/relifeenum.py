@@ -118,6 +118,15 @@ class MessageCode(Enum):
     MHR007 = 'MHR007'  # delete sussess
     MHR008 = 'MHR008'  # delete fail
 
+    EHR001 = 'EHR001'  # get example house review detail
+    EHR002 = 'EHR002'  # get detail. not found request
+    EHR003 = 'EHR003'  # create susscess
+    EHR004 = 'EHR004'  # create with err data
+    EHR005 = 'EHR005'  # update sussess
+    EHR006 = 'EHR006'  # update with err data
+    EHR007 = 'EHR007'  # delete sussess
+    EHR008 = 'EHR008'  # delete fail
+
     CAT001 = 'CAT001'  # create success
     CAT002 = 'CAT002'  # create with err data
     CAT003 = 'CAT003'  # invalid data

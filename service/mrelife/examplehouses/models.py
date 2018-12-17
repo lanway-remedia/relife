@@ -2,9 +2,10 @@ import os
 from io import BytesIO
 
 from django.core.files.storage import default_storage as storage
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import (CASCADE, BooleanField, CharField, DateTimeField,
                               ForeignKey, ImageField, PositiveIntegerField,
-                              SmallIntegerField, TextField)
+                              SmallIntegerField, TextField,IntegerField)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image
@@ -14,7 +15,8 @@ from mrelife.attributes.models import (Commitment, Contruction, Floor,
                                        PriceRange, Style)
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
-from mrelife.utils.base_models import BaseModel
+from mrelife.utils.base_models import BaseModel,Model
+
 
 
 class ExampleHouse(BaseModel):
@@ -97,3 +99,18 @@ class ExampleHouseCommitment(BaseModel):
     example_house = ForeignKey(ExampleHouse, related_name="commitments", on_delete=CASCADE)
     commitment = ForeignKey(Commitment, related_name="example_houses", on_delete=CASCADE)
     is_active = BooleanField(default=True)
+
+
+class ExampleHouseReview(Model):
+    rating = IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
+    review = TextField()
+    example_house = ForeignKey(ExampleHouse, related_name='example_house_review', on_delete=CASCADE)
+    create_user = ForeignKey('users.User', related_name='create_user_example_house_review', on_delete=CASCADE)
+    update_user = ForeignKey('users.User', related_name='update_user_example_house_review', on_delete=CASCADE)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
+    class Meta:
+        db_table = 'example_house_review'
+        ordering = ['created', ]
