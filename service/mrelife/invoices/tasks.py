@@ -2,8 +2,10 @@ import calendar
 from datetime import datetime
 
 from celery.schedules import crontab
+
 from mrelife.fees.models import Fee
 from mrelife.invoices.models import Invoice
+from mrelife.modelhouses.models import OrderModelHouse
 from mrelife.outletstores.models import OutletStore
 from mrelife.taskapp.celery import app
 
@@ -33,7 +35,7 @@ def update_invoice():
         last_update = invoice.updated
         store = invoice.outlet_store
         fee = invoice.fee
-        
+
         ex_house = store.example_houses.filter(created__gt=last_update).count()
         ex_house_price = ex_house * fee.per_example_house_fee
         invoice.example_house_number += ex_house
@@ -44,16 +46,15 @@ def update_invoice():
         invoice.model_house_number += m_house
         invoice.total_fee += m_house_price
 
-        invoice.save()
+        booking = OrderModelHouse.objects.filter(created__month=current_month).filter(
+            model_house__in=store.model_houses.all().values("model_house")).count()
+        booking_price = booking * fee.per_booking_fee
+        invoice.booking_number += booking
+        invoice.total_fee += booking_price
         
+        # TODO: add article
 
-
-
-
-
-
-
-
+        invoice.save()
 
 
 app.conf.beat_schedule = {
