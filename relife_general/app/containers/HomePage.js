@@ -10,6 +10,7 @@ import {withRouter} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import BackGround from '../components/BackGround'
 import ExampleHouseList from '../components/ExampleHouseList'
+import TopMap from '../components/TopMap'
 import 'font-awesome/css/font-awesome.css'
 class HomePage extends React.Component {
     constructor(props) {
@@ -20,6 +21,7 @@ class HomePage extends React.Component {
     render() {
         return [
             <BackGround key="1" />,
+            // <TopMap key="2" />,
             <Container key="2">
                 <ExampleHouseList />
             </Container>,

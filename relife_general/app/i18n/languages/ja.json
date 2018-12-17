@@ -3,7 +3,10 @@
 
   "en_US": "English",
   "ja_JP": "Japanese",
-  "login": "Login",
-  "register": "Register",
-  "forgot-text": "メールアドレスを入力して送信ボタンをクリックください。"
+
+  "forgot-text": "メールアドレスを入力して送信ボタンをクリックください。",
+
+  "header-logo-text": "暮らしづくりのコンシェルジュ",
+  "login": "ログイン",
+  "register": "新規会員登録"
 }

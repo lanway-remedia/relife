@@ -15,7 +15,7 @@ import { Row, Col, Button, DropdownToggle, DropdownMenu, DropdownItem, Container
 // import defaultAvatar from '../images/user.png'
 import I18nUtils from '../utils/I18nUtils'
 import AppUtils from '../utils/AppUtils'
-import logo from '../images/form-logo.png'
+import logo from '../images/logo.png'
 class Header extends React.Component {
   constructor(props) {
       super(props)
@@ -40,56 +40,38 @@ class Header extends React.Component {
   render() {
     let {isAuthenticated, name, image} = this.props
     return (
-      <header>
-        <Container>
-          <Row noGutters>
-            <Col xs="12" sm="8">
-              <div className="header-logo">
-                <Link to="/">
-                  <img src={logo} />
-                </Link>
-              </div>
-            </Col>
-            {!isAuthenticated ? (
-            <Col xs="12" sm="4">
-              <Button className="btn-login" onClick={() => this.goRegisterPage()}>{I18nUtils.t('register')}</Button>{' '}
-              <Button className="btn-login" onClick={() => this.goLoginPage()}>{I18nUtils.t('login')}</Button>{' '}
-            </Col>
-            ) : (
-              <Col xs="12" sm="4">
-                <div className="profile-info">
-                  <div className="profile-name">
-                    <Navbar light expand="md" style={{paddingLeft: `0px`}}>
-                      <NavbarToggler onClick={this.toggle} />
-                      <Collapse isOpen={this.state.isOpen} navbar>
-                        <Nav className="ml-auto" navbar>
-                          <UncontrolledDropdown nav inNavbar>
-                            <DropdownToggle nav caret>
-                              {name}
-                            </DropdownToggle>
-                            <DropdownMenu right>
-                              <DropdownItem>
-                                <Link to="/profile">{I18nUtils.t('profile-info')}</Link>
-                              </DropdownItem>
-                              <DropdownItem divider />
-                              <DropdownItem onClick={() => AppUtils.logout(this.props.history)}>
-                                {I18nUtils.t('sign-out')}
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </UncontrolledDropdown>
-                        </Nav>
-                      </Collapse>
-                    </Navbar>
-                  </div>
-                  <div className="profile-image">
-                    <img className="avatar-img" src={image} />
-                  </div>
-                  <div className="clearfix" />
-                </div>
-              </Col>
-            )}
-          </Row>
-        </Container>
+      <header className="header pc">
+        <div className="header-inner">
+          <div className="header-logo">
+            <Link to="/" className="header-logo-inner">
+              <img src={logo} className="header-logo-img" />
+              <span className="header-logo-text">{I18nUtils.t('header-logo-text')}</span>
+            </Link>
+            <Link to="/about-us" className="header-logo-link">Re:Lifeとは </Link>
+          </div>
+          <nav id="gnav">
+            <ul className="gnav">
+              <li>
+                <Link to="/example">建築会社・工務店</Link>
+              </li>
+              <li>
+                <Link to="/example">建築実例</Link>
+              </li>
+              <li>
+                <Link to="/example">Re:Life style</Link>
+              </li>
+            </ul>
+          </nav>
+          <ul className="header-login">
+            <li>
+              <Link to="/login">{I18nUtils.t('login')}</Link>
+            </li>
+            <li>
+              <Link to="/register">{I18nUtils.t('register')}</Link>
+            </li>
+          </ul>
+        </div>
+
       </header>
     )
   }

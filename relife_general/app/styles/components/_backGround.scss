@@ -46,6 +46,11 @@
       transition-duration: 0.3s;
     }
 
+    a.mainvisual-message-link:hover {
+      background: #2c9a5c;
+      transition-duration: 0.3s;
+    }
+
   }
   .mainvisual-search {
     position: absolute;
@@ -79,6 +84,10 @@
     
     .btn-default {
       background: #057235;
+    }
+    .btn-default:hover {
+      background: #2c9a5c;
+      transition-duration: 0.3s;
     }
 
     button {

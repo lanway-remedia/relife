@@ -324,5 +324,9 @@
   "LOC004": "Update successfully",
   "LOC005": "Update error",
   "LOC006": "Get list successfully",
-  "LOC007": "Delete successfully"
+  "LOC007": "Delete successfully",
+
+
+  "header-logo-text": "暮らしづくりのコンシェルジュ"
+
 }
