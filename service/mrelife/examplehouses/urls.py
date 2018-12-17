@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import include, path,re_path
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 from mrelife.examplehouses import views
@@ -11,6 +11,7 @@ version_one = [
 ]
 
 urlpatterns = [
+    re_path(r'^review/', include('mrelife.examplehouses.examplehousereviews.urls')),
     path('v1/', include(version_one)),
 ]
 
