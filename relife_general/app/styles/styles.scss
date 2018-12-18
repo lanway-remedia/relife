@@ -11,7 +11,7 @@
 @import './components/profileImage';
 @import './components/imageUploadComponent';
 @import './components/exampleHouse';
-
+@import './components/breadcrumb';
 //Components/Home
 @import './components/home/exampleHouseList';
 @import './components/home/topMap';
@@ -22,6 +22,9 @@
 @import './containers/auths/forgotPasswordPage';
 @import './containers/profiles/userDashboardPage';
 @import './containers/profiles/userEditProfile';
+
+//Containers/exampleHouse
+@import './containers/exampleHouse/exampleHouseListPage';
 
 //Common
 @import 'common';

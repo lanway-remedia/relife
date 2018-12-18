@@ -70,8 +70,8 @@ class Header extends React.Component {
             </li>
           </ul>
         </div>
-
       </header>
+      
     )
   }
 }

@@ -10,6 +10,8 @@ import {ToastContainer} from 'react-toastify'
 //header
 import Header from './components/Header'
 import Footer from './components/Footer'
+//breadcrumb
+import Breadcrumb from './components/Breadcrumb'
 //homepage
 import HomePage from './containers/HomePage'
 //auths
@@ -21,6 +23,8 @@ import ForgotPasswordPage from './containers/auths/ForgotPasswordPage'
 import ProfileInfoPage from './containers/profiles/ProfileInfoPage'
 import ProfileEditPage from './containers/profiles/ProfileEditPage'
 import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
+//exampleHouse
+import ExampleHouseListPage from './containers/exampleHouse/ExampleHouseListPage'
 
 import {StorageKeyConstants} from './constants'
 import 'react-toastify/dist/ReactToastify.css'
@@ -76,6 +80,7 @@ class Routes extends React.Component {
                         name={username}
                         image={userimage}
                     />
+                    <Breadcrumb />
                     <Switch>
                         <Route exact path="/login" component={LoginPage} />
                         <Route path="/forgot-password" component={ForgotPasswordPage} />
@@ -100,6 +105,10 @@ class Routes extends React.Component {
                         <Route
                             path="/profile-change-password"
                             component={requireLogin(ProfileChangePassPage)}
+                        />
+                        <Route
+                            path="/example"
+                            component={ExampleHouseListPage}
                         />
                     </Switch>
                     <Footer />
