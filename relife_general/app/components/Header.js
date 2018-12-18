@@ -7,14 +7,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import { Row, Col, Button, DropdownToggle, DropdownMenu, DropdownItem, Container, Collapse,
-  Navbar,
-  NavbarToggler,
-  Nav,
-  UncontrolledDropdown } from 'reactstrap'
+// import { Row, Col, Button, DropdownToggle, DropdownMenu, DropdownItem, Container, Collapse,
+//   Navbar,
+//   NavbarToggler,
+//   Nav,
+//   UncontrolledDropdown } from 'reactstrap'
 // import defaultAvatar from '../images/user.png'
 import I18nUtils from '../utils/I18nUtils'
-import AppUtils from '../utils/AppUtils'
 import logo from '../images/logo.png'
 class Header extends React.Component {
   constructor(props) {

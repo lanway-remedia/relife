@@ -104,3 +104,82 @@
   }
 
 }
+
+@media screen and (max-width: 767px) {
+  .back-ground {
+    position: relative;
+    width: 100%;
+    height: 525px;
+  
+    .mainvisual-message {
+      position: absolute;
+      width: 84%;
+      height: 165px;
+      background: rgba(255,255,255,0.8);
+      padding: 0;
+      text-align: center;
+      top: inherit;
+      bottom: 75px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+  
+      h1 {
+        margin: 15px 0;
+  
+        img {
+          width: 142px;
+          height: auto;
+        }
+      }
+  
+      .mainvisual-title {
+        font-size: 2.7rem;
+        line-height: 2.7rem;
+        margin: 0 0 15px 0;
+      }
+  
+      .mainvisual-text {
+        font-size: 1.2rem;
+      }
+  
+      .mainvisual-message-link {
+        width: 80px;
+        height: 44px;
+        padding: 14px 0;
+        font-size: 1.0rem;
+        text-align: center
+      }
+    }
+    .mainvisual-search {
+      position: absolute;
+      width: 100%;
+      padding: 10px;
+      top: inherit;
+      bottom: -64px;
+      right: 0;
+      font-size: 1.2rem;
+      background: #f2f3f2;
+
+      .search-place {
+        width: calc(40% - 23px) !important;
+        height: 44px;
+        padding: 12px;
+      }
+  
+      .search-keyword {
+        width: calc(60% - 23px) !important;
+        height: 44px;
+        padding: 12px;
+      }
+
+      button {
+        display: inline-block;
+        width: 44px;
+        height: 44px;
+        font-size: 1.6rem;
+      }
+    }
+  
+  }
+}

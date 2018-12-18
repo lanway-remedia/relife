@@ -6,8 +6,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import I18nUtils from '../utils/I18nUtils'
-import LocationActions from '../redux/wrapper/LocationsRedux'
+import I18nUtils from '../../utils/I18nUtils'
+import LocationActions from '../../redux/wrapper/LocationsRedux'
 class TopMap extends React.Component {
   constructor(props) {
     super(props)
