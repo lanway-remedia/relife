@@ -258,7 +258,23 @@ class AddUserPage extends React.Component {
                     />
                   </FormGroup>
                 </Col>
-
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="group">{I18nUtils.t('group-selection')}</Label>
+                    <Input
+                      type="select"
+                      name="group"
+                      id="group"
+                      onChange={this.handleChange}
+                      value={group}
+                    >
+                      <option value={4}>{I18nUtils.t('group-4')}</option>
+                      <option value={3}>{I18nUtils.t('group-3')}</option>
+                      <option value={2}>{I18nUtils.t('group-2')}</option>
+                      <option value={1}>{I18nUtils.t('group-1')}</option>
+                    </Input>
+                  </FormGroup>
+                </Col>
                 <Col xs="12" md="6">
                   <FormGroup>
                     <Label for="store">{I18nUtils.t('store-selection')}</Label>
@@ -283,24 +299,6 @@ class AddUserPage extends React.Component {
                     </InputGroup>
                   </FormGroup>
                 </Col>
-                <Col xs="12" md="6">
-                  <FormGroup>
-                    <Label for="group">{I18nUtils.t('group-selection')}</Label>
-                    <Input
-                      type="select"
-                      name="group"
-                      id="group"
-                      onChange={this.handleChange}
-                      value={group}
-                    >
-                      <option value={4}>{I18nUtils.t('group-4')}</option>
-                      <option value={3}>{I18nUtils.t('group-3')}</option>
-                      <option value={2}>{I18nUtils.t('group-2')}</option>
-                      <option value={1}>{I18nUtils.t('group-1')}</option>
-                    </Input>
-                  </FormGroup>
-                </Col>
-
                 <Col xs="12" md="12">
                   <div className="btns-group text-left">
                     <Button color="success" onClick={this.addUser}>

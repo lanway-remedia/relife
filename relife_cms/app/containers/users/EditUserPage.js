@@ -28,6 +28,7 @@ class EditUserPage extends React.Component {
     super(props)
     this.state = {
       profileImage: null,
+      id: '',
       username: '',
       fname: '',
       lname: '',
@@ -38,6 +39,7 @@ class EditUserPage extends React.Component {
       group: 4
     }
     this.handleChange = this.handleChange.bind(this)
+    this.deleteUser = this.deleteUser.bind(this)
   }
 
   componentDidMount() {
@@ -50,6 +52,7 @@ class EditUserPage extends React.Component {
       let response = nextProps.response
       if (response.findUserById) {
         this.setState({
+          id: this.props.match.params.id,
           username: response.data.username,
           fname: response.data.first_name || '',
           lname: response.data.last_name || '',
@@ -88,6 +91,20 @@ class EditUserPage extends React.Component {
     this.props.history.push(`/user/${this.props.match.params.id}`)
   }
 
+  deleteUser = id => {
+    this.props.show(ModalName.COMMON, {
+      title: I18nUtils.t('modal-del-header'),
+      message: I18nUtils.t('modal-del-body'),
+      deleteFunction: () => this.deleteFunction(id)
+    })
+  }
+
+  deleteFunction = id => {
+    this.props.deleteUserRequest(id)
+    this.props.hide(ModalName.COMMON)
+    this.props.history.push(`/users`)
+  }
+
   editUser = () => {
     let data = {
       id: this.props.match.params.id,
@@ -102,6 +119,7 @@ class EditUserPage extends React.Component {
 
   render() {
     let {
+      id,
       username,
       fname,
       lname,
@@ -239,7 +257,13 @@ class EditUserPage extends React.Component {
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="12">
-                  <div className="btns-group text-left">
+                  <div className="btns-group text-center">
+                    <Button
+                      onClick={() => this.deleteUser(id)}
+                      color="secondary"
+                    >
+                      {I18nUtils.t('delete')}
+                    </Button>
                     <Button color="success" onClick={this.editUser}>
                       {I18nUtils.t('save')}
                     </Button>
@@ -264,7 +288,8 @@ EditUserPage.propTypes = {
   hide: PropTypes.func,
   response: PropTypes.object,
   editUserRequest: PropTypes.func,
-  findUserById: PropTypes.func
+  findUserById: PropTypes.func,
+  deleteUserRequest: PropTypes.func
 }
 
 const mapStateToProps = state => {
@@ -277,7 +302,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ show, hide }, dispatch),
   editUserRequest: data => dispatch(UsersActions.editUserRequest(data)),
-  findUserById: id => dispatch(UsersActions.findUserById(id))
+  findUserById: id => dispatch(UsersActions.findUserById(id)),
+  deleteUserRequest: id => dispatch(UsersActions.deleteUserRequest(id))
 })
 
 export default connect(

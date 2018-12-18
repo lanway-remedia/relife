@@ -29,7 +29,7 @@ class ListAccountsPage extends React.Component {
     }
   }
 
-  componentDidMount() {
+  getUserList() {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
@@ -46,6 +46,10 @@ class ListAccountsPage extends React.Component {
     this.props.userListRequest(data)
   }
 
+  componentDidMount() {
+    this.getUserList()
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.response != nextProps.response) {
       let response = nextProps.response
@@ -54,6 +58,9 @@ class ListAccountsPage extends React.Component {
           users: response.data.results,
           count: response.data.count
         })
+      }
+      if (response.deleteUser) {
+        this.forceUpdate(this.getUserList())
       }
     }
   }
@@ -68,18 +75,17 @@ class ListAccountsPage extends React.Component {
 
   deleteUser = user => {
     this.props.show(ModalName.COMMON, {
-      message: I18nUtils.formatMessage(
-        { id: 'modal-del-header' },
-        { name: user.username }
-      ),
-      okFunction: () => this.okFunction(user.id)
+      title: I18nUtils.t('modal-del-header'),
+      message: I18nUtils.t('modal-del-body'),
+      deleteFunction: () => this.deleteFunction(user)
     })
   }
 
-  okFunction = id => {
+  deleteFunction = id => {
     this.props.deleteUserRequest(id)
     this.props.hide(ModalName.COMMON)
     let users = this.state.users.filter(user => user.id !== id)
+    // let count = users.length
     this.setState({ users })
   }
 
@@ -117,8 +123,8 @@ class ListAccountsPage extends React.Component {
           <div className="box-content">
             <div className="formTable">
               <PaginationComponent count={count} />
-              <Table hover responsive>
-                <TableHeadComponent theadTitle="#,Name,Email,Store,Group,Action" />
+              <Table hover responsive bordered>
+                <TableHeadComponent theadTitle="Id,Name,Email,Store,Group,Action" />
                 <tbody>
                   {users.map((user, key) => {
                     return (

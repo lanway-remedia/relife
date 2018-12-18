@@ -242,7 +242,7 @@ class TestPage extends React.Component {
           <div className="box-content">
             <div className="formTable">
               <PaginationComponent count={count} />
-              <Table hover responsive>
+              <Table hover responsive bordered>
                 <TableHeadComponent theadTitle="#,Name,Email,Store,Group,Action" />
                 <tbody>
                   {users.map((user, key) => {

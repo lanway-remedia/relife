@@ -95,9 +95,6 @@ class ProfileChangePassPage extends React.Component {
           <h1>{I18nUtils.t('ucp-title')}</h1>
         </div>
         <div className="box-group">
-          <div className="box-title">
-            <h4>{I18nUtils.t('ucp-welcome')}</h4>
-          </div>
           <div className="box-content">
             <ValidationForm
               className="form-user-info"

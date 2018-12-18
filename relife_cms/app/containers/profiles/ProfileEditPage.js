@@ -136,9 +136,6 @@ class ProfileEditPage extends React.Component {
           </h1>
         </div>
         <div className="box-group">
-          <div className="box-title">
-            <h4>{I18nUtils.t('ed-welcome')}</h4>
-          </div>
           <div className="box-content">
             <ValidationForm
               className="form-user-info"
@@ -220,7 +217,7 @@ class ProfileEditPage extends React.Component {
                 </Col>
                 <Col xs="12" md="12">
                   <div className="btns-group text-left">
-                    <Button color="success">{I18nUtils.t('edit')}</Button>
+                    <Button color="success">{I18nUtils.t('save')}</Button>
                     <Button onClick={this.redirectToProfile} color="danger">
                       {I18nUtils.t('back')}
                     </Button>
