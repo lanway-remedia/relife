@@ -28,6 +28,12 @@ import ResetPassUserPage from './containers/users/ResetPassUserPage'
 import ManageOutletStoreListPage from './containers/outletstores/ManageOutletStoreListPage'
 import AddNewOutletStorePage from './containers/outletstores/AddNewOutletStorePage'
 import EditOutletStorePage from './containers/outletstores/EditOutletStorePage'
+//examplehouses
+import ManageExampleHouseListPage from './containers/examplehouses/ManageExampleHouseListPage'
+import AddNewExampleHousePage from './containers/examplehouses/AddNewExampleHousePage'
+import EditExampleHousePage from './containers/examplehouses/EditExampleHousePage'
+//Invoice
+import ReleaseInvoicePage from './containers/invoices/ReleaseInvoicePage'
 
 //Test page
 import TestPage from './containers/TestPage'
@@ -136,6 +142,22 @@ class Routes extends React.Component {
                   <Route
                     path="/add-new-outlet-store"
                     component={requireLogin(AddNewOutletStorePage)}
+                  />
+                  <Route
+                    path="/edit-example-house/:id"
+                    component={requireLogin(EditExampleHousePage)}
+                  />
+                  <Route
+                    path="/manage-example-house-list"
+                    component={requireLogin(ManageExampleHouseListPage)}
+                  />
+                  <Route
+                    path="/add-new-example-house"
+                    component={requireLogin(AddNewExampleHousePage)}
+                  />
+                  <Route
+                    path="/invoice-release"
+                    component={requireLogin(ReleaseInvoicePage)}
                   />
                   <Route path="/test" component={requireLogin(TestPage)} />
                   <Route path="/test" component={requireLogin(TestPage)} />

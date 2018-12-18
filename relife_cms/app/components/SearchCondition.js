@@ -207,11 +207,14 @@ class SearchCondition extends Component {
                     )}
                     <Col xs="12" md="12">
                       <div className="btns-group text-center mt-2">
+                        <Button
+                          color="secondary"
+                          onClick={this.handleResetForm}
+                        >
+                          {I18nUtils.t('reset')}
+                        </Button>
                         <Button color="success" onClick={this.onclickSubmit}>
                           {I18nUtils.t('search')}
-                        </Button>
-                        <Button color="danger" onClick={this.handleResetForm}>
-                          {I18nUtils.t('reset')}
                         </Button>
                       </div>
                     </Col>

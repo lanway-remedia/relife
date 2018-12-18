@@ -11,7 +11,9 @@ class TableHeadComponent extends Component {
       <thead>
         <tr>
           {props.theadTitle.split(',').map((title, key) => (
-            <th key={key}>{I18nUtils.t(title.toLowerCase())}</th>
+            <th key={key}>
+              {I18nUtils.t(title.toLowerCase().replace(' ', ''))}
+            </th>
           ))}
         </tr>
       </thead>

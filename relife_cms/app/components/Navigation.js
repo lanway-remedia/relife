@@ -70,26 +70,30 @@ class Navigation extends React.Component {
                   {I18nUtils.t('mni-store-list')}
                 </Link>
               </li>
-              <li className="mn-head">Header Menu</li>
+              <li className="mn-head">{I18nUtils.t('mnh-ehouse')}</li>
               <li className="item">
-                <Link to="/" title="Menu 1">
-                  Menu 1
+                <Link
+                  to="/add-new-example-house"
+                  title={I18nUtils.t('mni-ehouse-add')}
+                >
+                  {I18nUtils.t('mni-ehouse-add')}
                 </Link>
               </li>
               <li className="item">
-                <Link to="/" title="Menu 1">
-                  Menu 1
+                <Link
+                  to="/manage-example-house-list"
+                  title={I18nUtils.t('mni-ehouse-list')}
+                >
+                  {I18nUtils.t('mni-ehouse-list')}
                 </Link>
               </li>
+              <li className="mn-head">{I18nUtils.t('mnh-inv')}</li>
               <li className="item">
-                <Link to="/" title="Menu 1">
-                  Menu 1<span>234</span>
-                </Link>
-              </li>
-              <li className="mn-head">Header Menu 2</li>
-              <li className="item">
-                <Link to="/" title="Menu 2-1">
-                  Menu 2-1
+                <Link
+                  to="/invoice-release"
+                  title={I18nUtils.t('mni-inv-release')}
+                >
+                  {I18nUtils.t('mni-inv-release')}
                 </Link>
               </li>
             </ul>

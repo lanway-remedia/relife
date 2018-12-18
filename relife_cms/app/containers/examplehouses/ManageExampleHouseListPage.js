@@ -31,7 +31,7 @@ import { DefaultValue } from '../../constants'
 
 const TIMEOUT = 0
 
-class ManageOutletStoreListPage extends React.Component {
+class ManageExampleHouseListPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -312,7 +312,7 @@ class ManageOutletStoreListPage extends React.Component {
   }
 }
 
-ManageOutletStoreListPage.propTypes = {
+ManageExampleHouseListPage.propTypes = {
   history: PropTypes.object,
   location: PropTypes.object,
   processing: PropTypes.bool,
@@ -341,4 +341,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ManageOutletStoreListPage))
+)(withRouter(ManageExampleHouseListPage))

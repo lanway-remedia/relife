@@ -13,6 +13,7 @@ import { UsersTypes } from '../redux/wrapper/UsersRedux'
 import { UserProfileTypes } from '../redux/wrapper/UserProfileRedux'
 import { OutletStoresTypes } from '../redux/wrapper/OutletStoresRedux'
 import { LocationTypes } from '../redux/wrapper/LocationsRedux'
+import { ExampleHouseTypes } from '../redux/wrapper/ExampleHousesRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
@@ -21,6 +22,7 @@ import UsersSagas from './wrapper/UsersSagas'
 import UserProfileSagas from './wrapper/UserProfileSagas'
 import OutletStoresSagas from './wrapper/OutletStoresSagas'
 import LocationsSagas from './wrapper/LocationsSagas'
+import ExampleHousesSagas from './wrapper/ExampleHousesSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -103,25 +105,49 @@ export default function* root() {
       ErrorSagas.handleError
     ),
 
+    //ExampleHouses
+    //List
+    takeLatest(
+      ExampleHouseTypes.EXAMPLE_HOUSE_LIST_REQUEST,
+      ExampleHousesSagas.getHouseList
+    ),
+    //Get
+    takeLatest(
+      ExampleHouseTypes.EXAMPLE_HOUSE_GET_REQUEST,
+      ExampleHousesSagas.getHouseById
+    ),
+    //Add
+    takeLatest(
+      ExampleHouseTypes.EXAMPLE_HOUSE_ADD_REQUEST,
+      ExampleHousesSagas.addHouse
+    ),
+    //Edit
+    takeLatest(
+      ExampleHouseTypes.EXAMPLE_HOUSE_EDIT_REQUEST,
+      ExampleHousesSagas.editHouse
+    ),
+    //Delete
+    takeLatest(
+      ExampleHouseTypes.EXAMPLE_HOUSE_DELETE_REQUEST,
+      ExampleHousesSagas.deleteHouse
+    ),
+    takeLatest(ExampleHouseTypes.EXAMPLE_HOUSE_FAILURE, ErrorSagas.handleError),
+
     //Locations
     //List Location
     takeLatest(
       LocationTypes.LOCATION_LIST_REQUEST,
       LocationsSagas.listLocation
     ),
-    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
     //Get Location
     takeLatest(LocationTypes.LOCATION_GET_REQUEST, LocationsSagas.getLocation),
-    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
     //Add Location
     takeLatest(LocationTypes.LOCATION_ADD_REQUEST, LocationsSagas.addLocation),
-    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
     //Edit Location
     takeLatest(
       LocationTypes.LOCATION_EDIT_REQUEST,
       LocationsSagas.editLocation
     ),
-    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
     //Delete Location
     takeLatest(
       LocationTypes.LOCATION_DELETE_REQUEST,
