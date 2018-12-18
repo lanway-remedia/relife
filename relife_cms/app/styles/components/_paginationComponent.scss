@@ -48,6 +48,8 @@
         &:hover,
         &:focus {
           font-weight: normal;
+          background: $bkg-secondary-color;
+          color: $text-white-color;
         }
       }
     }
@@ -63,9 +65,8 @@
     &:focus,
     &:hover {
       box-shadow: none;
-      color: $text-color;
-      font-weight: bold;
-      background: none;
+      color: $text-white-color;
+      background: $bkg-secondary-color;
     }
   }
 }

@@ -128,6 +128,10 @@ class TestPage extends React.Component {
 
   render() {
     let { count, users } = this.state
+    let { location } = this.props
+    let isSearch
+    if (location.search === '' || location.search === '?') isSearch = false
+    else isSearch = true
     return (
       <div className="test-page">
         <div className="page-title">
@@ -230,9 +234,11 @@ class TestPage extends React.Component {
         {/* Filter End */}
         {/* Box Start */}
         <div className="box-group">
-          <div className="box-title">
-            <h4>Result</h4>
-          </div>
+          {isSearch && (
+            <div className="box-title">
+              <h4>{I18nUtils.t('box-result')}</h4>
+            </div>
+          )}
           <div className="box-content">
             <div className="formTable">
               <PaginationComponent count={count} />
@@ -283,6 +289,7 @@ class TestPage extends React.Component {
 
 TestPage.propTypes = {
   history: PropTypes.object,
+  location: PropTypes.object,
   processing: PropTypes.bool,
   response: PropTypes.object,
   userListRequest: PropTypes.func,

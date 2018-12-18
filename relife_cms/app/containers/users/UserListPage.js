@@ -43,7 +43,6 @@ class ListAccountsPage extends React.Component {
       ...(group_id && { group_id: group_id }),
       ...(store_id && { store_id: store_id })
     }
-    console.log(data)
     this.props.userListRequest(data)
   }
 
@@ -86,6 +85,11 @@ class ListAccountsPage extends React.Component {
 
   render() {
     let { count, users } = this.state
+    let { location } = this.props
+    let isSearch
+    if (location.search === '' || location.search === '?') isSearch = false
+    else isSearch = true
+
     return (
       <Container fluid className="list-user-content">
         <Helmet>
@@ -99,49 +103,58 @@ class ListAccountsPage extends React.Component {
             </Button>
           </h1>
         </div>
-        <div className="formTable">
-          <SearchCondition
-            hasFreeword={{ title: I18nUtils.t('username') }}
-            hasGroup
-            hasStore
-          />
-          <PaginationComponent count={count} />
-          <Table hover responsive>
-            <TableHeadComponent theadTitle="#,Name,Email,Store,Group,Action" />
-            <tbody>
-              {users.map((user, key) => {
-                return (
-                  <tr key={key}>
-                    <td>{user.id}</td>
-                    <td>{user.username}</td>
-                    <td>{user.email}</td>
-                    <td>{user.store ? user.store.title : ''}</td>
-                    <td>{I18nUtils.t(`group-${user.group}`)}</td>
-                    <td>
-                      <Button
-                        title={I18nUtils.t('edit')}
-                        color="primary"
-                        outline
-                        size="sm"
-                        className="btn-act"
-                      >
-                        <i className="fa fa-edit" />
-                      </Button>
-                      <Button
-                        title={I18nUtils.t('delete')}
-                        color="danger"
-                        outline
-                        size="sm"
-                        className="btn-act"
-                      >
-                        <i className="fa fa-trash" />
-                      </Button>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </Table>
+        <SearchCondition
+          hasFreeword={{ title: I18nUtils.t('username') }}
+          hasGroup
+          hasStore
+        />
+        <div className="box-group">
+          {isSearch && (
+            <div className="box-title">
+              <h4>{I18nUtils.t('box-result')}</h4>
+            </div>
+          )}
+          <div className="box-content">
+            <div className="formTable">
+              <PaginationComponent count={count} />
+              <Table hover responsive>
+                <TableHeadComponent theadTitle="#,Name,Email,Store,Group,Action" />
+                <tbody>
+                  {users.map((user, key) => {
+                    return (
+                      <tr key={key}>
+                        <td>{user.id}</td>
+                        <td>{user.username}</td>
+                        <td>{user.email}</td>
+                        <td>{user.store ? user.store.title : ''}</td>
+                        <td>{I18nUtils.t(`group-${user.group}`)}</td>
+                        <td>
+                          <Button
+                            title={I18nUtils.t('edit')}
+                            color="success"
+                            size="sm"
+                            className="btn-act"
+                            onClick={() => this.editUser(user.id)}
+                          >
+                            {I18nUtils.t('edit')}
+                          </Button>
+                          <Button
+                            title={I18nUtils.t('delete')}
+                            color="secondary"
+                            size="sm"
+                            className="btn-act"
+                            onClick={() => this.deleteUser(user.id)}
+                          >
+                            {I18nUtils.t('delete')}
+                          </Button>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </Table>
+            </div>
+          </div>
         </div>
       </Container>
     )
@@ -150,6 +163,7 @@ class ListAccountsPage extends React.Component {
 
 ListAccountsPage.propTypes = {
   history: PropTypes.object,
+  location: PropTypes.object,
   processing: PropTypes.bool,
   response: PropTypes.object,
   userListRequest: PropTypes.func,

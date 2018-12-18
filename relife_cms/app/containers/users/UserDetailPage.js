@@ -69,51 +69,55 @@ class UserDetailPage extends React.Component {
         <div className="page-title">
           <h1>{I18nUtils.t('ud-page-title')}</h1>
         </div>
-        <div className="account-avatar">
-          <div className="avatar">
-            <img src={profileImage} alt={data.username} />
-          </div>
-        </div>
-        <div className="account-info">
-          <Row>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('username')}:</Label>
-              <span>{data.username}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('email')}:</Label>
-              <span>{data.email}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('fname')}:</Label>
-              <span>{data.first_name}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('lname')}:</Label>
-              <span>{data.last_name}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('phone')}:</Label>
-              <span>{data.tel}</span>
-            </Col>
-            <Col xs="12" md="6">
-              <Label>{I18nUtils.t('address')}:</Label>
-              <span>{data.address}</span>
-            </Col>
-            <Col xs="12" md="12" className="mt-3">
-              <div className="btns-group text-left">
-                <Button color="primary" onClick={this.redirectToEditPage}>
-                  {I18nUtils.t('edit')}
-                </Button>
-                <Button onClick={this.redirectToResetPass} color="warning">
-                  {I18nUtils.t('resetPassword')}
-                </Button>
-                <Button onClick={this.redirectToList} color="danger">
-                  {I18nUtils.t('back')}
-                </Button>
+        <div className="box-group">
+          <div className="box-content">
+            <div className="account-avatar">
+              <div className="avatar">
+                <img src={profileImage} alt={data.username} />
               </div>
-            </Col>
-          </Row>
+            </div>
+            <div className="account-info">
+              <Row>
+                <Col xs="12" md="6">
+                  <Label>{I18nUtils.t('username')}:</Label>
+                  <span>{data.username}</span>
+                </Col>
+                <Col xs="12" md="6">
+                  <Label>{I18nUtils.t('email')}:</Label>
+                  <span>{data.email}</span>
+                </Col>
+                <Col xs="12" md="6">
+                  <Label>{I18nUtils.t('fname')}:</Label>
+                  <span>{data.first_name}</span>
+                </Col>
+                <Col xs="12" md="6">
+                  <Label>{I18nUtils.t('lname')}:</Label>
+                  <span>{data.last_name}</span>
+                </Col>
+                <Col xs="12" md="6">
+                  <Label>{I18nUtils.t('phone')}:</Label>
+                  <span>{data.tel}</span>
+                </Col>
+                <Col xs="12" md="6">
+                  <Label>{I18nUtils.t('address')}:</Label>
+                  <span>{data.address}</span>
+                </Col>
+                <Col xs="12" md="12" className="mt-3">
+                  <div className="btns-group text-left">
+                    <Button color="primary" onClick={this.redirectToEditPage}>
+                      {I18nUtils.t('edit')}
+                    </Button>
+                    <Button onClick={this.redirectToResetPass} color="warning">
+                      {I18nUtils.t('resetPassword')}
+                    </Button>
+                    <Button onClick={this.redirectToList} color="danger">
+                      {I18nUtils.t('back')}
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          </div>
         </div>
       </Container>
     )

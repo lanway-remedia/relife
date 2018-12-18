@@ -20,7 +20,7 @@ import {
   Card
 } from 'reactstrap'
 
-const TIMEOUT = 500
+const TIMEOUT = 0
 
 const initialState = {
   freeword: '',

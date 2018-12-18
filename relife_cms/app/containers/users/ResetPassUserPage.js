@@ -85,67 +85,74 @@ class ResetPassUserPage extends React.Component {
         <div className="page-title">
           <h1>{I18nUtils.t('resetPassword')}</h1>
         </div>
-        <StoreListModal
-          isOpen={showStoreList}
-          toggle={isOpen => this.toggleHandle(isOpen)}
-          selectStore={selectedStore => this.selectStore(selectedStore)}
-        />
-        <ValidationForm className="form-user-info" onSubmit={this.handleSubmit}>
-          <Row>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="password">{I18nUtils.t('password')}</Label>
-                <TextInput
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder={I18nUtils.t('all-place-password')}
-                  value={password}
-                  onChange={this.handleChange}
-                  required
-                  pattern="(?=.*[A-Z]).{8,}"
-                  errorMessage={{
-                    required: I18nUtils.t('validate-field-0'),
-                    pattern: I18nUtils.t('validate-pass')
-                  }}
-                  autoComplete="new-password"
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="confirmPassword">
-                  {I18nUtils.t('confirmPassword')}
-                </Label>
-                <TextInput
-                  type="password"
-                  name="confirmPassword"
-                  id="confirmPassword"
-                  placeholder={I18nUtils.t('all-place-confirmPassword')}
-                  value={confirmPassword}
-                  onChange={this.handleChange}
-                  required
-                  validator={this.matchPassword}
-                  errorMessage={{
-                    required: I18nUtils.t('validate-field-0'),
-                    validator: 'Password does not match'
-                  }}
-                />
-              </FormGroup>
-            </Col>
+        <div className="box-group">
+          <div className="box-content">
+            <StoreListModal
+              isOpen={showStoreList}
+              toggle={isOpen => this.toggleHandle(isOpen)}
+              selectStore={selectedStore => this.selectStore(selectedStore)}
+            />
+            <ValidationForm
+              className="form-user-info"
+              onSubmit={this.handleSubmit}
+            >
+              <Row>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="password">{I18nUtils.t('password')}</Label>
+                    <TextInput
+                      type="password"
+                      name="password"
+                      id="password"
+                      placeholder={I18nUtils.t('all-place-password')}
+                      value={password}
+                      onChange={this.handleChange}
+                      required
+                      pattern="(?=.*[A-Z]).{8,}"
+                      errorMessage={{
+                        required: I18nUtils.t('validate-field-0'),
+                        pattern: I18nUtils.t('validate-pass')
+                      }}
+                      autoComplete="new-password"
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="confirmPassword">
+                      {I18nUtils.t('confirmPassword')}
+                    </Label>
+                    <TextInput
+                      type="password"
+                      name="confirmPassword"
+                      id="confirmPassword"
+                      placeholder={I18nUtils.t('all-place-confirmPassword')}
+                      value={confirmPassword}
+                      onChange={this.handleChange}
+                      required
+                      validator={this.matchPassword}
+                      errorMessage={{
+                        required: I18nUtils.t('validate-field-0'),
+                        validator: 'Password does not match'
+                      }}
+                    />
+                  </FormGroup>
+                </Col>
 
-            <Col xs="12" md="12">
-              <div className="btns-group text-left">
-                <Button color="success" onClick={this.resetPassword}>
-                  {I18nUtils.t('save')}
-                </Button>
-                <Button onClick={this.redirectToDetailAcc} color="danger">
-                  {I18nUtils.t('back')}
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </ValidationForm>
+                <Col xs="12" md="12">
+                  <div className="btns-group text-left">
+                    <Button color="success" onClick={this.resetPassword}>
+                      {I18nUtils.t('save')}
+                    </Button>
+                    <Button onClick={this.redirectToDetailAcc} color="danger">
+                      {I18nUtils.t('back')}
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            </ValidationForm>
+          </div>
+        </div>
       </Container>
     )
   }

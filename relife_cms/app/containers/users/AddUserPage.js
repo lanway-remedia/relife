@@ -37,6 +37,8 @@ class AddUserPage extends React.Component {
       password: '',
       confirmPassword: '',
       email: '',
+      fname: '',
+      lname: '',
       store: {},
       group: 4
     }
@@ -49,7 +51,7 @@ class AddUserPage extends React.Component {
       if (response.addUser) {
         this.setState(
           {
-            id: response.id
+            id: response.data.id
           },
           () => {
             this.props.show(ModalName.COMMON, {
@@ -114,7 +116,9 @@ class AddUserPage extends React.Component {
       email: this.state.email,
       password: this.state.password,
       store: this.state.store.id,
-      group: this.state.group
+      group: this.state.group,
+      first_name: this.state.fname,
+      last_name: this.state.lname
     }
     this.props.addUserRequest(data)
   }
@@ -127,7 +131,9 @@ class AddUserPage extends React.Component {
       confirmPassword,
       email,
       store,
-      group
+      group,
+      fname,
+      lname
     } = this.state
 
     return (
@@ -150,6 +156,34 @@ class AddUserPage extends React.Component {
               onSubmit={this.handleSubmit}
             >
               <Row>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="fname">{I18nUtils.t('fname')}</Label>
+                    <TextInput
+                      type="text"
+                      name="fname"
+                      id="fname"
+                      placeholder={I18nUtils.t('all-place-fname')}
+                      value={fname}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="fname">{I18nUtils.t('lname')}</Label>
+                    <TextInput
+                      type="text"
+                      name="lname"
+                      id="lname"
+                      placeholder={I18nUtils.t('all-place-lname')}
+                      value={lname}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                </Col>
                 <Col xs="12" md="6">
                   <FormGroup>
                     <Label for="username">{I18nUtils.t('username')}</Label>

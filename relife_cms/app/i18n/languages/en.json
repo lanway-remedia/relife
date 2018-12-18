@@ -136,6 +136,7 @@
   "all-place-idinvoice": "Please input id invoice",
   "all-place-outletstore": "Please input outlet store",
 
+  "#": "#",
   "title": "Title",
   "name": "Name",
   "email": "Email",
@@ -238,8 +239,10 @@
   "toast-no-data": "No Data",
   "toast-no-record": "No Records In Table",
 
-  "toolbar-totalRecords": "Showing {limit} in {total} record(s)",
+  "toolbar-totalRecords": "Showing <strong>{limit}</strong> in <strong>{total}</strong> record(s)",
   "toolbar-limit": "Visible",
+  "toolbar-search": "Result <strong>{total}</strong> items(s)",
+  "box-result": "Search Result",
 
   "login-page-title": "RE:STYLE SYSTEM LOGIN PAGE",
   "login-page-subtitle": "Management system login",

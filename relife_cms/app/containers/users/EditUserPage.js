@@ -125,126 +125,133 @@ class EditUserPage extends React.Component {
             )}
           </h1>
         </div>
-        <ValidationForm className="form-user-info" onSubmit={this.handleSubmit}>
-          <Row>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="username">{I18nUtils.t('username')}</Label>
-                <TextInput
-                  type="text"
-                  name="username"
-                  id="username"
-                  value={username}
-                  disabled
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="email">{I18nUtils.t('email')}</Label>
-                <TextInput
-                  type="text"
-                  name="email"
-                  id="email"
-                  placeholder={I18nUtils.t('all-place-email')}
-                  value={email}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="fname">{I18nUtils.t('fname')}</Label>
-                <TextInput
-                  type="text"
-                  name="fname"
-                  id="fname"
-                  placeholder={I18nUtils.t('all-place-fname')}
-                  value={fname}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="fname">{I18nUtils.t('lname')}</Label>
-                <TextInput
-                  type="text"
-                  name="lname"
-                  id="lname"
-                  placeholder={I18nUtils.t('all-place-lname')}
-                  value={lname}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="phone">{I18nUtils.t('phone')}</Label>
-                <TextInput
-                  type="text"
-                  name="phone"
-                  id="phone"
-                  placeholder={I18nUtils.t('all-place-phone')}
-                  value={phone}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="address">{I18nUtils.t('address')}</Label>
-                <TextInput
-                  type="text"
-                  name="address"
-                  id="address"
-                  placeholder={I18nUtils.t('all-place-address')}
-                  value={address}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="store">{I18nUtils.t('store-selection')}</Label>
-                <Input
-                  type="text"
-                  name="store"
-                  id="store"
-                  value={store.title || ''}
-                  disabled
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="group">{I18nUtils.t('group-selection')}</Label>
-                <Input
-                  type="select"
-                  name="group"
-                  id="group"
-                  value={group}
-                  disabled
-                >
-                  <option value={4}>{I18nUtils.t('group-4')}</option>
-                  <option value={3}>{I18nUtils.t('group-3')}</option>
-                  <option value={2}>{I18nUtils.t('group-2')}</option>
-                  <option value={1}>{I18nUtils.t('group-1')}</option>
-                </Input>
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="12">
-              <div className="btns-group text-left">
-                <Button color="success" onClick={this.editUser}>
-                  {I18nUtils.t('save')}
-                </Button>
-                <Button onClick={this.redirectToDetailAcc} color="danger">
-                  {I18nUtils.t('back')}
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </ValidationForm>
+        <div className="box-group">
+          <div className="box-content">
+            <ValidationForm
+              className="form-user-info"
+              onSubmit={this.handleSubmit}
+            >
+              <Row>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="username">{I18nUtils.t('username')}</Label>
+                    <TextInput
+                      type="text"
+                      name="username"
+                      id="username"
+                      value={username}
+                      disabled
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="email">{I18nUtils.t('email')}</Label>
+                    <TextInput
+                      type="text"
+                      name="email"
+                      id="email"
+                      placeholder={I18nUtils.t('all-place-email')}
+                      value={email}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="fname">{I18nUtils.t('fname')}</Label>
+                    <TextInput
+                      type="text"
+                      name="fname"
+                      id="fname"
+                      placeholder={I18nUtils.t('all-place-fname')}
+                      value={fname}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="fname">{I18nUtils.t('lname')}</Label>
+                    <TextInput
+                      type="text"
+                      name="lname"
+                      id="lname"
+                      placeholder={I18nUtils.t('all-place-lname')}
+                      value={lname}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="phone">{I18nUtils.t('phone')}</Label>
+                    <TextInput
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      placeholder={I18nUtils.t('all-place-phone')}
+                      value={phone}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="address">{I18nUtils.t('address')}</Label>
+                    <TextInput
+                      type="text"
+                      name="address"
+                      id="address"
+                      placeholder={I18nUtils.t('all-place-address')}
+                      value={address}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="store">{I18nUtils.t('store-selection')}</Label>
+                    <Input
+                      type="text"
+                      name="store"
+                      id="store"
+                      value={store.title || ''}
+                      disabled
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="group">{I18nUtils.t('group-selection')}</Label>
+                    <Input
+                      type="select"
+                      name="group"
+                      id="group"
+                      value={group}
+                      disabled
+                    >
+                      <option value={4}>{I18nUtils.t('group-4')}</option>
+                      <option value={3}>{I18nUtils.t('group-3')}</option>
+                      <option value={2}>{I18nUtils.t('group-2')}</option>
+                      <option value={1}>{I18nUtils.t('group-1')}</option>
+                    </Input>
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="12">
+                  <div className="btns-group text-left">
+                    <Button color="success" onClick={this.editUser}>
+                      {I18nUtils.t('save')}
+                    </Button>
+                    <Button onClick={this.redirectToDetailAcc} color="danger">
+                      {I18nUtils.t('back')}
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            </ValidationForm>
+          </div>
+        </div>
       </Container>
     )
   }

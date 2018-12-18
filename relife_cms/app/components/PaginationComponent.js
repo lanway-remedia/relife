@@ -45,18 +45,37 @@ class PaginationComponent extends Component {
   }
 
   render() {
-    let { count } = this.props
+    let { count, location } = this.props
     let { page, limit } = this.state
     let pagesCount = count == 0 ? 1 : Math.ceil(count / limit)
+
+    let isSearch
+    if (location.search === '' || location.search === '?') isSearch = false
+    else isSearch = true
+
     return (
       <div className="toolbar">
         <div className="total">
-          <span>
-            {I18nUtils.formatMessage(
-              { id: 'toolbar-totalRecords' },
-              { limit: limit, total: count }
-            )}
-          </span>
+          {isSearch && (
+            <span
+              dangerouslySetInnerHTML={{
+                __html: I18nUtils.formatMessage(
+                  { id: 'toolbar-search' },
+                  { total: count }
+                )
+              }}
+            />
+          )}
+          {!isSearch && (
+            <span
+              dangerouslySetInnerHTML={{
+                __html: I18nUtils.formatMessage(
+                  { id: 'toolbar-totalRecords' },
+                  { limit: limit, total: count }
+                )
+              }}
+            />
+          )}
         </div>
         <div className="limiter">
           <Label for="limit">{I18nUtils.t('toolbar-limit')}</Label>
@@ -87,6 +106,7 @@ class PaginationComponent extends Component {
 
 PaginationComponent.propTypes = {
   history: PropTypes.object,
+  location: PropTypes.object,
   count: PropTypes.number.isRequired
 }
 
