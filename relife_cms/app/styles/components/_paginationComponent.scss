@@ -42,12 +42,13 @@
       .page-link {
         background: #c7c7c7;
         overflow: hidden;
-        font-size: 14px;
         border-radius: 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
 
         &:hover,
         &:focus {
-          font-weight: normal;
           background: $bkg-secondary-color;
           color: $text-white-color;
         }

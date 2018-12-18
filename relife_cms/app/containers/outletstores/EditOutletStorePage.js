@@ -6,23 +6,23 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
+import ImageUploadComponent from './../../components/ImageUploadComponent'
+import I18nUtils from '../../utils/I18nUtils'
 import { Container, Button, Row, Col, FormGroup, Label } from 'reactstrap'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
-import { Helmet } from 'react-helmet'
-import I18nUtils from '../../utils/I18nUtils'
 import validator from 'validator'
-import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
+import { Helmet } from 'react-helmet'
 import { toast } from 'react-toastify'
 import LocationsComponent from '../../components/LocationsComponent'
 
-import ImageUploadComponent from './../../components/ImageUploadComponent'
-
-class AddNewOutletStorePage extends React.Component {
+class EditOutletStorePage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      thumbnailImage: null,
       data: [],
+      thumbnailImage: null,
+      id: '',
       title: '',
       email: '',
       phone: '',
@@ -36,12 +36,53 @@ class AddNewOutletStorePage extends React.Component {
       city: '',
       district: ''
     }
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleImageChange = this.handleImageChange.bind(this)
     this.redirectToListPage = this.redirectToListPage.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleImageChange = this.handleImageChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
     this.handleSelectedCity = this.handleSelectedCity.bind(this)
     this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
+  }
+
+  componentDidMount() {
+    const id = this.props.match.params.id
+    this.props.outletStoreGetRequest(id)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data != nextProps.data) {
+      let response = nextProps.data
+      if (response.data === undefined || response.data.length === 0) {
+        toast.error(I18nUtils.t('toast-no-data'))
+        this.props.history.replace('/manage-outlet-store-list')
+      } else {
+        this.setState({
+          data: response.data,
+          id: response.data.id,
+          title: response.data.title,
+          email: response.data.email,
+          phone: response.data.tel,
+          address: response.data.address,
+          city: response.data.district.city.id,
+          district: response.data.district.id,
+          zipcode: response.data.zipcode,
+          traffic: response.data.traffic,
+          website: response.data.home_page,
+          regularHoliday: response.data.regular_holiday,
+          timeServing: response.data.time_serving,
+          content: response.data.content,
+          thumbnailImage: response.data.img_large
+        })
+      }
+
+      if (response.messageCode === 'OS005' && response.isEditStore) {
+        toast.success(I18nUtils.t('OS005'))
+      }
+    }
+  }
+
+  redirectToListPage = () => {
+    this.props.history.push('/manage-outlet-store-list')
   }
 
   handleChange = e => {
@@ -68,27 +109,10 @@ class AddNewOutletStorePage extends React.Component {
     })
   }
 
-  redirectToListPage = () => {
-    this.props.history.push('/manage-outlet-store-list')
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.data !== nextProps.data) {
-      let data = nextProps.data
-      if (data.isAddStore) {
-        toast.success(
-          I18nUtils.formatMessage(
-            { id: 'toast-add-sucess' },
-            { name: this.state.title }
-          )
-        )
-      }
-    }
-  }
-
   handleSubmit = e => {
     e.preventDefault()
     let data = new FormData()
+    data.append('id', this.state.id)
     data.append('latitude', 111111)
     data.append('longitude', 222222)
     data.append('title', this.state.title)
@@ -101,27 +125,57 @@ class AddNewOutletStorePage extends React.Component {
     data.append('regular_holiday', this.state.regularHoliday)
     data.append('time_serving', this.state.timeServing)
     data.append('content', this.state.content)
-    data.append('city', this.state.city)
     data.append('district_id', this.state.district)
-    data.append('img_large', this.state.thumbnailImage)
-    this.props.outletStoreAddRequest(data)
+    data.append('city', this.state.city)
+
+    if (typeof this.state.thumbnailImage !== 'string') {
+      data.append('img_large', this.state.thumbnailImage)
+    }
+
+    // let data = {
+    //   id: this.state.id,
+    //   latitude: 111111,
+    //   longitude: 111111,
+    //   title: this.state.title,
+    //   email: this.state.email,
+    //   tel: this.state.phone,
+    //   address: this.state.address,
+    //   zipcode: this.state.zipcode,
+    //   traffic: this.state.traffic,
+    //   home_page: this.state.website,
+    //   regular_holiday: this.state.regularHoliday,
+    //   time_serving: this.state.timeServing,
+    //   content: this.state.content,
+    //   district_id: this.state.district,
+    //   city: this.state.city
+    // }
+
+    this.props.outletStoreEditRequest(data)
   }
 
   render() {
-    let { thumbnailImage } = this.state
+    let { thumbnailImage, data } = this.state
     return (
-      <Container fluid className="add-new-outletstore">
+      <Container fluid className="edit-outletstore">
         <Helmet>
-          <title>{I18nUtils.t('ots-add-page-title')}</title>
+          <title>
+            {I18nUtils.formatMessage(
+              { id: 'ots-ed-page-title' },
+              { name: data.title }
+            )}
+          </title>
         </Helmet>
         <div className="page-title">
           <h1>
-            <i className="fa fa-signal" aria-hidden="true" />
-            {I18nUtils.t('ots-add-page-title')}
+            {I18nUtils.formatMessage(
+              { id: 'ots-ed-page-title' },
+              { name: data.title }
+            )}
           </h1>
         </div>
+
         <ValidationForm
-          className="form-add-outletstore col-no-mg"
+          className="form-edit-outletstore col-no-mg"
           onSubmit={this.handleSubmit}
         >
           <Row>
@@ -132,8 +186,8 @@ class AddNewOutletStorePage extends React.Component {
                   { id: 'sub-title-img' },
                   { type: 'thumbnail', name: 'Outlet Store' }
                 )}
-                width={120}
-                height={120}
+                width={400}
+                height={250}
                 onImageChange={image => this.handleImageChange(image)}
               />
             </Col>
@@ -196,8 +250,11 @@ class AddNewOutletStorePage extends React.Component {
               </FormGroup>
             </Col>
             <LocationsComponent
+              required
               onSelectedCity={this.handleSelectedCity}
               onSelectedDistrict={this.handleSelectedDistrict}
+              city={`${this.state.city}`}
+              district={`${this.state.district}`}
             />
             <Col xs="12" md="6">
               <FormGroup>
@@ -286,7 +343,7 @@ class AddNewOutletStorePage extends React.Component {
             </Col>
             <Col xs="12" md="12" className="mt-3">
               <div className="btns-group text-left">
-                <Button color="success">{I18nUtils.t('btn-add-new')}</Button>
+                <Button color="success">{I18nUtils.t('btn-update')}</Button>
                 <Button
                   title={I18nUtils.t('ots-title-back-list')}
                   onClick={this.redirectToListPage}
@@ -303,10 +360,15 @@ class AddNewOutletStorePage extends React.Component {
   }
 }
 
-AddNewOutletStorePage.propTypes = {
+EditOutletStorePage.propTypes = {
   history: PropTypes.object,
-  outletStoreAddRequest: PropTypes.func,
-  data: PropTypes.object
+  match: PropTypes.object,
+  processing: PropTypes.bool,
+  outletStoreGetRequest: PropTypes.func,
+  outletStoreEditRequest: PropTypes.func,
+  data: PropTypes.object,
+  response: PropTypes.object,
+  messageCode: PropTypes.string
 }
 
 const mapStateToProps = state => {
@@ -317,11 +379,13 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  outletStoreAddRequest: data =>
-    dispatch(OutletStoreActions.outletStoreAddRequest(data))
+  outletStoreGetRequest: data =>
+    dispatch(OutletStoreActions.outletStoreGetRequest(data)),
+  outletStoreEditRequest: data =>
+    dispatch(OutletStoreActions.outletStoreEditRequest(data))
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(AddNewOutletStorePage))
+)(withRouter(EditOutletStorePage))

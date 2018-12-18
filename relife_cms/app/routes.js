@@ -24,6 +24,10 @@ import UserDetailPage from './containers/users/UserDetailPage'
 import AddUserPage from './containers/users/AddUserPage'
 import EditUserPage from './containers/users/EditUserPage'
 import ResetPassUserPage from './containers/users/ResetPassUserPage'
+//outletstores
+import ManageOutletStoreListPage from './containers/outletstores/ManageOutletStoreListPage'
+import AddNewOutletStorePage from './containers/outletstores/AddNewOutletStorePage'
+import EditOutletStorePage from './containers/outletstores/EditOutletStorePage'
 
 //Test page
 import TestPage from './containers/TestPage'
@@ -120,6 +124,18 @@ class Routes extends React.Component {
                   <Route
                     path="/reset-password-user/:id"
                     component={requireLogin(ResetPassUserPage)}
+                  />
+                  <Route
+                    path="/edit-outlet-store/:id"
+                    component={requireLogin(EditOutletStorePage)}
+                  />
+                  <Route
+                    path="/manage-outlet-store-list"
+                    component={requireLogin(ManageOutletStoreListPage)}
+                  />
+                  <Route
+                    path="/add-new-outlet-store"
+                    component={requireLogin(AddNewOutletStorePage)}
                   />
                   <Route path="/test" component={requireLogin(TestPage)} />
                   <Route path="/test" component={requireLogin(TestPage)} />

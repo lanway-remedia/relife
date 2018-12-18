@@ -115,10 +115,7 @@ class AddNewOutletStorePage extends React.Component {
           <title>{I18nUtils.t('ots-add-page-title')}</title>
         </Helmet>
         <div className="page-title">
-          <h1>
-            <i className="fa fa-signal" aria-hidden="true" />
-            {I18nUtils.t('ots-add-page-title')}
-          </h1>
+          <h1>{I18nUtils.t('ots-add-page-title')}</h1>
         </div>
         <ValidationForm
           className="form-add-outletstore col-no-mg"

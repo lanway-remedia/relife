@@ -47,6 +47,9 @@
   "mnh-user": "User Management",
   "mni-user-add": "Add new User",
   "mni-user-list": "Manage User List",
+  "mnh-store": "Outlet Store Management",
+  "mni-store-add": "Add new Outlet Store",
+  "mni-store-list": "Manage Outlet Store List",
 
   "ots-parent-title": "Outlet Store Management",
   "otsl-page-title": "Manage Outlet Store List",
@@ -194,6 +197,7 @@
   "idinvoice": "ID Invoice",
   "outletstore": "Outlet Store",
   "action": "Action",
+  "image": "Image",
 
   "lb-ad-search": "Advanced Search",
   "lb-fil-tooltip": "Click here, you can show/hide Advanced Search content ",

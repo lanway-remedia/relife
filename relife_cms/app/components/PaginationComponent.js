@@ -50,7 +50,12 @@ class PaginationComponent extends Component {
     let pagesCount = count == 0 ? 1 : Math.ceil(count / limit)
 
     let isSearch
-    if (location.search === '' || location.search === '?') isSearch = false
+    if (
+      location.search === '' ||
+      location.search === '?' ||
+      location.search === `?page=${page}&limit=${limit}`
+    )
+      isSearch = false
     else isSearch = true
 
     return (
@@ -97,6 +102,7 @@ class PaginationComponent extends Component {
             currentPage={page}
             totalPages={pagesCount}
             onChange={this.onPageChange}
+            hideFirstAndLastPageLinks
           />
         )}
       </div>

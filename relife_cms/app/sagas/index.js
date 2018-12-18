@@ -12,6 +12,7 @@ import { AuthsTypes } from '../redux/wrapper/AuthsRedux'
 import { UsersTypes } from '../redux/wrapper/UsersRedux'
 import { UserProfileTypes } from '../redux/wrapper/UserProfileRedux'
 import { OutletStoresTypes } from '../redux/wrapper/OutletStoresRedux'
+import { LocationTypes } from '../redux/wrapper/LocationsRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
@@ -19,6 +20,7 @@ import AuthsSagas from './wrapper/AuthsSagas'
 import UsersSagas from './wrapper/UsersSagas'
 import UserProfileSagas from './wrapper/UserProfileSagas'
 import OutletStoresSagas from './wrapper/OutletStoresSagas'
+import LocationsSagas from './wrapper/LocationsSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -100,6 +102,32 @@ export default function* root() {
       OutletStoresTypes.OUTLET_STORE_DELETE_FAILURE,
       ErrorSagas.handleError
     ),
+
+    //Locations
+    //List Location
+    takeLatest(
+      LocationTypes.LOCATION_LIST_REQUEST,
+      LocationsSagas.listLocation
+    ),
+    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
+    //Get Location
+    takeLatest(LocationTypes.LOCATION_GET_REQUEST, LocationsSagas.getLocation),
+    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
+    //Add Location
+    takeLatest(LocationTypes.LOCATION_ADD_REQUEST, LocationsSagas.addLocation),
+    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
+    //Edit Location
+    takeLatest(
+      LocationTypes.LOCATION_EDIT_REQUEST,
+      LocationsSagas.editLocation
+    ),
+    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
+    //Delete Location
+    takeLatest(
+      LocationTypes.LOCATION_DELETE_REQUEST,
+      LocationsSagas.deleteLocation
+    ),
+    takeLatest(LocationTypes.LOCATION_FAILURE, ErrorSagas.handleError),
 
     //user
     takeLatest(UsersTypes.USER_LIST_REQUEST, UsersSagas.listUser),
