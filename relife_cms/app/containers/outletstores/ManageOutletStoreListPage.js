@@ -6,7 +6,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Container, Button, Table } from 'reactstrap'
+import {
+  Container,
+  Button,
+  Table,
+  Collapse,
+  Form,
+  Row,
+  Col,
+  Input,
+  FormGroup,
+  Label
+} from 'reactstrap'
 import { Helmet } from 'react-helmet'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
@@ -18,6 +29,8 @@ import PaginationComponent from '../../components/PaginationComponent'
 import { toast } from 'react-toastify'
 import { DefaultValue } from '../../constants'
 
+const TIMEOUT = 0
+
 class ManageOutletStoreListPage extends React.Component {
   constructor(props) {
     super(props)
@@ -25,9 +38,12 @@ class ManageOutletStoreListPage extends React.Component {
       count: 0,
       page: 0,
       limit: 0,
+      timeout: TIMEOUT,
+      collapse: false,
       storeList: []
     }
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
     this.getOutletStore = this.getOutletStore.bind(this)
@@ -66,13 +82,14 @@ class ManageOutletStoreListPage extends React.Component {
         })
       }
 
-      if (response.messageCode === 'OT008' && response.isDeleteStore) {
-        toast.success(
-          I18nUtils.formatMessage(
-            { id: 'toast-del-sucess' },
-            { name: response.data.title }
+      if (response.messageCode === 'OS007' && response.isDeleteStore) {
+        this.props.show(ModalName.COMMON, {
+          message: (
+            <span className="text-success">
+              {I18nUtils.t('modal-del-success')}
+            </span>
           )
-        )
+        })
         this.forceUpdate(this.getOutletStore)
       }
     }
@@ -86,7 +103,7 @@ class ManageOutletStoreListPage extends React.Component {
         { name: store.title }
       ),
       message: I18nUtils.t('modal-del-body'),
-      okFunction: () => this.okFunction(store)
+      deleteFunction: () => this.deleteFunction(store)
     })
   }
 
@@ -98,7 +115,7 @@ class ManageOutletStoreListPage extends React.Component {
     this.props.history.push(`/edit-outlet-store/${store.id}`)
   }
 
-  okFunction = store => {
+  deleteFunction = store => {
     const originStoreList = this.state.storeList
     const storeList = originStoreList.filter(s => s.id !== store.id)
     const total = storeList.length
@@ -109,8 +126,37 @@ class ManageOutletStoreListPage extends React.Component {
     this.props.hide(ModalName.COMMON)
   }
 
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleShowHideForm = () => {
+    this.setState(
+      {
+        timeout: TIMEOUT
+      },
+      () => {
+        this.setState({ collapse: !this.state.collapse })
+      }
+    )
+  }
+
+  handleResetForm = e => {
+    e.preventDefault()
+    console.log(e)
+    console.log('reset form')
+  }
+
+  onclickSubmit = e => {
+    e.preventDefault()
+    console.log(e)
+    console.log('submit form')
+  }
+
   render() {
-    let { page, limit, storeList, count } = this.state
+    let { page, limit, storeList, count, collapse, timeout } = this.state
     let { location } = this.props
     let isSearch
     if (location.search === '' || location.search === '?') isSearch = false
@@ -127,6 +173,72 @@ class ManageOutletStoreListPage extends React.Component {
               {I18nUtils.t('btn-add-new')}
             </Button>
           </h1>
+        </div>
+        <div className="filter-group">
+          <div className="filter-title">
+            <h4 onClick={this.handleShowHideForm}>
+              {I18nUtils.t('lb-ad-search')}
+            </h4>
+          </div>
+          <div className="filter-body">
+            <Collapse isOpen={collapse} timeout={timeout}>
+              <Form onSubmit={this.handleSubmit} ref={f => (this.form = f)}>
+                <Row>
+                  <Col xs="12" md="4">
+                    <FormGroup>
+                      <Label for="title">{I18nUtils.t('title')}</Label>
+                      <Input
+                        type="text"
+                        name="title"
+                        id="title"
+                        onChange={this.handleChange}
+                        placeholder={I18nUtils.t('all-place-input')}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="12" md="4">
+                    <FormGroup>
+                      <Label for="title">{I18nUtils.t('email')}</Label>
+                      <Input
+                        type="email"
+                        name="email"
+                        id="email"
+                        onChange={this.handleChange}
+                        placeholder={I18nUtils.t('all-place-input')}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="12" md="4">
+                    <FormGroup>
+                      <Label for="title">{I18nUtils.t('phone')}</Label>
+                      <Input
+                        type="text"
+                        name="phone"
+                        id="phone"
+                        onChange={this.handleChange}
+                        placeholder={I18nUtils.t('all-place-input')}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="12" md="12">
+                    <div className="btns-group text-center mt-2">
+                      <Button color="success" onClick={this.onclickSubmit}>
+                        {I18nUtils.t('search')}
+                      </Button>
+                      <Button color="danger" onClick={this.handleResetForm}>
+                        {I18nUtils.t('reset')}
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+              </Form>
+            </Collapse>
+            {!collapse && (
+              <span className="lb-showhide text-success active">
+                {I18nUtils.t('lb-showhide')}
+              </span>
+            )}
+          </div>
         </div>
         <div className="box-group">
           {isSearch && (

@@ -42,7 +42,7 @@ class ImageUploadComponent extends React.Component {
               <span className="fa fa-file-image-o fa-2x" />
             </label>
             <Button
-              color="primary"
+              color="success"
               outline
               size="sm"
               onClick={this.handleOpenFileUp}
@@ -80,7 +80,7 @@ class ImageUploadComponent extends React.Component {
               />
             </label>
             <Button
-              color="primary"
+              color="success"
               outline
               size="sm"
               onClick={this.handleOpenFileUp}

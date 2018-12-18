@@ -48,7 +48,11 @@ class ProfileEditPage extends React.Component {
       if (nextProps.data.editProfile || nextProps.data.editProfileImage) {
         if (nextProps.data.messageCode)
           this.props.show(ModalName.COMMON, {
-            message: I18nUtils.t(nextProps.data.messageCode),
+            message: (
+              <span className="text-success">
+                {I18nUtils.t(nextProps.data.messageCode)}
+              </span>
+            ),
             closeFunction: () => this.closeFunction()
           })
       }

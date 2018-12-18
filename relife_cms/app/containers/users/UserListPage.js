@@ -60,6 +60,14 @@ class ListAccountsPage extends React.Component {
         })
       }
       if (response.deleteUser) {
+        this.props.show(ModalName.COMMON, {
+          title: I18nUtils.t('modal-del-user-header'),
+          message: (
+            <span className="text-success">
+              {I18nUtils.t('modal-del-user-success')}
+            </span>
+          )
+        })
         this.forceUpdate(this.getUserList())
       }
     }
@@ -75,8 +83,8 @@ class ListAccountsPage extends React.Component {
 
   deleteUser = user => {
     this.props.show(ModalName.COMMON, {
-      title: I18nUtils.t('modal-del-header'),
-      message: I18nUtils.t('modal-del-body'),
+      title: I18nUtils.t('modal-del-user-header'),
+      message: I18nUtils.t('modal-del-user-body'),
       deleteFunction: () => this.deleteFunction(user)
     })
   }

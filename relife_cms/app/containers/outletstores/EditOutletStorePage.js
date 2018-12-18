@@ -13,8 +13,10 @@ import { Container, Button, Row, Col, FormGroup, Label } from 'reactstrap'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import validator from 'validator'
 import { Helmet } from 'react-helmet'
-import { toast } from 'react-toastify'
 import LocationsComponent from '../../components/LocationsComponent'
+import { show, hide } from 'redux-modal'
+import { ModalName } from '../../constants'
+import { bindActionCreators } from 'redux'
 
 class EditOutletStorePage extends React.Component {
   constructor(props) {
@@ -38,6 +40,7 @@ class EditOutletStorePage extends React.Component {
     }
     this.redirectToListPage = this.redirectToListPage.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleSelectedCity = this.handleSelectedCity.bind(this)
@@ -53,7 +56,9 @@ class EditOutletStorePage extends React.Component {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
       if (response.data === undefined || response.data.length === 0) {
-        toast.error(I18nUtils.t('toast-no-data'))
+        this.props.show(ModalName.COMMON, {
+          message: I18nUtils.t('toast-no-data')
+        })
         this.props.history.replace('/manage-outlet-store-list')
       } else {
         this.setState({
@@ -76,7 +81,9 @@ class EditOutletStorePage extends React.Component {
       }
 
       if (response.messageCode === 'OS005' && response.isEditStore) {
-        toast.success(I18nUtils.t('OS005'))
+        this.props.show(ModalName.COMMON, {
+          message: <span className="text-success">{I18nUtils.t('OS005')}</span>
+        })
       }
     }
   }
@@ -107,6 +114,25 @@ class EditOutletStorePage extends React.Component {
     this.setState({
       district: districtId
     })
+  }
+
+  handleDelete = id => {
+    this.props.show(ModalName.COMMON, {
+      title: I18nUtils.t('modal-del-header'),
+      message: I18nUtils.t('modal-del-body'),
+      deleteFunction: () => this.deleteFunction(id)
+    })
+  }
+
+  deleteFunction = id => {
+    this.props.outletStoreDeleteRequest(id)
+    this.props.show(ModalName.COMMON, {
+      title: I18nUtils.t('modal-del-header'),
+      message: (
+        <span className="text-success">{I18nUtils.t('modal-del-success')}</span>
+      )
+    })
+    this.props.history.push('/manage-outlet-store-list')
   }
 
   handleSubmit = e => {
@@ -174,187 +200,199 @@ class EditOutletStorePage extends React.Component {
           </h1>
         </div>
 
-        <ValidationForm
-          className="form-edit-outletstore col-no-mg"
-          onSubmit={this.handleSubmit}
-        >
-          <Row>
-            <Col xs="12" md="12">
-              <ImageUploadComponent
-                imageUpload={thumbnailImage}
-                uploadTitle={I18nUtils.formatMessage(
-                  { id: 'sub-title-img' },
-                  { type: 'thumbnail', name: 'Outlet Store' }
-                )}
-                width={400}
-                height={250}
-                onImageChange={image => this.handleImageChange(image)}
-              />
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="title">{I18nUtils.t('title')}</Label>
-                <TextInput
-                  type="text"
-                  name="title"
-                  id="title"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.title}
-                  onChange={this.handleChange}
+        <div className="box-group">
+          <div className="box-content">
+            <ValidationForm
+              className="form-edit-outletstore col-no-mg"
+              onSubmit={this.handleSubmit}
+            >
+              <Row>
+                <Col xs="12" md="12">
+                  <ImageUploadComponent
+                    imageUpload={thumbnailImage}
+                    uploadTitle={I18nUtils.formatMessage(
+                      { id: 'sub-title-img' },
+                      { type: 'thumbnail', name: 'Outlet Store' }
+                    )}
+                    width={400}
+                    height={250}
+                    onImageChange={image => this.handleImageChange(image)}
+                  />
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label htmlFor="title">{I18nUtils.t('title')}</Label>
+                    <TextInput
+                      type="text"
+                      name="title"
+                      id="title"
+                      placeholder={I18nUtils.t('all-place-input')}
+                      value={this.state.title}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label htmlFor="phone">{I18nUtils.t('phone')}</Label>
+                    <TextInput
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      placeholder={I18nUtils.t('all-place-input')}
+                      value={this.state.phone}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label htmlFor="email">{I18nUtils.t('email')}</Label>
+                    <TextInput
+                      type="text"
+                      name="email"
+                      id="email"
+                      placeholder={I18nUtils.t('all-place-input')}
+                      value={this.state.email}
+                      onChange={this.handleChange}
+                      validator={validator.isEmail}
+                      errorMessage={{
+                        validator: I18nUtils.t('validate-email')
+                      }}
+                      required
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label htmlFor="address">{I18nUtils.t('address')}</Label>
+                    <TextInput
+                      type="text"
+                      name="address"
+                      id="address"
+                      placeholder={I18nUtils.t('all-place-input')}
+                      value={this.state.address}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                </Col>
+                <LocationsComponent
                   required
+                  onSelectedCity={this.handleSelectedCity}
+                  onSelectedDistrict={this.handleSelectedDistrict}
+                  city={`${this.state.city}`}
+                  district={`${this.state.district}`}
                 />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="phone">{I18nUtils.t('phone')}</Label>
-                <TextInput
-                  type="text"
-                  name="phone"
-                  id="phone"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.phone}
-                  onChange={this.handleChange}
-                  required
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="email">{I18nUtils.t('email')}</Label>
-                <TextInput
-                  type="text"
-                  name="email"
-                  id="email"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                  validator={validator.isEmail}
-                  errorMessage={{ validator: I18nUtils.t('validate-email') }}
-                  required
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="address">{I18nUtils.t('address')}</Label>
-                <TextInput
-                  type="text"
-                  name="address"
-                  id="address"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.address}
-                  onChange={this.handleChange}
-                  required
-                />
-              </FormGroup>
-            </Col>
-            <LocationsComponent
-              required
-              onSelectedCity={this.handleSelectedCity}
-              onSelectedDistrict={this.handleSelectedDistrict}
-              city={`${this.state.city}`}
-              district={`${this.state.district}`}
-            />
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="zipcode">{I18nUtils.t('zipcode')}</Label>
-                <TextInput
-                  type="text"
-                  name="zipcode"
-                  id="zipcode"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.zipcode}
-                  onChange={this.handleChange}
-                  required
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="traffic">{I18nUtils.t('traffic')}</Label>
-                <TextInput
-                  type="text"
-                  name="traffic"
-                  id="traffic"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.traffic}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="website">{I18nUtils.t('website')}</Label>
-                <TextInput
-                  type="text"
-                  name="website"
-                  id="website"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.website}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="regularHoliday">
-                  {I18nUtils.t('regular-holiday')}
-                </Label>
-                <TextInput
-                  type="text"
-                  name="regularHoliday"
-                  id="regularHoliday"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.regularHoliday}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label htmlFor="timeServing">
-                  {I18nUtils.t('time-serving')}
-                </Label>
-                <TextInput
-                  type="text"
-                  name="timeServing"
-                  id="timeServing"
-                  placeholder={I18nUtils.t('all-place-input')}
-                  value={this.state.timeServing}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="12">
-              <FormGroup>
-                <Label htmlFor="content">{I18nUtils.t('content')}</Label>
-                <TextInput
-                  name="content"
-                  id="content"
-                  multiline
-                  required
-                  value={this.state.content}
-                  onChange={this.handleChange}
-                  rows="5"
-                  placeholder={I18nUtils.t('all-place-input')}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="12" className="mt-3">
-              <div className="btns-group text-left">
-                <Button color="success">{I18nUtils.t('btn-update')}</Button>
-                <Button
-                  title={I18nUtils.t('ots-title-back-list')}
-                  onClick={this.redirectToListPage}
-                  color="danger"
-                >
-                  {I18nUtils.t('btn-back')}
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </ValidationForm>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label htmlFor="zipcode">{I18nUtils.t('zipcode')}</Label>
+                    <TextInput
+                      type="text"
+                      name="zipcode"
+                      id="zipcode"
+                      placeholder={I18nUtils.t('all-place-input')}
+                      value={this.state.zipcode}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label htmlFor="traffic">{I18nUtils.t('traffic')}</Label>
+                    <TextInput
+                      type="text"
+                      name="traffic"
+                      id="traffic"
+                      placeholder={I18nUtils.t('all-place-input')}
+                      value={this.state.traffic}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label htmlFor="website">{I18nUtils.t('website')}</Label>
+                    <TextInput
+                      type="text"
+                      name="website"
+                      id="website"
+                      placeholder={I18nUtils.t('all-place-input')}
+                      value={this.state.website}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label htmlFor="regularHoliday">
+                      {I18nUtils.t('regular-holiday')}
+                    </Label>
+                    <TextInput
+                      type="text"
+                      name="regularHoliday"
+                      id="regularHoliday"
+                      placeholder={I18nUtils.t('all-place-input')}
+                      value={this.state.regularHoliday}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label htmlFor="timeServing">
+                      {I18nUtils.t('time-serving')}
+                    </Label>
+                    <TextInput
+                      type="text"
+                      name="timeServing"
+                      id="timeServing"
+                      placeholder={I18nUtils.t('all-place-input')}
+                      value={this.state.timeServing}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="12">
+                  <FormGroup>
+                    <Label htmlFor="content">{I18nUtils.t('content')}</Label>
+                    <TextInput
+                      name="content"
+                      id="content"
+                      multiline
+                      required
+                      value={this.state.content}
+                      onChange={this.handleChange}
+                      rows="5"
+                      placeholder={I18nUtils.t('all-place-input')}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="12" className="mt-3">
+                  <div className="btns-group text-center">
+                    <Button
+                      onClick={() => this.handleDelete(this.state.id)}
+                      color="secondary"
+                    >
+                      {I18nUtils.t('delete')}
+                    </Button>
+                    <Button color="success">{I18nUtils.t('btn-save')}</Button>
+                    <Button
+                      title={I18nUtils.t('ots-title-back-list')}
+                      onClick={this.redirectToListPage}
+                      color="danger"
+                    >
+                      {I18nUtils.t('btn-back')}
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            </ValidationForm>
+          </div>
+        </div>
       </Container>
     )
   }
@@ -366,6 +404,9 @@ EditOutletStorePage.propTypes = {
   processing: PropTypes.bool,
   outletStoreGetRequest: PropTypes.func,
   outletStoreEditRequest: PropTypes.func,
+  outletStoreDeleteRequest: PropTypes.func,
+  show: PropTypes.func,
+  hide: PropTypes.func,
   data: PropTypes.object,
   response: PropTypes.object,
   messageCode: PropTypes.string
@@ -379,10 +420,13 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ show, hide }, dispatch),
   outletStoreGetRequest: data =>
     dispatch(OutletStoreActions.outletStoreGetRequest(data)),
   outletStoreEditRequest: data =>
-    dispatch(OutletStoreActions.outletStoreEditRequest(data))
+    dispatch(OutletStoreActions.outletStoreEditRequest(data)),
+  outletStoreDeleteRequest: data =>
+    dispatch(OutletStoreActions.outletStoreDeleteRequest(data))
 })
 
 export default connect(

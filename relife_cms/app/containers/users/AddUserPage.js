@@ -300,7 +300,7 @@ class AddUserPage extends React.Component {
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="12">
-                  <div className="btns-group text-left">
+                  <div className="btns-group text-center">
                     <Button color="success" onClick={this.addUser}>
                       {I18nUtils.t('save')}
                     </Button>
