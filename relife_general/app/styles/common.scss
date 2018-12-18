@@ -6,6 +6,15 @@ body {
   font-size: 1.0rem; 
 }
 
+.lower-contents {
+  margin: 0 0 70px 0;
+
+  .lower-contents-inner {
+    width: 1000px;
+    margin: 0 auto;
+  }
+}
+
 img {
   object-fit: cover;
 }

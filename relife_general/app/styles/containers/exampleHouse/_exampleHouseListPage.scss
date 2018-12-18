@@ -1,3 +1,4 @@
+.example-house-list {
 .lower-contents {
   margin: 0 0 70px 0;
 
@@ -83,12 +84,13 @@
               vertical-align: middle;
               transition-duration: 0.3s;
               text-decoration: none;
+
+              &:hover {
+                background: #2c9a5c;
+                transition-duration: 0.3s;
+              }
             }
 
-            a:hover {
-              background: #2c9a5c;
-              transition-duration: 0.3s;
-            }
           }
         }
 
@@ -117,61 +119,66 @@
           border: none;
         }
 
-        a.example-list-once {
-          height: 309px;
-          width: 249px;
-          float: left;
-          border-right: #f2f3f2 1px solid;
-          margin: 0 1px 0 0;
-          padding: 0 0 20px 0;
-          text-decoration: none;
-          color: #333;
-
-          .example-list-once-img {
+        a {
+          &.example-list-once {
+            height: 309px;
             width: 249px;
-            height: 178px;
-            overflow: hidden;
+            float: left;
+            border-right: #f2f3f2 1px solid;
+            margin: 0 1px 0 0;
+            padding: 0 0 20px 0;
+            text-decoration: none;
+            color: #333;
 
-            img {
+            .example-list-once-img {
               width: 249px;
               height: 178px;
-              object-fit: cover;
-              transition-duration: 0.3s;
+              overflow: hidden;
+
+              img {
+                width: 249px;
+                height: 178px;
+                object-fit: cover;
+                transition-duration: 0.3s;
+              }
+
+              img:hover {
+                transform: scale(1.1);
+                transition-duration: 0.3s;
+              }
             }
 
-            img:hover {
-              transform: scale(1.1);
-              transition-duration: 0.3s;
+            .example-list-once-title {
+              padding: 15px 15px 10px 15px;
+              font-size: 1.4rem;
+              line-height: 2.2rem;
             }
-          }
 
-          .example-list-once-title {
-            padding: 15px 15px 10px 15px;
-            font-size: 1.4rem;
-            line-height: 2.2rem;
-          }
+            .example-list-once-company-area {
+              padding: 0 15px;
+              margin: 0 0 5px 0;
+              font-size: 1.2rem;
+              line-height: 1.2rem;
+              color: #888;
+            }
 
-          .example-list-once-company-area {
-            padding: 0 15px;
-            margin: 0 0 5px 0;
-            font-size: 1.2rem;
-            line-height: 1.2rem;
-            color: #888;
-          }
-
-          .example-list-once-company {
-            padding: 0 15px;
-            font-size: 1.2rem;
-            line-height: 1.2rem;
-            color: #888;
+            .example-list-once-company {
+              padding: 0 15px;
+              font-size: 1.2rem;
+              line-height: 1.2rem;
+              color: #888;
+            }
           }
         }
 
-        a:hover.example-list-once, 
-        a:hover.example-list-once .example-list-once-company-area,
-        a:hover.example-list-once .example-list-once-company,
-        {
-          color: #057235;
+        a {
+          &:hover.example-list-once {
+            color: #057235;
+            .example-list-once-company-area,
+              .example-list-once-company {
+                color: #057235;
+              }
+          }
         }
       }
     }
@@ -265,4 +272,5 @@
     }
     /* .side */
   }
+}
 }

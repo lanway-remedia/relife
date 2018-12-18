@@ -25,6 +25,7 @@ import ProfileEditPage from './containers/profiles/ProfileEditPage'
 import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
 //exampleHouse
 import ExampleHouseListPage from './containers/exampleHouse/ExampleHouseListPage'
+import ExampleHouseViewPage from './containers/exampleHouse/ExampleHouseViewPage'
 
 import {StorageKeyConstants} from './constants'
 import 'react-toastify/dist/ReactToastify.css'
@@ -109,6 +110,10 @@ class Routes extends React.Component {
                         <Route
                             path="/example"
                             component={ExampleHouseListPage}
+                        />
+                        <Route
+                            path="/example-view"
+                            component={ExampleHouseViewPage}
                         />
                     </Switch>
                     <Footer />

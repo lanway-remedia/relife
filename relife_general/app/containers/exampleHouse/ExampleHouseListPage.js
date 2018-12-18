@@ -4,11 +4,20 @@ import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 // import I18nUtils from '../../utils/I18nUtils'
 import { Form, Label, Input, FormGroup } from 'reactstrap'
-import exh02 from '../../images/exh-01.jpg'
+import exh01 from '../../images/exh-01.jpg'
 import exhItem01 from '../../images/exh-item-01.jpg'
 import exhItem02 from '../../images/exh-item-02.jpg'
 import exhItem03 from '../../images/exh-item-03.jpg'
+
 class ExampleHouseListPage extends React.Component {
+  componentDidMount() {
+    document.body.classList.add('example-house-list')
+  }
+
+  componentWillUnmount() {
+    document.body.classList.remove('example-house-list')
+  }
+
   render() {
     return (
       <div className="lower-contents">
@@ -18,7 +27,7 @@ class ExampleHouseListPage extends React.Component {
             <div className="adv-example">
               <div className="adv-example-once">
                 <div className="adv-example-one-img">
-                  <img src={exh02} alt="exh01" />
+                  <img src={exh01} alt="exh01" />
                 </div>
 
                 <div className="adv-example-once-title-wrap clearfix">
