@@ -32,7 +32,7 @@ class ExampleHouse(BaseModel):
                        on_delete=CASCADE, blank=True, null=True)
     household_size = ForeignKey(HouseHoldSize, related_name="example_houses",
                                 on_delete=CASCADE, blank=True, null=True)
-    househole_income = ForeignKey(HouseHoldIncome, related_name="example_houses",
+    household_income = ForeignKey(HouseHoldIncome, related_name="example_houses",
                                   on_delete=CASCADE, blank=True, null=True)
 
     create_user = ForeignKey('users.User', related_name="creating_example_houses",

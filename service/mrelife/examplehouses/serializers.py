@@ -85,14 +85,11 @@ class HouseHoldIncomeSerializer(ModelSerializer):
         fields = ('id', 'title', )
 
 class ExampleHouseNestedNameOnlySerializer(ModelSerializer):
-    tags = ExampleHouseTagSerializer(many=True, read_only=False)
-    styles = ExampleHouseStyleSerializer(many=True, read_only=False)
-    commitments = ExampleHouseCommitmentSerializer(many=True, read_only=False)
     store = OutletStoreSerializer()
     contruction = ContructionSerializer()
     floor = FloorSerializer()
     household_size = HouseHoldSizeSerializer()
-    househole_income = HouseHoldIncomeSerializer()
+    household_income = HouseHoldIncomeSerializer()
 
     class Meta:
         model = ExampleHouse
