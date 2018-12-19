@@ -3,11 +3,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 // import I18nUtils from '../../utils/I18nUtils'
-import { Form, Label, Input, FormGroup } from 'reactstrap'
 import exh01 from '../../images/exh-01.jpg'
 import exhItem01 from '../../images/exh-item-01.jpg'
 import exhItem02 from '../../images/exh-item-02.jpg'
 import exhItem03 from '../../images/exh-item-03.jpg'
+import AttributesSeach from '../../components/exampleHouse/AttributesSeach'
 
 class ExampleHouseListPage extends React.Component {
   componentDidMount() {
@@ -94,47 +94,7 @@ class ExampleHouseListPage extends React.Component {
               </Link>
             </div>
           </section>
-
-          <section className="side pc">
-            <Form>
-              <div className="sidebar-search-choices">
-                <div className="sidebar-search-choices-inner">
-                  <div className="search-title">価格帯（価格）</div>
-                    <FormGroup>
-                      <Label>
-                        <Input className="choices-input" type="checkbox" name="price_range[]" value="1500万未満" id="choices1" />
-                        <span className="choices-parts">1500万未満</span>
-                      </Label>
-                      <Label>
-                        <Input className="choices-input" type="checkbox" name="price_range[]" value="2000万未満" id="choices1" />
-                        <span className="choices-parts">1500万未満</span>
-                      </Label>
-                    </FormGroup>
-                </div>
-
-                <div className="sidebar-search-choices-inner">
-                  <div className="search-title">構造）</div>
-                    <FormGroup>
-                      <Label>
-                        <Input className="choices-input" type="checkbox" name="price_range[]" value="1500万未満" id="choices1" />
-                        <span className="choices-parts">木造軸組（在来）工法</span>
-                      </Label>
-                      <Label>
-                        <Input className="choices-input" type="checkbox" name="price_range[]" value="2000万未満" id="choices1" />
-                        <span className="choices-parts">ツーバイフォー・ツーバイシックス</span>
-                      </Label>
-                    </FormGroup>
-                </div>
-                <button name="action" value="clear" type="button" className="sidebar-clear-btn btn clear-button">
-                  入力値をリセット
-                </button>
-                <button type="button" className="sidebar-search-btn btn btn-default">
-                  <i className="fa fa-search" />
-                  検索
-                </button>
-              </div>
-            </Form>
-          </section>
+          <AttributesSeach />
         </div>
       </div>
     )
