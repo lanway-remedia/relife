@@ -44,6 +44,15 @@ class MessageCode(Enum):
     OSM007 = 'OSM007'  # delete sussess
     OSM008 = 'OSM008'  # delete fail
 
+    OSR001 = 'OSR001'  # get outletstore review information detail successfully
+    OSR002 = 'OSR002'  # getoutletstore review information detail failly
+    OSR003 = 'OSR002'  # add new a outletstore review  successfully
+    OSR004 = 'OSR004'  # not add new outletstore review
+    OSR005 = 'OSR005'  # update information
+    OSR006 = 'OSR006'  # update with err data
+    OSR007 = 'OSR007'  # delete sussess
+    OSR008 = 'OSR008'  # delete fail
+
     EX001 = 'EX001'  # get exhibition's information detail successfully
     EX002 = 'EX002'  # get exhibition's information detail failly
     EX003 = 'EX003'  # created exhibiton successfully
