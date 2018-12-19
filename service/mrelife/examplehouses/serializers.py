@@ -41,7 +41,7 @@ class ExampleHouseSerializer(ModelSerializer):
 
 
 class ExampleHouseNestedSerializer(ModelSerializer):
-    tags = ExampleHouseTagSerializer(many=True, read_only=False)
+    ex_tags = ExampleHouseTagSerializer(many=True, read_only=False)
     styles = ExampleHouseStyleSerializer(many=True, read_only=False)
     commitments = ExampleHouseCommitmentSerializer(many=True, read_only=False)
 
