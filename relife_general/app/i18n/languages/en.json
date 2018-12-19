@@ -70,6 +70,7 @@
   "delete": "Delete",
   "login": "Login",
   "register": "Register",
+  "logout": "Logout",
   "back": "Back",
   "status": "Status",
   "city": "City",
@@ -92,7 +93,7 @@
   "became-store": "Became store owner",
   "login-title": "General system login",
   "if-forgot-password": "If you have forgotten your password, click here",
-
+  "asetting" : "Account Setting",
   "add-user": "Add User",
   "store-selection": "Select Store",
   "group-selection": "Select Group",

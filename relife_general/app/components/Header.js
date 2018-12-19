@@ -7,13 +7,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-// import { Row, Col, Button, DropdownToggle, DropdownMenu, DropdownItem, Container, Collapse,
-//   Navbar,
-//   NavbarToggler,
-//   Nav,
-//   UncontrolledDropdown } from 'reactstrap'
-// import defaultAvatar from '../images/user.png'
+import { DropdownToggle, DropdownMenu, DropdownItem, ButtonDropdown } from 'reactstrap'
 import I18nUtils from '../utils/I18nUtils'
+import AppUtils from '../utils/AppUtils'
 import logo from '../images/logo.png'
 class Header extends React.Component {
   constructor(props) {
@@ -34,6 +30,14 @@ class Header extends React.Component {
   }
   goRegisterPage = () => {
     this.props.history.push('/register')
+  }
+
+  goToProfile = () => {
+    this.props.history.push('/profile')
+  }
+
+  handleLogout = () => {
+    AppUtils.logout(this.props.history)
   }
 
   render() {
@@ -61,6 +65,7 @@ class Header extends React.Component {
               </li>
             </ul>
           </nav>
+          {!isAuthenticated ? (
           <ul className="header-login">
             <li>
               <Link to="/login">{I18nUtils.t('login')}</Link>
@@ -69,6 +74,34 @@ class Header extends React.Component {
               <Link to="/register">{I18nUtils.t('register')}</Link>
             </li>
           </ul>
+          ) : (
+            <div className="header-login">
+              <div className="box-user">
+                <ButtonDropdown
+                  isOpen={this.state.dropdownOpen}
+                  toggle={this.toggle}
+                >
+                  <DropdownToggle>
+                    <span>Duc Hanh</span>
+                    <img
+                      alt={name}
+                      src={image}
+                    />
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem onClick={this.goToProfile}>
+                      {I18nUtils.t('asetting')}
+                    </DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem onClick={this.handleLogout}>
+                      {I18nUtils.t('logout')}
+                    </DropdownItem>
+                  </DropdownMenu>
+                </ButtonDropdown>
+              </div>
+            </div>
+          )
+          }
         </div>
       </header>
       

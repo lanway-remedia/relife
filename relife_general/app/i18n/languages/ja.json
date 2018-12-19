@@ -10,11 +10,12 @@
   "login": "ログイン",
   "login-title": "一般的なシステムログイン",
   "register": "新規会員登録",
+  "logout": "Logout",
   "email": "メールアドレス",
   "username": "ユーザー名",
   "password": "パスワード",
   "confirmPassword": "Confirm Password",
-
+  "asetting" : "Account Setting",
   "forgotPasswordText": "パスワードを忘れた方はこちらから",
   "forgotPassword": "Forgotten Password",
   "send": "送信",

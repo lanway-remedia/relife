@@ -26,7 +26,7 @@
     width: 100%;
     color: #333;
     position: relative;
-    padding: 40px 0;
+    padding: 0 0 40px 0;
     background: #f2f3f2;
     
     .slick-slide  {
@@ -86,7 +86,13 @@
     }
 
     /* end .slick-slide */
-
+    .slick-arrow:hover.slick-prev::before, 
+    .slick-arrow:hover.slick-prev::after,
+    .slick-arrow:hover.slick-next::before,
+    .slick-arrow:hover.slick-next::after, {
+      background-color: #fff;
+      transition-duration: 0.3s;
+    }
     .slick-arrow {
       position: absolute;
       width: 56px;
@@ -95,24 +101,29 @@
       background: rgba(255,255,255,0.7);;
       display: block;
       z-index: 9999;
-  
+      
+      &:hover {
+        background: #057235;
+        transition-duration: 0.3s;
+
+      }
+
       &::before {
         left: 45%;
         top: 39%;
         transform: skew(135deg, 45deg);
       }
-  
+
       &::after {
         left: 45%;
         top: 49%;
         transform: skew(-135deg, 135deg);
       }
-  
-  
+
       &.slick-prev {
         left:200px;
         right: auto;
-  
+
         &::before, &::after {
           content: '';
           position: absolute;
@@ -120,9 +131,13 @@
           height: 13%;
           background-color: #057235;
           transition-duration: 0.3s;
+
+          &:hover {
+            background-color: #fff;
+          }
         }
       }
-  
+
       &.slick-next {
         right: 200px;
         left: auto;

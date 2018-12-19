@@ -76,6 +76,94 @@ header {
       top: 0;
       right: 0;
 
+      .box-user {
+        padding: 7px 0;
+    
+        .btn-group {
+          .btn {
+            color: $text-color;
+            text-transform: uppercase;
+            background: #f2f3f2;
+            font-weight: bold;
+            padding: 10px 10px 10px 20px;
+            border-radius: 0px;
+            border: none;
+            min-width: 10rem;
+            font-size: 1.2rem;
+            &:focus {
+              box-shadow: none;
+            }
+    
+            &:before {
+              content: '\f107';
+              display: inline-block;
+              font: normal normal normal 14px/1 FontAwesome;
+              font-size: inherit;
+              text-rendering: auto;
+              -webkit-font-smoothing: antialiased;
+              -moz-osx-font-smoothing: grayscale;
+              position: relative;
+              left: -8px;
+              font-weight: 600;
+              color: #0c7c40;
+            }
+    
+            span {
+              display: inline-block;
+              max-width: 150px;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+              -webkit-line-clamp: 1;
+              vertical-align: middle;
+              -webkit-box-orient: vertical;
+            }
+          }
+    
+          &.show {
+            .btn {
+              background: #242d28;
+              color: #fff;
+            }
+          }
+    
+          .dropdown-menu {
+            margin: 0;
+            background: $bkg-text-color;
+            width: 100%;
+            border-radius: 0px;
+            border: none;
+            padding: 0;
+            border-top: 1px solid $border-color-2;
+    
+            .dropdown-item {
+              padding: 17px 20px;
+              color: $text-white-color;
+              cursor: pointer;
+              font-weight: 500;
+              font-size: 1.2rem;
+    
+              &:active,
+              &:hover,
+              &:focus {
+                background: $bkg-secondary-color;
+                outline: none;
+              }
+            }
+    
+            .dropdown-divider {
+              margin: 0;
+              border-color: $border-color-2;
+            }
+          }
+        }
+        img {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          margin-left: 8px;
+        }
+      }
       li {
         display: inline-block;
         width: 130px;
