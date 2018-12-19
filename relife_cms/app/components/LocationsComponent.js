@@ -30,9 +30,9 @@ class LocationsComponent extends Component {
   }
 
   componentDidMount() {
-    if (Object.keys(this.props.outletStoresData).length === 0) {
-      this.getLocation()
-    }
+    // if (Object.keys(this.props.outletStoresData).length === 0) {
+    this.getLocation()
+    // }
   }
 
   componentWillReceiveProps(nextProps) {

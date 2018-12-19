@@ -14,6 +14,7 @@ import { UserProfileTypes } from '../redux/wrapper/UserProfileRedux'
 import { OutletStoresTypes } from '../redux/wrapper/OutletStoresRedux'
 import { LocationTypes } from '../redux/wrapper/LocationsRedux'
 import { ExampleHouseTypes } from '../redux/wrapper/ExampleHousesRedux'
+import { AttributeTypes } from '../redux/wrapper/AttributesRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
@@ -23,6 +24,7 @@ import UserProfileSagas from './wrapper/UserProfileSagas'
 import OutletStoresSagas from './wrapper/OutletStoresSagas'
 import LocationsSagas from './wrapper/LocationsSagas'
 import ExampleHousesSagas from './wrapper/ExampleHousesSagas'
+import AttributesSagas from './wrapper/AttributesSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -132,6 +134,74 @@ export default function* root() {
       ExampleHousesSagas.deleteHouse
     ),
     takeLatest(ExampleHouseTypes.EXAMPLE_HOUSE_FAILURE, ErrorSagas.handleError),
+
+    //Attributes
+    // Get List Contruction
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_CONTRUCTION_LIST_REQUEST,
+      AttributesSagas.listContruction
+    ),
+    //Get Attribute Contruction by ID
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_CONTRUCTION_GET_REQUEST,
+      AttributesSagas.getContruction
+    ),
+
+    // Get List Floor
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_FLOOR_LIST_REQUEST,
+      AttributesSagas.listFloor
+    ),
+    //Get Attribute Floor by ID
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_FLOOR_GET_REQUEST,
+      AttributesSagas.getFloor
+    ),
+
+    // Get List Style
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_STYLE_LIST_REQUEST,
+      AttributesSagas.listStyle
+    ),
+    //Get Attribute Style by ID
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_STYLE_GET_REQUEST,
+      AttributesSagas.getStyle
+    ),
+
+    // Get List Price
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_PRICE_LIST_REQUEST,
+      AttributesSagas.listPrice
+    ),
+    //Get Attribute Price by ID
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_PRICE_GET_REQUEST,
+      AttributesSagas.getPrice
+    ),
+
+    // Get List Household Income
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_INCOME_LIST_REQUEST,
+      AttributesSagas.listHouseIncome
+    ),
+    //Get Attribute Household Income by ID
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_INCOME_GET_REQUEST,
+      AttributesSagas.getHouseIncome
+    ),
+
+    // Get List Household Size
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_SIZE_LIST_REQUEST,
+      AttributesSagas.listHouseSize
+    ),
+    //Get Attribute Household Size by ID
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_HOUSE_SIZE_GET_REQUEST,
+      AttributesSagas.getHouseSize
+    ),
+    takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
 
     //Locations
     //List Location

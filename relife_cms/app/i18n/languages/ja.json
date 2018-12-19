@@ -68,6 +68,12 @@
   "exh-ed-page-title": "Edit '{name}'",
   "exh-title-back-list": "Back to Manage Exhibition List Page",
 
+  "expl-parent-title": "Example House Management",
+  "expl-page-title": "Manage Example House List",
+  "expl-add-page-title": "Add New Example House",
+  "expl-ed-page-title": "Edit '{name}'",
+  "expl-title-back-list": "Back to Manage Example House List Page",
+
   "tag-parent-title": "Tag Management",
   "tag-page-title": "Manage Tag List",
   "tag-add-page-title": "Add New Tag",
@@ -159,6 +165,8 @@
   "store": "格納",
   "created-date": "Created Date (From - To)",
   "start-date": "Start Date (From - To)",
+  "created": "Created Date",
+  "started": "Started Date",
   "password": "パスワード",
   "currentPassword": "現在のパスワード",
   "newPassword": "New Password",
@@ -203,6 +211,12 @@
   "outletstore": "Outlet Store",
   "action": "編集",
   "image": "イメージ",
+  "contruction": "Contruction",
+  "price": "Price Ranger",
+  "floor": "Floor",
+  "housestyle": "House Style",
+  "houseincome": "Household Income",
+  "housesize": "Household Size",
 
   "lb-ad-search": "Advanced Search",
   "lb-fil-tooltip": "Click here, you can show/hide Advanced Search content ",
@@ -250,6 +264,7 @@
   "modal-ex-exc-header": "Do you want to export EXCEL the invoice '{name}'?",
   "modal-inv-ex-body": "If you want , you need to click 'OK'",
   "modal-inv-ex-success": "Export Success",
+  "modal-img-error": "Please upload Image",
   "toast-del-sucess": "Delete {name} success",
   "toast-del-error": "Delete {name} error",
   "toast-edit-sucess": "Update {name} success",
@@ -368,5 +383,19 @@
   "LOC004": "Update successfully",
   "LOC005": "Update error",
   "LOC006": "Get list successfully",
-  "LOC007": "Delete successfully"
+  "LOC007": "Delete successfully",
+
+  "EX404": "Not Found",
+  "EX201": "Create successfully",
+  "EX200": "Get list successfully",
+  "EX202": "Retrieve successfully",
+  "EX203": "Update successfully",
+  "EX204": "Partial update successfully",
+  "EX205": "Delete successfully",
+  "EX206": "Add tag successfully",
+  "EX207": "Remove tag successfully",
+  "EX208": "Add style successfully",
+  "EX209": "Remove style successfully",
+  "EX210": "Add commitment successfully",
+  "EX211": "Remove commitment"
 }

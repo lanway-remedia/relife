@@ -208,6 +208,24 @@ class EditOutletStorePage extends React.Component {
             >
               <Row>
                 <Col xs="12" md="12">
+                  <div className="btns-group text-center mb-4">
+                    <Button
+                      onClick={() => this.handleDelete(this.state.id)}
+                      color="secondary"
+                    >
+                      {I18nUtils.t('delete')}
+                    </Button>
+                    <Button color="success">{I18nUtils.t('btn-save')}</Button>
+                    <Button
+                      title={I18nUtils.t('ots-title-back-list')}
+                      onClick={this.redirectToListPage}
+                      color="danger"
+                    >
+                      {I18nUtils.t('btn-back')}
+                    </Button>
+                  </div>
+                </Col>
+                <Col xs="12" md="12">
                   <ImageUploadComponent
                     imageUpload={thumbnailImage}
                     uploadTitle={I18nUtils.formatMessage(

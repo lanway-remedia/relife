@@ -22,11 +22,10 @@ import { Helmet } from 'react-helmet'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import { ModalName } from '../../constants'
-import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
+import ExampleHouseActions from '../../redux/wrapper/ExampleHousesRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
-import { toast } from 'react-toastify'
 import { DefaultValue } from '../../constants'
 
 const TIMEOUT = 0
@@ -40,16 +39,16 @@ class ManageExampleHouseListPage extends React.Component {
       limit: 0,
       timeout: TIMEOUT,
       collapse: false,
-      storeList: []
+      dataList: []
     }
     this.handleDelete = this.handleDelete.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
     this.redirectToEdit = this.redirectToEdit.bind(this)
-    this.getOutletStore = this.getOutletStore.bind(this)
+    this.getExampleHouseList = this.getExampleHouseList.bind(this)
   }
 
-  getOutletStore() {
+  getExampleHouseList() {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
@@ -62,27 +61,35 @@ class ManageExampleHouseListPage extends React.Component {
       page: data.page,
       limit: data.limit
     })
-    this.props.outletStoreListRequest(data)
+    this.props.exampleHouseListRequest(data)
   }
 
   componentDidMount() {
-    this.getOutletStore()
+    this.getExampleHouseList()
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.data != nextProps.data) {
-      let response = nextProps.data
-      if (response.isGetStoreList) {
-        if (response.data.count === 0) {
-          toast.warn(I18nUtils.t('toast-no-record'))
+    console.log(nextProps.dataExamples)
+    if (this.props.dataExamples != nextProps.dataExamples) {
+      let response = nextProps.dataExamples
+      if (response.isGetHouseList) {
+        if (response.messageCode === 'EX200')
+          this.setState({
+            dataList: response.data.results,
+            count: response.data.count
+          })
+        else if (response.data.count === 0) {
+          this.props.show(ModalName.COMMON, {
+            message: (
+              <span className="text-danger">
+                {I18nUtils.t('toast-no-record')}
+              </span>
+            )
+          })
         }
-        this.setState({
-          storeList: response.data.results,
-          count: response.data.count
-        })
       }
 
-      if (response.messageCode === 'OS007' && response.isDeleteStore) {
+      if (response.messageCode === 'EX205' && response.isDeleteHouse) {
         this.props.show(ModalName.COMMON, {
           message: (
             <span className="text-success">
@@ -90,9 +97,11 @@ class ManageExampleHouseListPage extends React.Component {
             </span>
           )
         })
-        this.forceUpdate(this.getOutletStore)
+        this.forceUpdate(this.getExampleHouseList)
       }
     }
+
+    return null
   }
 
   handleDelete = store => {
@@ -108,21 +117,21 @@ class ManageExampleHouseListPage extends React.Component {
   }
 
   redirectToAddNew = () => {
-    this.props.history.push('add-new-outlet-store')
+    this.props.history.push('add-new-example-house')
   }
 
-  redirectToEdit = store => {
-    this.props.history.push(`/edit-outlet-store/${store.id}`)
+  redirectToEdit = val => {
+    this.props.history.push(`/edit-example-house/${val.id}`)
   }
 
-  deleteFunction = store => {
-    const originStoreList = this.state.storeList
-    const storeList = originStoreList.filter(s => s.id !== store.id)
-    const total = storeList.length
+  deleteFunction = val => {
+    const originDataList = this.state.dataList
+    const dataList = originDataList.filter(d => d.id !== val.id)
+    const total = dataList.length
 
-    this.setState({ storeList, total })
+    this.setState({ dataList, total })
 
-    this.props.outletStoreDeleteRequest(store.id)
+    this.props.exampleHouseDeleteRequest(val.id)
     this.props.hide(ModalName.COMMON)
   }
 
@@ -156,19 +165,19 @@ class ManageExampleHouseListPage extends React.Component {
   }
 
   render() {
-    let { page, limit, storeList, count, collapse, timeout } = this.state
+    let { page, limit, dataList, count, collapse, timeout } = this.state
     let { location } = this.props
     let isSearch
     if (location.search === '' || location.search === '?') isSearch = false
     else isSearch = true
     return (
-      <Container fluid className="manage-outletstore-list">
+      <Container fluid className="manage-examplehouse-list">
         <Helmet>
-          <title>{I18nUtils.t('otsl-page-title')}</title>
+          <title>{I18nUtils.t('expl-page-title')}</title>
         </Helmet>
         <div className="page-title">
           <h1>
-            {I18nUtils.t('otsl-page-title')}
+            {I18nUtils.t('expl-page-title')}
             <Button onClick={this.redirectToAddNew} color="success">
               {I18nUtils.t('btn-add-new')}
             </Button>
@@ -252,40 +261,42 @@ class ManageExampleHouseListPage extends React.Component {
               <Table hover responsive bordered>
                 <TableHeadComponent
                   onSort={this.handleSort}
-                  theadTitle="#,Image,Title,Email,Phone,Address,Zipcode,Action"
+                  theadTitle="#,Image,Title,Outlet Store,Status,Created,Action"
                 />
                 <tbody>
-                  {storeList.length === 0 && (
+                  {dataList.length === 0 && (
                     <tr>
-                      <td colSpan="8" className="alert alert-warning">
+                      <td colSpan="9" className="alert alert-warning">
                         {I18nUtils.t('toast-no-record')}
                       </td>
                     </tr>
                   )}
-                  {storeList.map((store, key) => {
+                  {dataList.map((val, key) => {
                     return (
                       <tr key={key}>
                         <td>{(page - 1) * limit + key + 1}</td>
                         <td>
                           <img
-                            alt={store.title}
-                            src={store.img_large}
+                            alt={val.title}
+                            src={val.img_large}
                             width="150"
                             height="100"
                           />
                         </td>
-                        <td>{store.title}</td>
-                        <td>{store.email}</td>
-                        <td>{store.tel}</td>
-                        <td>{store.address}</td>
-                        <td>{store.zipcode}</td>
+                        <td>{val.title}</td>
+                        <td>{val.store.title}</td>
+                        <td>
+                          {val.status_flag && 'Enable'}
+                          {!val.status_flag && 'Disabled'}
+                        </td>
+                        <td>{val.created}</td>
                         <td>
                           <Button
                             title={I18nUtils.t('edit')}
                             color="success"
                             size="sm"
                             className="btn-act"
-                            onClick={() => this.redirectToEdit(store)}
+                            onClick={() => this.redirectToEdit(val)}
                           >
                             {I18nUtils.t('edit')}
                           </Button>
@@ -294,7 +305,7 @@ class ManageExampleHouseListPage extends React.Component {
                             color="secondary"
                             size="sm"
                             className="btn-act"
-                            onClick={() => this.handleDelete(store)}
+                            onClick={() => this.handleDelete(val)}
                           >
                             {I18nUtils.t('delete')}
                           </Button>
@@ -316,9 +327,9 @@ ManageExampleHouseListPage.propTypes = {
   history: PropTypes.object,
   location: PropTypes.object,
   processing: PropTypes.bool,
-  data: PropTypes.object,
-  outletStoreListRequest: PropTypes.func,
-  outletStoreDeleteRequest: PropTypes.func,
+  dataExamples: PropTypes.object,
+  exampleHouseListRequest: PropTypes.func,
+  exampleHouseDeleteRequest: PropTypes.func,
   show: PropTypes.func,
   hide: PropTypes.func
 }
@@ -326,16 +337,16 @@ ManageExampleHouseListPage.propTypes = {
 const mapStateToProps = state => {
   return {
     processing: state.outletStores.processing,
-    data: state.outletStores.data
+    dataExamples: state.exampleHouses.data
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({ show, hide }, dispatch),
-  outletStoreListRequest: data =>
-    dispatch(OutletStoreActions.outletStoreListRequest(data)),
-  outletStoreDeleteRequest: data =>
-    dispatch(OutletStoreActions.outletStoreDeleteRequest(data))
+  exampleHouseListRequest: dataExamples =>
+    dispatch(ExampleHouseActions.exampleHouseListRequest(dataExamples)),
+  exampleHouseDeleteRequest: dataExamples =>
+    dispatch(ExampleHouseActions.exampleHouseDeleteRequest(dataExamples))
 })
 
 export default connect(

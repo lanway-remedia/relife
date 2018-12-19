@@ -30,11 +30,11 @@ export const exampleHouseListRequest = state => {
   return { ...state, processing: true }
 }
 
-export const exampleHouseAddRequest = state => {
+export const exampleHouseGetRequest = state => {
   return { ...state, processing: true }
 }
 
-export const exampleHouseGetRequest = state => {
+export const exampleHouseAddRequest = state => {
   return { ...state, processing: true }
 }
 

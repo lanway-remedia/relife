@@ -15,7 +15,7 @@ const ExampleHousesSagas = {
       yield put(
         ExampleHouseActions.exampleHouseSuccess(
           response.data,
-          (response.data.isGetStoreList = true)
+          (response.data.isGetHouseList = true)
         )
       )
     } catch (err) {
@@ -28,7 +28,7 @@ const ExampleHousesSagas = {
       yield put(
         ExampleHouseActions.exampleHouseSuccess(
           response.data,
-          (response.data.isGetStore = true)
+          (response.data.isGetHouse = true)
         )
       )
     } catch (err) {
@@ -41,7 +41,7 @@ const ExampleHousesSagas = {
       yield put(
         ExampleHouseActions.exampleHouseSuccess(
           response.data,
-          (response.data.isAddStore = true)
+          (response.data.isAddHouse = true)
         )
       )
     } catch (err) {
@@ -54,7 +54,7 @@ const ExampleHousesSagas = {
       yield put(
         ExampleHouseActions.exampleHouseSuccess(
           response.data,
-          (response.data.isEditStore = true)
+          (response.data.isEditHouse = true)
         )
       )
     } catch (err) {
@@ -67,7 +67,7 @@ const ExampleHousesSagas = {
       yield put(
         ExampleHouseActions.exampleHouseSuccess(
           response.data,
-          (response.data.isDeleteStore = true)
+          (response.data.isDeleteHouse = true)
         )
       )
     } catch (err) {

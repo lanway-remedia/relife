@@ -11,7 +11,10 @@ class CommonModal extends Component {
     headerClass: PropTypes.string,
     bodyClass: PropTypes.string,
     title: PropTypes.string,
-    message: PropTypes.string.isRequired,
+    message: PropTypes.oneOfType([
+      PropTypes.string.isRequired,
+      PropTypes.object.isRequired
+    ]),
     handleHide: PropTypes.func.isRequired,
     okFunction: PropTypes.func,
     deleteFunction: PropTypes.func,
