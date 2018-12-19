@@ -35,7 +35,7 @@ class ExampleHouseViewSet(ModelViewSet):
         try:
             self.serializer_class = ExampleHouseNestedSerializer
             response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-            return response_200('EX200', '', response.data)
+            return response_200('EX202', '', response.data)
         except Http404:
             return response_404('EX404')
 
@@ -92,21 +92,21 @@ class ExampleHouseViewSet(ModelViewSet):
     def update(self, request, *args, **kwargs):
         try:
             response = super(ExampleHouseViewSet, self).update(request, *args, **kwargs)
-            return response_200('EX200', '', response.data)
+            return response_200('EX203', '', response.data)
         except Http404:
             return response_404('EX404')
 
     def partial_update(self, request, *args, **kwargs):
         try:
             response = super(ExampleHouseViewSet, self).partial_update(request, *args, **kwargs)
-            return response_200('EX200', '', response.data)
+            return response_200('EX204', '', response.data)
         except Http404:
             return response_404('EX404')
 
     def destroy(self, request, *args, **kwargs):
         try:
             response = super(ExampleHouseViewSet, self).destroy(request, *args, **kwargs)
-            return response_200('EX200', '', response.data)
+            return response_200('EX205', '', response.data)
         except Http404:
             return response_404('EX404')
 
@@ -129,7 +129,7 @@ class ExampleHouseViewSet(ModelViewSet):
                     if created or not house.tags.filter(tag=tag).exists():
                         ExampleHouseTag.objects.create(tag=tag, example_house=house)
         response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        return response_200('EX200', '', response.data)
+        return response_200('EX206', '', response.data)
 
     @detail_route(methods=['post'])
     def remove_tag(self, request, *args, **kwargs):
@@ -151,7 +151,7 @@ class ExampleHouseViewSet(ModelViewSet):
                 except Exception:
                     pass
         response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        return response_200('EX200', '', response.data)
+        return response_200('EX207', '', response.data)
 
     @detail_route(methods=['post'])
     def add_style(self, request, *args, **kwargs):
@@ -172,7 +172,7 @@ class ExampleHouseViewSet(ModelViewSet):
                 except Exception:
                     pass
         response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        return response_200('EX200', '', response.data)
+        return response_200('EX208', '', response.data)
 
     @detail_route(methods=['post'])
     def remove_style(self, request, *args, **kwargs):
@@ -194,7 +194,7 @@ class ExampleHouseViewSet(ModelViewSet):
                 except Exception:
                     pass
         response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        return response_200('EX200', '', response.data)
+        return response_200('EX209', '', response.data)
 
     @detail_route(methods=['post'])
     def add_commitment(self, request, *args, **kwargs):
@@ -216,7 +216,7 @@ class ExampleHouseViewSet(ModelViewSet):
                 except Exception:
                     pass
         response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        return response_200('EX200', '', response.data)
+        return response_200('EX210', '', response.data)
 
     @detail_route(methods=['post'])
     def remove_commitment(self, request, *args, **kwargs):
@@ -238,4 +238,4 @@ class ExampleHouseViewSet(ModelViewSet):
                 except Exception:
                     pass
         response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
-        return response_200('EX200', '', response.data)
+        return response_200('EX211', '', response.data)
