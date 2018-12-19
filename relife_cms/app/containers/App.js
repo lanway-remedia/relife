@@ -11,7 +11,7 @@ import LocaleComponent from '../utils/LocaleComponent'
 import CommonModal from '../components/CommonModal'
 import CommonApi from '../components/CommonApi'
 import Routes from '../routes'
-import user from '../images/user.png'
+import 'font-awesome/css/font-awesome.css'
 import '../styles/bootstrap.scss'
 import '../styles/styles.scss'
 
@@ -23,20 +23,16 @@ export default class App extends React.Component {
     if (process.env.BASENAME) {
       this.basename = process.env.BASENAME
     }
-    this.state = {
-      userimage: user,
-      username: ''
-    }
+    this.state = {}
   }
 
   render() {
-    let { username, userimage } = this.state
     return (
       <HotSwappingIntlProvider>
         <Router basename={this.basename}>
           <div className="root-content">
             <LocaleComponent />
-            <Routes username={username} userimage={userimage} />
+            <Routes />
             <CommonModal />
             <CommonApi />
           </div>

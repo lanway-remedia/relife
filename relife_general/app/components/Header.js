@@ -12,10 +12,10 @@ import { Row, Col, Button } from 'reactstrap'
 import I18nUtils from '../utils/I18nUtils'
 
 class Header extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {}
-    }
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
 
   goLoginPage = () => {
     this.props.history.push('/login')
@@ -27,7 +27,9 @@ class Header extends React.Component {
         <Row noGutters>
           <Col xs="12" sm="9" />
           <Col xs="12" sm="3">
-            <Button color="link" onClick={() => this.goLoginPage()}>{I18nUtils.t('login')}</Button>{' '}
+            <Button color="link" onClick={() => this.goLoginPage()}>
+              {I18nUtils.t('login')}
+            </Button>{' '}
           </Col>
         </Row>
       </header>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap'
 import { connectModal } from 'redux-modal'
 import { ModalName, DefaultValue } from '../constants'
 import I18nUtils from '../utils/I18nUtils'
@@ -11,9 +11,13 @@ class CommonModal extends Component {
     headerClass: PropTypes.string,
     bodyClass: PropTypes.string,
     title: PropTypes.string,
-    message: PropTypes.string.isRequired,
+    message: PropTypes.oneOfType([
+      PropTypes.string.isRequired,
+      PropTypes.object.isRequired
+    ]),
     handleHide: PropTypes.func.isRequired,
     okFunction: PropTypes.func,
+    deleteFunction: PropTypes.func,
     closeFunction: PropTypes.func
   }
 
@@ -26,36 +30,52 @@ class CommonModal extends Component {
       message,
       handleHide,
       okFunction,
-      closeFunction
+      closeFunction,
+      deleteFunction
     } = this.props
     title = !title ? I18nUtils.t(DefaultValue.MODAL_NAME) : title
 
     return (
       <Modal isOpen={show}>
         {title && <ModalHeader className={headerClass}>{title}</ModalHeader>}
-        <ModalBody className={bodyClass}>{message}</ModalBody>
-        <ModalFooter>
+        <ModalBody className={bodyClass}>
+          <div className="message-body">{message}</div>
+
           {okFunction && (
-            <div>
-              <Button color="danger" onClick={okFunction}>
+            <div className="modal-btns">
+              <Button color="secondary" onClick={okFunction}>
                 {I18nUtils.t('ok')}
               </Button>
-              <Button color="primary" onClick={handleHide}>
+              <Button color="success" onClick={handleHide}>
+                {I18nUtils.t('cancel')}
+              </Button>
+            </div>
+          )}
+          {deleteFunction && (
+            <div className="modal-btns">
+              <Button color="secondary" onClick={deleteFunction}>
+                {I18nUtils.t('delete')}
+              </Button>
+              <Button color="success" onClick={handleHide}>
                 {I18nUtils.t('cancel')}
               </Button>
             </div>
           )}
           {closeFunction && (
-            <Button color="primary" onClick={closeFunction}>
-              {I18nUtils.t('close')}
-            </Button>
+            <div className="modal-btns">
+              <Button color="success" onClick={closeFunction}>
+                {I18nUtils.t('close')}
+              </Button>
+            </div>
           )}
-          {(!okFunction && !closeFunction) && (
-            <Button color="primary" onClick={handleHide}>
-              {I18nUtils.t('close')}
-            </Button>
+          {!okFunction && !closeFunction && !deleteFunction && (
+            <div className="modal-btns">
+              <Button color="success" onClick={handleHide}>
+                {I18nUtils.t('close')}
+              </Button>
+            </div>
           )}
-        </ModalFooter>
+        </ModalBody>
       </Modal>
     )
   }
