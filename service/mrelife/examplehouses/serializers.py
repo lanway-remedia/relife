@@ -6,7 +6,7 @@ from mrelife.examplehouses.models import (ExampleHouse, ExampleHouseCommitment,
 
 from mrelife.outletstores.models import OutletStore
 from mrelife.attributes.models import (Contruction, Floor,
-                                       HouseHoldIncome, HouseHoldSize)
+                                       HouseHoldIncome, HouseHoldSize, Style)
 
 class ExampleHouseTagSerializer(ModelSerializer):
 
@@ -15,8 +15,15 @@ class ExampleHouseTagSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class ExampleHouseStyleSerializer(ModelSerializer):
+class StyleSerializer(ModelSerializer):
 
+    class Meta:
+        model = Style
+        fields = '__all__'
+
+
+class ExampleHouseStyleSerializer(ModelSerializer):
+    style = StyleSerializer()
     class Meta:
         model = ExampleHouseStyle
         fields = '__all__'
