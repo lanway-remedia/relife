@@ -29,10 +29,10 @@ class RegisterPage extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
     componentDidMount() {
-        document.body.classList.add('register-index')
+        document.body.classList.add('cms-index-auth')
     }
     componentWillUnmount() {
-        document.body.classList.remove('register-index')
+        document.body.classList.remove('cms-index-auth')
     }
     componentWillReceiveProps(nextProps) {
         if (this.props.data != nextProps.data) {
@@ -155,7 +155,9 @@ class RegisterPage extends React.Component {
                             autoComplete="new-password"
                         />
                     </FormGroup>
-                    <Button className="form_btn">{I18nUtils.t('register')}</Button>
+                    <Button className="form_btn btn-default">
+                        {I18nUtils.t('register')}
+                    </Button>
                 </ValidationForm>
             </div>
         )

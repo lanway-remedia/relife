@@ -1,5 +1,5 @@
 {
-  "app-title": "Re:life",
+  "app-title": "Re:Life General",
 
   "en_US": "English",
   "ja_JP": "Japanese",
@@ -8,13 +8,25 @@
 
   "header-logo-text": "暮らしづくりのコンシェルジュ",
   "login": "ログイン",
+  "login-title": "一般的なシステムログイン",
   "register": "新規会員登録",
   "email": "メールアドレス",
-  "username": "メールアドレス",
+  "username": "ユーザー名",
   "password": "パスワード",
+  "confirmPassword": "Confirm Password",
 
-  "all-place-username": "メールアドレス",
+  "forgotPasswordText": "パスワードを忘れた方はこちらから",
+  "forgotPassword": "Forgotten Password",
+  "send": "送信",
+  "if-forgot-password": "パスワードを忘れた方はこちらから",
+
+  "login-page-title": "Re:Life General Login",
+  "forgotpassword-page-title": "Re:Life General Forgot Password",
+
+  "all-place-username": "ユーザー名",
+  "all-place-email": "メールアドレス",
   "all-place-password": "パスワード",
+  "all-place-confirmPassword": "Please input confirm password here",
 
   "top-map-title-1" : "建築会社・工務店を",
   "top-map-title-2" : "地域から探す",

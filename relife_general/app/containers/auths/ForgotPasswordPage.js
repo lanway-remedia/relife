@@ -34,11 +34,11 @@ class ForgotPasswordPage extends React.Component {
   }
 
   componentDidMount() {
-    document.body.classList.add('forgotpassword-index')
+    document.body.classList.add('cms-index-auth')
   }
 
   componentWillUnmount() {
-    document.body.classList.remove('forgotpassword-index')
+    document.body.classList.remove('cms-index-auth')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,7 +72,7 @@ class ForgotPasswordPage extends React.Component {
 
   render() {
     return (
-      <div className="form-account">
+      <div className="form-account" id="reset-password">
         <Helmet>
           <title>{I18nUtils.t('forgotpassword-page-title')}</title>
         </Helmet>
@@ -82,7 +82,7 @@ class ForgotPasswordPage extends React.Component {
               width="100%"
             />
         </div>
-        <h6 className="form-account_title">{I18nUtils.t('forgotPassword')}</h6>
+        <h6 className="form-account_title">{I18nUtils.t('login-title')}</h6>
         <p className="form_note">{I18nUtils.t('forgot-text')}</p>
         <ValidationForm
           onSubmit={this.handleSubmit}
@@ -100,7 +100,9 @@ class ForgotPasswordPage extends React.Component {
               className="form-control"
             />
           </FormGroup>
-          <Button className="form_btn">{I18nUtils.t('send')}</Button>
+          <Button className="form_btn btn-default">
+            {I18nUtils.t('send')}
+          </Button>
         </ValidationForm>
       </div>
     )

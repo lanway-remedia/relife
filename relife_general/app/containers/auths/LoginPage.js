@@ -14,7 +14,7 @@ import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Button, FormGroup, Label } from 'reactstrap'
 import AppUtils from '../../utils/AppUtils'
 
-import formLogo from '../../images/form-logo.png'
+import logo from '../../images/form-logo.png'
 class LoginPage extends React.Component {
   constructor(props) {
     super(props)
@@ -26,11 +26,11 @@ class LoginPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   componentDidMount() {
-    document.body.classList.add('login-index')
+    document.body.classList.add('cms-index-auth')
   }
 
   componentWillUnmount() {
-    document.body.classList.remove('login-index')
+    document.body.classList.remove('cms-index-auth')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -59,21 +59,24 @@ class LoginPage extends React.Component {
 
   render() {
     return (
-      <div className="login-page form-account">
+      <div className="form-account" id="login">
         <Helmet>
           <title>{I18nUtils.t('login-page-title')}</title>
         </Helmet>
         <div className="form-logo">
-            <img src={formLogo}
+            <img src={logo}
               alt="logo" 
               width="100%"
             />
         </div>
-        <h6 className="form-account_title">{I18nUtils.t('login')}</h6>
+        <h6 className="form-account_title">
+          {I18nUtils.t('login-title')}
+        </h6>
         <ValidationForm onSubmit={this.handleSubmit}>
           <FormGroup className="form-account_label">
             <Label for="username">{I18nUtils.t('username')}</Label>
             <TextInput
+              className="form-control"
               type="text"
               name="username"
               id="username"
@@ -106,16 +109,17 @@ class LoginPage extends React.Component {
               value={this.state.password}
             />
           </FormGroup>
-          <Button className="form_btn">
+          <Button className="form_btn btn-default">
             {I18nUtils.t('login')}
           </Button>
           <p className="text-center">
-          <Link 
-            to="/forgot-password"
-            title={I18nUtils.t('forgotPassword')}
-          >
-            {I18nUtils.t('forgotPassword')}
-          </Link>
+            <Link 
+              to="/forgot-password"
+              title={I18nUtils.t('forgotPasswordText')}
+              className="form_link text-green fs-12"
+            >
+              {I18nUtils.t('if-forgot-password')}
+            </Link>
           </p>
         </ValidationForm>
       </div>
