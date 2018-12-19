@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from mrelife.examplehouses.models import ExampleHouse, ExampleHouseCommitment, ExampleHouseStyle, ExampleHouseTag
-from mrelife.examplehouses.serializers import ExampleHouseNestedSerializer, ExampleHouseSerializer
+from mrelife.examplehouses.serializers import ExampleHouseNestedSerializer, ExampleHouseSerializer, ExampleHouseNestedNameOnlySerializer
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
 from mrelife.utils.groups import IsStore, IsSub
@@ -25,6 +25,7 @@ class ExampleHouseViewSet(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         try:
+            self.serializer_class = ExampleHouseNestedNameOnlySerializer
             response = super(ExampleHouseViewSet, self).list(request, *args, **kwargs)
             return response_200('EX200', '', response.data)
         except Http404:
