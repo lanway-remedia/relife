@@ -6,15 +6,15 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from rest_framework.decorators import action
+from rest_framework.decorators import action, list_route, permission_classes
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from mrelife.commons.common_fnc import CommonFuntion
-from mrelife.examplehouses.models import ExampleHouse,ExampleHouseReview
 from mrelife.examplehouses.examplehousereviews.serializers import ExampleHouseReviewSerializer
+from mrelife.examplehouses.models import ExampleHouse, ExampleHouseReview
 from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 # from mrelife.utils.outlet_store_permission import OutletStorePermission
@@ -81,3 +81,12 @@ class ExampleHouseReviewViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EHR008.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EHR008.value, ""), status=status.HTTP_400_BAD_REQUEST)
+    @list_route(methods=['GET'], pagination_class=LimitOffsetPagination,url_path="getlistbyexamplehouse/(?P<example_house_id>[^/]+)")
+    def getlistbyexamplehouse(self, request, example_house_id=None):
+        try:
+            self.queryset=[]
+            self.queryset = ExampleHouseReview.objects.filter(
+                example_house_id=example_house_id)
+            return super(ExampleHouseReviewViewSet, self).list(request)
+        except Exception as e:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EHR002.value, ""), status=status.HTTP_404_NOT_FOUND)
