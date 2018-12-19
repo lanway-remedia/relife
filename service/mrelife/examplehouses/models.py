@@ -45,6 +45,9 @@ class ExampleHouse(BaseModel):
     status_flag = BooleanField(default=True)
     is_active = BooleanField(default=True)
 
+    class Meta:
+        ordering = ['created', ]
+
     def save(self, *args, **kwargs):
         super(ExampleHouse, self).save(*args, **kwargs)
         self.create_thumb()
