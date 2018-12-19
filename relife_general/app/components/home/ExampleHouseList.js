@@ -23,7 +23,7 @@ class ExampleHouseList extends React.Component {
       className: 'center',
       centerMode: true,
       infinite: true,
-      centerPadding: '390px',
+      centerPadding: '29%',
       slidesToShow: 1,
       speed: 500
     }
@@ -33,37 +33,37 @@ class ExampleHouseList extends React.Component {
           <h2 className="top-result-title">注文住宅の建築実績を見る</h2>
           <p className="top-result-text">こだわり住まいのさまざまな情報を、注文住宅の事例からお探しできます。</p>
         </div>
-        <div className="slider-content">
+        <div className="slider-wrap">
           <Slider {...settings}>
-            <div className="slider">
+            <div className="slider-item">
               <img src={slider01} />
               <div className="slider-title">
                 <h3>室内を見渡すのが楽しくなる、開放的な住まい</h3>
                 <p>株式会社クレアホームの</p>
               </div>
             </div>
-            <div className="slider">
+            <div className="slider-item">
               <img src={slider02} />
               <div className="slider-title">
                 <h3>室内を見渡すのが楽しくなる、開放的な住まい</h3>
                 <p>株式会社クレアホームの</p>
               </div>
             </div>
-            <div className="slider">
+            <div className="slider-item">
               <img src={slider03} />
               <div className="slider-title">
                 <h3>室内を見渡すのが楽しくなる、開放的な住まい</h3>
                 <p>株式会社クレアホームの</p>
               </div>
             </div>
-            <div className="slider">
+            <div className="slider-item">
               <img src={slider04} />
               <div className="slider-title">
                 <h3>室内を見渡すのが楽しくなる、開放的な住まい</h3>
                 <p>株式会社クレアホームの</p>
               </div>
             </div>
-            <div className="slider">
+            <div className="slider-item">
               <img src={slider05} />
               <div className="slider-title">
                 <h3>室内を見渡すのが楽しくなる、開放的な住まい</h3>
