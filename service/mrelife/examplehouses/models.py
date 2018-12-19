@@ -46,7 +46,7 @@ class ExampleHouse(BaseModel):
     is_active = BooleanField(default=True)
 
     class Meta:
-        ordering = ['created', ]
+        ordering = ['-created', ]
 
     def save(self, *args, **kwargs):
         super(ExampleHouse, self).save(*args, **kwargs)
