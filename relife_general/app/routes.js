@@ -84,7 +84,7 @@ class Routes extends React.Component {
                     />
                     <Breadcrumb />
                     <Switch>
-                        <Route exact path="/login" component={LoginPage} />
+                        <Route path="/login" component={LoginPage} />
                         <Route path="/forgot-password" component={ForgotPasswordPage} />
                         <Route
                             path="/email-confirm/:uidb64/:token_key"
@@ -96,7 +96,6 @@ class Routes extends React.Component {
                             component={HomePage}
                         />
                         <Route
-                            exact
                             path="/profile"
                             component={requireLogin(ProfileInfoPage)}
                         />
@@ -127,8 +126,8 @@ class Routes extends React.Component {
                 <React.Fragment>
                     <ToastContainer />
                     <Switch>
-                    <Route exact path="/login" component={LoginPage} />
-                    <Route exact path="/register" component={RegisterPage} />
+                    <Route path="/login" component={LoginPage} />
+                    <Route path="/register" component={RegisterPage} />
                     <Route path="/forgot-password" component={ForgotPasswordPage} />
                     <Route
                         path="/email-confirm/:uidb64/:token_key"

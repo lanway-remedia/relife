@@ -14,6 +14,7 @@ import ProfileImage from './ProfileImage'
 import I18nUtils from '../utils/I18nUtils'
 import AppUtils from '../utils/AppUtils'
 import classnames from 'classnames'
+import ProfileActions from '../redux/wrapper/ProfileRedux'
 
 class ProfileNav extends React.Component {
   constructor(props) {
@@ -23,10 +24,28 @@ class ProfileNav extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.props.profileRequest({})
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data != nextProps.data) {
+      if (nextProps.data.getProfile) {
+        let profile = nextProps.data.data
+        this.setState({
+          profileImage: profile.profile_image
+        })
+      }
+    }
+  }
+
   profileChange = (profileImage) => {
     this.setState({
       profileImage
     })
+    let formData = new FormData()
+    formData.append('file', profileImage)
+    this.props.editProfileAvatarRequest(formData)
   }
 
   render() {
@@ -88,4 +107,21 @@ ProfileNav.propTypes = {
   history: PropTypes.object
 }
 
-export default connect()(withRouter(ProfileNav))
+const mapStateToProps = state => {
+  return {
+    processing: state.profile.processing,
+    data: state.profile.data
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  profileRequest: data => dispatch(ProfileActions.profileRequest(data)),
+  editProfileRequest: data => dispatch(ProfileActions.editProfileRequest(data)),
+  editProfileAvatarRequest: formData =>
+    dispatch(ProfileActions.editProfileAvatarRequest(formData))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ProfileNav))

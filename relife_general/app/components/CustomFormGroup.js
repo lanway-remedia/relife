@@ -21,10 +21,12 @@ class CustomFormGroup extends React.Component {
     this.inputRef = React.createRef()
   }
 
-  componentDidMount() {
-    this.setState({
-      value: this.props.value
-    })
+  componentWillReceiveProps(nextProps) {
+    if (this.props.value != nextProps.value) {
+      this.setState({
+        value: nextProps.value
+      })
+    }
   }
 
   inputRefFocus = () => {
