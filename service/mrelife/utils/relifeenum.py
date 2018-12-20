@@ -19,12 +19,22 @@ class MessageCode(Enum):
 
     OSC001 = 'OSC001'  # get outletstore contact's information detail successfully
     OSC002 = 'OSC002'  # get outletstore contact's information detail failly
-    OSC003 = 'OSC002'  # add new a outletstore contact  successfully
+    OSC003 = 'OSC003'  # add new a outletstore contact  successfully
     OSC004 = 'OSC004'  # not add new outletstore contact
     OSC005 = 'OSC005'  # update information
     OSC006 = 'OSC006'  # update with err data
     OSC007 = 'OSC007'  # delete sussess
     OSC008 = 'OSC008'  # delete fail
+
+    OSCR001 = 'OSCR001'  # get outletstore contact's information detail successfully
+    OSCR002 = 'OSCR002'  # get outletstore contact's information detail failly
+    OSCR003 = 'OSCR002'  # add new a outletstore contact  successfully
+    OSCR004 = 'OSCR004'  # not add new outletstore contact
+    OSCR005 = 'OSCR005'  # update information
+    OSCR006 = 'OSCR006'  # update with err data
+    OSCR007 = 'OSCR007'  # delete sussess
+    OSCR008 = 'OSCR008'  # delete fail
+
 
     EX001 = 'EX001'  # get detail
     EX002 = 'EX002'  # get detail. not found request
