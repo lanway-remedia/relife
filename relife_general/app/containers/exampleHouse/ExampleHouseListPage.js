@@ -39,7 +39,7 @@ class ExampleHouseListPage extends React.Component {
 
                   <div className="adv-example-once-title-right">
                     <div className="adv-example-once-link">
-                      <Link to="/">詳細はこちら</Link>
+                      <Link to="/example-view">詳細はこちら</Link>
                     </div>
                   </div>
 
@@ -51,7 +51,7 @@ class ExampleHouseListPage extends React.Component {
             </div>
 
             <div className="example-list clearfix">
-              <Link to="" className="example-list-once">
+              <Link to="/example-view" className="example-list-once">
                 <div className="example-list-once-img">
                   <img src={exhItem01} alt="exh-item" />
                 </div>
@@ -65,7 +65,7 @@ class ExampleHouseListPage extends React.Component {
                 <div className="example-list-once-company">株式会社クレアホームの施工事例</div>
               </Link>
 
-              <Link to="" className="example-list-once">
+              <Link to="/example-view" className="example-list-once">
                 <div className="example-list-once-img">
                   <img src={exhItem02} alt="exh-item" />
                 </div>
@@ -79,7 +79,7 @@ class ExampleHouseListPage extends React.Component {
                 <div className="example-list-once-company">株式会社クレアホームの施工事例</div>
               </Link>
 
-              <Link to="" className="example-list-once">
+              <Link to="/example-view" className="example-list-once">
                 <div className="example-list-once-img">
                   <img src={exhItem03} alt="exh-item" />
                 </div>
