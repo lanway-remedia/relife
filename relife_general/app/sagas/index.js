@@ -11,6 +11,7 @@ import { SetLanguageTypes } from '../redux/wrapper/SetLanguageRedux'
 import { AuthsTypes } from '../redux/wrapper/AuthsRedux'
 import { ProfileTypes } from '../redux/wrapper/ProfileRedux'
 import { LocationTypes } from '../redux/wrapper/LocationsRedux'
+import { ExampleHousesTypes } from '../redux/wrapper/ExampleHousesRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
@@ -19,6 +20,7 @@ import ProfileSagas from './wrapper/ProfileSagas'
 import LocationsSagas from './wrapper/LocationsSagas'
 import { AttributeTypes } from '../redux/wrapper/AttributesRedux'
 import AttributesSagas from './wrapper/AttributesSagas'
+import ExampleHousesSagas from './wrapper/ExampleHousesSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -96,5 +98,16 @@ export default function* root() {
       AttributeTypes.ATTRIBUTE_HOUSE_SIZE_LIST_REQUEST,
       AttributesSagas.listHouseSize
     ),
+
+    // Get List Example House
+    takeLatest(
+      ExampleHousesTypes.EXAMPLE_HOUSES_LIST_REQUEST,
+      ExampleHousesSagas.getHouseList
+    ),
+    takeLatest(
+      ExampleHousesTypes.EXAMPLE_HOUSES_GET_REQUEST,
+      ExampleHousesSagas.getHouseById
+    ),
+
   ]
 }

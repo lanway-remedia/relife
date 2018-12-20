@@ -1,24 +1,65 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 // import I18nUtils from '../../utils/I18nUtils'
 import exh01 from '../../images/exh-01.jpg'
-import exhItem01 from '../../images/exh-item-01.jpg'
-import exhItem02 from '../../images/exh-item-02.jpg'
-import exhItem03 from '../../images/exh-item-03.jpg'
 import AttributesSeach from '../../components/exampleHouse/AttributesSeach'
-
+import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
+import { bindActionCreators } from 'redux'
+import { show, hide } from 'redux-modal'
+import { DefaultValue } from '../../constants'
 class ExampleHouseListPage extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      count: 0,
+      limit: 0,
+      exampleHouseList : []
+    }
+  }
+
+  getListExampleHouse = () => {
+    let params = new URLSearchParams(this.props.history.location.search)
+    let page = params.get('page') * 1 || DefaultValue.PAGE
+    let limit = params.get('limit') * 1 || DefaultValue.LIMIT
+
+    let data = {
+      offset: (page - 1) * limit,
+      limit: limit,
+      page: page
+    }
+    this.setState({
+      page: data.page,
+      limit: data.limit
+    })
+    this.props.exampleHousesListRequest(data)
+  }
   componentDidMount() {
     document.body.classList.add('example-house-list')
+    this.getListExampleHouse()
   }
 
   componentWillUnmount() {
     document.body.classList.remove('example-house-list')
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(this.props.data != nextProps.data) {
+      let response = nextProps.data
+      if (response.isGetList) {
+        if (response.messageCode == 'EX200') {
+          this.setState({
+            exampleHouseList: response.data.results,
+            count: response.data.count
+          })
+        }
+      }
+    }
+  }
+
   render() {
+    let {exampleHouseList} = this.state
     return (
       <div className="lower-contents">
         <div className="lower-contents-inner clearfix">
@@ -51,47 +92,18 @@ class ExampleHouseListPage extends React.Component {
             </div>
 
             <div className="example-list clearfix">
-              <Link to="/example-view" className="example-list-once">
-                <div className="example-list-once-img">
-                  <img src={exhItem01} alt="exh-item" />
-                </div>
-
-                <h3 className="example-list-once-title">
-                  室内を見渡すのが楽しくなる、開放的な住まい
-                </h3>
-
-                <div className="example-list-once-company-area">東京都西東京市</div>
-
-                <div className="example-list-once-company">株式会社クレアホームの施工事例</div>
-              </Link>
-
-              <Link to="/example-view" className="example-list-once">
-                <div className="example-list-once-img">
-                  <img src={exhItem02} alt="exh-item" />
-                </div>
-
-                <h3 className="example-list-once-title">
-                  室内を見渡すのが楽しくなる、開放的な住まい
-                </h3>
-
-                <div className="example-list-once-company-area">東京都西東京市</div>
-
-                <div className="example-list-once-company">株式会社クレアホームの施工事例</div>
-              </Link>
-
-              <Link to="/example-view" className="example-list-once">
-                <div className="example-list-once-img">
-                  <img src={exhItem03} alt="exh-item" />
-                </div>
-
-                <h3 className="example-list-once-title">
-                  室内を見渡すのが楽しくなる、開放的な住まい
-                </h3>
-
-                <div className="example-list-once-company-area">東京都西東京市</div>
-
-                <div className="example-list-once-company">株式会社クレアホームの施工事例</div>
-              </Link>
+              {exampleHouseList.map((val, key) => (
+                <Link key={key} to={'example/' + val.id} className="example-list-once">
+                  <div className="example-list-once-img">
+                    <img src={val.img_large} alt={val.title} />
+                  </div>
+                  <h3 className="example-list-once-title">
+                    {val.title}
+                  </h3>
+                  <div className="example-list-once-company-area">東京都西東京市</div>
+                  <div className="example-list-once-company">{val.store.title}</div>
+                </Link>
+              ))}
             </div>
           </section>
           <AttributesSeach />
@@ -101,4 +113,30 @@ class ExampleHouseListPage extends React.Component {
   }
 }
 
-export default connect()(withRouter(ExampleHouseListPage))
+ExampleHouseListPage.propTypes = {
+  history: PropTypes.object,
+  location: PropTypes.object,
+  processing: PropTypes.bool,
+  data: PropTypes.object,
+  exampleHousesListRequest: PropTypes.func,
+  show: PropTypes.func,
+  hide: PropTypes.func
+}
+
+const mapStateToProps = state => {
+  return {
+    processing : state.exampleHouses.processing,
+    data : state.exampleHouses.data
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ show, hide }, dispatch),
+  exampleHousesListRequest : data =>
+    dispatch(ExampleHousesActions.exampleHousesListRequest(data))
+})
+
+export default connect(
+mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ExampleHouseListPage))
