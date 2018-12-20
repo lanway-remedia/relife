@@ -33,14 +33,23 @@
       .slider-item {
         overflow: hidden;
         position: relative;
-        img {
-          opacity: 0.4;
-          background: #000;
+        padding-bottom: 48px;
+
+        a {
+          display: block;
           width: 100%;
           height: 480px;
-          max-height: 480px;
-          object-fit: cover;
+          overflow: hidden;
           transition-duration: 0.3s;
+          img {
+            opacity: 0.4;
+            background: #000;
+            width: 100%;
+            height: 480px;
+            max-height: 480px;
+            object-fit: cover;
+            transition-duration: 0.3s;
+          }
         }
 
         .slider-title {
@@ -62,30 +71,46 @@
             text-align: left;
             font-size: 2.0rem;
             margin: 0 0 8px 0;
+            opacity: 0.4;
           }
 
           p {
             text-align: left;
             font-size: 1.4rem;
+            opacity: 0.4;
           }
         }
       }
 
       &.slick-active {
-        img {
-          opacity: 1;
+        .slider-item {
+          img {
+            opacity: 1;
+          }
+          .slider-title {
+            h3 {
+              opacity: 1;
+            }
+            p {
+              opacity: 1;
+            }
+          }
           &:hover {
-            transform: scale(1.1);
             cursor: pointer;
+            img {
+              transform: scale(1.1);
+              transition-duration: 0.3s;
+            }
             .slider-title {
-              color: $bg-hover-btn-color;
+              color: #057235;
+              border-bottom-color: #057235;
             }
           }
         }
       }
     }
-
     /* end .slick-slide */
+
     .slick-arrow:hover.slick-prev::before, 
     .slick-arrow:hover.slick-prev::after,
     .slick-arrow:hover.slick-next::before,
