@@ -78,7 +78,6 @@ class AttributesSeach extends React.Component {
 
   render() {
     const { listConstruction, listFloor, listPrice, listStyle, listHouseSize, listHouseIncome } = this.state
-    console.log(listPrice)
     return (
       <section className="side pc">
         <Form>

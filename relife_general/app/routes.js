@@ -112,11 +112,11 @@ class Routes extends React.Component {
                             component={requireLogin(ProfileBookingHistoryPage)}
                         />
                         <Route
-                            path="/example"
+                            exact path="/example/"
                             component={ExampleHouseListPage}
                         />
                         <Route
-                            path="/example-view"
+                            path="/example/:id"
                             component={ExampleHouseViewPage}
                         />
                     </Switch>

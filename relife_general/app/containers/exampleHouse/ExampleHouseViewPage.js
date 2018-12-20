@@ -1,5 +1,5 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import exh01 from '../../images/exh-01.jpg'
@@ -11,22 +11,52 @@ import hatebuShare from '../../images/hatebu-share.png'
 import rssShare from '../../images/rss-share.png'
 import amebloShare from '../../images/ameblo-share.png'
 import lineShare from '../../images/line-share.png'
+import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
+
 class ExampleHouseViewPage extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      exampleHouse: []
+    }
+  }
+
+  getExampleHouse = () => {
+    const id = this.props.match.params.id
+    this.props.exampleHousesGetRequest(id)
+  }
   componentDidMount() {
     document.body.classList.add('example-house-view')
+    this.getExampleHouse()
   }
 
   componentWillUnmount() {
     document.body.classList.remove('example-house-view')
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data != nextProps.data) {
+      let response = nextProps.data
+      if (response.data === undefined || response.data.length == 0) {
+        this.props.history('/example')
+      } else {
+        this.setState({
+          exampleHouse: response.data
+        })
+        console.log(response.data.store)
+      }
+    }
+  }
+
   render() {
+    let {exampleHouse} = this.state
+    console.log(exampleHouse)
     return (
       <div className="lower-contents">
         <div className="lower-contents-inner clearfix">
           <section className="main">
             <h1 className="page-title detail-title"> 
-              ゆっくりとした時間が流れる家
+              {exampleHouse.title}
             </h1>
 
             <div className="example-detail-company-name">
@@ -44,8 +74,7 @@ class ExampleHouseViewPage extends React.Component {
               <li><Link to="">二階建て</Link></li>
             </ul>
 
-            <div className="example-detail">
-            </div>
+            <div className="example-detail" />
 
             <div className="detail-btn-wrap clearfix">
               <div className="detail-btn">
@@ -115,4 +144,27 @@ class ExampleHouseViewPage extends React.Component {
   }
 }
 
-export default connect()(withRouter(ExampleHouseViewPage))
+ExampleHouseViewPage.propTypes = {
+  exampleHousesGetRequest: PropTypes.func,
+  history: PropTypes.object,
+  match: PropTypes.object,
+  processing: PropTypes.bool,
+  data: PropTypes.object,
+  response: PropTypes.object
+}
+
+const mapStateToProps = state => {
+  return {
+    processing : state.exampleHouses.processing,
+    data : state.exampleHouses.data
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  exampleHousesGetRequest : data => dispatch(ExampleHousesActions.exampleHousesGetRequest(data))
+}) 
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ExampleHouseViewPage))
