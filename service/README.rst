@@ -4,6 +4,8 @@ SSH
 18.179.32.241
 - ssh -i "service/lanwayrelife.pem" centos@ec2-18-179-32-241.ap-northeast-1.compute.amazonaws.com
 
+- jenkin 5d2b728b9f7142a2895617e63a56c78d
+
 Build the Stack
 - This can take a while, especially the first time you run this particular command on your development system:
 
