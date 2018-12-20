@@ -31,6 +31,10 @@ class CommonApi extends React.Component {
     if (this.props.data != nextProps.data) {
       this.props.getProfile(nextProps.data)
     }
+    if (this.props.loginData != nextProps.loginData) {
+      if (nextProps.loginData.data.token)
+        this.props.profileRequest({})
+    }
   }
 
   render() {
@@ -46,12 +50,14 @@ CommonApi.propTypes = {
   history: PropTypes.object,
   profileRequest: PropTypes.func,
   data: PropTypes.object,
+  loginData: PropTypes.object,
   getProfile: PropTypes.func
 }
 
 const mapStateToProps = state => {
   return {
-    data: state.profile.data
+    data: state.profile.data,
+    loginData: state.auths.data
   }
 }
 
