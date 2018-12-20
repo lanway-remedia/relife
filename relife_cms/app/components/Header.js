@@ -23,7 +23,7 @@ import {
 import AppUtils from '../utils/AppUtils'
 import I18nUtils from '../utils/I18nUtils'
 import ProfileActions from '../redux/wrapper/UserProfileRedux'
-
+import { StorageKeyConstants } from '../constants'
 import logo from '../images/logo.png'
 import avatar from '../images/user.png'
 
@@ -43,7 +43,8 @@ class Header extends React.Component {
   }
 
   getUserInfo() {
-    this.props.profileRequest({})
+    if (localStorage.getItem(StorageKeyConstants.TOKEN))
+      this.props.profileRequest({})
   }
 
   componentDidMount() {
