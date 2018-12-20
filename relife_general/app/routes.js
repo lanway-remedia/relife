@@ -21,8 +21,9 @@ import ResetPasswordPage from './containers/auths/ResetPasswordPage'
 import ForgotPasswordPage from './containers/auths/ForgotPasswordPage'
 //profiles
 import ProfileInfoPage from './containers/profiles/ProfileInfoPage'
-import ProfileEditPage from './containers/profiles/ProfileEditPage'
 import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
+import ProfileBecomeOutlerPage from './containers/profiles/ProfileBecomeOutlerPage'
+import ProfileBookingHistoryPage from './containers/profiles/ProfileBookingHistoryPage'
 //exampleHouse
 import ExampleHouseListPage from './containers/exampleHouse/ExampleHouseListPage'
 import ExampleHouseViewPage from './containers/exampleHouse/ExampleHouseViewPage'
@@ -100,12 +101,16 @@ class Routes extends React.Component {
                             component={requireLogin(ProfileInfoPage)}
                         />
                         <Route
-                            path="/profile-edit"
-                            component={requireLogin(ProfileEditPage)}
+                            path="/change-pass"
+                            component={requireLogin(ProfileChangePassPage)}
                         />
                         <Route
-                            path="/profile-change-password"
-                            component={requireLogin(ProfileChangePassPage)}
+                            path="/become-outler"
+                            component={requireLogin(ProfileBecomeOutlerPage)}
+                        />
+                        <Route
+                            path="/booking-history"
+                            component={requireLogin(ProfileBookingHistoryPage)}
                         />
                         <Route
                             path="/example"

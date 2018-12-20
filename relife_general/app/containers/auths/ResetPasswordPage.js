@@ -97,7 +97,7 @@ class ResetPasswordPage extends React.Component {
                   </FormText>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="password1">{I18nUtils.t('newPassword')}</Label>
+                  <Label for="password1">{I18nUtils.t('new-password')}</Label>
                   <TextInput
                     type="password"
                     name="password1"
@@ -114,7 +114,7 @@ class ResetPasswordPage extends React.Component {
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="password2">{I18nUtils.t('confirmPassword')}</Label>
+                  <Label for="password2">{I18nUtils.t('confirm-password')}</Label>
                   <TextInput
                     type="password"
                     name="password2"

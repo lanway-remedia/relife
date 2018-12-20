@@ -7,7 +7,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Button } from 'reactstrap'
 import defaultAvatar from '../images/user.png'
 import I18nUtils from '../utils/I18nUtils'
 
@@ -40,21 +39,9 @@ class ProfileImage extends React.Component {
               borderRadius: `${size / 2}px`
             }}
           >
-            <label id="uploader-icon" style={{ lineHeight: `${size - 6}px` }}>
-              {!defaultAvatar ? (
-                <span className="fa fa-file-image-o fa-2x" />
-              ) : (
-                <img alt="" src={defaultAvatar} />
-              )}
+            <label id="uploader-icon">
+              <img alt="" src={defaultAvatar} />
             </label>
-            <Button
-              color="primary"
-              outline
-              size="sm"
-              onClick={this.handleOpenFileUp}
-            >
-              {I18nUtils.t('btn-change-avatar')}
-            </Button>
             <input
               type="file"
               id="upload-icon"
@@ -86,14 +73,6 @@ class ProfileImage extends React.Component {
                 }}
               />
             </label>
-            <Button
-              color="primary"
-              outline
-              size="sm"
-              onClick={this.handleOpenFileUp}
-            >
-              {I18nUtils.t('btn-change-avatar')}
-            </Button>
             <input
               type="file"
               id="upload-icon"
@@ -103,6 +82,16 @@ class ProfileImage extends React.Component {
             />
           </div>
         )}
+        <div>
+          <div
+            className="open-image"
+            onClick={this.handleOpenFileUp}
+          >
+            <i>
+              {I18nUtils.t('btn-change-avatar')}
+            </i>
+          </div>
+        </div>
       </div>
     )
   }

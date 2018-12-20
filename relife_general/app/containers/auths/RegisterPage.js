@@ -138,7 +138,7 @@ class RegisterPage extends React.Component {
                         />
                     </FormGroup>
                     <FormGroup className="form-account_label">
-                        <Label for="confirmPassword">{I18nUtils.t('confirmPassword')}</Label>
+                        <Label for="confirmPassword">{I18nUtils.t('confirm-password')}</Label>
                         <TextInput
                             type="password"
                             name="confirmPassword"

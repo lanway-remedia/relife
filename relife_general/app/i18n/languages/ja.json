@@ -10,35 +10,44 @@
   "login": "ログイン",
   "login-title": "一般的なシステムログイン",
   "register": "新規会員登録",
-  "logout": "Logout",
+  "logout": "ログアウト",
   "email": "メールアドレス",
   "username": "ユーザー名",
   "password": "パスワード",
-  "confirmPassword": "Confirm Password",
-  "asetting" : "Account Setting",
-  "forgotPasswordText": "パスワードを忘れた方はこちらから",
-  "forgotPassword": "Forgotten Password",
+  "first-name": "名前",
+  "last-name": "苗字",
+  "phone": "電話",
+  "address": "住所",
+  "asetting" : "アカウント設定",
+  "forgot-password-text": "パスワードを忘れた方はこちらから",
+  "forgot-password": "パスワードを忘れました",
   "send": "送信",
+  "edit": "変更",
+  "save": "保存",
   "if-forgot-password": "パスワードを忘れた方はこちらから",
 
   
-  "profile-info": "Profile info",
-  "profile-edit": "Edit Profile",
-  "booking-history" : "Booking history",
-  "became-store": "Became store owner",
-  "changePassword": "Change Password",
+  "profile-info": "プロフィール情報",
+  "booking-history" : "予約履歴",
+  "become-store": "店主になる",
+  "change-password": "パスワード変更",
+  "current-password": "現在のパスワード",
+  "new-password": "新しいパスワード",
+  "confirm-password": "パスワード認証",
 
-  "login-page-title": "Re:Life General Login",
-  "forgotpassword-page-title": "Re:Life General Forgot Password",
+  "login-page-title": "Re:Life ログイン",
+  "forgotpassword-page-title": "Re:Life パスワードを忘れました",
 
   "all-place-username": "ユーザー名",
   "all-place-email": "メールアドレス",
   "all-place-password": "パスワード",
-  "all-place-confirmPassword": "Please input confirm password here",
+  "all-place-confirmPassword": "パスワード認証",
 
   "top-map-title-1" : "建築会社・工務店を",
   "top-map-title-2" : "地域から探す",
-  "top-map-text" : "全国の建築会社・工務店を6,000件以上掲載しています。"
+  "top-map-text" : "全国の建築会社・工務店を6,000件以上掲載しています。",
+
+  "btn-change-avatar": "画像変更"
 
 
 }
