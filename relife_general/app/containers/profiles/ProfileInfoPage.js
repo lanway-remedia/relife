@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom'
 import ProfileActions from '../../redux/wrapper/ProfileRedux'
 import { Container, Row, Col, Label } from 'reactstrap'
 import I18nUtils from '../../utils/I18nUtils'
-import Sidebar from '../../components/Sidebar'
+import Sidebar from '../../components/profile/Sidebar'
 import avatarDefault from '../../images/user.png'
 class ProfileInfoPage extends React.Component {
   constructor(props) {

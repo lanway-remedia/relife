@@ -3,10 +3,8 @@
  * Top map component
  */
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { withRouter, Link } from 'react-router-dom'
-import I18nUtils from '../../utils/I18nUtils'
+import { withRouter } from 'react-router-dom'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -76,5 +74,4 @@ class ExampleHouseList extends React.Component {
     )
   }
 }
-export default connect()
-(withRouter(ExampleHouseList))
+export default connect()(withRouter(ExampleHouseList))

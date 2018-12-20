@@ -15,7 +15,7 @@ import { show, hide } from 'redux-modal'
 import I18nUtils from '../../utils/I18nUtils'
 import { ModalName } from '../../constants'
 import avatarDefault from '../../images/user.png'
-import Sidebar from '../../components/Sidebar'
+import Sidebar from '../../components/profile/Sidebar'
 class ProfileEditPage extends React.Component {
   constructor(props) {
     super(props)

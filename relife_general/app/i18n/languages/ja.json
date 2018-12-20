@@ -21,6 +21,13 @@
   "send": "送信",
   "if-forgot-password": "パスワードを忘れた方はこちらから",
 
+  
+  "profile-info": "Profile info",
+  "profile-edit": "Edit Profile",
+  "booking-history" : "Booking history",
+  "became-store": "Became store owner",
+  "changePassword": "Change Password",
+
   "login-page-title": "Re:Life General Login",
   "forgotpassword-page-title": "Re:Life General Forgot Password",
 

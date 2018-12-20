@@ -82,7 +82,7 @@ class Header extends React.Component {
                   toggle={this.toggle}
                 >
                   <DropdownToggle>
-                    <span>Duc Hanh</span>
+                    <span>{name}</span>
                     <img
                       alt={name}
                       src={image}

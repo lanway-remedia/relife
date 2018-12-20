@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import I18nUtils from '../utils/I18nUtils'
+import I18nUtils from '../../utils/I18nUtils'
 
 class Sidebar extends React.Component {
   constructor(props) {
@@ -34,7 +34,7 @@ class Sidebar extends React.Component {
         <div className="user-profile-action">
           <Link to="/profile-edit">
             <i className="fa fa-pencil icon" aria-hidden="true" />
-            {I18nUtils.t('ud-btn-editprofile')}
+            {I18nUtils.t('profile-edit')}
           </Link>
         </div>
         <div className="user-profile-action">

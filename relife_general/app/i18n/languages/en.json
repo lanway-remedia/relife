@@ -97,6 +97,8 @@
   "add-user": "Add User",
   "store-selection": "Select Store",
   "group-selection": "Select Group",
+  "profile-info": "Profile info",
+  "profile-edit": "Edit Profile",
 
   "group-1": "System Admin",
   "group-2": "Store Admin",

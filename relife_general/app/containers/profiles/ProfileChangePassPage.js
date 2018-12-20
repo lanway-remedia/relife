@@ -13,7 +13,7 @@ import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import { ModalName } from '../../constants'
 import I18nUtils from '../../utils/I18nUtils'
-import Sidebar from '../../components/Sidebar'
+import Sidebar from '../../components/profile/Sidebar'
 import avatarDefault from '../../images/user.png'
 class ProfileChangePassPage extends React.Component {
   constructor(props) {
