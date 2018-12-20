@@ -4,7 +4,7 @@
  */
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -23,7 +23,7 @@ class ExampleHouseList extends React.Component {
       infinite: true,
       centerPadding: '29%',
       slidesToShow: 1,
-      speed: 500
+      speed: 600
     }
     return (
       <div className="top-result">
@@ -34,37 +34,47 @@ class ExampleHouseList extends React.Component {
         <div className="slider-wrap">
           <Slider {...settings}>
             <div className="slider-item">
-              <img src={slider01} />
+              <Link to="">
+                <img src={slider01} />
+              </Link>
               <div className="slider-title">
-                <h3>室内を見渡すのが楽しくなる、開放的な住まい</h3>
+                <h3>ゆっくりとした時間が流れる家</h3>
                 <p>株式会社クレアホームの</p>
               </div>
             </div>
             <div className="slider-item">
-              <img src={slider02} />
+              <Link to="">
+                <img src={slider02} />
+              </Link>
               <div className="slider-title">
-                <h3>室内を見渡すのが楽しくなる、開放的な住まい</h3>
+                <h3>ゆっくりとした時間が流れる家</h3>
                 <p>株式会社クレアホームの</p>
               </div>
             </div>
             <div className="slider-item">
-              <img src={slider03} />
+              <Link to="">
+                <img src={slider03} />
+              </Link>
               <div className="slider-title">
-                <h3>室内を見渡すのが楽しくなる、開放的な住まい</h3>
+                <h3>ゆっくりとした時間が流れる家</h3>
                 <p>株式会社クレアホームの</p>
               </div>
             </div>
             <div className="slider-item">
-              <img src={slider04} />
+              <Link to="">
+                <img src={slider04} />
+              </Link>
               <div className="slider-title">
-                <h3>室内を見渡すのが楽しくなる、開放的な住まい</h3>
+                <h3>ゆっくりとした時間が流れる家</h3>
                 <p>株式会社クレアホームの</p>
               </div>
             </div>
             <div className="slider-item">
-              <img src={slider05} />
+              <Link to="">
+                <img src={slider05} />
+              </Link>
               <div className="slider-title">
-                <h3>室内を見渡すのが楽しくなる、開放的な住まい</h3>
+                <h3>ゆっくりとした時間が流れる家</h3>
                 <p>株式会社クレアホームの</p>
               </div>
             </div>
