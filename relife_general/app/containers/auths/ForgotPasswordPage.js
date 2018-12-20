@@ -6,7 +6,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter} from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { show, hide } from 'redux-modal'
 import { bindActionCreators } from 'redux'
@@ -18,9 +18,9 @@ import validator from 'validator'
 import {
   Button,
   FormGroup,
-  FormText,
   Label
 } from 'reactstrap'
+import formLogo from '../../images/form-logo.png'
 
 class ForgotPasswordPage extends React.Component {
   constructor(props) {
@@ -34,11 +34,11 @@ class ForgotPasswordPage extends React.Component {
   }
 
   componentDidMount() {
-    document.body.classList.add('cms-forgotpassword-index')
+    document.body.classList.add('cms-index-auth')
   }
 
   componentWillUnmount() {
-    document.body.classList.remove('cms-forgotpassword-index')
+    document.body.classList.remove('cms-index-auth')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,49 +72,38 @@ class ForgotPasswordPage extends React.Component {
 
   render() {
     return (
-      <div className="login-page forgotpassword-page">
+      <div className="form-account" id="reset-password">
         <Helmet>
           <title>{I18nUtils.t('forgotpassword-page-title')}</title>
         </Helmet>
-        <div className="login-content">
-          <div className="form-center">
-            <div className="form-header">
-              <h3>{I18nUtils.t('forgotpassword-page-title')}</h3>
-            </div>
-            <div className="form-body">
-              <ValidationForm
-                onSubmit={this.handleSubmit}
-              >
-                <FormGroup>
-                  <FormText color="muted">
-                    {I18nUtils.t('forgot-text')}
-                  </FormText>
-                </FormGroup>
-                <FormGroup>
-                  <Label for="mail">{I18nUtils.t('email')}</Label>
-                  <TextInput
-                    type="email"
-                    name="mail"
-                    id="mail"
-                    placeholder={I18nUtils.t('all-place-email')}
-                    onChange={this.handleChange}
-                    validator={validator.isEmail} 
-                    errorMessage={{validator:'Please enter a valid email'}}
-                    className="form-control"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Link to="/login" title={I18nUtils.t('forgot-back-login')}>
-                    &larr; {I18nUtils.t('forgot-back-login')}
-                  </Link>
-                </FormGroup>
-                <FormGroup className="btns-group">
-                  <Button color="primary">{I18nUtils.t('send')}</Button>
-                </FormGroup>
-              </ValidationForm>
-            </div>
-          </div>
+        <div className="form-logo">
+            <img src={formLogo}
+              alt="logo" 
+              width="100%"
+            />
         </div>
+        <h6 className="form-account_title">{I18nUtils.t('login-title')}</h6>
+        <p className="form_note">{I18nUtils.t('forgot-text')}</p>
+        <ValidationForm
+          onSubmit={this.handleSubmit}
+        >
+          <FormGroup className="form-account_label">
+            <Label for="mail">{I18nUtils.t('email')}</Label>
+            <TextInput
+              type="email"
+              name="mail"
+              id="mail"
+              placeholder={I18nUtils.t('all-place-email')}
+              onChange={this.handleChange}
+              validator={validator.isEmail} 
+              errorMessage={{validator:'Please enter a valid email'}}
+              className="form-control"
+            />
+          </FormGroup>
+          <Button className="form_btn btn-default">
+            {I18nUtils.t('send')}
+          </Button>
+        </ValidationForm>
       </div>
     )
   }

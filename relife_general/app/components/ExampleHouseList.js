@@ -43,22 +43,10 @@ class ExampleHouseList extends React.Component {
   render() {
     let { spaces } = this.state
     return (
-      <div className="space-list">
-        <Row>
-          {spaces && spaces.map((item, index) => (
-            <Col xs="12" md="4" key={index}>
-              <Card>
-                <CardImg top className="card-img" src={item.image} />
-                <CardBody>
-                  <CardTitle>{item.title}</CardTitle>
-                  <CardSubtitle>{item.subTitle}</CardSubtitle>
-                  <CardText>{item.content}</CardText>
-                  <Button>Button</Button>
-                </CardBody>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+      <div className="top-result">
+        <div className="top-result-inner">
+          <h2 className="top-result-title">注文住宅の建築実績を見る</h2>
+        </div>
       </div>
     )
   }
