@@ -39,7 +39,7 @@ class AddNewTagPage extends React.Component {
     if (this.props.data != nextProps.data) {
       let data = nextProps.data
       if (data.isAdd) {
-        if (data.messageCode === 'SU001') {
+        if (data.messageCode === 'TAG001') {
           toast.success(
             I18nUtils.formatMessage(
               { id: 'toast-add-sucess' },
@@ -47,8 +47,13 @@ class AddNewTagPage extends React.Component {
             )
           )
         }
+        if (data.messageCode === 'TAG002') {
+          toast.error(I18nUtils.t('TAG002'))
+        }
       }
     }
+
+    return null
   }
 
   handleSubmit = e => {
