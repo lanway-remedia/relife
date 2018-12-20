@@ -3,9 +3,11 @@ from datetime import datetime
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
-from rest_framework.decorators import action, detail_route, list_route, permission_classes
+from rest_framework.decorators import (action, detail_route, list_route,
+                                       permission_classes)
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.pagination import LimitOffsetPagination
@@ -16,27 +18,22 @@ from rest_framework.viewsets import ModelViewSet
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import Event, EventModelHouse
-from mrelife.modelhouses.models import (
-    ModelHouse,
-    ModelHouseMedia,
-    ModelHouseOutletStore,
-    ModelHouseTag,
-    ModelHouseUser,
-    OrderModelHouse
-)
-from mrelife.modelhouses.serializers import (
-    ModelHouseNestedSerializer,
-    ModelHouseSerializer,
-    OrderModelHouseSerializer,
-    OrderModelHouseStatusSerializer
-)
+from mrelife.modelhouses.models import (ModelHouse, ModelHouseMedia,
+                                        ModelHouseOutletStore, ModelHouseTag,
+                                        ModelHouseUser, OrderModelHouse)
+from mrelife.modelhouses.serializers import (ModelHouseNestedSerializer,
+                                             ModelHouseSerializer,
+                                             OrderModelHouseSerializer,
+                                             OrderModelHouseStatusSerializer)
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.model_house_permission import ModelHousePermission
-from mrelife.utils.order_model_house_permission import OrderMHUserListPermission, OrderMHViewadminPermission
+from mrelife.utils.order_model_house_permission import (OrderMHUserListPermission,
+                                                        OrderMHViewadminPermission)
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.relifeenum import MessageCode
+from mrelife.utils.response import response_200, response_201, response_404
 
 
 class ModelHouseViewSet(ModelViewSet):
@@ -46,6 +43,21 @@ class ModelHouseViewSet(ModelViewSet):
     parser_class = (FormParser, MultiPartParser, JSONParser)
     pagination_class = LimitOffsetPagination
 
+    def list(self, request, *args, **kwargs):
+        try:
+            response = super(ModelHouseViewSet, self).list(request, *args, **kwargs)
+            return response_200('MH200', '', response.data)
+        except Http404:
+            return response_404('MH404')
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            self.serializer_class = ModelHouseNestedSerializer
+            response = super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+            return response_200('MH202', '', response.data)
+        except Http404:
+            return response_404('MH404')
+
     def create(self, request, *args, **kwargs):
         """
             POST:
@@ -54,8 +66,8 @@ class ModelHouseViewSet(ModelViewSet):
                 tags: []
                 medias: []
         """
-        obj = super(ModelHouseViewSet, self).create(request, *args, **kwargs)
-        house = ModelHouse.objects.get(pk=obj.data['id'])
+        response = super(ModelHouseViewSet, self).create(request, *args, **kwargs)
+        house = ModelHouse.objects.get(pk=response.data['id'])
         if not (IsStore(request.user) or IsSub(request.user)):
             try:
                 store = OutletStore.objects.get(pk=int(request.data.get('store')))
@@ -67,12 +79,7 @@ class ModelHouseViewSet(ModelViewSet):
 
         if store is None:
             house.delete()
-            return Response({
-                'status': False,
-                'messageCode': 'MH001',
-                'messageParams': {},
-                'data': {}
-            }, status=status.HTTP_404_NOT_FOUND)
+            return response_404('MH404')
 
         events = request.data.get('events')
         if events is not None:
@@ -99,15 +106,29 @@ class ModelHouseViewSet(ModelViewSet):
                     file = default_storage.save(media.name, media)
                     ModelHouseMedia.objects.create(model_house=house, url=settings.MEDIA_URL + file)
                     count += 1
-        return obj
 
-    def retrieve(self, request, *args, **kwargs):
-        self.serializer_class = ModelHouseNestedSerializer
-        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        return response_201('EMH201', '', response.data)
 
     def update(self, request, *args, **kwargs):
-        obj = super(ModelHouseViewSet, self).update(request, *args, **kwargs)
-        return obj
+        try:
+            response = super(ModelHouseViewSet, self).update(request, *args, **kwargs)
+            return response_200('MH203', '', response.data)
+        except Http404:
+            return response_404('MH404')
+
+    def partial_update(self, request, *args, **kwargs):
+        try:
+            response = super(ModelHouseViewSet, self).partial_update(request, *args, **kwargs)
+            return response_200('MH204', '', response.data)
+        except Http404:
+            return response_404('MH404')
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            response = super(ModelHouseViewSet, self).destroy(request, *args, **kwargs)
+            return response_200('MH205', '', response.data)
+        except Http404:
+            return response_404('MH404')
 
     @detail_route(methods=['post'])
     def add_event(self, request, *args, **kwargs):
@@ -115,7 +136,10 @@ class ModelHouseViewSet(ModelViewSet):
             POST:
                 events: []
         """
-        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ModelHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('MH404')
         events = request.data.get('events')
         if events is not None:
             for event in events:
@@ -124,7 +148,8 @@ class ModelHouseViewSet(ModelViewSet):
                         EventModelHouse.objects.create(event_id=event, model_house=house)
                 except Exception:
                     pass
-        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        return response_200('MH206', '', response.data)
 
     @detail_route(methods=['post'])
     def remove_event(self, request, *args, **kwargs):
@@ -132,7 +157,10 @@ class ModelHouseViewSet(ModelViewSet):
             POST:
                 events: []
         """
-        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ModelHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('MH404')
         events = request.data.get('events')
         if events is not None:
             for event in events:
@@ -141,7 +169,8 @@ class ModelHouseViewSet(ModelViewSet):
                     _event.delete()
                 except Exception:
                     pass
-        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        return response_200('MH207', '', response.data)
 
     @detail_route(methods=['post'])
     def add_tag(self, request, *args, **kwargs):
@@ -149,7 +178,10 @@ class ModelHouseViewSet(ModelViewSet):
             POST:
                 tags: []
         """
-        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ModelHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('MH404')
         tags = request.data.get('tags')
         if tags is not None:
             for tag_name in tags:
@@ -157,7 +189,8 @@ class ModelHouseViewSet(ModelViewSet):
                     tag, created = Tag.objects.get_or_create(name=tag_name)
                     if created or not house.tags.filter(tag=tag).exists():
                         ModelHouseTag.objects.create(tag=tag, model_house=house)
-        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        return response_200('MH208', '', response.data)
 
     @detail_route(methods=['post'])
     def remove_tag(self, request, *args, **kwargs):
@@ -165,7 +198,10 @@ class ModelHouseViewSet(ModelViewSet):
             POST:
                 tags: []
         """
-        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ModelHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('MH404')
         tags = request.data.get('tags')
         if tags is not None:
             for tag in tags:
@@ -174,7 +210,8 @@ class ModelHouseViewSet(ModelViewSet):
                     _tag.delete()
                 except Exception:
                     pass
-        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        return response_200('MH209', '', response.data)
 
     @detail_route(methods=['post'])
     def add_media(self, request, *args, **kwargs):
@@ -182,7 +219,10 @@ class ModelHouseViewSet(ModelViewSet):
             POST:
                 medias: []
         """
-        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ModelHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('MH404')
         medias = request.data.getlist('medias')
         count = 0
         for media in medias:
@@ -190,7 +230,8 @@ class ModelHouseViewSet(ModelViewSet):
                 file = default_storage.save(media.name, media)
                 ModelHouseMedia.objects.create(model_house=house, url=settings.MEDIA_URL + file)
                 count += 1
-        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        return response_200('MH210', '', response.data)
 
     @detail_route(methods=['post'])
     def remove_media(self, request, *args, **kwargs):
@@ -198,7 +239,10 @@ class ModelHouseViewSet(ModelViewSet):
             POST:
                 medias: []
         """
-        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ModelHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('MH404')
         medias = request.data.get('medias')
         if medias is not None:
             for media in medias:
@@ -207,7 +251,8 @@ class ModelHouseViewSet(ModelViewSet):
                     _media.delete()
                 except Exception:
                     pass
-        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        return response_200('MH211', '', response.data)
 
     @detail_route(methods=['post'])
     def add_user(self, request, *args, **kwargs):
@@ -215,7 +260,10 @@ class ModelHouseViewSet(ModelViewSet):
             GET:
             POST:
         """
-        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ModelHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('MH404')
         users = request.data.get('users')
         if users is not None:
             for user in users:
@@ -224,7 +272,8 @@ class ModelHouseViewSet(ModelViewSet):
                         ModelHouseUser.objects.create(user_id=request.user.id, model_house=house)
                 except Exception:
                     pass
-        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        return response_200('MH212', '', response.data)
 
     @detail_route(methods=['post'])
     def remove_user(self, request, *args, **kwargs):
@@ -232,7 +281,10 @@ class ModelHouseViewSet(ModelViewSet):
             POST:
                 users: [int]
         """
-        house = ModelHouse.objects.get(pk=kwargs['pk'])
+        try:
+            house = ModelHouse.objects.get(pk=kwargs['pk'])
+        except Http404:
+            return response_404('MH404')
         users = request.data.get('users')
         if users is not None:
             for user in users:
@@ -241,7 +293,8 @@ class ModelHouseViewSet(ModelViewSet):
                     _user.delete()
                 except Exception:
                     pass
-        return super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        response = super(ModelHouseViewSet, self).retrieve(request, *args, **kwargs)
+        return response_200('MH213', '', response.data)
 
 
 class OrderModelHouseViewSet(ModelViewSet):

@@ -26,24 +26,59 @@ class MessageCode(Enum):
     OSC007 = 'OSC007'  # delete sussess
     OSC008 = 'OSC008'  # delete fail
 
-    OSCR001 = 'OSCR001'  # get outletstore contact's information detail successfully
-    OSCR002 = 'OSCR002'  # get outletstore contact's information detail failly
+    OSCR001 = 'OSCR001'  # get outletstore contact reply's information detail successfully
+    OSCR002 = 'OSCR002'  # get outletstore contact reply's information detail failly
     OSCR003 = 'OSCR002'  # add new a outletstore contact  successfully
-    OSCR004 = 'OSCR004'  # not add new outletstore contact
+    OSCR004 = 'OSCR004'  # not add new outletstore contact reply
     OSCR005 = 'OSCR005'  # update information
     OSCR006 = 'OSCR006'  # update with err data
     OSCR007 = 'OSCR007'  # delete sussess
     OSCR008 = 'OSCR008'  # delete fail
 
+    OSM001 = 'OSM001'  # get outletstore media's information detail successfully
+    OSM002 = 'OSM002'  # get outletstore media's information detail failly
+    OSM003 = 'OSM002'  # add new a outletstore media  successfully
+    OSM004 = 'OSM004'  # not add new outletstore media
+    OSM005 = 'OSM005'  # update information
+    OSM006 = 'OSM006'  # update with err data
+    OSM007 = 'OSM007'  # delete sussess
+    OSM008 = 'OSM008'  # delete fail
 
-    EX001 = 'EX001'  # get detail
-    EX002 = 'EX002'  # get detail. not found request
-    EX003 = 'EX003'  # create susscess
-    EX004 = 'EX004'  # create with err data
+    OSR001 = 'OSR001'  # get outletstore review information detail successfully
+    OSR002 = 'OSR002'  # getoutletstore review information detail failly
+    OSR003 = 'OSR002'  # add new a outletstore review  successfully
+    OSR004 = 'OSR004'  # not add new outletstore review
+    OSR005 = 'OSR005'  # update information
+    OSR006 = 'OSR006'  # update with err data
+    OSR007 = 'OSR007'  # delete sussess
+    OSR008 = 'OSR008'  # delete fail
+
+    EX001 = 'EX001'  # get exhibition's information detail successfully
+    EX002 = 'EX002'  # get exhibition's information detail failly
+    EX003 = 'EX003'  # created exhibiton successfully
+    EX004 = 'EX004'  # not add new exhibiton media
     EX005 = 'EX005'  # update sussess
     EX006 = 'EX006'  # update with err data
     EX007 = 'EX007'  # delete sussess
     EX008 = 'EX008'  # delete fail
+
+    EXC001 = 'EXC001'  # get detail
+    EXC002 = 'EXC002'  # get detail. not found request
+    EXC003 = 'EXC003'  # create susscess
+    EXC004 = 'EXC004'  # create with err data
+    EXC005 = 'EXC005'  # update sussess
+    EXC006 = 'EXC006'  # update with err data
+    EXC007 = 'EXC007'  # delete sussess
+    EXC008 = 'EXC008'  # delete fail
+
+    EXCR001 = 'EXCR001'  # get detail
+    EXCR002 = 'EXCR002'  # get detail. not found request
+    EXCR003 = 'EXCR003'  # create susscess
+    EXCR004 = 'EXCR004'  # create with err data
+    EXCR005 = 'EXCR005'  # update sussess
+    EXCR006 = 'EXCR006'  # update with err data
+    EXCR007 = 'EXCR007'  # delete sussess
+    EXCR008 = 'EXCR008'  # delete fail
 
     EV001 = 'EV001'  # get detail
     EV002 = 'EV002'  # get detail. not found request
@@ -53,6 +88,15 @@ class MessageCode(Enum):
     EV006 = 'EV006'  # update with err data
     EV007 = 'EV007'  # delete sussess
     EV008 = 'EV008'  # get detail
+
+    EVMH001 = 'EVMH001'  # get detail
+    EVMH002 = 'EVMH002'  # get detail. not found request
+    EVMH003 = 'EVMH003'  # create susscess
+    EVMH004 = 'EVMH004'  # create with err data
+    EVMH005 = 'EVMH005'  # update sussess
+    EVMH006 = 'EVMH006'  # update with err data
+    EVMH007 = 'EVMH007'  # delete sussess
+    EVMH008 = 'EVMH008'  # get detail
 
     EXT001 = 'EXT001'  # get detail
     EXT002 = 'EXT002'  # get detail. not found request
@@ -73,6 +117,24 @@ class MessageCode(Enum):
     OMH008 = 'OMH008'  # delete fail
     OMH009 = 'OMH009'  # feild status update success
     OMH010 = 'OMH010'  # not update fiedl status
+
+    MHR001 = 'MHR001'  # get model house review detail
+    MHR002 = 'MHR002'  # get detail. not found request
+    MHR003 = 'MHR003'  # create susscess
+    MHR004 = 'MHR004'  # create with err data
+    MHR005 = 'MHR005'  # update sussess
+    MHR006 = 'MHR006'  # update with err data
+    MHR007 = 'MHR007'  # delete sussess
+    MHR008 = 'MHR008'  # delete fail
+
+    EHR001 = 'EHR001'  # get example house review detail
+    EHR002 = 'EHR002'  # get detail. not found request
+    EHR003 = 'EHR003'  # create susscess
+    EHR004 = 'EHR004'  # create with err data
+    EHR005 = 'EHR005'  # update sussess
+    EHR006 = 'EHR006'  # update with err data
+    EHR007 = 'EHR007'  # delete sussess
+    EHR008 = 'EHR008'  # delete fail
 
     CAT001 = 'CAT001'  # create success
     CAT002 = 'CAT002'  # create with err data

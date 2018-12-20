@@ -19,16 +19,16 @@ api_patterns = [
     path('exhibitions/', include('mrelife.exhibitions.urls')),
     path('attributes/', include('mrelife.attributes.urls')),
     path('examplehouses/', include('mrelife.examplehouses.urls')),
-
-
+    path('fees/', include('mrelife.fees.urls')),
+    path('invoices/', include('mrelife.invoices.urls')),
 ]
 
 urlpatterns = [
-                  path("", schema_view, name="home"),
-                  path('api-auth/', include('rest_framework.urls')),
-                  # Your stuff: custom urls includes go here
-                  path('api/', include(api_patterns))
-              ] + static(
+    path("", schema_view, name="home"),
+    path('api-auth/', include('rest_framework.urls')),
+    # Your stuff: custom urls includes go here
+    path('api/', include(api_patterns))
+] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )
 

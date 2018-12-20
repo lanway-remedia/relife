@@ -4,29 +4,34 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
 from django.core.files.storage import default_storage
 from django.db.models import Q
+from django.http import Http404
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
 from rest_framework.decorators import list_route
-from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from url_filter.integrations.drf import DjangoFilterBackend
 
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
 from mrelife.file_managements.serializers import FileSerializer
 from mrelife.outletstores.models import OutletStore
-from mrelife.users.serializers import (PasswordSerializer, ProfileSerializer,
-                                       UserSerializer,
-                                       UserWithoutRequireInfoSerializer)
+from mrelife.users.serializers import (
+    PasswordSerializer,
+    ProfileSerializer,
+    UserSerializer,
+    UserWithoutRequireInfoSerializer
+)
 from mrelife.utils.groups import GroupUser, IsStore
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.relifepermissions import AdminOrStoreOrDenyPermission
+from mrelife.utils.response import response_200, response_201, response_400, response_404, response_405, response_503
 from mrelife.utils.validates import email_exist
-from url_filter.integrations.drf import DjangoFilterBackend
 
 User = get_user_model()
 
@@ -56,7 +61,14 @@ class UserVs(ModelViewSet):
         if name is not None:
             self.queryset = self.queryset.filter(Q(username__contains=name) | Q(
                 first_name__contains=name) | Q(last_name__contains=name))
-        return super(UserVs, self).list(request, *args, **kwargs)
+        response = super(UserVs, self).list(request, *args, **kwargs)
+        return response_200('US200', '', response.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            return super(UserVs, self).retrieve(request, *args, **kwargs)
+        except Http404:
+            return response_404('US404')
 
     def create(self, request, *args, **kwargs):
         """
@@ -69,8 +81,11 @@ class UserVs(ModelViewSet):
                 store: int
                 other field is optional
         """
-        obj = super(UserVs, self).create(request, *args, **kwargs)
-        user = User.objects.get(pk=obj.data['id'])
+        try:
+            response = super(UserVs, self).create(request, *args, **kwargs)
+            user = User.objects.get(pk=response.data['id'])
+        except Http404:
+            return response_404('US404')
         group = request.user.group
         if not IsStore(request.user):
             try:
@@ -86,10 +101,10 @@ class UserVs(ModelViewSet):
         user.group = group
         user.store = store
         user.save()
-        obj.data['group'] = group.id
+        response.data['group'] = group.id
         if store is not None:
-            obj.data['store'] = store.id
-        return obj
+            response.data['store'] = store.id
+        return response_201('US', '', response.data)
 
     def update(self, request, *args, **kwargs):
         """
@@ -98,8 +113,23 @@ class UserVs(ModelViewSet):
                 password: not changing with this action
                 username: not changing with this action
         """
-        self.serializer_class = UserWithoutRequireInfoSerializer
-        return super(UserVs, self).update(request, *args, **kwargs)
+        try:
+            self.serializer_class = UserWithoutRequireInfoSerializer
+            return super(UserVs, self).update(request, *args, **kwargs)
+        except Http404:
+            return response_404('US404')
+
+    def partial_update(self, request, *args, **kwargs):
+        try:
+            return super(UserVs, self).partial_update(request, *args, **kwargs)
+        except Http404:
+            return response_404('US404')
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            return super(UserVs, self).destroy(request, *args, **kwargs)
+        except Http404:
+            return response_404('US404')
 
 
 class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
@@ -111,34 +141,21 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = ProfileSerializer
     permission_classes = (IsAuthenticated,)
 
+    def list(self, request, *args, **kwargs):
+        try:
+            obj = User.objects.get(pk=request.user.id)
+            serializer = ProfileSerializer(obj)
+            return response_200('US200', '', serializer.data)
+        except Http404:
+            return response_404('PP404')
+
     def create(self, request, *args, **kwargs):
         user = User.objects.get(pk=request.user.id)
         serializer = ProfileSerializer(user, data=request.data)
         if not serializer.is_valid():
-            return Response({
-                'status': False,
-                'messageCode': 'US010',
-                'messageParams': {},
-                'data': serializer.errors
-            }, status=status.HTTP_400_BAD_REQUEST)
+            return response_405('US010', '', serializer.errors)
         serializer.save()
-        return Response({
-            'status': True,
-            'messageCode': 'US011',
-            'messageParams': {},
-            'data': serializer.data
-        }, status.HTTP_200_OK)
-
-    def list(self, request, *args, **kwargs):
-        user = User.objects.get(pk=request.user.id)
-        serializer = UserSerializer(user)
-
-        return Response({
-            'status': True,
-            'messageCode': 'US007',
-            'messageParams': {},
-            'data': serializer.data
-        }, status.HTTP_200_OK)
+        return response_200('US011', '', serializer.data)
 
     @list_route(methods=['post'])
     def update_email(self, request, *args, **kwargs):
@@ -150,16 +167,11 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
         # validate data
         serializer = ResetPasswordSerializer(data=request.data)
         if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return response_405('US010', '', serializer.errors)
         email = serializer.data['mail']
         domain = serializer.data['domain']
         if email_exist(email):
-            return Response({
-                'status': False,
-                'messageCode': 'US004',
-                'messageParams': {},
-                'data': []
-            }, status=status.HTTP_400_BAD_REQUEST)
+            return response_400('US004', '', serializer.errors)
 
         # Generate token
         token_key = default_token_generator.make_token(request.user)
@@ -175,18 +187,8 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
 
         # Check mail sending ok
         if not mail_status:
-            return Response({
-                'status': False,
-                'messageCode': 'MS001',
-                'messageParams': {},
-                'data': []
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        return Response({
-            'status': True,
-            'messageCode': 'US005',
-            'messageParams': {},
-            'data': {}
-        }, status=status.HTTP_200_OK)
+            return response_503('MS001')
+        return response_200('US005')
 
     @list_route(methods=['post'])
     def update_avatar(self, request, *args, **kwargs):
@@ -200,24 +202,13 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
 
         file_serializer = FileSerializer(data=request.data)
         if not file_serializer.is_valid():
-            return Response({
-                'status': False,
-                'messageCode': 'FM002',
-                'messageParams': {},
-                'data': file_serializer.errors
-            }, status=status.HTTP_400_BAD_REQUEST)
+            return response_405('FM002', '', file_serializer.errors)
         f = request.data['file']
         file = default_storage.save(f.name, f)
         user.profile_image = f.name
         user.save()
         serializer = UserSerializer(user)
-
-        return Response({
-            'status': True,
-            'messageCode': 'US009',
-            'messageParams': {},
-            'data': serializer.data
-        }, status.HTTP_200_OK)
+        return response_200('US009', '', serializer.data)
 
     @list_route(methods=['post'])
     def update_password(self, request, *args, **kwargs):
@@ -231,26 +222,12 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
 
         serializer = PasswordSerializer(data=request.data)
         if not serializer.is_valid():
-            return Response({
-                'status': False,
-                'messageCode': 'US013',
-                'messageParams': {},
-                'data': serializer.errors
-            }, status=status.HTTP_400_BAD_REQUEST)
+            return response_405('US013', '', serializer.errors)
 
         if not user.check_password(serializer.data['password']):
-            return Response({
-                'status': False,
-                'messageCode': 'US012',
-                'messageParams': {},
-                'data': {}
-            }, status=status.HTTP_400_BAD_REQUEST)
+            return response_400('US012')
 
         user.set_password(serializer.data['password1'])
         user.save()
-        return Response({
-            'status': True,
-            'messageCode': 'US014',
-            'messageParams': {},
-            'data': serializer.data
-        }, status.HTTP_200_OK)
+        return response_200('US014', '', serializer.data)
+

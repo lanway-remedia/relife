@@ -86,7 +86,8 @@ LOCAL_APPS = [
     'mrelife.events.apps.EventsConfig',
     'mrelife.attributes.apps.AttributesConfig',
     'mrelife.examplehouses.apps.ExamplehousesConfig',
-    
+    'mrelife.fees.apps.FeesConfig',
+    'mrelife.invoices.apps.InvoicesConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
