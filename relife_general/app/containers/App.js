@@ -28,6 +28,21 @@ export default class App extends React.Component {
       username: ''
     }
   }
+  getProfile = profile => {
+    if (
+      (profile.getProfile || profile.editProfileImage) &&
+      this.state.userimage != profile.data.profile_image
+    ) {
+      this.setState({
+        userimage: profile.data.profile_image
+      })
+    }
+    if (profile.getProfile && this.state.username != profile.data.username) {
+      this.setState({
+        username: profile.data.username
+      })
+    }
+  }
 
   render() {
     let { username, userimage } = this.state
@@ -38,7 +53,7 @@ export default class App extends React.Component {
             <LocaleComponent />
             <Routes username={username} userimage={userimage} />
             <CommonModal />
-            <CommonApi />
+            <CommonApi getProfile={profile => this.getProfile(profile)} />
           </div>
         </Router>
       </HotSwappingIntlProvider>

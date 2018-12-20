@@ -4,12 +4,18 @@
 
 //Components
 @import './components/header';
+@import './components/footer';
 @import './components/language';
-@import './components/backGround';
 @import './components/spaceList';
 @import './components/paginationComponent';
 @import './components/profileImage';
 @import './components/imageUploadComponent';
+@import './components/exampleHouse';
+@import './components/breadcrumb';
+//Components/Home
+@import './components/home/exampleHouseList';
+@import './components/home/topMap';
+@import './components/home/backGround';
 
 //Containers
 @import './containers/auths/loginPage';
@@ -17,5 +23,10 @@
 @import './containers/profiles/userDashboardPage';
 @import './containers/profiles/userEditProfile';
 
+//Containers/exampleHouse
+@import './containers/exampleHouse/exampleHouseListPage';
+@import './containers/exampleHouse/exampleHouseViewPage';
+
 //Common
 @import 'common';
+

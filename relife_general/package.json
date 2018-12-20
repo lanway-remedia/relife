@@ -98,6 +98,7 @@
     "react-router-dom": "^4.2.2",
     "react-scroll": "^1.5.5",
     "react-share": "^2.0.0",
+    "react-slick": "^0.23.2",
     "react-ultimate-pagination-bootstrap-4": "^1.1.0",
     "reactstrap": "^6.5.0",
     "redux": "^3.7.2",
@@ -105,6 +106,7 @@
     "redux-saga": "^0.15.6",
     "reduxsauce": "^0.7.0",
     "save": "^2.3.2",
+    "slick-carousel": "^1.8.1",
     "url-search-params": "^0.10.0",
     "validator": "^10.9.0"
   }
