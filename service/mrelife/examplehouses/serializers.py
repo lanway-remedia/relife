@@ -4,6 +4,10 @@ from mrelife.examplehouses.models import (ExampleHouse, ExampleHouseCommitment,
                                           ExampleHouseStyle, ExampleHouseTag)
 
 
+from mrelife.outletstores.models import OutletStore
+from mrelife.attributes.models import (Contruction, Floor,
+                                       HouseHoldIncome, HouseHoldSize, Style)
+
 class ExampleHouseTagSerializer(ModelSerializer):
 
     class Meta:
@@ -11,8 +15,15 @@ class ExampleHouseTagSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class ExampleHouseStyleSerializer(ModelSerializer):
+class StyleSerializer(ModelSerializer):
 
+    class Meta:
+        model = Style
+        fields = '__all__'
+
+
+class ExampleHouseStyleSerializer(ModelSerializer):
+    style = StyleSerializer()
     class Meta:
         model = ExampleHouseStyle
         fields = '__all__'
@@ -37,9 +48,55 @@ class ExampleHouseSerializer(ModelSerializer):
 
 
 class ExampleHouseNestedSerializer(ModelSerializer):
-    tags = ExampleHouseTagSerializer(many=True, read_only=False)
+    ex_tags = ExampleHouseTagSerializer(many=True, read_only=False)
     styles = ExampleHouseStyleSerializer(many=True, read_only=False)
     commitments = ExampleHouseCommitmentSerializer(many=True, read_only=False)
+
+    class Meta:
+        model = ExampleHouse
+        fields = '__all__'
+
+
+class OutletStoreSerializer(ModelSerializer):
+
+    class Meta:
+        model = OutletStore
+        fields = ('id', 'title', )
+
+
+class ContructionSerializer(ModelSerializer):
+
+    class Meta:
+        model = Contruction
+        fields = ('id', 'title', )
+
+
+class FloorSerializer(ModelSerializer):
+
+    class Meta:
+        model = Floor
+        fields = ('id', 'title', )
+
+
+class HouseHoldSizeSerializer(ModelSerializer):
+
+    class Meta:
+        model = HouseHoldSize
+        fields = ('id', 'title', )
+
+
+class HouseHoldIncomeSerializer(ModelSerializer):
+
+    class Meta:
+        model = HouseHoldIncome
+        fields = ('id', 'title', )
+
+class ExampleHouseNestedNameOnlySerializer(ModelSerializer):
+    store = OutletStoreSerializer()
+    contruction = ContructionSerializer()
+    floor = FloorSerializer()
+    household_size = HouseHoldSizeSerializer()
+    household_income = HouseHoldIncomeSerializer()
 
     class Meta:
         model = ExampleHouse
