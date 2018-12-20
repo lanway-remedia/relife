@@ -6,8 +6,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import Slider from 'react-slick'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
 
 import slider01 from '../../images/slider-01.jpg'
 import slider02 from '../../images/slider-02.jpg'
