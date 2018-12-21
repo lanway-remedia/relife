@@ -77,13 +77,12 @@ class ExampleHouseViewSet(ModelViewSet):
                     ExampleHouseTag.objects.create(tag=tag, example_house=house)
 
         styles = request.data.getlist('styles')
-        print(styles)
         if styles is not None:
             for style in styles:
                 try:
                     ExampleHouseStyle.objects.create(style_id=style, example_house=house)
-                except Exception as e:
-                    print(str(e))
+                except Exception:
+                    pass
 
         commitments = request.data.get('commitments')
         if commitments is not None:
@@ -98,6 +97,62 @@ class ExampleHouseViewSet(ModelViewSet):
     def update(self, request, *args, **kwargs):
         try:
             response = super(ExampleHouseViewSet, self).update(request, *args, **kwargs)
+
+            try:
+                house = ExampleHouse.objects.get(pk=response.data['id'])
+            except Http404:
+                return response_404('EX404')
+
+            tags = request.data.get('tags')
+            if tags is not None:
+                for tag_name in tags:
+                    if not (tag_name == '' or tag_name is None):
+                        tag, created = Tag.objects.get_or_create(name=tag_name)
+                        ExampleHouseTag.objects.create(tag=tag, example_house=house)
+
+            remove_tags = request.data.get('remove_tags')
+            if remove_tags is not None:
+                for tag in remove_tags:
+                    try:
+                        _tag = ExampleHouseTag.objects.filter(tag_id=tag, example_house=house)
+                        _tag.delete()
+                    except Exception:
+                        pass
+
+            styles = request.data.getlist('styles')
+            if styles is not None:
+                for style in styles:
+                    try:
+                        ExampleHouseStyle.objects.create(style_id=style, example_house=house)
+                    except Exception:
+                        pass
+
+            remove_styles = request.data.get('remove_styles')
+            if remove_styles is not None:
+                for style in remove_styles:
+                    try:
+                        _style = ExampleHouseStyle.objects.filter(style_id=style, example_house=house)
+                        _style.delete()
+                    except Exception:
+                        pass
+
+            commitments = request.data.get('commitments')
+            if commitments is not None:
+                for commitment in commitments:
+                    try:
+                        ExampleHouseCommitment.objects.create(commitment_id=commitment, example_house=house)
+                    except Exception:
+                        pass
+            
+            remove_commitments = request.data.get('remove_commitments')
+            if remove_commitments is not None:
+                for commitment in remove_commitments:
+                    try:
+                        _commitment = ExampleHouseCommitment.objects.filter(commitment_id=commitment, example_house=house)
+                        _commitment.delete()
+                    except Exception:
+                        pass
+
             return response_200('EX203', '', response.data)
         except Http404:
             return response_404('EX404')
