@@ -108,7 +108,7 @@ class ExampleHouseViewSet(ModelViewSet):
                 for tag_name in tags:
                     if not (tag_name == '' or tag_name is None):
                         tag, created = Tag.objects.get_or_create(name=tag_name)
-                        ExampleHouseTag.objects.create(tag=tag, example_house=house)
+                        ExampleHouseTag.objects.get_or_create(tag=tag, example_house=house)
 
             remove_tags = request.data.get('remove_tags')
             if remove_tags is not None:
@@ -123,7 +123,7 @@ class ExampleHouseViewSet(ModelViewSet):
             if styles is not None:
                 for style in styles:
                     try:
-                        ExampleHouseStyle.objects.create(style_id=style, example_house=house)
+                        ExampleHouseStyle.objects.get_or_create(style_id=style, example_house=house)
                     except Exception:
                         pass
 
@@ -140,7 +140,7 @@ class ExampleHouseViewSet(ModelViewSet):
             if commitments is not None:
                 for commitment in commitments:
                     try:
-                        ExampleHouseCommitment.objects.create(commitment_id=commitment, example_house=house)
+                        ExampleHouseCommitment.objects.get_or_create(commitment_id=commitment, example_house=house)
                     except Exception:
                         pass
             
