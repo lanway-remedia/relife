@@ -52,6 +52,7 @@ class ExampleHouseViewPage extends React.Component {
         this.setState({
           outletStore: response.data
         })
+        console.log(response.data)
       }
     }
   }

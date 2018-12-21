@@ -43,6 +43,7 @@ class Header extends React.Component {
   render() {
     let {isAuthenticated, name, image} = this.props
     return (
+      <div>
       <header className="header pc">
         <div className="header-inner">
           <div className="header-logo">
@@ -104,7 +105,24 @@ class Header extends React.Component {
           }
         </div>
       </header>
-      
+
+      <header className="header sp">
+          <div className="drawer-navbar sp">
+            <div className="drawer-container">
+              <div className="drawer-navbar-header">
+                <div className="drawer-navbar-header-logo">
+                  <Link to="">
+                    <img src={logo} />
+                  </Link>
+                </div>
+                <div className="drawer-navbar-header-text">
+                  暮らしづくりのコンシェルジュ
+                </div>
+              </div>
+            </div>
+          </div>
+      </header>
+      </div>
     )
   }
 }

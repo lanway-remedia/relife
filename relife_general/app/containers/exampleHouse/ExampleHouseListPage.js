@@ -99,11 +99,11 @@ class ExampleHouseListPage extends React.Component {
                       <Link to={'/example/' + exampleHouseNew.id}>{I18nUtils.t('view-detail')}</Link>
                     </div>
                   </div>
-
-                  <div className="adv-example-once-text">シンプルだけど存在感の大きさを感じる絶妙なデザイン</div>
-                  <div className="adv-example-once-company-area">東京都西東京市</div>
-                  <div className="adv-example-once-company">株式会社クレアホームの施工事例</div>
                 </div>
+                <div className="adv-example-once-text">シンプルだけど存在感の大きさを感じる絶妙なデザイン</div>
+                <div className="adv-example-once-company-area">東京都西東京市</div>
+                <div className="adv-example-once-company">株式会社クレアホームの施工事例</div>
+                
               </div>
             </div>
 
