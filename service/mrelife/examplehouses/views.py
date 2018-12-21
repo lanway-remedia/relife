@@ -49,7 +49,11 @@ class ExampleHouseViewSet(ModelViewSet):
             commitments = []
         """
         obj = super(ExampleHouseViewSet, self).create(request, *args, **kwargs)
-        house = ExampleHouse.objects.get(pk=obj.data['id'])
+        try:
+            house = ExampleHouse.objects.get(pk=obj.data['id'])
+        except Http404:
+            return response_404('EX404')
+        
         if not (IsStore(request.user) or IsSub(request.user)):
             try:
                 store = OutletStore.objects.get(pk=int(request.data.get('store')))
