@@ -77,12 +77,13 @@ class ExampleHouseViewSet(ModelViewSet):
                     ExampleHouseTag.objects.create(tag=tag, example_house=house)
 
         styles = request.data.get('styles')
+        print(styles)
         if styles is not None:
             for style in styles:
                 try:
                     ExampleHouseStyle.objects.create(style_id=style, example_house=house)
-                except Exception:
-                    pass
+                except Exception as e:
+                    print(str(e))
 
         commitments = request.data.get('commitments')
         if commitments is not None:
