@@ -2,8 +2,18 @@
 @import './vendors/variables';
 @import './vendors/mixins';
 
+//Vendor
+@import './vendors/datepicker';
+
 //Components
+@import './components/buttons';
 @import './components/header';
+@import './components/footer';
+@import './components/navigation';
+@import './components/filterGroup';
+@import './components/boxGroup';
+@import './components/modalDialog';
+@import './components/table';
 @import './components/language';
 @import './components/backGround';
 @import './components/spaceList';
@@ -12,6 +22,7 @@
 @import './components/imageUploadComponent';
 
 //Containers
+@import './containers/auths/authsPage';
 @import './containers/auths/loginPage';
 @import './containers/auths/forgotPasswordPage';
 @import './containers/profiles/userDashboardPage';

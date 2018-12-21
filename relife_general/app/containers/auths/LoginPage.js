@@ -115,7 +115,7 @@ class LoginPage extends React.Component {
           <p className="text-center">
             <Link 
               to="/forgot-password"
-              title={I18nUtils.t('forgotPasswordText')}
+              title={I18nUtils.t('forgot-password-text')}
               className="form_link text-green fs-12"
             >
               {I18nUtils.t('if-forgot-password')}

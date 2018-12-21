@@ -69,8 +69,6 @@ class AddNewOutletStorePage extends React.Component {
   }
 
   redirectToListPage = () => {
-    // eslint-disable-next-line no-debugger
-    debugger
     this.props.history.push('/manage-outlet-store-list')
   }
 

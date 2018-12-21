@@ -1,4 +1,3 @@
 node_modules
 build_prod
 .vscode/launch.json
-package-lock.json

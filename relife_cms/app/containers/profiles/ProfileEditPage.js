@@ -6,7 +6,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import ProfileActions from '../../redux/wrapper/ProfileRedux'
+import ProfileActions from '../../redux/wrapper/UserProfileRedux'
 import ProfileImage from '../../components/ProfileImage'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Container, Row, Col, Button, FormGroup, Label } from 'reactstrap'
@@ -14,6 +14,7 @@ import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import I18nUtils from '../../utils/I18nUtils'
 import { ModalName } from '../../constants'
+import { Helmet } from 'react-helmet'
 
 class ProfileEditPage extends React.Component {
   constructor(props) {
@@ -46,7 +47,14 @@ class ProfileEditPage extends React.Component {
       //update profile or update profile image
       if (nextProps.data.editProfile || nextProps.data.editProfileImage) {
         if (nextProps.data.messageCode)
-        this.props.show(ModalName.COMMON, { message: I18nUtils.t(nextProps.data.messageCode), closeFunction: () => this.closeFunction() })
+          this.props.show(ModalName.COMMON, {
+            message: (
+              <span className="text-success">
+                {I18nUtils.t(nextProps.data.messageCode)}
+              </span>
+            ),
+            closeFunction: () => this.closeFunction()
+          })
       }
       //get profile info
       if (nextProps.data.getProfile) {
@@ -55,26 +63,16 @@ class ProfileEditPage extends React.Component {
     }
   }
 
-  setProfile = (data) => {
+  setProfile = data => {
     this.setState({
       data: data.data,
       id: data.data.id,
       group: data.data.group,
       profileImage: data.data.profile_image,
-      fname:
-        data.data.first_name === null
-          ? ''
-          : data.data.first_name,
-      lname:
-        data.data.last_name === null
-          ? ''
-          : data.data.last_name,
-      email:
-        data.data.email === null ? '' : data.data.email,
-      address:
-        data.data.address === null
-          ? ''
-          : data.data.address,
+      fname: data.data.first_name === null ? '' : data.data.first_name,
+      lname: data.data.last_name === null ? '' : data.data.last_name,
+      email: data.data.email === null ? '' : data.data.email,
+      address: data.data.address === null ? '' : data.data.address,
       phone: data.data.tel === null ? '' : data.data.tel
     })
   }
@@ -108,7 +106,10 @@ class ProfileEditPage extends React.Component {
       address: this.state.address
     }
 
-    if (this.state.profileImage != null && typeof this.state.profileImage != 'string') {
+    if (
+      this.state.profileImage != null &&
+      typeof this.state.profileImage != 'string'
+    ) {
       let formData = new FormData()
       formData.append('file', this.state.profileImage)
       this.props.editProfileAvatarRequest(formData)
@@ -126,101 +127,110 @@ class ProfileEditPage extends React.Component {
     let fullName = data.first_name + ' ' + data.last_name
 
     return (
-      <Container className="user-edit-profile">
-        <div className="account-avatar">
-          <div className="info ed">
-            <p>
-              {I18nUtils.formatMessage({ id: 'ud-hi' }, { name: fullName })}
-            </p>
-            <p>{I18nUtils.t('ed-welcome')}</p>
+      <Container fluid className="user-edit-profile">
+        <Helmet>
+          <title>{I18nUtils.t('ed-parent-title')}</title>
+        </Helmet>
+        <div className="page-title">
+          <h1>
+            {I18nUtils.formatMessage(
+              { id: 'ed-title' },
+              { username: fullName }
+            )}
+          </h1>
+        </div>
+        <div className="box-group">
+          <div className="box-content">
+            <ValidationForm
+              className="form-user-info"
+              onSubmit={this.handleSubmit}
+            >
+              <Row>
+                <Col xs="12" md="12">
+                  <ProfileImage
+                    defaultAvatar
+                    profileImage={profileImage}
+                    size={90}
+                    onProfileChange={image => this.handleProfileChange(image)}
+                  />
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="fname">{I18nUtils.t('fname')}</Label>
+                    <TextInput
+                      type="text"
+                      name="fname"
+                      id="fname"
+                      placeholder={I18nUtils.t('all-place-fname')}
+                      value={this.state.fname}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="fname">{I18nUtils.t('lname')}</Label>
+                    <TextInput
+                      type="text"
+                      name="lname"
+                      id="lname"
+                      placeholder={I18nUtils.t('all-place-lname')}
+                      value={this.state.lname}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="email">{I18nUtils.t('email')}</Label>
+                    <TextInput
+                      type="text"
+                      name="email"
+                      id="email"
+                      placeholder={I18nUtils.t('all-place-email')}
+                      value={this.state.email}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="phone">{I18nUtils.t('phone')}</Label>
+                    <TextInput
+                      type="text"
+                      name="phone"
+                      id="phone"
+                      placeholder={I18nUtils.t('all-place-phone')}
+                      value={this.state.phone}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="12">
+                  <FormGroup>
+                    <Label for="address">{I18nUtils.t('address')}</Label>
+                    <TextInput
+                      type="text"
+                      name="address"
+                      id="address"
+                      placeholder={I18nUtils.t('all-place-address')}
+                      value={this.state.address}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="12">
+                  <div className="btns-group text-left">
+                    <Button color="success">{I18nUtils.t('save')}</Button>
+                    <Button onClick={this.redirectToProfile} color="danger">
+                      {I18nUtils.t('back')}
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            </ValidationForm>
           </div>
         </div>
-        <ValidationForm className="form-user-info" onSubmit={this.handleSubmit}>
-          <Row>
-            <Col xs="12" md="12">
-              <ProfileImage
-                defaultAvatar
-                profileImage={profileImage}
-                size={90}
-                onProfileChange={image => this.handleProfileChange(image)}
-              />
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="fname">{I18nUtils.t('fname')}</Label>
-                <TextInput
-                  type="text"
-                  name="fname"
-                  id="fname"
-                  placeholder={I18nUtils.t('all-place-fname')}
-                  value={this.state.fname}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="fname">{I18nUtils.t('lname')}</Label>
-                <TextInput
-                  type="text"
-                  name="lname"
-                  id="lname"
-                  placeholder={I18nUtils.t('all-place-lname')}
-                  value={this.state.lname}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="email">{I18nUtils.t('email')}</Label>
-                <TextInput
-                  type="text"
-                  name="email"
-                  id="email"
-                  placeholder={I18nUtils.t('all-place-email')}
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="6">
-              <FormGroup>
-                <Label for="phone">{I18nUtils.t('phone')}</Label>
-                <TextInput
-                  type="text"
-                  name="phone"
-                  id="phone"
-                  placeholder={I18nUtils.t('all-place-phone')}
-                  value={this.state.phone}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-
-            <Col xs="12" md="12">
-              <FormGroup>
-                <Label for="address">{I18nUtils.t('address')}</Label>
-                <TextInput
-                  type="text"
-                  name="address"
-                  id="address"
-                  placeholder={I18nUtils.t('all-place-address')}
-                  value={this.state.address}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-            </Col>
-            <Col xs="12" md="12">
-              <div className="btns-group text-left">
-                <Button color="success">{I18nUtils.t('edit')}</Button>
-                <Button onClick={this.redirectToProfile} color="danger">
-                  {I18nUtils.t('back')}
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </ValidationForm>
       </Container>
     )
   }
@@ -238,8 +248,8 @@ ProfileEditPage.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    processing: state.profile.processing,
-    data: state.profile.data
+    processing: state.userProfile.processing,
+    data: state.userProfile.data
   }
 }
 

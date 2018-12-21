@@ -1,40 +1,42 @@
+.wrapper {
+  display: block;
+
+  .main-wrapper {
+    padding: 1.875rem 0;
+    min-height: calc(100vh - 124px);
+    // overflow: hidden;
+    position: relative;
+    background: #ececec;
+
+    .main-content {
+      z-index: 800;
+      transition: 0.3s ease-in-out, width 0.3s ease-in-out;
+      // margin-left: 350px;
+      margin-left: 230px;
+    }
+  }
+}
+
 img {
   object-fit: cover;
 }
 
-.wrapper {
-  .dDcugc {
-    .kQgkAT {
-      img {
-        width: 45px;
-        height: 45px;
-      }
-    }
-  }
-  .lpcQgQ {
-    .kQgkAT {
-      img {
-        width: 30px;
-        height: 30px;
-      }
-    }
-  }
-}
-
-footer.cgYtLz {
-  margin-left: 0;
+a:hover,
+a:focus {
+  text-decoration: none;
+  @include default-transition;
 }
 
 .root-wrap {
   display: block;
-  padding: 22px 0;
+  padding: 1.375rem 0;
   min-height: 660px;
 }
 
 .nav-item {
   position: relative;
   float: left;
-  padding: 7px;
+  padding: 0.4375rem;
 }
 
 .content {
@@ -43,25 +45,30 @@ footer.cgYtLz {
 
 .page-title {
   display: block;
-  margin: 0 0 3rem;
-  padding-bottom: 22px;
-  border-bottom: 1px solid #ccc;
+  margin: 0 0 2.0625rem;
+  padding-bottom: 0.9375rem;
+  border-bottom: 4px double $border-color-3;
+  font-family: $font-W6;
 
   h1,
   h2 {
     display: block;
     margin: 0;
-
-    font-size: 28px;
+    font-weight: bold;
+    font-size: 1.5rem;
 
     i {
-      font-size: 24px;
-      line-height: 24px;
+      font-size: 1.5rem;
+      line-height: 1.5rem;
       margin-right: 15px;
     }
 
     button.btn {
       float: right;
+      font-family: $font-W3;
+      font-size: 1rem;
+      padding: 6px 16px;
+      margin: -4px 0 0;
     }
   }
 }
@@ -75,7 +82,7 @@ footer.cgYtLz {
 
 .btns-group {
   .btn {
-    margin-right: 15px;
+    margin-right: 0.5rem;
 
     &:last-child,
     &.last-child {
@@ -89,14 +96,14 @@ footer.cgYtLz {
 
   &.btn-act {
     min-width: 0;
-    margin-right: 15px;
-    width: 32px;
-    height: 32px;
+    display: block;
+    height: 24px;
     text-align: center;
+    margin: 0 0 5px;
 
     &.last-child,
     &:last-child {
-      margin-right: 0;
+      margin: 0;
     }
   }
 }
@@ -128,6 +135,37 @@ footer.cgYtLz {
 }
 
 .form-datepicker {
+  .react-datepicker__triangle {
+    display: none;
+  }
+
+  .react-datepicker__day-name {
+    font-size: 0.5625rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 0;
+  }
+  .form-datepicker .react-datepicker__day-name,
+  .form-datepicker .react-datepicker__day,
+  .form-datepicker .react-datepicker__time-name {
+    width: 1.4375rem;
+  }
+
+  .react-datepicker__day--keyboard-selected,
+  .react-datepicker__day--selected,
+  .react-datepicker__day--in-selecting-range,
+  .react-datepicker__day--in-range {
+    background: $bkg-secondary-color;
+  }
+
+  .input-group-text {
+    background: none;
+    border: 0 none;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 1.1;
+  }
+
   > div.react-datepicker-wrapper {
     position: relative;
     flex: 1 1 auto;
@@ -141,104 +179,9 @@ footer.cgYtLz {
     }
   }
 
-  > div:first-child {
-    .form-control {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-  }
-
-  > div:last-child {
-    .form-control {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
-
   .react-datepicker {
     font-size: 1.1rem;
-  }
-  .react-datepicker__input-container {
-    &:before {
-      content: '\f073';
-      font: normal normal normal 14px/1 FontAwesome;
-      font-size: inherit;
-      text-rendering: auto;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      vertical-align: middle;
-      position: absolute;
-      top: 50%;
-      left: 10px;
-      margin-top: -7px;
-    }
-
-    .form-control {
-      padding: 4px 10px 4px 30px;
-    }
-  }
-  .react-datepicker__current-month,
-  .react-datepicker-time__header {
-    font-size: 1.2rem;
-  }
-  .react-datepicker__day-name,
-  .react-datepicker__day,
-  .react-datepicker__time-name {
-    width: 1.8rem;
-    line-height: 1.8rem;
-  }
-}
-
-.modal {
-  .modal-dialog {
-    .modal-content {
-      .modal-header {
-        .close {
-          background-color: transparent;
-          border: 0;
-          font-size: 1.5em;
-          font-weight: 700;
-          line-height: 1;
-          color: #000;
-          text-shadow: 0 1px 0 #fff;
-          opacity: 0.5;
-        }
-      }
-      .modal-body {
-        .list-group {
-          padding: 0;
-          .list-group-item {
-            position: relative;
-            display: block;
-            padding: 0.75rem 1.25rem;
-            margin-bottom: -1px;
-            background-color: $bkg-white-color;
-            border: 1px solid $border-color;
-            cursor: pointer;
-            &:hover {
-              background-color: $item-hover;
-            }
-            &.selected {
-              background-color: $item-hover;
-            }
-          }
-        }
-        &.search-modal {
-          .input-group {
-            margin-bottom: 10px;
-          }
-          ul.pagination {
-            float: right;
-          }
-          ul.list-group {
-            clear: both;
-            li {
-              text-align: right;
-            }
-          }
-        }
-      }
-    }
+    border: 5px solid #7c7c7c;
   }
 }
 

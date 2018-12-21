@@ -3,7 +3,11 @@ html {
 }
 
 body { 
-  font-size: 1.0rem; 
+  font-size: $font-size-base; 
+}
+
+input, select {
+  border: 1px solid $border-color !important;
 }
 
 .lower-contents {

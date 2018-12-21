@@ -48,7 +48,7 @@ class ProfileImage extends React.Component {
               )}
             </label>
             <Button
-              color="primary"
+              color="success"
               outline
               size="sm"
               onClick={this.handleOpenFileUp}
@@ -87,7 +87,7 @@ class ProfileImage extends React.Component {
               />
             </label>
             <Button
-              color="primary"
+              color="success"
               outline
               size="sm"
               onClick={this.handleOpenFileUp}

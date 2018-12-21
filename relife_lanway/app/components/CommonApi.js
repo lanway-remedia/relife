@@ -17,8 +17,7 @@ let f
 class CommonApi extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
+    this.state = {}
   }
 
   componentWillMount() {
@@ -34,11 +33,7 @@ class CommonApi extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        {}
-      </div>
-    )
+    return <div>{}</div>
   }
 }
 
