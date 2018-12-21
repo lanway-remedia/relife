@@ -30,7 +30,6 @@ class ExampleHouseViewSet(ModelViewSet):
             return response_200('EX200', '', response.data)
         except Http404:
             return response_404('EX404')
-        
 
     def retrieve(self, request, *args, **kwargs):
         try:
@@ -53,7 +52,7 @@ class ExampleHouseViewSet(ModelViewSet):
             house = ExampleHouse.objects.get(pk=obj.data['id'])
         except Http404:
             return response_404('EX404')
-        
+
         if not (IsStore(request.user) or IsSub(request.user)):
             try:
                 store = OutletStore.objects.get(pk=int(request.data.get('store')))
@@ -91,7 +90,7 @@ class ExampleHouseViewSet(ModelViewSet):
                     ExampleHouseCommitment.objects.create(commitment_id=commitment, example_house=house)
                 except Exception:
                     pass
-        
+
         return response_201('EX201', '', obj.data)
 
     def update(self, request, *args, **kwargs):
@@ -143,12 +142,13 @@ class ExampleHouseViewSet(ModelViewSet):
                         ExampleHouseCommitment.objects.get_or_create(commitment_id=commitment, example_house=house)
                     except Exception:
                         pass
-            
+
             remove_commitments = request.data.get('remove_commitments')
             if remove_commitments is not None:
                 for commitment in remove_commitments:
                     try:
-                        _commitment = ExampleHouseCommitment.objects.filter(commitment_id=commitment, example_house=house)
+                        _commitment = ExampleHouseCommitment.objects.filter(
+                            commitment_id=commitment, example_house=house)
                         _commitment.delete()
                     except Exception:
                         pass
@@ -181,7 +181,7 @@ class ExampleHouseViewSet(ModelViewSet):
             house = ExampleHouse.objects.get(pk=kwargs['pk'])
         except Http404:
             return response_404('EX404')
-        
+
         tags = request.data.get('tags')
         if tags is not None:
             for tag_name in tags:

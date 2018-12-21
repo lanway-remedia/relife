@@ -1,12 +1,12 @@
 from rest_framework.serializers import ModelSerializer
 
+from mrelife.attributes.models import (Contruction, Floor, HouseHoldIncome,
+                                       HouseHoldSize, Style)
 from mrelife.examplehouses.models import (ExampleHouse, ExampleHouseCommitment,
                                           ExampleHouseStyle, ExampleHouseTag)
-
-
+from mrelife.locations.models import District
 from mrelife.outletstores.models import OutletStore
-from mrelife.attributes.models import (Contruction, Floor,
-                                       HouseHoldIncome, HouseHoldSize, Style)
+
 
 class ExampleHouseTagSerializer(ModelSerializer):
 
@@ -24,6 +24,7 @@ class StyleSerializer(ModelSerializer):
 
 class ExampleHouseStyleSerializer(ModelSerializer):
     style = StyleSerializer()
+
     class Meta:
         model = ExampleHouseStyle
         fields = '__all__'
@@ -57,11 +58,18 @@ class ExampleHouseNestedSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class OutletStoreSerializer(ModelSerializer):
+class DistrictSerializer(ModelSerializer):
 
     class Meta:
+        model = District
+        fields = ('id', 'name', 'name_en',)
+
+
+class OutletStoreSerializer(ModelSerializer):
+    district = DistrictSerializer()
+    class Meta:
         model = OutletStore
-        fields = ('id', 'title', )
+        fields = ('id', 'title', 'district')
 
 
 class ContructionSerializer(ModelSerializer):
@@ -90,6 +98,7 @@ class HouseHoldIncomeSerializer(ModelSerializer):
     class Meta:
         model = HouseHoldIncome
         fields = ('id', 'title', )
+
 
 class ExampleHouseNestedNameOnlySerializer(ModelSerializer):
     store = OutletStoreSerializer()
