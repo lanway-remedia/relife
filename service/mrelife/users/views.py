@@ -25,7 +25,8 @@ from mrelife.users.serializers import (
     PasswordSerializer,
     ProfileSerializer,
     UserSerializer,
-    UserWithoutRequireInfoSerializer
+    UserWithoutRequireInfoSerializer,
+    ShowProfileSerializer
 )
 from mrelife.utils.groups import GroupUser, IsStore
 from mrelife.utils.querys import get_or_none
@@ -144,7 +145,7 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
     def list(self, request, *args, **kwargs):
         try:
             obj = User.objects.get(pk=request.user.id)
-            serializer = ProfileSerializer(obj)
+            serializer = ShowProfileSerializer(obj)
             return response_200('US200', '', serializer.data)
         except Http404:
             return response_404('PP404')

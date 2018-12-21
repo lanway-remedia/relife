@@ -67,7 +67,7 @@ class ManageTagListPage extends React.Component {
         })
       }
       if (response.isDelete) {
-        if (response.messageCode === 'SU001') {
+        if (response.messageCode === 'TAG007') {
           toast.success(
             I18nUtils.formatMessage({ id: 'toast-del-sucess' }, { name: '' })
           )
