@@ -12,14 +12,14 @@ from mrelife.examplehouses.serializers import ExampleHouseNestedSerializer, Exam
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
 from mrelife.utils.groups import IsStore, IsSub
-from mrelife.utils.model_house_permission import ModelHousePermission
+from mrelife.utils.ex_house_permission import ExampleHousePermission
 from mrelife.utils.response import response_404, response_201, response_200
 
 
 class ExampleHouseViewSet(ModelViewSet):
     queryset = ExampleHouse.objects.all()
     serializer_class = ExampleHouseSerializer
-    permission_classes = (IsAuthenticated, ModelHousePermission,)
+    permission_classes = (IsAuthenticated, ExampleHousePermission,)
     parser_class = (FormParser, MultiPartParser, JSONParser)
     pagination_class = LimitOffsetPagination
 
