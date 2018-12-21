@@ -4,4 +4,8 @@ export default class OutletStoresService {
   getStores(data) {
     return apiClient.get(`/outletstores/${data}`)
   }
+
+  listStores(data) {
+    return apiClient.get(`/outletstores/?limit=${data.limit}&offset=${data.offset}`)
+  }
 }

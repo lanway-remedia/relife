@@ -16,6 +16,19 @@ const OutletStoresSagas = {
     } catch (err) {
       yield put(OutletStoresActions.outletStoresGetFailure(err))
     }
+  },
+  *listStores( { data } ) {
+    try {
+      let response = yield call(outletStoresService.listStores, data)
+      yield put(
+        OutletStoresActions.outletStoresListSuccess (
+          response.data,
+          (response.isGetListStores = true)
+        )
+      )
+    } catch (err) {
+      yield put(OutletStoresActions.outletStoresListFailure(err))
+    }
   }
 }
 

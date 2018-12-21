@@ -113,10 +113,16 @@ export default function* root() {
     ),
 
     //Outlet Stores
+    // Get Outlet Store
     takeLatest(
       OutletStoresTypes.OUTLET_STORES_GET_REQUEST,
       OutletStoresSagas.getStores
-    )
+    ),
 
+    // Get List Outlet Store
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORES_LIST_REQUEST,
+      OutletStoresSagas.listStores
+    )
   ]
 }
