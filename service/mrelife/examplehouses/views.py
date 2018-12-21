@@ -76,7 +76,7 @@ class ExampleHouseViewSet(ModelViewSet):
                     tag, created = Tag.objects.get_or_create(name=tag_name)
                     ExampleHouseTag.objects.create(tag=tag, example_house=house)
 
-        styles = request.data.get('styles')
+        styles = request.data.getlist('styles')
         print(styles)
         if styles is not None:
             for style in styles:
