@@ -42,7 +42,6 @@ class RegisterSerializer(Serializer):
         """
         Check that the start is before the stop.
         """
-        # TODO: Change error message
         if attrs['password1'] != attrs['password2']:
             raise ValidationError("US002")
         if email_exist(attrs['mail']):

@@ -315,3 +315,8 @@ JWT_AUTH = {
     'JWT_VERIFY_EXPIRATION': False
 }
 IMPORT_EXPORT_USE_TRANSACTIONS = False
+
+
+# lanway
+# ------------------------------------------------------------------------------
+LANWAY_BASE_URL = 'http://remediaau-external-14jfg1prd5i12-1061836401.ap-northeast-1.elb.amazonaws.com:18000/'
