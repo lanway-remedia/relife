@@ -4,7 +4,7 @@ from mrelife.attributes.models import (Contruction, Floor, HouseHoldIncome,
                                        HouseHoldSize, Style)
 from mrelife.examplehouses.models import (ExampleHouse, ExampleHouseCommitment,
                                           ExampleHouseStyle, ExampleHouseTag)
-from mrelife.locations.models import District
+from mrelife.locations.models import City, District
 from mrelife.outletstores.models import OutletStore
 
 
@@ -48,25 +48,24 @@ class ExampleHouseSerializer(ModelSerializer):
         return data
 
 
-class ExampleHouseNestedSerializer(ModelSerializer):
-    ex_tags = ExampleHouseTagSerializer(many=True, read_only=False)
-    styles = ExampleHouseStyleSerializer(many=True, read_only=False)
-    commitments = ExampleHouseCommitmentSerializer(many=True, read_only=False)
+class CitySerializer(ModelSerializer):
 
     class Meta:
-        model = ExampleHouse
-        fields = '__all__'
+        model = City
+        fields = ('id', 'name', 'name_en',)
 
 
 class DistrictSerializer(ModelSerializer):
+    city = CitySerializer()
 
     class Meta:
         model = District
-        fields = ('id', 'name', 'name_en',)
+        fields = ('id', 'name', 'name_en', 'city',)
 
 
 class OutletStoreSerializer(ModelSerializer):
     district = DistrictSerializer()
+
     class Meta:
         model = OutletStore
         fields = ('id', 'title', 'district')
@@ -106,6 +105,17 @@ class ExampleHouseNestedNameOnlySerializer(ModelSerializer):
     floor = FloorSerializer()
     household_size = HouseHoldSizeSerializer()
     household_income = HouseHoldIncomeSerializer()
+
+    class Meta:
+        model = ExampleHouse
+        fields = '__all__'
+
+
+class ExampleHouseNestedSerializer(ModelSerializer):
+    ex_tags = ExampleHouseTagSerializer(many=True, read_only=False)
+    styles = ExampleHouseStyleSerializer(many=True, read_only=False)
+    commitments = ExampleHouseCommitmentSerializer(many=True, read_only=False)
+    store = OutletStoreSerializer()
 
     class Meta:
         model = ExampleHouse
