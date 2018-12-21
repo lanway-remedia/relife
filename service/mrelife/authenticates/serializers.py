@@ -1,5 +1,7 @@
-from rest_framework.serializers import CharField, EmailField, Serializer, ValidationError
+from rest_framework.serializers import (CharField, EmailField, Serializer,
+                                        ValidationError)
 
+from mrelife.authenticates.lanway_portal import lanway_login, lanway_user_exist
 from mrelife.utils.validates import email_exist, username_exist
 
 
@@ -28,6 +30,22 @@ class PasswordSerializer(Serializer):
         return attrs
 
 
+class LoginSerializer(Serializer):
+    """
+    Serializer for password change endpoint.
+    """
+    username = CharField(required=True)
+    password = CharField(required=True)
+
+    def validate(self, attrs):
+        """
+        Check that the start is before the stop.
+        """
+        if not lanway_login(attrs['username'], attrs['password']):
+            raise ValidationError("LWLG001")
+        return attrs
+
+
 class RegisterSerializer(Serializer):
     """
     Serializer for password change endpoint.
@@ -44,8 +62,6 @@ class RegisterSerializer(Serializer):
         """
         if attrs['password1'] != attrs['password2']:
             raise ValidationError("US002")
-        if email_exist(attrs['mail']):
+        if lanway_user_exist(attrs['mail']):
             raise ValidationError("RG001")
-        if username_exist(attrs['username']):
-            raise ValidationError("RG002")
         return attrs

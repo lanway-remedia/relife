@@ -8,16 +8,20 @@ from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_jwt.serializers import JSONWebTokenSerializer
-from rest_framework_jwt.settings import api_settings
-from rest_framework_jwt.views import JSONWebTokenAPIView
 
 from mrelife.authenticates.mails import auth_mail
-from mrelife.authenticates.serializers import PasswordSerializer, RegisterSerializer, ResetPasswordSerializer
+from mrelife.authenticates.serializers import (LoginSerializer,
+                                               PasswordSerializer,
+                                               RegisterSerializer,
+                                               ResetPasswordSerializer)
 from mrelife.utils.groups import GroupUser
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.relifeenum import MessageCode
+from mrelife.utils.response import response_404
 from mrelife.utils.validates import email_exist
+from rest_framework_jwt.serializers import JSONWebTokenSerializer
+from rest_framework_jwt.settings import api_settings
+from rest_framework_jwt.views import JSONWebTokenAPIView
 
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
@@ -198,6 +202,10 @@ class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
                 username: str require
                 password: str require
         """
+        serializer = LoginSerializer(data=request.data)
+        if not serializer.is_valid():
+            return response_404(MessageCode.AU003.value, '', serializer.errors)
+
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid():
