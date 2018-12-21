@@ -60,7 +60,7 @@ class EditExampleHousePage extends React.Component {
       content: '',
       contruction: '',
       price: '',
-      housestyle: '',
+      housestyle: [],
       floor: '',
       houseincome: '',
       housesize: '',
@@ -130,20 +130,33 @@ class EditExampleHousePage extends React.Component {
         this.props.history.replace('/manage-example-house-list')
       } else {
         this.props.outletStoreGetRequest(response.data.store)
-        this.setState({
-          data: response.data,
-          id: this.props.match.params.id,
-          title: response.data.title,
-          status: response.data.status_flag === false ? '0' : '1',
-          content: response.data.content,
-          contruction: response.data.contruction,
-          price: response.data.price_range,
-          housestyle: response.data.style,
-          floor: response.data.floor,
-          houseincome: response.data.household_income,
-          housesize: response.data.household_size,
-          thumbnailImage: response.data.img_large
-        })
+        console.log(nextProps.dataExample)
+        this.setState(
+          {
+            data: response.data,
+            id: this.props.match.params.id,
+            title: response.data.title,
+            status: response.data.status_flag === false ? '0' : '1',
+            content: response.data.content,
+            contruction: response.data.contruction,
+            price: response.data.price_range,
+            housestyle: response.data.styles,
+            floor: response.data.floor,
+            houseincome: response.data.household_income,
+            housesize: response.data.household_size,
+            thumbnailImage: response.data.img_large
+          },
+          () => {
+            const newHouseStyles = []
+            if (this.state.housestyle)
+              for (let i = 0; i < this.state.housestyle.length; i++) {
+                newHouseStyles.push(this.state.housestyle[i].style.id)
+                this.setState({
+                  housestyle: newHouseStyles
+                })
+              }
+          }
+        )
       }
 
       if (response.messageCode === 'EX203' && response.isEditHouse) {
@@ -206,8 +219,14 @@ class EditExampleHousePage extends React.Component {
   }
 
   handleChange = e => {
+    const target = e.target
+    const name = target.name
+    const value =
+      target.type === 'select-multiple'
+        ? Array.from(target.selectedOptions, option => option.value)
+        : target.value
     this.setState({
-      [e.target.name]: e.target.value
+      [name]: value
     })
   }
 
@@ -270,7 +289,10 @@ class EditExampleHousePage extends React.Component {
 
     data.append('contruction', this.state.contruction)
     data.append('price_range', this.state.price)
-    data.append('styles', this.state.housestyle)
+    if (this.state.housestyle)
+      for (let i = 0; i < this.state.housestyle.length; i++) {
+        data.append('styles', this.state.housestyle[i])
+      }
     data.append('floor', this.state.floor)
     data.append('household_income', this.state.houseincome)
     data.append('household_size', this.state.housesize)
@@ -502,30 +524,6 @@ class EditExampleHousePage extends React.Component {
                 </Col>
                 <Col xs="12" md="6">
                   <FormGroup>
-                    <Label for="housestyle">{I18nUtils.t('housestyle')}</Label>
-                    <SelectGroup
-                      type="select"
-                      name="housestyle"
-                      id="housestyle"
-                      value={housestyle}
-                      onChange={this.handleChange}
-                      required
-                      errorMessage={I18nUtils.t('lb-select')}
-                    >
-                      <option value="">{I18nUtils.t('lb-select')}</option>
-                      {dataStyle.length > 0 &&
-                        dataStyle.map((att, key) => {
-                          return (
-                            <option key={key} value={att.id}>
-                              {att.title}
-                            </option>
-                          )
-                        })}
-                    </SelectGroup>
-                  </FormGroup>
-                </Col>
-                <Col xs="12" md="6">
-                  <FormGroup>
                     <Label for="houseincome">
                       {I18nUtils.t('houseincome')}
                     </Label>
@@ -565,6 +563,31 @@ class EditExampleHousePage extends React.Component {
                       <option value="">{I18nUtils.t('lb-select')}</option>
                       {dataHouseSize.length > 0 &&
                         dataHouseSize.map((att, key) => {
+                          return (
+                            <option key={key} value={att.id}>
+                              {att.title}
+                            </option>
+                          )
+                        })}
+                    </SelectGroup>
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="housestyle">{I18nUtils.t('housestyle')}</Label>
+                    <SelectGroup
+                      type="select"
+                      name="housestyle"
+                      id="housestyle"
+                      value={housestyle}
+                      onChange={this.handleChange}
+                      required
+                      multiple
+                      errorMessage={I18nUtils.t('lb-select-vl')}
+                    >
+                      <option value="">{I18nUtils.t('lb-select-vl')}</option>
+                      {dataStyle.length > 0 &&
+                        dataStyle.map((att, key) => {
                           return (
                             <option key={key} value={att.id}>
                               {att.title}

@@ -41,6 +41,9 @@ import 'froala-editor/css/froala_style.min.css'
 import 'froala-editor/css/froala_editor.pkgd.min.css'
 import FroalaEditor from 'react-froala-wysiwyg'
 
+// Import react select
+import Select from 'react-select'
+
 const initialState = {
   thumbnailImage: null,
   data: [],
@@ -57,7 +60,7 @@ const initialState = {
   content: '',
   contruction: '',
   price: '',
-  housestyle: '',
+  housestyle: [],
   floor: '',
   houseincome: '',
   housesize: ''
@@ -70,10 +73,10 @@ class AddNewExampleHousePage extends React.Component {
       ...initialState
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleModelChange = this.handleModelChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.redirectToListPage = this.redirectToListPage.bind(this)
-    this.handleModelChange = this.handleModelChange.bind(this)
 
     this.getContructionList = this.getContructionList.bind(this)
     this.getFloorList = this.getFloorList.bind(this)
@@ -117,8 +120,20 @@ class AddNewExampleHousePage extends React.Component {
   }
 
   handleChange = e => {
+    const target = e.target
+    const name = target.name
+    const value =
+      target.type === 'select-multiple'
+        ? Array.from(target.selectedOptions, option => option.value)
+        : target.value
     this.setState({
-      [e.target.name]: e.target.value
+      [name]: value
+    })
+  }
+
+  handleModelChange = content => {
+    this.setState({
+      content: content
     })
   }
 
@@ -130,12 +145,6 @@ class AddNewExampleHousePage extends React.Component {
 
   redirectToListPage = () => {
     this.props.history.push('/manage-example-house-list')
-  }
-
-  handleModelChange = content => {
-    this.setState({
-      content: content
-    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -175,7 +184,7 @@ class AddNewExampleHousePage extends React.Component {
     if (this.props.dataExample !== nextProps.dataExample) {
       let data = nextProps.dataExample
       if (data.isAddHouse) {
-        this.setState(initialState)
+        // this.setState(initialState)
         this.props.show(ModalName.COMMON, {
           message: (
             <span className="text-success">
@@ -183,6 +192,7 @@ class AddNewExampleHousePage extends React.Component {
             </span>
           )
         })
+        this.props.history.push('/manage-example-house-list')
       }
     }
 
@@ -224,7 +234,10 @@ class AddNewExampleHousePage extends React.Component {
       data.append('store', this.state.store.id)
       data.append('contruction', this.state.contruction)
       data.append('price_range', this.state.price)
-      data.append('styles', this.state.housestyle)
+      if (this.state.housestyle.length)
+        for (let i = 0; i < this.state.housestyle.length; i++) {
+          data.append('styles', this.state.housestyle[i])
+        }
       data.append('floor', this.state.floor)
       data.append('household_income', this.state.houseincome)
       data.append('household_size', this.state.housesize)
@@ -255,6 +268,8 @@ class AddNewExampleHousePage extends React.Component {
       houseincome,
       housesize
     } = this.state
+
+    console.log(dataStyle)
     return (
       <Container fluid className="add-new-examplehouse">
         <Helmet>
@@ -432,30 +447,6 @@ class AddNewExampleHousePage extends React.Component {
                 </Col>
                 <Col xs="12" md="6">
                   <FormGroup>
-                    <Label for="housestyle">{I18nUtils.t('housestyle')}</Label>
-                    <SelectGroup
-                      type="select"
-                      name="housestyle"
-                      id="housestyle"
-                      value={housestyle}
-                      onChange={this.handleChange}
-                      required
-                      errorMessage={I18nUtils.t('lb-select')}
-                    >
-                      <option value="">{I18nUtils.t('lb-select')}</option>
-                      {dataStyle.length > 0 &&
-                        dataStyle.map((att, key) => {
-                          return (
-                            <option key={key} value={att.id}>
-                              {att.title}
-                            </option>
-                          )
-                        })}
-                    </SelectGroup>
-                  </FormGroup>
-                </Col>
-                <Col xs="12" md="6">
-                  <FormGroup>
                     <Label for="houseincome">
                       {I18nUtils.t('houseincome')}
                     </Label>
@@ -504,12 +495,48 @@ class AddNewExampleHousePage extends React.Component {
                     </SelectGroup>
                   </FormGroup>
                 </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="housestyle">{I18nUtils.t('housestyle')}</Label>
+                    <SelectGroup
+                      type="select"
+                      name="housestyle"
+                      id="housestyle"
+                      value={housestyle}
+                      onChange={this.handleChange}
+                      required
+                      multiple
+                      errorMessage={I18nUtils.t('lb-select')}
+                    >
+                      {dataStyle.length > 0 &&
+                        dataStyle.map((att, key) => {
+                          return (
+                            <option key={key} value={att.id}>
+                              {att.title}
+                            </option>
+                          )
+                        })}
+                    </SelectGroup>
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup className="react-select">
+                    <Label for="housestyle">{I18nUtils.t('housestyle')}</Label>
+                    <Select
+                      className="react-select-ops"
+                      isMulti
+                      options={dataStyle}
+                      getOptionLabel={({ title }) => title}
+                      getOptionValue={({ id }) => id}
+                    />
+                  </FormGroup>
+                </Col>
                 <Col xs="12" md="12">
                   <FormGroup>
                     <Label htmlFor="content">{I18nUtils.t('content')}</Label>
                     <FroalaEditor
                       tag="textarea"
-                      config={this.config}
+                      // config={this.config}
                       model={content}
                       onModelChange={this.handleModelChange}
                     />
