@@ -4,20 +4,17 @@ import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import exh01 from '../../images/exh-01.jpg'
 import exhItem01 from '../../images/exh-item-01.jpg'
-import fbShare from '../../images/fb-share.png'
-import twShare from '../../images/tw-share.png'
-import ggShare from '../../images/gg-share.png'
-import hatebuShare from '../../images/hatebu-share.png'
-import rssShare from '../../images/rss-share.png'
-import amebloShare from '../../images/ameblo-share.png'
-import lineShare from '../../images/line-share.png'
-import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
 
+import OutletStoresActions from '../../redux/wrapper/OutletStoresRedux'
+import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
+import I18nUtils from '../../utils/I18nUtils'
+import ShareHouse from '../../components/exampleHouse/ShareHouse'
 class ExampleHouseViewPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      exampleHouse: []
+      exampleHouse: [],
+      outletStore: []
     }
   }
 
@@ -43,13 +40,27 @@ class ExampleHouseViewPage extends React.Component {
         this.setState({
           exampleHouse: response.data
         })
-        console.log(response.data.store)
+        let storeId = response.data.store
+        this.props.outletStoresGetRequest(storeId)
+      }
+    }
+
+    // get outlet store of example house
+    if (this.props.dataStore != nextProps.dataStore) {
+      let response = nextProps.dataStore
+      if (response.isGetStore) {
+        this.setState({
+          outletStore: response.data
+        })
       }
     }
   }
 
   render() {
-    let {exampleHouse} = this.state
+    let {exampleHouse, outletStore } = this.state
+    let isTags
+    let ex_tags = exampleHouse.ex_tags
+    if (!ex_tags || ex_tags === undefined) isTags = false
     console.log(exampleHouse)
     return (
       <div className="lower-contents">
@@ -60,29 +71,30 @@ class ExampleHouseViewPage extends React.Component {
             </h1>
 
             <div className="example-detail-company-name">
-              株式会社クレアホーム
+              {outletStore.title}
             </div>
 
             <div className="detail-img">
-              <img src={exh01} />
+              <img src={exampleHouse.img_large} />
             </div>
-
-            <ul className="detail-keywords-link">
-              <li><Link to="">かわいい</Link></li>
-              <li><Link to="">アフターフォロー</Link></li>
-              <li><Link to="">アフターメンテナンス</Link></li>
-              <li><Link to="">二階建て</Link></li>
-            </ul>
-
-            <div className="example-detail" />
+            {isTags && (
+              <ul className="detail-keywords-link">
+                  {ex_tags.map((val, key) => (
+                    <li key={key}>
+                      <Link to="">{val}</Link>
+                    </li>
+                  ))}
+              </ul>
+            )}
+            <div className="example-detail" dangerouslySetInnerHTML={{ __html: exampleHouse.content}} />
 
             <div className="detail-btn-wrap clearfix">
               <div className="detail-btn">
-                <Link to="">この建築実例の会社案内</Link>
+                <Link to={'/builder/' + outletStore.id}>{I18nUtils.t('go-to-store')}</Link>
               </div>
             </div>
 
-            <h2 className="detail-subtitle">この工務店の建築実例</h2>
+            <h2 className="detail-subtitle">{I18nUtils.t('house-related')}</h2>
 
             <div className="detail-list clearfix">
               <Link to="" className="detail-list-once">
@@ -100,43 +112,7 @@ class ExampleHouseViewPage extends React.Component {
               </Link>
             </div>
 
-            <div className="share-body cf">
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={fbShare} />
-                </Link>
-              </div>
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={twShare} />
-                </Link>
-              </div>
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={ggShare} />
-                </Link>
-              </div>
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={hatebuShare} />
-                </Link>
-              </div>
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={amebloShare} />
-                </Link>
-              </div>
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={rssShare} />
-                </Link>
-              </div>
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={lineShare} />
-                </Link>
-              </div>
-            </div>
+            <ShareHouse />
           </section>
         </div>
       </div>
@@ -146,22 +122,26 @@ class ExampleHouseViewPage extends React.Component {
 
 ExampleHouseViewPage.propTypes = {
   exampleHousesGetRequest: PropTypes.func,
+  outletStoresGetRequest: PropTypes.func,
   history: PropTypes.object,
   match: PropTypes.object,
   processing: PropTypes.bool,
   data: PropTypes.object,
+  dataStore: PropTypes.object,
   response: PropTypes.object
 }
 
 const mapStateToProps = state => {
   return {
     processing : state.exampleHouses.processing,
-    data : state.exampleHouses.data
+    data : state.exampleHouses.data,
+    dataStore: state.outletStores.data
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  exampleHousesGetRequest : data => dispatch(ExampleHousesActions.exampleHousesGetRequest(data))
+  exampleHousesGetRequest : data => dispatch(ExampleHousesActions.exampleHousesGetRequest(data)),
+  outletStoresGetRequest : dataStore => dispatch(OutletStoresActions.outletStoresGetRequest(dataStore))
 }) 
 
 export default connect(
