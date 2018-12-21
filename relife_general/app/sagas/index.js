@@ -12,6 +12,7 @@ import { AuthsTypes } from '../redux/wrapper/AuthsRedux'
 import { ProfileTypes } from '../redux/wrapper/ProfileRedux'
 import { LocationTypes } from '../redux/wrapper/LocationsRedux'
 import { ExampleHousesTypes } from '../redux/wrapper/ExampleHousesRedux'
+import { OutletStoresTypes } from '../redux/wrapper/OutletStoresRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
@@ -21,6 +22,7 @@ import LocationsSagas from './wrapper/LocationsSagas'
 import { AttributeTypes } from '../redux/wrapper/AttributesRedux'
 import AttributesSagas from './wrapper/AttributesSagas'
 import ExampleHousesSagas from './wrapper/ExampleHousesSagas'
+import OutletStoresSagas from './wrapper/OutletStoresSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -99,6 +101,7 @@ export default function* root() {
       AttributesSagas.listHouseSize
     ),
 
+    // Example House
     // Get List Example House
     takeLatest(
       ExampleHousesTypes.EXAMPLE_HOUSES_LIST_REQUEST,
@@ -108,6 +111,12 @@ export default function* root() {
       ExampleHousesTypes.EXAMPLE_HOUSES_GET_REQUEST,
       ExampleHousesSagas.getHouseById
     ),
+
+    //Outlet Stores
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORES_GET_REQUEST,
+      OutletStoresSagas.getStores
+    )
 
   ]
 }

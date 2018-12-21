@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Form, Label, Input, FormGroup } from 'reactstrap'
+import { Form, Label, Input, FormGroup, Button } from 'reactstrap'
 import AttributeActions from '../../redux/wrapper/AttributesRedux'
 class AttributesSeach extends React.Component {
   constructor(props) {
@@ -76,11 +76,15 @@ class AttributesSeach extends React.Component {
     }
   }
 
+  handleResetForm = () => {
+    document.getElementById('frm-search').reset()
+  }
+
   render() {
     const { listConstruction, listFloor, listPrice, listStyle, listHouseSize, listHouseIncome } = this.state
     return (
       <section className="side pc">
-        <Form>
+        <Form id="frm-search">
           <div className="sidebar-search-choices">
             {/* list price */}
             <div className="sidebar-search-choices-inner">
@@ -159,13 +163,13 @@ class AttributesSeach extends React.Component {
                 </FormGroup>
             </div>
 
-            <button name="action" value="clear" type="button" className="sidebar-clear-btn btn clear-button">
+            <button type="button" onClick={this.handleResetForm} className="sidebar-clear-btn btn clear-button">
               入力値をリセット
             </button>
-            <button type="button" className="sidebar-search-btn btn btn-default">
+            <Button type="button" className="sidebar-search-btn btn btn-default">
               <i className="fa fa-search" />
               検索
-            </button>
+            </Button>
           </div>
         </Form>
       </section>
