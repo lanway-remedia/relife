@@ -10,7 +10,6 @@ import OutletStoresActions from '../../redux/wrapper/OutletStoresRedux'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import { DefaultValue } from '../../constants'
-import PaginationComponent from './../../components/PaginationComponent';
 class ExampleHouseListPage extends React.Component {
   constructor(props) {
     super(props)
@@ -53,12 +52,13 @@ class ExampleHouseListPage extends React.Component {
       let response = nextProps.data
       if (response.isGetList) {
         if (response.messageCode == 'EX200') {
+          let exampleHouseNewId = response.data.results[0].id
+          this.props.exampleHousesGetRequest(exampleHouseNewId)
+          response.data.results.shift()
           this.setState({
             exampleHouseList: response.data.results,
             count: response.data.count
           })
-          let exampleHouseNewId = response.data.results[0].id
-          this.props.exampleHousesGetRequest(exampleHouseNewId)
         }
       }
     }
@@ -74,8 +74,7 @@ class ExampleHouseListPage extends React.Component {
   }
 
   render() {
-    let {exampleHouseList, exampleHouseNew, count } = this.state
-    console.log(exampleHouseNew)
+    let {exampleHouseList, exampleHouseNew} = this.state
     return (
       <div className="lower-contents">
         <div className="lower-contents-inner clearfix">
@@ -101,14 +100,16 @@ class ExampleHouseListPage extends React.Component {
                   </div>
                 </div>
                 <div className="adv-example-once-text">シンプルだけど存在感の大きさを感じる絶妙なデザイン</div>
-                <div className="adv-example-once-company-area">東京都西東京市</div>
-                <div className="adv-example-once-company">株式会社クレアホームの施工事例</div>
+                <div className="adv-example-once-company-area">{exampleHouseNew.store ? exampleHouseNew.store.district.name + ' ' + exampleHouseNew.store.district.city.name : ''}</div>
+                <div className="adv-example-once-company">{exampleHouseNew.store ? exampleHouseNew.store.title : ''}</div>
                 
               </div>
             </div>
 
             <div className="example-list clearfix">
-              {exampleHouseList.map((val, key) => (
+
+              {exampleHouseList.map((val, key) => {
+                return (
                 <Link key={key} to={'example/' + val.id} className="example-list-once">
                   <div className="example-list-once-img">
                     <img src={val.img_large} alt={val.title} />
@@ -116,10 +117,11 @@ class ExampleHouseListPage extends React.Component {
                   <h3 className="example-list-once-title">
                     {val.title}
                   </h3>
-                  <div className="example-list-once-company-area">Company Area</div>
+                  <div className="example-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
                   <div className="example-list-once-company">{val.store.title}</div>
                 </Link>
-              ))}
+                )
+              })}
             </div>
           </section>
           <AttributesSeach />

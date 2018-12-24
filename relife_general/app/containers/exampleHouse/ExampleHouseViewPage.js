@@ -52,7 +52,6 @@ class ExampleHouseViewPage extends React.Component {
         this.setState({
           outletStore: response.data
         })
-        console.log(response.data)
       }
     }
   }
@@ -62,7 +61,7 @@ class ExampleHouseViewPage extends React.Component {
     let isTags
     let ex_tags = exampleHouse.ex_tags
     if (!ex_tags || ex_tags === undefined) isTags = false
-    console.log(exampleHouse)
+
     return (
       <div className="lower-contents">
         <div className="lower-contents-inner clearfix">
@@ -72,7 +71,7 @@ class ExampleHouseViewPage extends React.Component {
             </h1>
 
             <div className="example-detail-company-name">
-              {outletStore.title}
+              {exampleHouse.store ? exampleHouse.store.title : ''}
             </div>
 
             <div className="detail-img">
