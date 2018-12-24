@@ -1,12 +1,12 @@
 from rest_framework.serializers import ModelSerializer
 
+from mrelife.attributes.models import (Contruction, Floor, HouseHoldIncome,
+                                       HouseHoldSize, Style)
 from mrelife.examplehouses.models import (ExampleHouse, ExampleHouseCommitment,
                                           ExampleHouseStyle, ExampleHouseTag)
-
-
+from mrelife.locations.models import City, District
 from mrelife.outletstores.models import OutletStore
-from mrelife.attributes.models import (Contruction, Floor,
-                                       HouseHoldIncome, HouseHoldSize, Style)
+
 
 class ExampleHouseTagSerializer(ModelSerializer):
 
@@ -24,6 +24,7 @@ class StyleSerializer(ModelSerializer):
 
 class ExampleHouseStyleSerializer(ModelSerializer):
     style = StyleSerializer()
+
     class Meta:
         model = ExampleHouseStyle
         fields = '__all__'
@@ -47,21 +48,27 @@ class ExampleHouseSerializer(ModelSerializer):
         return data
 
 
-class ExampleHouseNestedSerializer(ModelSerializer):
-    ex_tags = ExampleHouseTagSerializer(many=True, read_only=False)
-    styles = ExampleHouseStyleSerializer(many=True, read_only=False)
-    commitments = ExampleHouseCommitmentSerializer(many=True, read_only=False)
+class CitySerializer(ModelSerializer):
 
     class Meta:
-        model = ExampleHouse
-        fields = '__all__'
+        model = City
+        fields = ('id', 'name', 'name_en',)
+
+
+class DistrictSerializer(ModelSerializer):
+    city = CitySerializer()
+
+    class Meta:
+        model = District
+        fields = ('id', 'name', 'name_en', 'city',)
 
 
 class OutletStoreSerializer(ModelSerializer):
+    district = DistrictSerializer()
 
     class Meta:
         model = OutletStore
-        fields = ('id', 'title', )
+        fields = ('id', 'title', 'district')
 
 
 class ContructionSerializer(ModelSerializer):
@@ -91,12 +98,24 @@ class HouseHoldIncomeSerializer(ModelSerializer):
         model = HouseHoldIncome
         fields = ('id', 'title', )
 
+
 class ExampleHouseNestedNameOnlySerializer(ModelSerializer):
     store = OutletStoreSerializer()
     contruction = ContructionSerializer()
     floor = FloorSerializer()
     household_size = HouseHoldSizeSerializer()
     household_income = HouseHoldIncomeSerializer()
+
+    class Meta:
+        model = ExampleHouse
+        fields = '__all__'
+
+
+class ExampleHouseNestedSerializer(ModelSerializer):
+    ex_tags = ExampleHouseTagSerializer(many=True, read_only=False)
+    styles = ExampleHouseStyleSerializer(many=True, read_only=False)
+    commitments = ExampleHouseCommitmentSerializer(many=True, read_only=False)
+    store = OutletStoreSerializer()
 
     class Meta:
         model = ExampleHouse

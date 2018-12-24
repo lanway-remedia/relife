@@ -23,7 +23,6 @@ import ExhibitionActions from '../../redux/wrapper/ExhibitionsRedux'
 import { toast } from 'react-toastify'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
-import 'react-datepicker/dist/react-datepicker.css'
 
 import ImageUploadComponent from './../../components/ImageUploadComponent'
 import LocationsComponent from '../../components/LocationsComponent'
@@ -49,6 +48,7 @@ class AddNewExhibitionPage extends React.Component {
     this.handleChangeToDate = this.handleChangeToDate.bind(this)
     this.handleSelectedCity = this.handleSelectedCity.bind(this)
     this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
+    // this.handleOnBlur = this.handleOnBlur.bind(this)
   }
 
   handleChange = e => {
@@ -105,6 +105,11 @@ class AddNewExhibitionPage extends React.Component {
       }
     }
   }
+
+  // handleOnBlur = e => {
+  //   const date = new Date(e.target.value)
+  //   moment(date.target.value).format('YYYY/MM/DD')
+  // }
 
   handleSubmit = e => {
     e.preventDefault()
@@ -197,6 +202,7 @@ class AddNewExhibitionPage extends React.Component {
                     locale="en-us"
                     placeholderText="yyyy/mm/dd"
                     name="toDate"
+                    // onBlur={this.handleOnBlur}
                   />
                 </InputGroup>
               </FormGroup>
