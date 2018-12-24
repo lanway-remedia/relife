@@ -2,10 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import exh01 from '../../images/exh-01.jpg'
-import exhItem01 from '../../images/exh-item-01.jpg'
 
-import OutletStoresActions from '../../redux/wrapper/OutletStoresRedux'
 import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import ShareHouse from '../../components/exampleHouse/ShareHouse'
@@ -14,7 +11,8 @@ class ExampleHouseViewPage extends React.Component {
     super(props)
     this.state = {
       exampleHouse: [],
-      outletStore: []
+      outletStore: [],
+      listExampleHouseByStore: []
     }
   }
 
@@ -36,32 +34,37 @@ class ExampleHouseViewPage extends React.Component {
       let response = nextProps.data
       if (response.data === undefined || response.data.length == 0) {
         this.props.history('/example')
-      } else {
+      } else if (response.isGetHouse) {
         this.setState({
           exampleHouse: response.data
         })
-        let storeId = response.data.store
-        this.props.outletStoresGetRequest(storeId)
+        let storeId = response.data.store.id
+        let dataHouseByStoreId = {
+          limit: '',
+          store_id :storeId,
+          offset: ''
+        }
+        this.props.exampleHousesListByStoreRequest(dataHouseByStoreId)
       }
-    }
 
-    // get outlet store of example house
-    if (this.props.dataStore != nextProps.dataStore) {
-      let response = nextProps.dataStore
-      if (response.isGetStore) {
+      if(response.isListHouseByStore){
         this.setState({
-          outletStore: response.data
+          listExampleHouseByStore: response.data
         })
       }
     }
   }
 
   render() {
-    let {exampleHouse, outletStore } = this.state
+    let {exampleHouse, listExampleHouseByStore } = this.state
     let isTags
     let ex_tags = exampleHouse.ex_tags
     if (!ex_tags || ex_tags === undefined) isTags = false
 
+    let company_id
+    if (exampleHouse.store) {
+      company_id = exampleHouse.store.id
+    }
     return (
       <div className="lower-contents">
         <div className="lower-contents-inner clearfix">
@@ -90,28 +93,30 @@ class ExampleHouseViewPage extends React.Component {
 
             <div className="detail-btn-wrap clearfix">
               <div className="detail-btn">
-                <Link to={'/builder/' + outletStore.id}>{I18nUtils.t('go-to-store')}</Link>
+                <Link to={'/builder/'+company_id}>{I18nUtils.t('go-to-store')}</Link>
               </div>
             </div>
 
             <h2 className="detail-subtitle">{I18nUtils.t('house-related')}</h2>
 
             <div className="detail-list clearfix">
-              <Link to="" className="detail-list-once">
-                <div className="detail-list-once-img">
-                  <img src={exhItem01} alt="exh-item" />
-                </div>
-
-                <h3 className="detail-list-once-title">
-                  室内を見渡すのが楽しくなる、開放的な住まい
-                </h3>
-
-                <div className="detail-list-once-company-area">東京都西東京市</div>
-
-                <div className="detail-list-once-company">株式会社クレアホームの施工事例</div>
-              </Link>
+              {listExampleHouseByStore.map((val, key) => {
+                if (val.id != exampleHouse.id) {
+                  return (
+                    <Link to={'/example/' +val.id} key={key} className="detail-list-once">
+                      <div className="detail-list-once-img">
+                        <img src={val.img_large} alt="exh-item" />
+                      </div>
+                      <h3 className="detail-list-once-title">
+                        {val.title}
+                      </h3>
+                      <div className="detail-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
+                      <div className="detail-list-once-company">{val.store.title}</div>
+                    </Link>
+                    )
+                }
+              })}
             </div>
-
             <ShareHouse />
           </section>
         </div>
@@ -122,11 +127,12 @@ class ExampleHouseViewPage extends React.Component {
 
 ExampleHouseViewPage.propTypes = {
   exampleHousesGetRequest: PropTypes.func,
-  outletStoresGetRequest: PropTypes.func,
+  exampleHousesListByStoreRequest: PropTypes.func,
   history: PropTypes.object,
   match: PropTypes.object,
   processing: PropTypes.bool,
   data: PropTypes.object,
+  dataHouseByStore: PropTypes.object,
   dataStore: PropTypes.object,
   response: PropTypes.object
 }
@@ -135,13 +141,13 @@ const mapStateToProps = state => {
   return {
     processing : state.exampleHouses.processing,
     data : state.exampleHouses.data,
-    dataStore: state.outletStores.data
+    dataHouseByStore: state.exampleHouses.data
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   exampleHousesGetRequest : data => dispatch(ExampleHousesActions.exampleHousesGetRequest(data)),
-  outletStoresGetRequest : dataStore => dispatch(OutletStoresActions.outletStoresGetRequest(dataStore))
+  exampleHousesListByStoreRequest : dataHouseByStore => dispatch(ExampleHousesActions.exampleHousesListByStoreRequest(dataHouseByStore)),
 }) 
 
 export default connect(

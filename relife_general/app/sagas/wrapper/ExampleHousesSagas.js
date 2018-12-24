@@ -29,6 +29,19 @@ const ExampleHousesSagas = {
     } catch(err) {
       yield put(ExampleHousesActions.exampleHousesFailure(err))
     }
+  },
+  *getHouseByStoreId( {data} ) {
+    try {
+      let response = yield call(exampleHousesService.getExampleHousesByStoreId, data)
+      yield put(
+        ExampleHousesActions.exampleHousesListByStoreSuccess(
+          response.data,
+          (response.data.isListHouseByStore = true )
+        )
+      )
+    } catch(err) {
+      yield put(ExampleHousesActions.exampleHousesListByStoreFailure(err))
+    }
   }
 }
 

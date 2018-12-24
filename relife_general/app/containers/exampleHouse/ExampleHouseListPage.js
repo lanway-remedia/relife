@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import I18nUtils from '../../utils/I18nUtils'
-import exh01 from '../../images/exh-01.jpg'
 import AttributesSeach from '../../components/exampleHouse/AttributesSeach'
 import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
 import OutletStoresActions from '../../redux/wrapper/OutletStoresRedux'
@@ -54,7 +53,6 @@ class ExampleHouseListPage extends React.Component {
         if (response.messageCode == 'EX200') {
           let exampleHouseNewId = response.data.results[0].id
           this.props.exampleHousesGetRequest(exampleHouseNewId)
-          response.data.results.shift()
           this.setState({
             exampleHouseList: response.data.results,
             count: response.data.count
@@ -107,20 +105,21 @@ class ExampleHouseListPage extends React.Component {
             </div>
 
             <div className="example-list clearfix">
-
               {exampleHouseList.map((val, key) => {
-                return (
-                <Link key={key} to={'example/' + val.id} className="example-list-once">
-                  <div className="example-list-once-img">
-                    <img src={val.img_large} alt={val.title} />
-                  </div>
-                  <h3 className="example-list-once-title">
-                    {val.title}
-                  </h3>
-                  <div className="example-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
-                  <div className="example-list-once-company">{val.store.title}</div>
-                </Link>
-                )
+                if (val.id != exampleHouseNew.id) {
+                  return (
+                  <Link key={key} to={'example/' + val.id} className="example-list-once">
+                    <div className="example-list-once-img">
+                      <img src={val.img_large} alt={val.title} />
+                    </div>
+                    <h3 className="example-list-once-title">
+                      {val.title}
+                    </h3>
+                    <div className="example-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
+                    <div className="example-list-once-company">{val.store.title}</div>
+                  </Link>
+                  )
+                }
               })}
             </div>
           </section>
