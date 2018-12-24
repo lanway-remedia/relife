@@ -545,6 +545,9 @@ class AddNewExampleHousePage extends React.Component {
                 <Col xs="12" md="12" className="mt-3">
                   <div className="btns-group text-center">
                     <Button color="success">
+                      {I18nUtils.t('btn-page-review')}
+                    </Button>
+                    <Button color="success">
                       {I18nUtils.t('btn-add-new')}
                     </Button>
                     <Button

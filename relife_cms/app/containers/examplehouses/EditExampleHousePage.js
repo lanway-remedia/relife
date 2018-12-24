@@ -123,13 +123,14 @@ class EditExampleHousePage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.dataExample !== nextProps.dataExample) {
       let response = nextProps.dataExample
+      console.log(response)
       if (response.data === undefined || response.data.length === 0) {
         this.props.show(ModalName.COMMON, {
           message: I18nUtils.t('toast-no-data')
         })
         this.props.history.replace('/manage-example-house-list')
       } else {
-        this.props.outletStoreGetRequest(response.data.store)
+        this.props.outletStoreGetRequest(response.data.store.id)
         console.log(nextProps.dataExample)
         this.setState(
           {
@@ -332,6 +333,7 @@ class EditExampleHousePage extends React.Component {
       houseincome,
       housesize
     } = this.state
+
     return (
       <Container fluid className="edit-examplehouse">
         <Helmet>
