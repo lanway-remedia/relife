@@ -1,3 +1,7 @@
+"""
+    User Module
+    By Bin Nguyen
+"""
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
@@ -7,13 +11,11 @@ from django.db.models import Q
 from django.http import Http404
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from rest_framework import status
 from rest_framework.decorators import list_route
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from url_filter.integrations.drf import DjangoFilterBackend
 
@@ -24,9 +26,9 @@ from mrelife.outletstores.models import OutletStore
 from mrelife.users.serializers import (
     PasswordSerializer,
     ProfileSerializer,
+    ShowProfileSerializer,
     UserSerializer,
-    UserWithoutRequireInfoSerializer,
-    ShowProfileSerializer
+    UserWithoutRequireInfoSerializer
 )
 from mrelife.utils.groups import GroupUser, IsStore
 from mrelife.utils.querys import get_or_none
@@ -231,4 +233,3 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
         user.set_password(serializer.data['password1'])
         user.save()
         return response_200('US014', '', serializer.data)
-

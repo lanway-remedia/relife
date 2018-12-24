@@ -1,19 +1,25 @@
+"""
+    Example house
+"""
 from django.http import Http404
-from rest_framework import status
 from rest_framework.decorators import detail_route
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from url_filter.integrations.drf import DjangoFilterBackend
 
 from mrelife.examplehouses.models import ExampleHouse, ExampleHouseCommitment, ExampleHouseStyle, ExampleHouseTag
-from mrelife.examplehouses.serializers import ExampleHouseNestedSerializer, ExampleHouseSerializer, ExampleHouseNestedNameOnlySerializer
+from mrelife.examplehouses.serializers import (
+    ExampleHouseNestedNameOnlySerializer,
+    ExampleHouseNestedSerializer,
+    ExampleHouseSerializer
+)
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
 from mrelife.utils.groups import IsStore, IsSub
 from mrelife.utils.model_house_permission import ModelHousePermission
-from mrelife.utils.response import response_404, response_201, response_200
+from mrelife.utils.response import response_200, response_201, response_404
 
 
 class ExampleHouseViewSet(ModelViewSet):
@@ -22,15 +28,20 @@ class ExampleHouseViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated, ModelHousePermission,)
     parser_class = (FormParser, MultiPartParser, JSONParser)
     pagination_class = LimitOffsetPagination
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['store_id']
 
     def list(self, request, *args, **kwargs):
+        """
+            Can filter store_id by adding parameter on url
+            GET: ?store_id=INT
+        """
         try:
             self.serializer_class = ExampleHouseNestedNameOnlySerializer
             response = super(ExampleHouseViewSet, self).list(request, *args, **kwargs)
             return response_200('EX200', '', response.data)
         except Http404:
             return response_404('EX404')
-        
 
     def retrieve(self, request, *args, **kwargs):
         try:
@@ -87,7 +98,7 @@ class ExampleHouseViewSet(ModelViewSet):
                     ExampleHouseCommitment.objects.create(commitment_id=commitment, example_house=house)
                 except Exception:
                     pass
-        
+
         return response_201('EX201', '', obj.data)
 
     def update(self, request, *args, **kwargs):
@@ -121,7 +132,7 @@ class ExampleHouseViewSet(ModelViewSet):
             house = ExampleHouse.objects.get(pk=kwargs['pk'])
         except Http404:
             return response_404('EX404')
-        
+
         tags = request.data.get('tags')
         if tags is not None:
             for tag_name in tags:
