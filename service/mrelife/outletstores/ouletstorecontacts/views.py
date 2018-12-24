@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.outletstores.models import OutletStoreContact, OutletStoreContactReply
-from mrelife.outletstores.serializers import OutletStoreContactSerializer
+from mrelife.outletstores.ouletstorecontacts.serializers import OutletStoreContactSerializer
 from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStorePermission
