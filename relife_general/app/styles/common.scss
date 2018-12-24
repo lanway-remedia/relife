@@ -1,5 +1,45 @@
+html {
+  font-size: 62.5%;
+}
+
+body { 
+  font-size: $font-size-base; 
+}
+
+input, select {
+  border: 1px solid $border-color !important;
+}
+
+.lower-contents {
+  margin: 0 0 70px 0;
+
+  .lower-contents-inner {
+    width: 1000px;
+    margin: 0 auto;
+  }
+}
+
 img {
   object-fit: cover;
+}
+
+a.btn-default{
+  text-decoration: none;
+}
+
+a.btn-default:hover{
+  color: #fff;
+  background: #2c9a5c;
+}
+
+button.btn-default:hover{
+  background: #2c9a5c;
+}
+
+.btn-default {
+  border-radius: 0px;
+  background: #057235;
+  color: #fff;
 }
 
 .wrapper {
@@ -244,4 +284,34 @@ footer.cgYtLz {
 
 .fr-box.fr-basic .fr-element {
   min-height: 150px;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #0c7c40;
+  height: 36px;
+}
+
+.btn-danger {
+  height: 36px;
+}
+
+.icon {
+  width: 20px;
+}
+
+.fl {
+  float: left;
+}
+
+@media screen and (min-width:768px) {
+  .sp{
+    display: none !important;
+  }
+}
+
+@media screen and (max-width:768px) {
+  .pc{
+    display: none !important;
+  }
 }

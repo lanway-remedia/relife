@@ -7,7 +7,7 @@ import apiClient from '../../shared/apiClient'
 
 export default class AuthsService {
     register(data) {
-        return apiClient.post(`/users/v1/auth/register/`, data)
+        return apiClient.post(`/auths/v1/register/`, data)
     }
 
     login(data) {

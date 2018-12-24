@@ -97,9 +97,9 @@ class LoginPage extends React.Component {
               <FormGroup>
                 <Link
                   to="/forgot-password"
-                  title={I18nUtils.t('forgotPassword')}
+                  title={I18nUtils.t('forgot-password')}
                 >
-                  {I18nUtils.t('forgotPassword')}
+                  {I18nUtils.t('forgot-password')}
                 </Link>
               </FormGroup>
               <FormGroup className="btns-group">

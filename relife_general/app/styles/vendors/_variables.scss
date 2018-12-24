@@ -1,8 +1,8 @@
 // Override Bootstrap
-$font-size-base: 0.8rem;
-
+$font-size-base: 1.2rem;
+$font-family-base: 'HiraKakuProW3', sans-serif;
 $input-border-color: #000;
-$input-height: 2.5rem;
+$input-height: 3.8rem;
 $input-border-radius: 4px;
 $input-padding-y: 4px;
 $input-padding-x: 10px;
@@ -33,6 +33,16 @@ $bkg-red-color: #f00;
 $bkg-black-color: #000;
 $bkg-white-color: #fff;
 $bkg-header-color: #3c8dbc;
+$bkg-primary-color: #007332;
+$bkg-secondary-color: #2c9a5c;
+$bkg-text-color: #323935;
+$bkg-text-secondary-color: #242d28;
+$bkg-text-tertiary-color: #424945;
+$bkg-red-color: #f00;
+$bkg-black-color: #000;
+$bkg-white-color: #fff;
+$bkg-header-color: #3c8dbc;
+$bkg-hover-color: #f0f5fc;
 
 $border-color: #ccc;
 $border-color-2: #bbb;
@@ -45,3 +55,9 @@ $text-secondary-color: #111;
 $text-white-color: #fff;
 
 $item-hover: #A2EFDD;
+
+$text-primary-color: #007332;
+
+$bg-btn-color: #057235;
+
+$bg-hover-btn-color: #2c9a5c;

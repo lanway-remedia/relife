@@ -7,10 +7,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-import {Container} from 'reactstrap'
-import BackGround from '../components/BackGround'
-import ExampleHouseList from '../components/ExampleHouseList'
-
+import BackGround from '../components/home/BackGround'
+import ExampleHouseList from '../components/home/ExampleHouseList'
+import SliderKeyword from '../components/home/SliderKeyword'
+import TopMap from '../components/home/TopMap'
+import 'font-awesome/css/font-awesome.css'
 class HomePage extends React.Component {
     constructor(props) {
         super(props)
@@ -20,9 +21,9 @@ class HomePage extends React.Component {
     render() {
         return [
             <BackGround key="1" />,
-            <Container key="2">
-                <ExampleHouseList />
-            </Container>
+            <TopMap key="2" />,
+            <ExampleHouseList key="3" />,
+            <SliderKeyword key="4" />
         ]
     }
 }

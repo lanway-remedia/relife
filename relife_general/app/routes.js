@@ -9,6 +9,9 @@ import {Route, Redirect, withRouter, Switch} from 'react-router-dom'
 import {ToastContainer} from 'react-toastify'
 //header
 import Header from './components/Header'
+import Footer from './components/Footer'
+//breadcrumb
+import Breadcrumb from './components/Breadcrumb'
 //homepage
 import HomePage from './containers/HomePage'
 //auths
@@ -18,12 +21,16 @@ import ResetPasswordPage from './containers/auths/ResetPasswordPage'
 import ForgotPasswordPage from './containers/auths/ForgotPasswordPage'
 //profiles
 import ProfileInfoPage from './containers/profiles/ProfileInfoPage'
-import ProfileEditPage from './containers/profiles/ProfileEditPage'
 import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
+import ProfileBecomeOutlerPage from './containers/profiles/ProfileBecomeOutlerPage'
+import ProfileBookingHistoryPage from './containers/profiles/ProfileBookingHistoryPage'
+//exampleHouse
+import ExampleHouseListPage from './containers/exampleHouse/ExampleHouseListPage'
+import ExampleHouseViewPage from './containers/exampleHouse/ExampleHouseViewPage'
 
 import {StorageKeyConstants} from './constants'
 import 'react-toastify/dist/ReactToastify.css'
-
+import defaultAvatar from './images/user.png'
 class Routes extends React.Component {
     constructor(props) {
         super(props)
@@ -41,6 +48,8 @@ class Routes extends React.Component {
     }
 
     render() {
+        let { username, userimage } = this.props
+        userimage = userimage || defaultAvatar
         const isAuthenticated = () => {
             let isLogin = false
             var code = localStorage.getItem(StorageKeyConstants.TOKEN)
@@ -48,7 +57,6 @@ class Routes extends React.Component {
             if (code && code != '') {
                 isLogin = true
             }
-
             return isLogin
         }
 
@@ -59,14 +67,24 @@ class Routes extends React.Component {
                 <Redirect to="/login" />
             )
         }
-
+        let hideMenu =
+            this.props.location.pathname.includes('/login') ||
+            this.props.location.pathname.includes('/forgot-password') ||
+            this.props.location.pathname.includes('/email-confirm') ||
+            this.props.location.pathname.includes('/register')
         return (
             <div className="wrapper">
+                {!hideMenu ? (
                 <React.Fragment>
                     <ToastContainer />
-                    <Header />
+                    <Header 
+                        isAuthenticated={isAuthenticated()}
+                        name={username}
+                        image={userimage}
+                    />
+                    <Breadcrumb />
                     <Switch>
-                        <Route exact path="/login" component={LoginPage} />
+                        <Route path="/login" component={LoginPage} />
                         <Route path="/forgot-password" component={ForgotPasswordPage} />
                         <Route
                             path="/email-confirm/:uidb64/:token_key"
@@ -78,25 +96,46 @@ class Routes extends React.Component {
                             component={HomePage}
                         />
                         <Route
-                            exact
-                            path="/register"
-                            component={RegisterPage}
-                        />
-                        <Route
-                            exact
                             path="/profile"
                             component={requireLogin(ProfileInfoPage)}
                         />
                         <Route
-                            path="/profile-edit"
-                            component={requireLogin(ProfileEditPage)}
-                        />
-                        <Route
-                            path="/profile-change-password"
+                            path="/change-pass"
                             component={requireLogin(ProfileChangePassPage)}
                         />
+                        <Route
+                            path="/become-outler"
+                            component={requireLogin(ProfileBecomeOutlerPage)}
+                        />
+                        <Route
+                            path="/booking-history"
+                            component={requireLogin(ProfileBookingHistoryPage)}
+                        />
+                        <Route
+                            path="/example"
+                            component={ExampleHouseListPage}
+                        />
+                        <Route
+                            path="/example-view"
+                            component={ExampleHouseViewPage}
+                        />
+                    </Switch>
+                    <Footer />
+                </React.Fragment>
+                ) : (
+                <React.Fragment>
+                    <ToastContainer />
+                    <Switch>
+                    <Route path="/login" component={LoginPage} />
+                    <Route path="/register" component={RegisterPage} />
+                    <Route path="/forgot-password" component={ForgotPasswordPage} />
+                    <Route
+                        path="/email-confirm/:uidb64/:token_key"
+                        component={ResetPasswordPage}
+                    />
                     </Switch>
                 </React.Fragment>
+                )}
             </div>
         )
     }

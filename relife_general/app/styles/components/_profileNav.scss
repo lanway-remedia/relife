@@ -1,0 +1,60 @@
+.profile-nav {
+  border: solid 1px $border-color-2;
+  height: fit-content;
+  border-radius: 4px;
+  box-shadow: 0 2px 9px 0 $border-color;
+  .profile {
+    margin-top: 1em;
+    display: flex;
+    .image-container {
+      width: 80px;
+      float: left;
+      text-align: center;
+    }
+    .info-container {
+      width: calc(100% - 80px);
+      height: 60px;
+      float: left;
+      display: table;
+      div {
+        display: table-cell;
+        vertical-align: middle;
+        span {
+          white-space: nowrap;
+          &:nth-child(1) {
+            color: $bkg-primary-color;
+            font-weight: bold;
+            font-size: 1.4rem;
+          }
+          &:nth-child(3) {
+            color: $bkg-text-color;
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+  .navigation {
+    margin-top: .5em;
+    .list-group {
+      border-top: 1px solid $border-color-2;
+      .list-group-item {
+        border-left: none;
+        border-right: none;
+        border-radius: none;
+        cursor: pointer;
+        color: $bkg-text-color;
+        font-weight: bold;
+        &:hover {
+          color: $bkg-primary-color;
+          background-color: $bkg-hover-color;
+        }
+        &.active {
+          color: $bkg-primary-color;
+          background-color: $bkg-hover-color;
+          border-color: $border-color-2;
+        }
+      }
+    }
+  }
+}
