@@ -1,5 +1,8 @@
 header {
   background: #f2f3f2;
+  &.sp {
+    background: #fff;
+  }
 
   .header-inner {
     position: relative;

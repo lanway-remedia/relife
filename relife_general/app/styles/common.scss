@@ -16,6 +16,9 @@ input, select {
   .lower-contents-inner {
     width: 1000px;
     margin: 0 auto;
+    @media screen and (max-width: 767px) {
+      width: 100%;
+    }
   }
 }
 
