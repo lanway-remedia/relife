@@ -1,4 +1,4 @@
-from django.db.models import CASCADE, DateField, FloatField, IntegerField, ForeignKey
+from django.db.models import CASCADE, DateField, FloatField, IntegerField, ForeignKey, BooleanField
 
 from mrelife.fees.models import Fee
 from mrelife.outletstores.models import OutletStore
@@ -14,6 +14,7 @@ class Invoice(BaseModel):
     example_house_number = FloatField(default=0)
     article_number = FloatField(default=0)
     total_fee = FloatField(default=0)
+    paid = BooleanField(default=False)
 
     class Meta:
         db_table = 'invoice'

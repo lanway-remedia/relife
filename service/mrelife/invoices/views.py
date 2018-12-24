@@ -1,4 +1,6 @@
 from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.decorators import detail_route
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
@@ -48,4 +50,13 @@ class InvoiceViewSet(ModelViewSet):
         try:
             return super(InvoiceViewSet, self).destroy(request, *args, **kwargs)
         except Http404:
+            return response_404('INV404')
+
+    @detail_route(methods=['post'])
+    def paid(self, request, *args, **kwargs):
+        try:
+            invoice = Invoice.objects.get(pk=kwargs.get("pk"))
+            invoice.paid = True
+            invoice.save()
+        except ObjectDoesNotExist:
             return response_404('INV404')

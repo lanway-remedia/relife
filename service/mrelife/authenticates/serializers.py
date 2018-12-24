@@ -1,6 +1,14 @@
-from rest_framework.serializers import CharField, EmailField, Serializer, ValidationError
+"""
+    Authenticate Serializer
+"""
+from rest_framework.serializers import (CharField, EmailField, Serializer,
+                                        ValidationError)
 
+from mrelife.authenticates.lanway_portal import lanway_login, lanway_user_exist
 from mrelife.utils.validates import email_exist, username_exist
+
+######################################################################
+# Version 1
 
 
 class ResetPasswordSerializer(Serializer):
@@ -42,11 +50,50 @@ class RegisterSerializer(Serializer):
         """
         Check that the start is before the stop.
         """
-        # TODO: Change error message
         if attrs['password1'] != attrs['password2']:
             raise ValidationError("US002")
         if email_exist(attrs['mail']):
             raise ValidationError("RG001")
         if username_exist(attrs['username']):
             raise ValidationError("RG002")
+        return attrs
+
+######################################################################
+# Version 2
+
+
+class LoginSerializer(Serializer):
+    """
+        Serializer for password change endpoint.
+    """
+    username = CharField(required=True)
+    password = CharField(required=True)
+
+    def validate(self, attrs):
+        """
+            check account is exist
+        """
+        if not lanway_login(attrs['username'], attrs['password']):
+            raise ValidationError("LWLG001")
+        return attrs
+
+
+class RegisterV2Serializer(Serializer):
+    """
+        Serializer for register with lanway db checked endpoint.
+    """
+    mail = EmailField(required=True)
+    username = CharField(required=True)
+    password1 = CharField(required=True)
+    password2 = CharField(required=True)
+    domain = CharField(required=True)
+
+    def validate(self, attrs):
+        """
+            Check password and existing of email
+        """
+        if attrs['password1'] != attrs['password2']:
+            raise ValidationError("US002")
+        if lanway_user_exist(attrs['mail']):
+            raise ValidationError("RG001")
         return attrs

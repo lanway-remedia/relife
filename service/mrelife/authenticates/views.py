@@ -13,10 +13,11 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import JSONWebTokenAPIView
 
 from mrelife.authenticates.mails import auth_mail
-from mrelife.authenticates.serializers import PasswordSerializer, RegisterSerializer, ResetPasswordSerializer
+from mrelife.authenticates.serializers import (PasswordSerializer,
+                                               RegisterSerializer,
+                                               ResetPasswordSerializer)
 from mrelife.utils.groups import GroupUser
 from mrelife.utils.querys import get_or_none
-from mrelife.utils.relifeenum import MessageCode
 from mrelife.utils.validates import email_exist
 
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
@@ -220,7 +221,7 @@ class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
             return response
         formated_errors = {
             'status': False,
-            'messageCode': MessageCode.AU003.value,
+            'messageCode': 'AU003',
             'messageParams': None,
             'data': serializer.errors
         }
