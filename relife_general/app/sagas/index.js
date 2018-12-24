@@ -111,6 +111,10 @@ export default function* root() {
       ExampleHousesTypes.EXAMPLE_HOUSES_GET_REQUEST,
       ExampleHousesSagas.getHouseById
     ),
+    takeLatest(
+      ExampleHousesTypes.EXAMPLE_HOUSES_LIST_BY_STORE_REQUEST,
+      ExampleHousesSagas.getHouseByStoreId
+    ),
 
     //Outlet Stores
     // Get Outlet Store
