@@ -25,7 +25,7 @@ from mrelife.utils.relifeenum import MessageCode
 class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
     queryset = OutletStoreContactReply.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = OutletStoreContactReplySerializer
-    permission_classes = (IsAuthenticated, OutletStorePermission,)
+    #permission_classes = (IsAuthenticated, OutletStorePermission,)
     pagination_class = LimitOffsetPagination
 
     def list(self, request):
@@ -52,10 +52,10 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
         try:
             serializer = OutletStoreContactReplySerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                serializer.save(user_id=1, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR003.value, ""), status=status.HTTP_201_CREATED)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR004.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR004.value, ""), status=status.HTTP_400_BAD_REQUEST)
 
@@ -68,7 +68,7 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreContactReplySerializer(outletstoreObject, data=request.data)
             if serializer.is_valid():
-                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                serializer.save(user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR005.value, ""), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR006.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
