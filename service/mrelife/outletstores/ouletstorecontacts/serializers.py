@@ -27,7 +27,6 @@ class OutletStoreContactVReplySerializer(serializers.ModelSerializer):
 
 class OutletStoreContactSerializer(serializers.ModelSerializer):
     outlet_store_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
-    create_user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_active=1), write_only=True)
     outlet_store = OutletStoreSerializer(read_only=True)
     create_user = UserSerializer(read_only=True)
     comment = serializers.CharField(max_length=255)
@@ -36,7 +35,7 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OutletStoreContact
-        fields = ('id', 'comment', 'create_user', 'outlet_store_id', 'create_user_id',
+        fields = ('id', 'comment', 'create_user', 'outlet_store_id',
                   'outlet_store', 'outlet_store_contact_relpy', 'is_active')
 
     def validate_outlet_store_id(self, outlet_store_id):
