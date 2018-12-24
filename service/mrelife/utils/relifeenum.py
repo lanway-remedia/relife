@@ -16,6 +16,7 @@ class MessageCode(Enum):
     OS006 = 'OS006'  # update with err data
     OS007 = 'OS007'  # delete sussess
     OS008 = 'OS008'  # delete fail
+    OS009 = 'OS009'  # Invalid ID supplied
 
     OSC001 = 'OSC001'  # get outletstore contact's information detail successfully
     OSC002 = 'OSC002'  # get outletstore contact's information detail failly
@@ -25,6 +26,7 @@ class MessageCode(Enum):
     OSC006 = 'OSC006'  # update with err data
     OSC007 = 'OSC007'  # delete sussess
     OSC008 = 'OSC008'  # delete fail
+    OSC009 = 'OSC009'  # Invalid ID supplied
 
     OSCR001 = 'OSCR001'  # get outletstore contact reply's information detail successfully
     OSCR002 = 'OSCR002'  # get outletstore contact reply's information detail failly
@@ -34,6 +36,7 @@ class MessageCode(Enum):
     OSCR006 = 'OSCR006'  # update with err data
     OSCR007 = 'OSCR007'  # delete sussess
     OSCR008 = 'OSCR008'  # delete fail
+    OSCR009 = 'OSCR009'  # Invalid ID supplied
 
     OSM001 = 'OSM001'  # get outletstore media's information detail successfully
     OSM002 = 'OSM002'  # get outletstore media's information detail failly
@@ -43,6 +46,7 @@ class MessageCode(Enum):
     OSM006 = 'OSM006'  # update with err data
     OSM007 = 'OSM007'  # delete sussess
     OSM008 = 'OSM008'  # delete fail
+    OSM009 = 'OSM009'  # Invalid ID supplied
 
     OSR001 = 'OSR001'  # get outletstore review information detail successfully
     OSR002 = 'OSR002'  # getoutletstore review information detail failly
@@ -52,6 +56,7 @@ class MessageCode(Enum):
     OSR006 = 'OSR006'  # update with err data
     OSR007 = 'OSR007'  # delete sussess
     OSR008 = 'OSR008'  # delete fail
+    OSR009 = 'OSR009'  # Invalid ID supplied
 
     EX001 = 'EX001'  # get exhibition's information detail successfully
     EX002 = 'EX002'  # get exhibition's information detail failly

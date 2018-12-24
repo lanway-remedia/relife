@@ -23,7 +23,7 @@ class OutletStore(Model):
     latitude = TextField(null=True)
     longitude = TextField(null=True)
     address = CharField(max_length=800)
-    district = ForeignKey(District, related_name="outlet_dict", on_delete=CASCADE)
+    district = ForeignKey(District, related_name="outlet_dict", on_delete=CASCADE, null=True, blank=True)
     tel = CharField(max_length=13)
     email = CharField(max_length=100)
     zipcode = CharField(max_length=8, null=True)
@@ -89,21 +89,6 @@ class OutletStore(Model):
             return None
         except:
             return None
-
-
-class OutletStoreMedia(Model):
-    outlet_store = ForeignKey(OutletStore, related_name='outlet_store_media', on_delete=CASCADE)
-    type_media = BooleanField()
-    title = CharField(max_length=255)
-    description = TextField(null=True)
-    url = CharField(max_length=800)
-    is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
-
-    class Meta:
-        db_table = 'outlet_store_media'
-        ordering = ['created', ]
 
 
 class OutletStoreContact(Model):

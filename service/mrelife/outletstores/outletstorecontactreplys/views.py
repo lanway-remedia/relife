@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 
 from django.conf import settings
 from django.http import Http404
@@ -33,12 +34,19 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None):
         try:
+            parten = "^[0-9]+$"
+            if not re.findall(parten, str(pk)):
+                raise KeyError
             queryset = OutletStoreContactReply.objects.all().filter(is_active=1).filter(is_active=1).order_by("-updated")
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreContactReplySerializer(outletstoreObject)
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR001.value, ""), status=status.HTTP_200_OK)
-        except Exception as e:
+        except KeyError:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR009.value, "Invalid ID supplied"), status=status.HTTP_400_BAD_REQUEST)
+        except Http404:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR002.value, ""), status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR002.value, ""), status=status.HTTP_400_BAD_REQUEST)
 
     def create(self, request):
         try:
@@ -53,6 +61,9 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
 
     def update(self, request, pk=None):
         try:
+            parten = "^[0-9]+$"
+            if not re.findall(parten, str(pk)):
+                raise KeyError
             queryset = OutletStoreContactReply.objects.all().filter(is_active=1)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreContactReplySerializer(outletstoreObject, data=request.data)
@@ -60,12 +71,19 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR005.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR006.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        except KeyError:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR009.value, "Invalid ID supplied"), status=status.HTTP_400_BAD_REQUEST)
+        except Http404:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR002.value, ""), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR006.value, ""), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         try:
+            parten = "^[0-9]+$"
+            if not re.findall(parten, str(pk)):
+                raise KeyError
             queryset = OutletStoreContactReply.objects.all().filter(is_active=1)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             data = {"is_active": settings.IS_INACTIVE}
@@ -73,6 +91,10 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR007.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR008.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR008.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        except KeyError:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR009.value, "Invalid ID supplied"), status=status.HTTP_400_BAD_REQUEST)
+        except Http404:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR002.value, ""), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR008.value, ""), status=status.HTTP_400_BAD_REQUEST)
