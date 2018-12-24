@@ -67,7 +67,6 @@ import AppUtils from './utils/AppUtils'
 import I18nUtils from './utils/I18nUtils'
 import { StorageKeyConstants } from './constants'
 import { Dashboard, Header, Sidebar } from 'react-adminlte-dash'
-import 'react-toastify/dist/ReactToastify.css'
 import defaultAvatar from './images/user.png'
 
 import 'react-perfect-scrollbar/dist/css/styles.css'

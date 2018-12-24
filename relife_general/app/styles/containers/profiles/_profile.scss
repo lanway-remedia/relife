@@ -1,0 +1,56 @@
+.profile-info {
+  display: block;
+  padding-top: 1em;
+  .col-md-8 {
+    @media screen and (min-width: 768px) {
+      padding-left: 0;
+    }
+    @media screen and (max-width: 767px) {
+      margin-top: 1em;
+    }
+  }
+  .profile-info-detail {
+    border: solid 1px $border-color-2;
+    height: fit-content;
+    border-radius: 4px;
+    box-shadow: 0 2px 9px 0 $border-color;
+    padding: 1rem 1.25rem;
+    h3 {
+      color: $bkg-primary-color;
+      margin-bottom: 1em;
+      text-align: center;
+    }
+    .form-group {
+      color: $bkg-text-color;
+      clear: both;
+      height: $input-height;
+      label {
+        width: 18%;
+        float: left;
+        line-height: $input-height;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      input {
+        width: 72%;
+        float: left;
+        border-radius: $input-height;
+        padding-left: 1em;
+        padding-right: 1em;
+      }
+      span {
+        cursor: pointer;
+        line-height: $input-height;
+        float: right;
+        &:hover {
+          color: $bkg-primary-color;
+          text-decoration-line: underline;
+        }
+      }
+    }
+    .profile-btn {
+      text-align: center;
+    }
+  }
+}

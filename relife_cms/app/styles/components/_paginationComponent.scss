@@ -1,0 +1,73 @@
+.toolbar {
+  text-align: right;
+  margin-bottom: 10px;
+
+  .total {
+    float: left;
+    margin-top: 7px;
+  }
+
+  .limiter {
+    display: inline-block;
+    margin-right: 1.25rem;
+
+    label {
+      display: inline-block;
+      margin-right: 1.25rem;
+    }
+
+    select.form-control {
+      display: inline-block;
+      width: auto;
+      height: 24px;
+      border-color: $border-color;
+    }
+  }
+
+  .pagination {
+    float: right;
+  }
+}
+
+.pagination {
+  .page-item.active .page-link {
+    background: none;
+    color: $text-color;
+    font-weight: bold;
+  }
+
+  .page-item {
+    &:first-child,
+    &:last-child {
+      .page-link {
+        background: #c7c7c7;
+        overflow: hidden;
+        border-radius: 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+
+        &:hover,
+        &:focus {
+          background: $bkg-secondary-color;
+          color: $text-white-color;
+        }
+      }
+    }
+  }
+
+  .page-link {
+    border: 0 none;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    margin: 0;
+    &:focus,
+    &:hover {
+      box-shadow: none;
+      color: $text-white-color;
+      background: $bkg-secondary-color;
+    }
+  }
+}
