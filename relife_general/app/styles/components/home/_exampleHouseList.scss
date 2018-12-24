@@ -1,0 +1,187 @@
+.top-result {
+  /*start .top-result-inner */
+  .top-result-inner {
+    .top-result-title {
+      text-align: center;
+      font-size: 2.8rem;
+    }
+    .top-result-title::after {
+      display: block;
+      width: 32px;
+      margin: 0 auto;
+      content: url('../images/title-dot.png');
+      transform: scale(0.5);
+      -webkit-transform: scale(0.5);
+      text-align: center;
+    }
+    .top-result-text {
+      text-align: center;
+      font-size: 1.2rem;
+      margin: 0 0 40px 0;
+    }
+  }
+  /*end .top-result-inner */
+  .slider-wrap {
+    margin: 0 auto;
+    width: 100%;
+    color: #333;
+    position: relative;
+    padding: 0 0 40px 0;
+    background: #f2f3f2;
+    
+    .slick-slide  {
+      .slider-item {
+        overflow: hidden;
+        position: relative;
+        padding-bottom: 48px;
+
+        a {
+          display: block;
+          width: 100%;
+          height: 480px;
+          overflow: hidden;
+          transition-duration: 0.3s;
+          img {
+            opacity: 0.4;
+            background: #000;
+            width: 100%;
+            height: 480px;
+            max-height: 480px;
+            object-fit: cover;
+            transition-duration: 0.3s;
+          }
+        }
+
+        .slider-title {
+          visibility: visible !important;
+          opacity: 1 !important;
+          top: inherit !important;
+          bottom: 0px !important;
+          left: 5% !important;
+          width: 90%;
+          height: 96px;
+          background: #fff;
+          z-index: 1000;
+          border-bottom: #656d69 solid 4px;
+          padding: 20px 30px;
+          transition-duration: 0.3s;
+          position: absolute;
+
+          h3 {
+            text-align: left;
+            font-size: 2.0rem;
+            margin: 0 0 8px 0;
+            opacity: 0.4;
+          }
+
+          p {
+            text-align: left;
+            font-size: 1.4rem;
+            opacity: 0.4;
+          }
+        }
+      }
+
+      &.slick-active {
+        .slider-item {
+          img {
+            opacity: 1;
+          }
+          .slider-title {
+            h3 {
+              opacity: 1;
+            }
+            p {
+              opacity: 1;
+            }
+          }
+          &:hover {
+            cursor: pointer;
+            img {
+              transform: scale(1.1);
+              transition-duration: 0.3s;
+            }
+            .slider-title {
+              color: #057235;
+              border-bottom-color: #057235;
+            }
+          }
+        }
+      }
+    }
+    /* end .slick-slide */
+
+    .slick-arrow:hover.slick-prev::before, 
+    .slick-arrow:hover.slick-prev::after,
+    .slick-arrow:hover.slick-next::before,
+    .slick-arrow:hover.slick-next::after, {
+      background-color: #fff;
+      transition-duration: 0.3s;
+    }
+    .slick-arrow {
+      position: absolute;
+      width: 56px;
+      height: 56px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.7);;
+      display: block;
+      z-index: 9999;
+      
+      &:hover {
+        background: #057235;
+        transition-duration: 0.3s;
+
+      }
+
+      &::before {
+        left: 45%;
+        top: 39%;
+        transform: skew(135deg, 45deg);
+      }
+
+      &::after {
+        left: 45%;
+        top: 49%;
+        transform: skew(-135deg, 135deg);
+      }
+
+      &.slick-prev {
+        left:200px;
+        right: auto;
+
+        &::before, &::after {
+          content: '';
+          position: absolute;
+          width: 4%;
+          height: 13%;
+          background-color: #057235;
+          transition-duration: 0.3s;
+
+          &:hover {
+            background-color: #fff;
+          }
+        }
+      }
+
+      &.slick-next {
+        right: 200px;
+        left: auto;
+        top: 44%;
+        -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        transform: rotate(180deg);
+        
+        &::before, &::after {
+          content: '';
+          position: absolute;
+          width: 4%;
+          height: 13%;
+          background-color: #057235;
+          transition-duration: 0.3s;
+        }
+      }
+    }
+    /* .slick-arrow */
+  }
+}
+

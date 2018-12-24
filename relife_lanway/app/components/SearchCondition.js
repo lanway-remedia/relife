@@ -15,7 +15,9 @@ import {
   Input,
   InputGroup,
   InputGroupAddon,
-  Collapse, CardBody, Card
+  Collapse,
+  CardBody,
+  Card
 } from 'reactstrap'
 
 const TIMEOUT = 500
@@ -30,7 +32,7 @@ const initialState = {
 class SearchCondition extends Component {
   constructor(props) {
     super(props)
-    this.state = { 
+    this.state = {
       ...initialState,
       collapse: false,
       timeout: TIMEOUT
@@ -42,19 +44,28 @@ class SearchCondition extends Component {
     this.setState({
       freeword: params.get('freeword') || '',
       group: params.get('group') || 0,
-      store: params.get('store') ? { id: params.get('store'), title: params.get('store_title') } : {},
-      collapse: !!(params.get('freeword') || params.get('group') || params.get('store')),
-      timeout: params.get('freeword') || params.get('group') || params.get('store') ? 0 : TIMEOUT
+      store: params.get('store')
+        ? { id: params.get('store'), title: params.get('store_title') }
+        : {},
+      collapse: !!(
+        params.get('freeword') ||
+        params.get('group') ||
+        params.get('store')
+      ),
+      timeout:
+        params.get('freeword') || params.get('group') || params.get('store')
+          ? 0
+          : TIMEOUT
     })
   }
 
   onclickSubmit = () => {
     let { freeword, group, store } = this.state
     let parsed = {
-      ...(freeword && {freeword: freeword}),
-      ...(group && group != 0 && {group: group}),
-      ...(store.id && {store: store.id}),
-      ...(store.title && {store_title: store.title})
+      ...(freeword && { freeword: freeword }),
+      ...(group && group != 0 && { group: group }),
+      ...(store.id && { store: store.id }),
+      ...(store.title && { store_title: store.title })
     }
     let search = new URLSearchParams(parsed)
     this.props.history.push({
@@ -66,7 +77,7 @@ class SearchCondition extends Component {
     this.setState(initialState)
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     })
@@ -92,16 +103,26 @@ class SearchCondition extends Component {
   }
 
   handleShowHideForm = () => {
-    this.setState({
-      timeout: TIMEOUT
-    }, () => {
-      this.setState({ collapse: !this.state.collapse })
-    })
+    this.setState(
+      {
+        timeout: TIMEOUT
+      },
+      () => {
+        this.setState({ collapse: !this.state.collapse })
+      }
+    )
   }
 
   render() {
     let { hasFreeword, hasGroup, hasStore } = this.props
-    let { showStoreList, collapse, freeword, group, store, timeout } = this.state
+    let {
+      showStoreList,
+      collapse,
+      freeword,
+      group,
+      store,
+      timeout
+    } = this.state
     return (
       <div className="filter-group mb-5">
         <label
@@ -110,7 +131,10 @@ class SearchCondition extends Component {
           title={I18nUtils.t('lb-fil-tooltip')}
         >
           {I18nUtils.t('lb-ad-search')}
-          <i className={collapse ? 'fa fa-angle-up' : 'fa fa-angle-down'} aria-hidden="true" />
+          <i
+            className={collapse ? 'fa fa-angle-up' : 'fa fa-angle-down'}
+            aria-hidden="true"
+          />
         </label>
         <Collapse isOpen={collapse} timeout={timeout}>
           <Card>
@@ -120,17 +144,12 @@ class SearchCondition extends Component {
                 toggle={isOpen => this.toggleHandle(isOpen)}
                 selectStore={selectedStore => this.selectStore(selectedStore)}
               />
-              <Form
-                onSubmit={this.handleSubmit}
-                ref={f => (this.form = f)}
-              >
+              <Form onSubmit={this.handleSubmit} ref={f => (this.form = f)}>
                 <Row>
-                  {hasFreeword &&
+                  {hasFreeword && (
                     <Col xs="12" md="4">
                       <FormGroup>
-                        <Label for="freeword">
-                          {hasFreeword.title}
-                        </Label>
+                        <Label for="freeword">{hasFreeword.title}</Label>
                         <Input
                           type="text"
                           name="freeword"
@@ -141,12 +160,20 @@ class SearchCondition extends Component {
                         />
                       </FormGroup>
                     </Col>
-                  }
-                  {hasGroup &&
+                  )}
+                  {hasGroup && (
                     <Col xs="12" md="4">
                       <FormGroup>
-                        <Label for="group">{I18nUtils.t('group-selection')}</Label>
-                        <Input type="select" name="group" id="group" onChange={this.handleChange} value={group}>
+                        <Label for="group">
+                          {I18nUtils.t('group-selection')}
+                        </Label>
+                        <Input
+                          type="select"
+                          name="group"
+                          id="group"
+                          onChange={this.handleChange}
+                          value={group}
+                        >
                           <option value={0}>---</option>
                           <option value={4}>{I18nUtils.t('group-4')}</option>
                           <option value={3}>{I18nUtils.t('group-3')}</option>
@@ -155,20 +182,34 @@ class SearchCondition extends Component {
                         </Input>
                       </FormGroup>
                     </Col>
-                  }
-                  {hasStore &&
+                  )}
+                  {hasStore && (
                     <Col xs="12" md="4">
                       <FormGroup>
-                        <Label for="store">{I18nUtils.t('store-selection')}</Label>
+                        <Label for="store">
+                          {I18nUtils.t('store-selection')}
+                        </Label>
                         <InputGroup>
-                          <Input type="text" name="store" id="store" value={store.title || ''} disabled />
+                          <Input
+                            type="text"
+                            name="store"
+                            id="store"
+                            value={store.title || ''}
+                            disabled
+                          />
                           <InputGroupAddon addonType="append">
-                            <Button type="button" color="secondary" onClick={this.showStoreListHandle}>{I18nUtils.t('store-selection')}</Button>
+                            <Button
+                              type="button"
+                              color="secondary"
+                              onClick={this.showStoreListHandle}
+                            >
+                              {I18nUtils.t('store-selection')}
+                            </Button>
                           </InputGroupAddon>
                         </InputGroup>
                       </FormGroup>
                     </Col>
-                  }
+                  )}
                   <Col xs="12" md="12">
                     <div className="btns-group text-center mt-2">
                       <Button color="success" onClick={this.onclickSubmit}>
@@ -184,12 +225,11 @@ class SearchCondition extends Component {
             </CardBody>
           </Card>
         </Collapse>
-        {
-          !collapse &&
+        {!collapse && (
           <span className="lb-showhide text-success active">
             {I18nUtils.t('lb-showhide')}
           </span>
-        }
+        )}
       </div>
     )
   }

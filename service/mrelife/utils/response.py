@@ -42,6 +42,7 @@ def response_405(code, message='', data=''):
         'data': data
     }, status=HTTP_405_METHOD_NOT_ALLOWED)
 
+
 def response_503(code, message='', data=''):
     """
         Return 503

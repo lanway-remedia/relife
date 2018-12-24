@@ -1,14 +1,20 @@
+"""
+    Example house
+"""
 from django.http import Http404
-from rest_framework import status
 from rest_framework.decorators import detail_route
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from url_filter.integrations.drf import DjangoFilterBackend
 
 from mrelife.examplehouses.models import ExampleHouse, ExampleHouseCommitment, ExampleHouseStyle, ExampleHouseTag
-from mrelife.examplehouses.serializers import ExampleHouseNestedSerializer, ExampleHouseSerializer, ExampleHouseNestedNameOnlySerializer
+from mrelife.examplehouses.serializers import (
+    ExampleHouseNestedNameOnlySerializer,
+    ExampleHouseNestedSerializer,
+    ExampleHouseSerializer
+)
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
 from mrelife.utils.groups import IsStore, IsSub
@@ -22,8 +28,14 @@ class ExampleHouseViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated, ExampleHousePermission,)
     parser_class = (FormParser, MultiPartParser, JSONParser)
     pagination_class = LimitOffsetPagination
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['store_id']
 
     def list(self, request, *args, **kwargs):
+        """
+            Can filter store_id by adding parameter on url
+            GET: ?store_id=INT
+        """
         try:
             self.serializer_class = ExampleHouseNestedNameOnlySerializer
             response = super(ExampleHouseViewSet, self).list(request, *args, **kwargs)
