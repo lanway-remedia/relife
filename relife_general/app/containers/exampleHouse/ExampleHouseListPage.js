@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import I18nUtils from '../../utils/I18nUtils'
-import AttributesSeach from '../../components/exampleHouse/AttributesSeach'
+import AttributesSearchPC from '../../components/exampleHouse/AttributesSearchPC'
+import AttributesSearchSP from '../../components/exampleHouse/AttributesSearchSP'
 import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
 import OutletStoresActions from '../../redux/wrapper/OutletStoresRedux'
 import { bindActionCreators } from 'redux'
@@ -74,56 +75,59 @@ class ExampleHouseListPage extends React.Component {
   render() {
     let {exampleHouseList, exampleHouseNew} = this.state
     return (
-      <div className="lower-contents">
-        <div className="lower-contents-inner clearfix">
-          <section className="main">
-            <h1 className="search-result page-title">{I18nUtils.t('list-example-house')}</h1>
-            <div className="adv-example">
-              <div className="adv-example-once">
-                <div className="adv-example-one-img">
-                  <img src={exampleHouseNew.img_large} alt="exh01" />
-                </div>
-
-                <div className="adv-example-once-title-wrap clearfix">
-                  <div className="adv-example-once-title-left">
-                    <h2 className="adv-example-once-title">{exampleHouseNew.title}
-                      <span className="pr-icon">PR</span>
-                    </h2>
+      <div>
+        <AttributesSearchSP />
+        <div className="lower-contents">
+          <div className="lower-contents-inner clearfix">
+            <section className="main">
+              <h1 className="search-result page-title">{I18nUtils.t('list-example-house')}</h1>
+              <div className="adv-example">
+                <div className="adv-example-once">
+                  <div className="adv-example-one-img">
+                    <img src={exampleHouseNew.img_large} alt="exh01" />
                   </div>
 
-                  <div className="adv-example-once-title-right">
-                    <div className="adv-example-once-link">
-                      <Link to={'/example/' + exampleHouseNew.id}>{I18nUtils.t('view-detail')}</Link>
+                  <div className="adv-example-once-title-wrap clearfix">
+                    <div className="adv-example-once-title-left">
+                      <h2 className="adv-example-once-title">{exampleHouseNew.title}
+                        <span className="pr-icon">PR</span>
+                      </h2>
+                    </div>
+
+                    <div className="adv-example-once-title-right">
+                      <div className="adv-example-once-link">
+                        <Link to={'/example/' + exampleHouseNew.id}>{I18nUtils.t('view-detail')}</Link>
+                      </div>
                     </div>
                   </div>
+                  <div className="adv-example-once-text">シンプルだけど存在感の大きさを感じる絶妙なデザイン</div>
+                  <div className="adv-example-once-company-area">{exampleHouseNew.store ? exampleHouseNew.store.district.name + ' ' + exampleHouseNew.store.district.city.name : ''}</div>
+                  <div className="adv-example-once-company">{exampleHouseNew.store ? exampleHouseNew.store.title : ''}</div>
+
                 </div>
-                <div className="adv-example-once-text">シンプルだけど存在感の大きさを感じる絶妙なデザイン</div>
-                <div className="adv-example-once-company-area">{exampleHouseNew.store ? exampleHouseNew.store.district.name + ' ' + exampleHouseNew.store.district.city.name : ''}</div>
-                <div className="adv-example-once-company">{exampleHouseNew.store ? exampleHouseNew.store.title : ''}</div>
-                
               </div>
-            </div>
 
-            <div className="example-list clearfix">
-              {exampleHouseList.map((val, key) => {
-                if (val.id != exampleHouseNew.id) {
-                  return (
-                  <Link key={key} to={'example/' + val.id} className="example-list-once">
-                    <div className="example-list-once-img">
-                      <img src={val.img_large} alt={val.title} />
-                    </div>
-                    <h3 className="example-list-once-title">
-                      {val.title}
-                    </h3>
-                    <div className="example-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
-                    <div className="example-list-once-company">{val.store.title}</div>
-                  </Link>
-                  )
-                }
-              })}
-            </div>
-          </section>
-          <AttributesSeach />
+              <div className="example-list clearfix">
+                {exampleHouseList.map((val, key) => {
+                  if (val.id != exampleHouseNew.id) {
+                    return (
+                    <Link key={key} to={'example/' + val.id} className="example-list-once">
+                      <div className="example-list-once-img">
+                        <img src={val.img_large} alt={val.title} />
+                      </div>
+                      <h3 className="example-list-once-title">
+                        {val.title}
+                      </h3>
+                      <div className="example-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
+                      <div className="example-list-once-company">{val.store.title}</div>
+                    </Link>
+                    )
+                  }
+                })}
+              </div>
+            </section>
+            <AttributesSearchPC />
+          </div>
         </div>
       </div>
     )

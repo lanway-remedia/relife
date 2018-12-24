@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Form, Label, Input, FormGroup, Button } from 'reactstrap'
 import AttributeActions from '../../redux/wrapper/AttributesRedux'
-class AttributesSeach extends React.Component {
+class AttributesSearchPC extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -177,7 +177,7 @@ class AttributesSeach extends React.Component {
   }
 }
 
-AttributesSeach.propTypes = {
+AttributesSearchPC.propTypes = {
   processing: PropTypes.bool,
   data: PropTypes.object,
   attributePriceListRequest: PropTypes.func,
@@ -213,4 +213,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(AttributesSeach))
+)(withRouter(AttributesSearchPC))
