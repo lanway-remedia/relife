@@ -24,7 +24,7 @@ class OutletStoreContacVSerializer(serializers.ModelSerializer):
 
 
 class OutletStoreContactReplySerializer(serializers.ModelSerializer):
-    outlet_store_contact_id = serializers.PrimaryKeyRelatedField(queryset=OutletStoreContact.objects.filter(is_active=1), write_only=True)
+    outlet_store_contact_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     outlet_store_contact = OutletStoreContacVSerializer(read_only=True, many=False)
     user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_active=1), write_only=True)
     user = UserSerializer(read_only=True)
@@ -34,3 +34,12 @@ class OutletStoreContactReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = OutletStoreContactReply
         fields = ('outlet_store_contact_id', 'outlet_store_contact', 'user_id', 'user', 'comment', 'is_active')
+
+    def validate_outlet_store_contact_id(self, outlet_store_contact_id):
+        try:
+            item = OutletStoreContact.objects.filter(is_active=1).get(id=outlet_store_contact_id)
+            if(not item):
+                raise
+        except Exception as e:
+            raise serializers.ValidationError(e)
+        return outlet_stooutlet_store_contact_idre_id
