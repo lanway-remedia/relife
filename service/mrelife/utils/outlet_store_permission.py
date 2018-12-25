@@ -17,3 +17,14 @@ class OutletStorePermission(BasePermission):
         if  IsAdmin(request.user):
             return True
         return (request.user.is_authenticated() and IsStore(request.user)) 
+class OutletStoreContactPermission(BasePermission):
+    def has_permission(self, request, view):
+        try:
+            return (IsStore(request.user) or IsAdmin(request.user))
+        except Exception:
+            return False
+
+    def has_object_permission(self, request, view, obj):
+        if  IsAdmin(request.user):
+            return True
+        return (request.user.is_authenticated() and IsStore(request.user)) 
