@@ -29,6 +29,7 @@ import ExampleHouseListPage from './containers/exampleHouse/ExampleHouseListPage
 import ExampleHouseViewPage from './containers/exampleHouse/ExampleHouseViewPage'
 //outletStores
 import OutletStoresListPage from './containers/outletStores/OutletStoresListPage'
+import OutletStoresViewPage from './containers/outletStores/OutletStoresViewPage'
 
 import {StorageKeyConstants} from './constants'
 import 'react-toastify/dist/ReactToastify.css'
@@ -124,6 +125,10 @@ class Routes extends React.Component {
                         <Route
                             exact path="/builder/"
                             component={OutletStoresListPage}
+                        />
+                        <Route
+                            path="/builder/:id"
+                            component={OutletStoresViewPage}
                         />
 
                     </Switch>

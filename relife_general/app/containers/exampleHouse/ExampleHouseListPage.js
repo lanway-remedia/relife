@@ -7,6 +7,9 @@ import AttributesSearchPC from '../../components/exampleHouse/AttributesSearchPC
 import AttributesSearchSP from '../../components/exampleHouse/AttributesSearchSP'
 import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
 import OutletStoresActions from '../../redux/wrapper/OutletStoresRedux'
+import PaginationComponent from '../../components/PaginationComponent'
+
+import Paginate from '../../components/Paginate'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import { DefaultValue } from '../../constants'
@@ -73,7 +76,7 @@ class ExampleHouseListPage extends React.Component {
   }
 
   render() {
-    let {exampleHouseList, exampleHouseNew} = this.state
+    let {exampleHouseList, exampleHouseNew, count} = this.state
     return (
       <div>
         <AttributesSearchSP />
@@ -125,10 +128,12 @@ class ExampleHouseListPage extends React.Component {
                   }
                 })}
               </div>
+              <Paginate />
             </section>
             <AttributesSearchPC />
           </div>
         </div>
+        
       </div>
     )
   }
