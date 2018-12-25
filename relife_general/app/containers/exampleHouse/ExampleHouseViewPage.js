@@ -45,8 +45,8 @@ class ExampleHouseViewPage extends React.Component {
           offset: ''
         }
         this.props.exampleHousesListByStoreRequest(dataHouseByStoreId)
+        console.log(nextProps)
       }
-
       if(response.isListHouseByStore){
         this.setState({
           listExampleHouseByStore: response.data
@@ -66,7 +66,7 @@ class ExampleHouseViewPage extends React.Component {
       company_id = exampleHouse.store.id
     }
     return (
-      <div className="lower-contents">
+      <div className="lower-contents one-column">
         <div className="lower-contents-inner clearfix">
           <section className="main">
             <h1 className="page-title detail-title"> 
