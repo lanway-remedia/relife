@@ -1,7 +1,7 @@
 from rest_framework.permissions import BasePermission
 
-from mrelife.utils.groups import IsAdmin, IsStore, IsSub, IsUser
 from mrelife.users.models import User
+from mrelife.utils.groups import IsAdmin, IsStore, IsSub, IsUser
 
 
 class OutletStorePermission(BasePermission):
@@ -15,9 +15,11 @@ class OutletStorePermission(BasePermission):
             return False
 
     def has_object_permission(self, request, view, obj):
-        if  IsAdmin(request.user):
+        if IsAdmin(request.user):
             return True
-        return  IsStore(request.user)
+        return IsStore(request.user)
+
+
 class OutletStoreContactPermission(BasePermission):
     def has_permission(self, request, view):
         try:
@@ -26,4 +28,17 @@ class OutletStoreContactPermission(BasePermission):
             return False
 
     def has_object_permission(self, request, view, obj):
-        return  User.objects.filter(id=request.user.id).exists()
+        return User.objects.filter(id=request.user.id).exists()
+
+
+class OutletStoreViewPermission(BasePermission):
+    def has_permission(self, request, view):
+        try:
+            if(view.action in ["list", "retrieve"]):
+                return True
+            return User.objects.filter(id=request.user.id).exists()
+        except Exception:
+            return False
+
+    def has_object_permission(self, request, view, obj):
+        return User.objects.filter(id=request.user.id).exists()
