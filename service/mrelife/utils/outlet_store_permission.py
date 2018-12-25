@@ -1,7 +1,7 @@
 from rest_framework.permissions import BasePermission
 
 from mrelife.utils.groups import IsAdmin, IsStore, IsSub, IsUser
-from django.contrib.auth.models import User
+from mrelife.users.models import User
 
 
 class OutletStorePermission(BasePermission):
@@ -21,9 +21,9 @@ class OutletStorePermission(BasePermission):
 class OutletStoreContactPermission(BasePermission):
     def has_permission(self, request, view):
         try:
-            return User.object.get(id=request.user.id).exists()
+            return User.objects.filter(id=request.user.id).exists()
         except Exception:
             return False
 
     def has_object_permission(self, request, view, obj):
-        return  User.object.get(id=request.user.id).exists()
+        return  User.objects.filter(id=request.user.id).exists()
