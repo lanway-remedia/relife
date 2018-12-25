@@ -10,8 +10,7 @@
 @import './components/imageUploadComponent';
 
 //Containers
-@import './containers/auths/loginPage';
-@import './containers/auths/forgotPasswordPage';
+@import './containers/auths/authPage';
 @import './containers/users/userListPage';
 @import './containers/profiles/userDashboardPage';
 @import './containers/profiles/userEditProfile';
@@ -21,6 +20,10 @@
 @import './containers/categories/popupCategory';
 @import './containers/locations/manageLocationList';
 @import './containers/locations/popupLocation';
+
+//Vendors
+@import './vendors/toastify';
+@import './vendors/datepicker';
 
 //Common
 @import 'common';

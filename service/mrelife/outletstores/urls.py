@@ -13,7 +13,6 @@ router.register(r'', views.OutletStoreViewSet)
 urlpatterns = [
     re_path(r'^contacts/', include('mrelife.outletstores.ouletstorecontacts.urls')),
     re_path(r'^contact_replys/', include('mrelife.outletstores.outletstorecontactreplys.urls')),
-    re_path(r'^medias/', include('mrelife.outletstores.outletstoremedias.urls')),
     re_path(r'^reviews/', include('mrelife.outletstores.outletstorereviews.urls')),
     path('', include(router.urls)),
 ]

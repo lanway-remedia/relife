@@ -1,0 +1,10 @@
+{
+  "BASE_URL": "https://d2t3gximuwdg8x.cloudfront.net/api/",
+  "API_TIMEOUT": 30000,
+  "DEFAULT_LOCALE": "ja",
+  "LOCALES": ["en", "ja"],
+  "LOCALE_MAP": {
+    "en": "en_US",
+    "ja": "ja_JP"
+  }
+}

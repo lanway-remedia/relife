@@ -7,12 +7,13 @@ class OutletStorePermission(BasePermission):
 
     def has_permission(self, request, view):
         try:
-            return IsAdmin(request.user) or IsStore(request.user) or IsSub(request.user)
+            if(view.action in ["list", "retrieve"]):
+                return True
+            return (IsStore(request.user) or IsAdmin(request.user))
         except Exception:
             return False
 
     def has_object_permission(self, request, view, obj):
-        if IsAdmin(request.user):
+        if  IsAdmin(request.user):
             return True
-        return (IsStore(request.user) or IsSub(request.user)) 
-        #and request.user.outletstore_user.filter(outlet_store=obj).exists()
+        return (request.user.is_authenticated() and IsStore(request.user)) 

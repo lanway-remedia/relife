@@ -96,7 +96,7 @@ class LocationsComponent extends Component {
   handleUpdateDistrict = () => {
     const data = this.state
 
-    if (data.city !== '0' && data.city !== '') {
+    if (data.city !== '') {
       for (let i = 0; i < data.dataCity.length; i++) {
         if (data.dataCity[i].id === parseInt(data.city)) {
           const dataDistrict = data.dataCity[i].districts
@@ -124,10 +124,10 @@ class LocationsComponent extends Component {
                 onChange={this.handleChange}
                 onMouseLeave={this.handleUpdateDistrict}
                 value={city}
-                required
+                required={required}
                 errorMessage={I18nUtils.t('lb-select')}
               >
-                <option value="0">{I18nUtils.t('lb-select')}</option>
+                <option value="">{I18nUtils.t('lb-select')}</option>
                 {dataCity.map((city, key) => {
                   return (
                     <option key={key} value={city.id}>
@@ -146,7 +146,7 @@ class LocationsComponent extends Component {
                 onMouseLeave={this.handleUpdateDistrict}
                 value={city}
               >
-                <option value="0">{I18nUtils.t('lb-select')}</option>
+                <option value="">{I18nUtils.t('lb-select')}</option>
                 {dataCity.map((city, key) => {
                   return (
                     <option key={key} value={city.id}>
@@ -168,14 +168,14 @@ class LocationsComponent extends Component {
                 id="district"
                 onChange={this.handleChange}
                 value={district}
-                required
+                required={required}
                 errorMessage={I18nUtils.t('lb-select')}
                 onMouseLeave={this.handleSendData}
               >
-                {isCity === '0' || isCity === '' ? (
-                  <option value="0">{I18nUtils.t('lb-district')}</option>
+                {isCity === '' ? (
+                  <option value="">{I18nUtils.t('lb-district')}</option>
                 ) : (
-                  <option value="0">{I18nUtils.t('lb-select')}</option>
+                  <option value="">{I18nUtils.t('lb-select')}</option>
                 )}
                 {dataDistrict.length > 0 &&
                   dataDistrict.map((dis, key) => {
@@ -196,10 +196,10 @@ class LocationsComponent extends Component {
                 value={district}
                 onMouseLeave={this.handleSendData}
               >
-                {isCity === '0' || isCity === '' ? (
-                  <option value="0">{I18nUtils.t('lb-district')}</option>
+                {isCity === '' ? (
+                  <option value="">{I18nUtils.t('lb-district')}</option>
                 ) : (
-                  <option value="0">{I18nUtils.t('lb-select')}</option>
+                  <option value="">{I18nUtils.t('lb-select')}</option>
                 )}
                 {dataDistrict.length > 0 &&
                   dataDistrict.map((dis, key) => {

@@ -1,0 +1,38 @@
+footer {
+  background: #2e3230;
+  position: relative;
+  z-index: 500;
+
+  .col-footer {
+    color: $text-white-color;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .col-links {
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+
+      li {
+        float: left;
+        margin-right: 30px;
+
+        a {
+          color: $text-white-color;
+
+          &:hover {
+            color: $text-primary-color;
+          }
+        }
+      }
+    }
+  }
+
+  .col-copy {
+    font-size: 0.625rem;
+    line-height: 18px;
+  }
+}

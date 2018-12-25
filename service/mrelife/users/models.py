@@ -21,6 +21,7 @@ class User(AbstractUser):
     profile_image_thumb = CharField(max_length=800, null=True, blank=True)
 
     store = ForeignKey(OutletStore, related_name='users', null=True, blank=True, on_delete=SET_NULL)
+    lanway_id = CharField(max_length=100, null=True, blank=True)
 
     class Meta:
         ordering = ['date_joined', ]

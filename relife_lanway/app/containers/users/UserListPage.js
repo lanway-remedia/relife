@@ -24,7 +24,6 @@ class ListAccountsPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      sortColumn: { path: 'name', order: 'asc' },
       count: 0,
       users: []
     }
@@ -33,16 +32,16 @@ class ListAccountsPage extends React.Component {
   componentDidMount() {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
-    let limit = params.get('limit') *1 || DefaultValue.LIMIT
+    let limit = params.get('limit') * 1 || DefaultValue.LIMIT
     let name = params.get('freeword')
     let group_id = params.get('group')
     let store_id = params.get('store')
     let data = {
       offset: (page - 1) * limit,
       limit: limit,
-      ...(name && {name: name}),
-      ...(group_id && {group_id: group_id}),
-      ...(store_id && {store_id: store_id})
+      ...(name && { name: name }),
+      ...(group_id && { group_id: group_id }),
+      ...(store_id && { store_id: store_id })
     }
     console.log(data)
     this.props.userListRequest(data)
@@ -64,21 +63,21 @@ class ListAccountsPage extends React.Component {
     this.props.history.push('/add-user')
   }
 
-  editUser = (id) => {
+  editUser = id => {
     this.props.history.push(`/user/${id}`)
   }
 
-  deleteUser = (user) => {
-    this.props.show(
-      ModalName.COMMON,
-      {
-        message: I18nUtils.formatMessage({ id: 'modal-del-header' }, { name: user.username }),
-        okFunction: () => this.okFunction(user.id)
-      }
-    )
+  deleteUser = user => {
+    this.props.show(ModalName.COMMON, {
+      message: I18nUtils.formatMessage(
+        { id: 'modal-del-header' },
+        { name: user.username }
+      ),
+      okFunction: () => this.okFunction(user.id)
+    })
   }
 
-  okFunction = (id) => {
+  okFunction = id => {
     this.props.deleteUserRequest(id)
     this.props.hide(ModalName.COMMON)
     let users = this.state.users.filter(user => user.id !== id)
@@ -86,7 +85,7 @@ class ListAccountsPage extends React.Component {
   }
 
   render() {
-    let { sortColumn, count, users } = this.state
+    let { count, users } = this.state
     return (
       <Container fluid className="list-user-content">
         <Helmet>
@@ -102,14 +101,14 @@ class ListAccountsPage extends React.Component {
           </h1>
         </div>
         <div className="formTable">
-          <SearchCondition hasFreeword={{title: I18nUtils.t('username')}} hasGroup hasStore />
+          <SearchCondition
+            hasFreeword={{ title: I18nUtils.t('username') }}
+            hasGroup
+            hasStore
+          />
           <PaginationComponent count={count} />
           <Table hover responsive>
-            <TableHeadComponent
-              sortColumn={sortColumn}
-              onSort={this.handleSort}
-              theadTitle="#,Name,Email,Store,Group,Action"
-            />
+            <TableHeadComponent theadTitle="#,Name,Email,Store,Group,Action" />
             <tbody>
               {users.map((user, key) => {
                 return (
@@ -126,7 +125,6 @@ class ListAccountsPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.editUser(user.id)}
                       >
                         <i className="fa fa-edit" />
                       </Button>
@@ -136,7 +134,6 @@ class ListAccountsPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.deleteUser(user)}
                       >
                         <i className="fa fa-trash" />
                       </Button>
