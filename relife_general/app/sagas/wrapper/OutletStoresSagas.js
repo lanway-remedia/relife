@@ -23,7 +23,7 @@ const OutletStoresSagas = {
       yield put(
         OutletStoresActions.outletStoresListSuccess (
           response.data,
-          (response.isGetListStores = true)
+          (response.data.isGetListStores = true)
         )
       )
     } catch (err) {

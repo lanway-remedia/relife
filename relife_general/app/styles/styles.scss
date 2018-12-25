@@ -8,11 +8,12 @@
 @import './components/language';
 @import './components/spaceList';
 @import './components/profileNav';
-@import './components/paginationComponent';
+// @import './components/paginationComponent';
 @import './components/profileImage';
 @import './components/imageUploadComponent';
 @import './components/exampleHouse';
 @import './components/breadcrumb';
+@import './components/paginate';
 
 //Components/Home
 @import './components/home/exampleHouseList';
@@ -33,6 +34,7 @@
 //Containers/exampleHouse
 @import './containers/exampleHouse/exampleHouseListPage';
 @import './containers/exampleHouse/exampleHouseViewPage';
+@import './containers/outletStores/outletStoresListPage';
 
 //Common
 @import 'common';
