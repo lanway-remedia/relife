@@ -20,9 +20,9 @@ class OutletStorePermission(BasePermission):
 class OutletStoreContactPermission(BasePermission):
     def has_permission(self, request, view):
         try:
-            return True
+            return request.user.is_authenticated()
         except Exception:
             return False
 
     def has_object_permission(self, request, view, obj):
-        return True 
+        return request.user.is_authenticated()
