@@ -5,7 +5,8 @@ from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.authentication import (BasicAuthentication,
+                                           SessionAuthentication)
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
@@ -13,12 +14,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from mrelife.commons.common_fnc import CommonFuntion
-from mrelife.outletstores.models import OutletStore, OutletStoreContact, OutletStoreContactReply
-from mrelife.outletstores.serializers import (
-    OutletStoreContactReplySerializer,
-    OutletStoreContactSerializer,
-    OutletStoreSerializer
-)
+from mrelife.outletstores.models import (OutletStore, OutletStoreContact,
+                                         OutletStoreContactReply)
+from mrelife.outletstores.serializers import OutletStoreSerializer
 from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStorePermission
@@ -28,7 +26,7 @@ from mrelife.utils.relifeenum import MessageCode
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = OutletStoreSerializer
-    #permission_classes = (IsAuthenticated, OutletStorePermission,)
+    permission_classes = (OutletStorePermission,)
     pagination_class = LimitOffsetPagination
     lookup_field = 'pk'
     lookup_value_regex = '[^/]+'
@@ -70,8 +68,9 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             parten = "^[0-9]+$"
             if not re.findall(parten, str(pk)):
                 raise KeyError
-            queryset = OutletStore.objects.all().filter(is_active=1).filter(is_active=1).order_by("-updated")
-            queryset = OutletStore.objects.all().filter(is_active=1)
+            queryset = OutletStore.objects.filter(is_active=1)
+            if(IsStore(request.user)):
+                queryset = OutletStore.objects.filter(create_user_id=request.user.id, is_active=1)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreSerializer(outletstoreObject, data=request.data)
             if serializer.is_valid():

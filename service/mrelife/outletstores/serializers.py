@@ -56,14 +56,13 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     regular_holiday = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     district_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     is_active = serializers.BooleanField(default=True)
-    outlet_store_contact = OutletStoreContactSerializer(many=True, read_only=True, required=False)
     district = DistrictSerializer(read_only=True)
     create_user = UserSerializer(read_only=True)
 
     class Meta:
         model = OutletStore
         fields = ('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'longitude', 'address', 'district_id', 'district',
-                  'tel', 'email', 'zipcode', 'home_page', 'traffic', 'time_serving', 'regular_holiday', 'create_user', 'outlet_store_contact', 'is_active')
+                  'tel', 'email', 'zipcode', 'home_page', 'traffic', 'time_serving', 'regular_holiday', 'create_user',  'is_active')
 
     def validate_district_id(self, district_id):
         try:
