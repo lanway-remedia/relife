@@ -195,10 +195,20 @@ a:focus {
     .css-vj8t7z,
     .css-2o5izw {
       min-height: 32px;
+      background-color: $input-bg;
     }
 
     .css-2o5izw {
-      &:hover {
+      background-color: #fff;
+      border-color: #80bdff;
+      outline: 0;
+      -webkit-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      -moz-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+
+      &:hover,
+      &:focus,
+      &:active {
         background-color: #f6f6f6;
         border-color: #80bdff;
         outline: 0;

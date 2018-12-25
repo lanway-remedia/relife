@@ -247,6 +247,7 @@
   "btn-delete": "Delete",
   "btn-save": "Save",
   "sub-title-img": "Upload {type} of {name}",
+  "btn-page-review": "Preview Page",
 
   "modal-cate-add-header": "Add New Sub Category in '{name}'",
   "modal-cate-edit-header": "Edit '{name}' category",
@@ -313,6 +314,7 @@
   "OS006": "Not updated",
   "OS007": "Deleted data successfully",
   "OS008": "Not deleted",
+  "OS009": "Invalid ID supplied",
 
   "OT001": "get list data",
   "OT002": "found data",

@@ -74,6 +74,7 @@ class AddNewExampleHousePage extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleModelChange = this.handleModelChange.bind(this)
+    this.handleMultiChange = this.handleMultiChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.redirectToListPage = this.redirectToListPage.bind(this)
@@ -129,6 +130,10 @@ class AddNewExampleHousePage extends React.Component {
     this.setState({
       [name]: value
     })
+  }
+
+  handleMultiChange = selectedOption => {
+    this.setState({ housestyle: selectedOption })
   }
 
   handleModelChange = content => {
@@ -234,9 +239,10 @@ class AddNewExampleHousePage extends React.Component {
       data.append('store', this.state.store.id)
       data.append('contruction', this.state.contruction)
       data.append('price_range', this.state.price)
+      // data.append('styles', this.state.housestyle)
       if (this.state.housestyle.length)
         for (let i = 0; i < this.state.housestyle.length; i++) {
-          data.append('styles', this.state.housestyle[i])
+          data.append('styles', this.state.housestyle[i].id)
         }
       data.append('floor', this.state.floor)
       data.append('household_income', this.state.houseincome)
@@ -245,6 +251,21 @@ class AddNewExampleHousePage extends React.Component {
       data.append('is_active', 1)
       this.props.exampleHouseAddRequest(data)
     }
+  }
+
+  handlePreview = e => {
+    e.preventDefault()
+    const data = {
+      title: this.state.title,
+      content: this.state.content,
+      store: this.state.store.id,
+      contruction: this.state.contruction,
+      price_range: this.state.price_range,
+      floor: this.state.floor,
+      household_income: this.state.household_income,
+      household_size: this.state.household_size
+    }
+    console.log('Preview Page: ', data)
   }
 
   render() {
@@ -268,8 +289,6 @@ class AddNewExampleHousePage extends React.Component {
       houseincome,
       housesize
     } = this.state
-
-    console.log(dataStyle)
     return (
       <Container fluid className="add-new-examplehouse">
         <Helmet>
@@ -292,6 +311,9 @@ class AddNewExampleHousePage extends React.Component {
               <Row>
                 <Col xs="12" md="12">
                   <div className="btns-group text-center mb-4">
+                    <Button color="warning" onClick={this.handlePreview}>
+                      {I18nUtils.t('btn-page-review')}
+                    </Button>
                     <Button color="success">
                       {I18nUtils.t('btn-add-new')}
                     </Button>
@@ -496,36 +518,15 @@ class AddNewExampleHousePage extends React.Component {
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="6">
-                  <FormGroup>
-                    <Label for="housestyle">{I18nUtils.t('housestyle')}</Label>
-                    <SelectGroup
-                      type="select"
-                      name="housestyle"
-                      id="housestyle"
-                      value={housestyle}
-                      onChange={this.handleChange}
-                      required
-                      multiple
-                      errorMessage={I18nUtils.t('lb-select')}
-                    >
-                      {dataStyle.length > 0 &&
-                        dataStyle.map((att, key) => {
-                          return (
-                            <option key={key} value={att.id}>
-                              {att.title}
-                            </option>
-                          )
-                        })}
-                    </SelectGroup>
-                  </FormGroup>
-                </Col>
-                <Col xs="12" md="6">
                   <FormGroup className="react-select">
                     <Label for="housestyle">{I18nUtils.t('housestyle')}</Label>
                     <Select
                       className="react-select-ops"
                       isMulti
+                      required
                       options={dataStyle}
+                      value={housestyle}
+                      onChange={this.handleMultiChange}
                       getOptionLabel={({ title }) => title}
                       getOptionValue={({ id }) => id}
                     />
@@ -544,7 +545,7 @@ class AddNewExampleHousePage extends React.Component {
                 </Col>
                 <Col xs="12" md="12" className="mt-3">
                   <div className="btns-group text-center">
-                    <Button color="success">
+                    <Button color="warning" onClick={this.handlePreview}>
                       {I18nUtils.t('btn-page-review')}
                     </Button>
                     <Button color="success">

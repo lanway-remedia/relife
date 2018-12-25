@@ -221,6 +221,7 @@
   "lb-ad-search": "高度な検索",
   "lb-fil-tooltip": "コンテンツの高度な検索表示／非表示するには、ここにクルックしてください。",
   "lb-showhide": "コンテンツ検索を表示するにはここに　'高度な検索'をクリックしてください。",
+  "lb-select-vl": "Please select",
   "lb-select": "一つを選択してください。",
   "lb-district": "都市を選択してください。",
   "lb-enable": "有効",
@@ -242,8 +243,10 @@
   "btn-back": "戻る",
   "btn-update": "更新",
   "btn-edit": "変更",
+  "btn-save": "Save",
   "btn-delete": "削除",
   "sub-title-img": "{name}の{type}のアップロード",
+  "btn-page-review": "Preview Page",
 
   "modal-cate-add-header": "'{name}'に新規サブカテゴリ追加",
   "modal-cate-edit-header": "'{name}'の変更",
@@ -310,6 +313,7 @@
   "OS006": "未更新しています。",
   "OS007": "データが削除されました。",
   "OS008": "未削除しています。",
+  "OS009": "Invalid ID supplied",
 
   "OT001": "データ一覧を取得する",
   "OT002": "データが見つかりました。",

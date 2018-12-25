@@ -32,6 +32,8 @@ import { show, hide } from 'redux-modal'
 import { ModalName } from '../../constants'
 import { bindActionCreators } from 'redux'
 import StoreListModal from '../../components/StoreListModal'
+import Select from 'react-select'
+import _ from 'lodash'
 // Require Editor JS files.
 import 'froala-editor/js/froala_editor.pkgd.min.js'
 
@@ -61,6 +63,7 @@ class EditExampleHousePage extends React.Component {
       contruction: '',
       price: '',
       housestyle: [],
+      oldHouseStyle: [],
       floor: '',
       houseincome: '',
       housesize: '',
@@ -69,6 +72,7 @@ class EditExampleHousePage extends React.Component {
     }
     this.redirectToListPage = this.redirectToListPage.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleMultiChange = this.handleMultiChange.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -123,15 +127,16 @@ class EditExampleHousePage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.dataExample !== nextProps.dataExample) {
       let response = nextProps.dataExample
-      console.log(response)
       if (response.data === undefined || response.data.length === 0) {
         this.props.show(ModalName.COMMON, {
           message: I18nUtils.t('toast-no-data')
         })
         this.props.history.replace('/manage-example-house-list')
       } else {
-        this.props.outletStoreGetRequest(response.data.store.id)
-        console.log(nextProps.dataExample)
+        if (response.data.store) {
+          this.props.outletStoreGetRequest(response.data.store.id)
+        }
+
         this.setState(
           {
             data: response.data,
@@ -151,9 +156,14 @@ class EditExampleHousePage extends React.Component {
             const newHouseStyles = []
             if (this.state.housestyle)
               for (let i = 0; i < this.state.housestyle.length; i++) {
-                newHouseStyles.push(this.state.housestyle[i].style.id)
+                let obj = {}
+                obj['id'] = this.state.housestyle[i].style.id
+                obj['title'] = this.state.housestyle[i].style.title
+                obj['order'] = this.state.housestyle[i].style.order
+                newHouseStyles.push(obj)
                 this.setState({
-                  housestyle: newHouseStyles
+                  housestyle: newHouseStyles,
+                  oldHouseStyle: newHouseStyles
                 })
               }
           }
@@ -231,6 +241,10 @@ class EditExampleHousePage extends React.Component {
     })
   }
 
+  handleMultiChange = selectedOption => {
+    this.setState({ housestyle: selectedOption })
+  }
+
   handleImageChange = image => {
     this.setState({
       thumbnailImage: image
@@ -277,6 +291,12 @@ class EditExampleHousePage extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault()
+    let diff = _.differenceBy(
+      this.state.oldHouseStyle,
+      this.state.housestyle,
+      'id'
+    )
+
     let data = new FormData()
     data.append('id', this.state.id)
     data.append('title', this.state.title)
@@ -289,11 +309,18 @@ class EditExampleHousePage extends React.Component {
     }
 
     data.append('contruction', this.state.contruction)
+
     data.append('price_range', this.state.price)
+
     if (this.state.housestyle)
       for (let i = 0; i < this.state.housestyle.length; i++) {
-        data.append('styles', this.state.housestyle[i])
+        data.append('styles', this.state.housestyle[i].id)
       }
+    if (diff.length > 0)
+      for (let i = 0; i < diff.length; i++) {
+        data.append('remove_styles', diff[i].id)
+      }
+
     data.append('floor', this.state.floor)
     data.append('household_income', this.state.houseincome)
     data.append('household_size', this.state.housesize)
@@ -574,7 +601,7 @@ class EditExampleHousePage extends React.Component {
                     </SelectGroup>
                   </FormGroup>
                 </Col>
-                <Col xs="12" md="6">
+                {/* <Col xs="12" md="6">
                   <FormGroup>
                     <Label for="housestyle">{I18nUtils.t('housestyle')}</Label>
                     <SelectGroup
@@ -597,6 +624,22 @@ class EditExampleHousePage extends React.Component {
                           )
                         })}
                     </SelectGroup>
+                  </FormGroup>
+                </Col> */}
+                <Col xs="12" md="6">
+                  <FormGroup className="react-select">
+                    <Label for="housestyle">{I18nUtils.t('housestyle')}</Label>
+                    <Select
+                      className="react-select-ops"
+                      isMulti
+                      required
+                      options={dataStyle}
+                      value={housestyle}
+                      classNamePrefix="housestyle"
+                      onChange={this.handleMultiChange}
+                      getOptionLabel={({ title }) => title}
+                      getOptionValue={({ id }) => id}
+                    />
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="12">
