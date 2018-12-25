@@ -111,7 +111,7 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
     @list_route(methods=['GET'], pagination_class=LimitOffsetPagination, url_path="getlistbyouletstore/(?P<out_store_id>[^/]+)")
     def getlistbyexamplehouse(self, request, out_store_id=None):
         self.queryset = []
-        self.queryset = OutletStoreContact.objects.filter(id=out_store_id, is_active=settings.IS_ACTIVE)
+        self.queryset = OutletStoreContact.objects.filter(outlet_store_id=out_store_id, is_active=settings.IS_ACTIVE)
         if not IsAdmin(request.user):
             self.queryset = self.queryset.filter(create_user_id=request.user.id)
         return super(OutletStoreContactViewSet, self).list(request)
