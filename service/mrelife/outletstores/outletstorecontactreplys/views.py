@@ -56,7 +56,7 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
         try:
             serializer = OutletStoreContactReplySerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save(user_id=1, is_active=settings.IS_ACTIVE,
+                serializer.save(user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR003.value, ""), status=status.HTTP_201_CREATED)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR004.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
