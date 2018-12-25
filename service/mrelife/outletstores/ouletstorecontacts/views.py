@@ -30,7 +30,7 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         self.queryset = OutletStoreContact.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
-        if(IsStore(request.user)):
+        if not IsAdmin(request.user):
             self.queryset = self.queryset.filter(create_user_id=request.user.id)
         return super(OutletStoreContactViewSet, self).list(request)
 
@@ -40,7 +40,7 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             if not re.findall(parten, str(pk)):
                 raise KeyError
             queryset = OutletStoreContact.objects.filter(is_active=1).filter(is_active=1).order_by("-updated")
-            if(IsStore(request.user)):
+            if not IsAdmin(request.user):
                 queryset = queryset.filter(create_user_id=request.user.id)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreContactSerializer(outletstoreObject)
@@ -69,7 +69,7 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             if not re.findall(parten, str(pk)):
                 raise KeyError
             queryset = OutletStoreContact.objects.filter(is_active=1)
-            if(IsStore(request.user)):
+            if not IsAdmin(request.user):
                 queryset = queryset.filter(create_user_id=request.user.id)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreContactSerializer(outletstoreObject, data=request.data)
@@ -91,7 +91,7 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             if not re.findall(parten, str(pk)):
                 raise KeyError
             queryset = OutletStoreContact.objects.filter(is_active=1)
-            if(IsStore(request.user)):
+            if not IsAdmin(request.user):
                 queryset = queryset.filter(create_user_id=request.user.id)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             data = {"is_active": settings.IS_INACTIVE}
@@ -112,6 +112,6 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
     def getlistbyexamplehouse(self, request, out_store_id=None):
         self.queryset = []
         self.queryset = OutletStoreContact.objects.filter(id=out_store_id, is_active=settings.IS_ACTIVE)
-        if(IsStore(request.user)):
+        if not IsAdmin(request.user):
             self.queryset = self.queryset.filter(create_user_id=request.user.id)
         return super(OutletStoreContactViewSet, self).list(request)
