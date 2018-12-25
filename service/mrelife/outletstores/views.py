@@ -90,7 +90,9 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             parten = "^[0-9]+$"
             if not re.findall(parten, str(pk)):
                 raise KeyError
-            queryset = OutletStore.objects.all().filter(is_active=1)
+            queryset = OutletStore.objects.filter(is_active=1)
+            if(IsStore(request.user)):
+                queryset = OutletStore.objects.filter(create_user_id=request.user.id, is_active=1)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             data = {"is_active": settings.IS_INACTIVE}
             serializer = OutletStoreSerializer(outletstoreObject, data=data, partial=True)
