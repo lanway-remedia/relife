@@ -75,12 +75,7 @@ class RegisterV2View(APIView):
                 domain: str require
         """
         if request.user.is_authenticated:
-            return Response({
-                'status': False,
-                'messageCode': 'AU002',
-                'messageParams': {},
-                'data': []
-            }, status=status.HTTP_400_BAD_REQUEST)
+            return response_400('AU002')
         # init form with POST data
         serializer = self.serializer_class(data=request.data)
         # validate
