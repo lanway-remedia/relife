@@ -7,7 +7,6 @@ import classnames from 'classnames'
 import TabIntroduction from './../../components/outletStores/TabIntroduction'
 import TabHouse from './../../components/outletStores/TabHouse'
 import I18nUtils from '../../utils/I18nUtils'
-import scrollToComponent from 'react-scroll-to-component'
 class Tabs extends React.Component {
   constructor(props) {
     super(props)
