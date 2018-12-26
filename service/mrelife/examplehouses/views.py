@@ -165,6 +165,9 @@ class ExampleHouseViewSet(ModelViewSet):
                     except Exception:
                         pass
 
+            self.serializer_class = ExampleHouseNestedSerializer
+            response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
+
             return response_200('EX203', '', response.data)
         except Http404:
             return response_404('EX404')
