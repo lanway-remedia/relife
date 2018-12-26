@@ -21,8 +21,8 @@ class OutletStoreReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OutletStoreReview
-        fields = ('id', 'rating', 'review', 'outlet_store_id', 'create_user_id',
-                  'outlet_store', 'is_active', 'update_user_id', 'update_user')
+        fields = ('id', 'rating', 'review', 'outlet_store_id',
+                  'outlet_store', 'is_active',  'update_user')
 
     def validate_outlet_store_id(self, outlet_store_id):
         try:
