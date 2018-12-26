@@ -15,10 +15,8 @@ from mrelife.users.serializers import UserSerializer
 class OutletStoreReviewSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     outlet_store_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
-    create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     outlet_store = OutletStoreSerializer(read_only=True, required=False)
     create_user = UserSerializer(read_only=True, required=False),
-    update_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     update_user = UserSerializer(read_only=True, required=False)
 
     class Meta:
