@@ -90,7 +90,7 @@ class RegisterV2View(APIView):
             "password": serializer.data['password1']
         })
         if not created:
-            response_400('RG004', '', detail)
+            return response_400('RG004', '', detail)
         email = serializer.data['mail']
         username = serializer.data['username']
         domain = serializer.data['domain']

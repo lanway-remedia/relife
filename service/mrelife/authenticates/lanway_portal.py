@@ -39,10 +39,10 @@ def lanway_register(data):
         "birthday": data['birthday'],
         "email": data['email'],
         "password": data['password']}
-    reponse = requests.post(LANWAY_BASE_URL + LANWAY_REGISTER_URL, data=register_data)
-    if reponse.status_code > 299:
-        return (False, reponse.json()['detail']['error_code'])
-    return (True, reponse.json()['detail'])
+    response = requests.post(LANWAY_BASE_URL + LANWAY_REGISTER_URL, data=register_data)
+    if response.status_code > 299:
+        return (False, response.json())
+    return (True, response.json())
 
 
 def lanway_edit_user_password(data):
