@@ -4,7 +4,6 @@ import I18nUtils from '../utils/I18nUtils'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import StoreListModal from '../components/StoreListModal'
-import 'react-datepicker/dist/react-datepicker.css'
 import {
   Row,
   Col,

@@ -601,44 +601,19 @@ class EditExampleHousePage extends React.Component {
                     </SelectGroup>
                   </FormGroup>
                 </Col>
-                {/* <Col xs="12" md="6">
-                  <FormGroup>
-                    <Label for="housestyle">{I18nUtils.t('housestyle')}</Label>
-                    <SelectGroup
-                      type="select"
-                      name="housestyle"
-                      id="housestyle"
-                      value={housestyle}
-                      onChange={this.handleChange}
-                      required
-                      multiple
-                      errorMessage={I18nUtils.t('lb-select-vl')}
-                    >
-                      <option value="">{I18nUtils.t('lb-select-vl')}</option>
-                      {dataStyle.length > 0 &&
-                        dataStyle.map((att, key) => {
-                          return (
-                            <option key={key} value={att.id}>
-                              {att.title}
-                            </option>
-                          )
-                        })}
-                    </SelectGroup>
-                  </FormGroup>
-                </Col> */}
                 <Col xs="12" md="6">
                   <FormGroup className="react-select">
                     <Label for="housestyle">{I18nUtils.t('housestyle')}</Label>
                     <Select
                       className="react-select-ops"
                       isMulti
-                      required
                       options={dataStyle}
                       value={housestyle}
-                      classNamePrefix="housestyle"
+                      classNamePrefix="rs-cus"
                       onChange={this.handleMultiChange}
                       getOptionLabel={({ title }) => title}
                       getOptionValue={({ id }) => id}
+                      placeholder={I18nUtils.t('lb-select-vl')}
                     />
                   </FormGroup>
                 </Col>

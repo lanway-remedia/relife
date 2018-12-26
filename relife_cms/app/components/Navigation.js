@@ -34,34 +34,13 @@ class Navigation extends React.Component {
                   {I18nUtils.t('mni-profile')}
                 </Link>
               </li>
-              <li className="item">
-                <Link
-                  to="/profile-change-password"
-                  title={I18nUtils.t('mni-cpass')}
-                >
-                  {I18nUtils.t('mni-cpass')}
-                </Link>
-              </li>
               <li className="mn-head">{I18nUtils.t('mnh-user')}</li>
-              <li className="item">
-                <Link to="/add-user" title={I18nUtils.t('mni-user-add')}>
-                  {I18nUtils.t('mni-user-add')}
-                </Link>
-              </li>
               <li className="item">
                 <Link to="/users" title={I18nUtils.t('mni-user-list')}>
                   {I18nUtils.t('mni-user-list')}
                 </Link>
               </li>
               <li className="mn-head">{I18nUtils.t('mnh-store')}</li>
-              <li className="item">
-                <Link
-                  to="/add-new-outlet-store"
-                  title={I18nUtils.t('mni-store-add')}
-                >
-                  {I18nUtils.t('mni-store-add')}
-                </Link>
-              </li>
               <li className="item">
                 <Link
                   to="/manage-outlet-store-list"
@@ -71,14 +50,6 @@ class Navigation extends React.Component {
                 </Link>
               </li>
               <li className="mn-head">{I18nUtils.t('mnh-ehouse')}</li>
-              <li className="item">
-                <Link
-                  to="/add-new-example-house"
-                  title={I18nUtils.t('mni-ehouse-add')}
-                >
-                  {I18nUtils.t('mni-ehouse-add')}
-                </Link>
-              </li>
               <li className="item">
                 <Link
                   to="/manage-example-house-list"

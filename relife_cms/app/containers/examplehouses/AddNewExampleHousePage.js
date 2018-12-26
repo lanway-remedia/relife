@@ -17,11 +17,7 @@ import {
   InputGroup,
   InputGroupAddon
 } from 'reactstrap'
-import {
-  ValidationForm,
-  TextInput,
-  SelectGroup
-} from 'react-bootstrap4-form-validation'
+import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Helmet } from 'react-helmet'
 import I18nUtils from '../../utils/I18nUtils'
 import ExampleHouseActions from '../../redux/wrapper/ExampleHousesRedux'
@@ -70,7 +66,17 @@ class AddNewExampleHousePage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      ...initialState
+      ...initialState,
+      statusOptions: [
+        {
+          id: '1',
+          title: I18nUtils.t('lb-enable')
+        },
+        {
+          id: '0',
+          title: I18nUtils.t('lb-disabled')
+        }
+      ]
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleModelChange = this.handleModelChange.bind(this)
@@ -120,16 +126,22 @@ class AddNewExampleHousePage extends React.Component {
     this.getHouseSizeList()
   }
 
-  handleChange = e => {
-    const target = e.target
-    const name = target.name
-    const value =
-      target.type === 'select-multiple'
-        ? Array.from(target.selectedOptions, option => option.value)
-        : target.value
-    this.setState({
-      [name]: value
-    })
+  handleChange = (e, name) => {
+    if (e.target) {
+      const target = e.target
+      const name = target.name
+      const value =
+        target.type === 'select-multiple'
+          ? Array.from(target.selectedOptions, option => option.value)
+          : target.value
+      this.setState({
+        [name]: value
+      })
+    } else {
+      this.setState({
+        [name]: e
+      })
+    }
   }
 
   handleMultiChange = selectedOption => {
@@ -235,18 +247,18 @@ class AddNewExampleHousePage extends React.Component {
       let data = new FormData()
       data.append('title', this.state.title)
       data.append('content', this.state.content)
-      data.append('status_flag', this.state.status)
+      data.append('status_flag', this.state.status.id)
       data.append('store', this.state.store.id)
-      data.append('contruction', this.state.contruction)
-      data.append('price_range', this.state.price)
+      data.append('contruction', this.state.contruction.id)
+      data.append('price_range', this.state.price.id)
       // data.append('styles', this.state.housestyle)
       if (this.state.housestyle.length)
         for (let i = 0; i < this.state.housestyle.length; i++) {
           data.append('styles', this.state.housestyle[i].id)
         }
-      data.append('floor', this.state.floor)
-      data.append('household_income', this.state.houseincome)
-      data.append('household_size', this.state.housesize)
+      data.append('floor', this.state.floor.id)
+      data.append('household_income', this.state.houseincome.id)
+      data.append('household_size', this.state.housesize.id)
       data.append('img_large', this.state.thumbnailImage)
       data.append('is_active', 1)
       this.props.exampleHouseAddRequest(data)
@@ -281,6 +293,7 @@ class AddNewExampleHousePage extends React.Component {
       store,
       title,
       status,
+      statusOptions,
       content,
       contruction,
       price,
@@ -353,9 +366,9 @@ class AddNewExampleHousePage extends React.Component {
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="6">
-                  <FormGroup>
+                  <FormGroup className="react-select">
                     <Label for="status">{I18nUtils.t('status')}</Label>
-                    <SelectGroup
+                    {/* <SelectGroup
                       type="select"
                       name="status"
                       id="status"
@@ -367,7 +380,20 @@ class AddNewExampleHousePage extends React.Component {
                       <option value="">{I18nUtils.t('lb-select')}</option>
                       <option value="1">{I18nUtils.t('lb-enable')}</option>
                       <option value="0">{I18nUtils.t('lb-disabled')}</option>
-                    </SelectGroup>
+                    </SelectGroup> */}
+                    <Select
+                      className="react-select-ops"
+                      classNamePrefix="rs-cus"
+                      isClearable={false}
+                      isSearchable={false}
+                      id="status"
+                      value={status}
+                      options={statusOptions}
+                      onChange={e => this.handleChange(e, 'status')}
+                      getOptionLabel={({ title }) => title}
+                      getOptionValue={({ id }) => id}
+                      placeholder={I18nUtils.t('lb-select-vl')}
+                    />
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="6">
@@ -394,127 +420,97 @@ class AddNewExampleHousePage extends React.Component {
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="6">
-                  <FormGroup>
+                  <FormGroup className="react-select">
                     <Label for="contruction">
                       {I18nUtils.t('contruction')}
                     </Label>
-                    <SelectGroup
-                      type="select"
-                      name="contruction"
+                    <Select
+                      className="react-select-ops"
+                      classNamePrefix="rs-cus"
+                      isClearable={false}
+                      isSearchable={false}
                       id="contruction"
-                      onChange={this.handleChange}
                       value={contruction}
-                      required
-                      errorMessage={I18nUtils.t('lb-select')}
-                    >
-                      <option value="">{I18nUtils.t('lb-select')}</option>
-                      {dataCons.length > 0 &&
-                        dataCons.map((att, key) => {
-                          return (
-                            <option key={key} value={att.id}>
-                              {att.title}
-                            </option>
-                          )
-                        })}
-                    </SelectGroup>
+                      options={dataCons}
+                      onChange={e => this.handleChange(e, 'contruction')}
+                      getOptionLabel={({ title }) => title}
+                      getOptionValue={({ id }) => id}
+                      placeholder={I18nUtils.t('lb-select-vl')}
+                    />
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="6">
-                  <FormGroup>
+                  <FormGroup className="react-select">
                     <Label for="floor">{I18nUtils.t('floor')}</Label>
-                    <SelectGroup
-                      type="select"
-                      name="floor"
+                    <Select
+                      className="react-select-ops"
+                      classNamePrefix="rs-cus"
+                      isClearable={false}
+                      isSearchable={false}
                       id="floor"
-                      onChange={this.handleChange}
                       value={floor}
-                      required
-                      errorMessage={I18nUtils.t('lb-select')}
-                    >
-                      <option value="">{I18nUtils.t('lb-select')}</option>
-                      {dataFloor.length > 0 &&
-                        dataFloor.map((att, key) => {
-                          return (
-                            <option key={key} value={att.id}>
-                              {att.title}
-                            </option>
-                          )
-                        })}
-                    </SelectGroup>
+                      options={dataFloor}
+                      onChange={e => this.handleChange(e, 'floor')}
+                      getOptionLabel={({ title }) => title}
+                      getOptionValue={({ id }) => id}
+                      placeholder={I18nUtils.t('lb-select-vl')}
+                    />
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="6">
-                  <FormGroup>
+                  <FormGroup className="react-select">
                     <Label for="floor">{I18nUtils.t('price')}</Label>
-                    <SelectGroup
-                      type="select"
-                      name="price"
+                    <Select
+                      className="react-select-ops"
+                      classNamePrefix="rs-cus"
+                      isClearable={false}
+                      isSearchable={false}
                       id="price"
                       value={price}
-                      onChange={this.handleChange}
-                      required
-                      errorMessage={I18nUtils.t('lb-select')}
-                    >
-                      <option value="">{I18nUtils.t('lb-select')}</option>
-                      {dataPrice.length > 0 &&
-                        dataPrice.map((att, key) => {
-                          return (
-                            <option key={key} value={att.id}>
-                              {att.title}
-                            </option>
-                          )
-                        })}
-                    </SelectGroup>
+                      options={dataPrice}
+                      onChange={e => this.handleChange(e, 'price')}
+                      getOptionLabel={({ title }) => title}
+                      getOptionValue={({ id }) => id}
+                      placeholder={I18nUtils.t('lb-select-vl')}
+                    />
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="6">
-                  <FormGroup>
+                  <FormGroup className="react-select">
                     <Label for="houseincome">
                       {I18nUtils.t('houseincome')}
                     </Label>
-                    <SelectGroup
-                      type="select"
-                      name="houseincome"
+                    <Select
+                      className="react-select-ops"
+                      classNamePrefix="rs-cus"
+                      isClearable={false}
+                      isSearchable={false}
                       id="houseincome"
-                      onChange={this.handleChange}
                       value={houseincome}
-                      required
-                      errorMessage={I18nUtils.t('lb-select')}
-                    >
-                      <option value="">{I18nUtils.t('lb-select')}</option>
-                      {dataHouseIncome.length > 0 &&
-                        dataHouseIncome.map((att, key) => {
-                          return (
-                            <option key={key} value={att.id}>
-                              {att.title}
-                            </option>
-                          )
-                        })}
-                    </SelectGroup>
+                      options={dataHouseIncome}
+                      onChange={e => this.handleChange(e, 'houseincome')}
+                      getOptionLabel={({ title }) => title}
+                      getOptionValue={({ id }) => id}
+                      placeholder={I18nUtils.t('lb-select-vl')}
+                    />
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="6">
-                  <FormGroup>
+                  <FormGroup className="react-select">
                     <Label for="housesize">{I18nUtils.t('housesize')}</Label>
-                    <SelectGroup
-                      type="select"
-                      name="housesize"
+                    <Select
+                      className="react-select-ops"
+                      classNamePrefix="rs-cus"
+                      isClearable={false}
+                      isSearchable={false}
                       id="housesize"
                       value={housesize}
-                      onChange={this.handleChange}
-                      required
-                      errorMessage={I18nUtils.t('lb-select')}
-                    >
-                      <option value="">{I18nUtils.t('lb-select')}</option>
-                      {dataHouseSize.length > 0 &&
-                        dataHouseSize.map((att, key) => {
-                          return (
-                            <option key={key} value={att.id}>
-                              {att.title}
-                            </option>
-                          )
-                        })}
-                    </SelectGroup>
+                      options={dataHouseSize}
+                      onChange={e => this.handleChange(e, 'housesize')}
+                      getOptionLabel={({ title }) => title}
+                      getOptionValue={({ id }) => id}
+                      placeholder={I18nUtils.t('lb-select-vl')}
+                    />
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="6">
@@ -522,13 +518,15 @@ class AddNewExampleHousePage extends React.Component {
                     <Label for="housestyle">{I18nUtils.t('housestyle')}</Label>
                     <Select
                       className="react-select-ops"
+                      name="housestyle"
                       isMulti
-                      required
                       options={dataStyle}
                       value={housestyle}
+                      classNamePrefix="rs-cus"
                       onChange={this.handleMultiChange}
                       getOptionLabel={({ title }) => title}
                       getOptionValue={({ id }) => id}
+                      placeholder={I18nUtils.t('lb-select-vl')}
                     />
                   </FormGroup>
                 </Col>
