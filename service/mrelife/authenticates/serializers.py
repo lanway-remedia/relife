@@ -104,6 +104,6 @@ class RegisterV2Serializer(Serializer):
         if attrs['password1'] != attrs['password2']:
             raise ValidationError("US002")
         valid, detail = lanway_user_exist(attrs['mail'])
-        if valid:
+        if not valid:
             raise ValidationError("RG001")
         return attrs
