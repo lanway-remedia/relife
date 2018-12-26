@@ -72,7 +72,7 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             if not IsAdmin(request.user):
                 queryset = queryset.filter(create_user_id=request.user.id)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
-            serializer = OutletStoreContactSerializer(outletstoreObject, data=request.data)
+            serializer = OutletStoreContactSerializer(outletstoreObject, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())

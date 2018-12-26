@@ -72,7 +72,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             if(IsStore(request.user)):
                 queryset = OutletStore.objects.filter(create_user_id=request.user.id, is_active=1)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
-            serializer = OutletStoreSerializer(outletstoreObject, data=request.data)
+            serializer = OutletStoreSerializer(outletstoreObject, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())

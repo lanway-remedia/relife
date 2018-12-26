@@ -27,7 +27,7 @@ from mrelife.utils.relifeenum import MessageCode
 class OutletStoreReviewViewSet(viewsets.ModelViewSet):
     queryset = OutletStoreReview.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = OutletStoreReviewSerializer
-    permission_classes = (OutletStoreViewPermission,)
+    #permission_classes = (OutletStoreViewPermission,)
     pagination_class = LimitOffsetPagination
     lookup_field = 'pk'
     lookup_value_regex = '[^/]+'
@@ -56,7 +56,7 @@ class OutletStoreReviewViewSet(viewsets.ModelViewSet):
         try:
             serializer = OutletStoreReviewSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                serializer.save(create_user_id=request.user.id,update_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSR003.value, {}), status=status.HTTP_201_CREATED)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
@@ -72,7 +72,7 @@ class OutletStoreReviewViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(create_user_id=request.user.id)
             queryset = OutletStoreReview.objects.all().filter(is_active=1)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
-            serializer = OutletStoreReviewSerializer(outletstoreObject, data=request.data)
+            serializer = OutletStoreReviewSerializer(outletstoreObject, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save(update_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
