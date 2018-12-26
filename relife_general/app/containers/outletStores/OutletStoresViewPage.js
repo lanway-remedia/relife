@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
 import I18nUtils from '../../utils/I18nUtils'
-import TabIntroduction from './../../components/outletStores/TabIntroduction'
-import TabHouse from './../../components/outletStores/TabHouse'
+
+import Tabs from './../../components/outletStores/Tabs'
+
 class OutletStoresViewPage extends React.Component {
   constructor(props) {
     super(props)
@@ -47,23 +48,7 @@ class OutletStoresViewPage extends React.Component {
             <img src={outletStore.img_large} />
           </div>
           <div className="tab-wrap">
-            <ul className="tab top">
-                <li className="current">会社紹介</li>
-                <li className="">建築実例</li>
-                <li className="">資料請求</li>
-            </ul>
-            <div className="content-wrap">
-              {/* <TabIntroduction /> */}
-              <TabHouse storeId={outletStore.id} />
-            </div>
-            <div className="tab-bottom">
-            <ul className="tab bottom">
-                <li className="current">会社紹介</li>
-                <li className="">建築実例</li>
-                <li className="">資料請求</li>
-            </ul>
-            </div>
-
+            <Tabs storeId={outletStore.id} outletStore={outletStore} />
           </div>
         </section>
         </div>

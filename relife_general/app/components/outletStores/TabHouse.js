@@ -38,13 +38,15 @@ class TabHouse extends React.Component {
     let {houseList} = this.state
     return (
       <div className="content">
-        <div className="tab-list clearfix">
+        <div className="detail-list clearfix">
           {houseList.map((val, key) => (
-            <Link key={key} to="" className="tab-list-once">
-              <div className="tab-list-once-img">
-                <img />
+            <Link key={key} to={'/example/'+val.id} className="detail-list-once">
+              <div className="detail-list-once-img">
+                <img src={val.img_large} />
               </div>
-              <h3 className="tab-list-once-title">{val.title}</h3>
+              <h3 className="detail-list-once-title">{val.title}</h3>
+              <div className="detail-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
+                <div className="detail-list-once-company">{val.store.title}</div>
             </Link>
             ))}
         </div>
