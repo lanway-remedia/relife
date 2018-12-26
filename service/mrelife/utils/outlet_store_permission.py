@@ -34,7 +34,7 @@ class OutletStoreContactPermission(BasePermission):
 class OutletStoreViewPermission(BasePermission):
     def has_permission(self, request, view):
         try:
-            if(view.action in ["list", "retrieve"]):
+            if(view.action in ["list", "retrieve","getlistbyexamplehouse"]):
                 return True
             return User.objects.filter(id=request.user.id).exists()
         except Exception:

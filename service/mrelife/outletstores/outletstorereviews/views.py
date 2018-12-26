@@ -27,7 +27,7 @@ from mrelife.utils.relifeenum import MessageCode
 class OutletStoreReviewViewSet(viewsets.ModelViewSet):
     queryset = OutletStoreReview.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = OutletStoreReviewSerializer
-    #permission_classes = (OutletStoreViewPermission,)
+    permission_classes = (OutletStoreViewPermission,)
     pagination_class = LimitOffsetPagination
     lookup_field = 'pk'
     lookup_value_regex = '[^/]+'
