@@ -46,6 +46,11 @@
   "new-password": "新しいパスワード",
   "confirm-password": "パスワード認証",
 
+  "store-intro-title": "会社紹介",
+  "store-data-title": "会社紹介",
+  "example-house-title": "建築実例",
+  "infomation-request" : "資料請求",
+
   "login-page-title": "Re:Life ログイン",
   "forgotpassword-page-title": "Re:Life パスワードを忘れました",
 
