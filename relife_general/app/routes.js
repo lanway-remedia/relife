@@ -9,6 +9,7 @@ import {Route, Redirect, withRouter, Switch} from 'react-router-dom'
 import {ToastContainer} from 'react-toastify'
 //header
 import Header from './components/Header'
+import PageTop from './components/PageTop'
 import Footer from './components/Footer'
 //breadcrumb
 import Breadcrumb from './components/Breadcrumb'
@@ -132,6 +133,7 @@ class Routes extends React.Component {
                         />
 
                     </Switch>
+                    <PageTop />
                     <Footer />
                 </React.Fragment>
                 ) : (

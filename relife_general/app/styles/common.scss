@@ -21,6 +21,9 @@ input, select {
     }
   }
 }
+.drawer-open {
+  overflow: hidden;
+}
 
 img {
   object-fit: cover;
