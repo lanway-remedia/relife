@@ -73,8 +73,14 @@ class LoginSerializer(Serializer):
         """
             check account is exist
         """
-        if not lanway_login(attrs['username'], attrs['password']):
-            raise ValidationError("LWLG001")
+        valid, detail = lanway_login(attrs['username'], attrs['password'])
+        if not valid:
+            if detail == 'ECIS':
+                raise ValidationError("LWLG001")
+            if detail == 'ECWP':
+                raise ValidationError("LWLG002")
+            if detail == 'ECNE':
+                raise ValidationError("LWLG003")
         return attrs
 
 
@@ -94,6 +100,7 @@ class RegisterV2Serializer(Serializer):
         """
         if attrs['password1'] != attrs['password2']:
             raise ValidationError("US002")
-        if lanway_user_exist(attrs['mail']):
+        valid, detail = lanway_user_exist(attrs['mail'])
+        if valid:
             raise ValidationError("RG001")
         return attrs
