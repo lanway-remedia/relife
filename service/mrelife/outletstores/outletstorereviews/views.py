@@ -17,8 +17,7 @@ from rest_framework.views import APIView
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.examplehouses.models import ExampleHouse
 from mrelife.outletstores.models import OutletStore, OutletStoreReview
-from mrelife.outletstores.outletstorereviews.serializers import \
-    OutletStoreReviewSerializer
+from mrelife.outletstores.outletstorereviews.serializers import OutletStoreReviewSerializer
 from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStoreViewPermission
@@ -57,7 +56,7 @@ class OutletStoreReviewViewSet(viewsets.ModelViewSet):
         try:
             serializer = OutletStoreReviewSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save(update_user=request.user.id, is_active=settings.IS_ACTIVE,
+                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSR003.value, ""), status=status.HTTP_201_CREATED)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
@@ -84,7 +83,7 @@ class OutletStoreReviewViewSet(viewsets.ModelViewSet):
         except Http404:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR002.value, ""), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR006.value, ""),  status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR006.value, ""),  status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         try:
@@ -95,7 +94,7 @@ class OutletStoreReviewViewSet(viewsets.ModelViewSet):
             data = {"is_active": settings.IS_INACTIVE}
             serializer = OutletStoreReviewSerializer(outletstoreObject, data=data, partial=True)
             if serializer.is_valid():
-                serializer.save(update_user=request.user.id, updated=datetime.now())
+                serializer.save(update_user_id=request.user.id, updated=datetime.now())
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR008.value, serializer.errors), status=status.HTTP_200_OK)
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR009.value, "Invalid ID supplied"), status=status.HTTP_400_BAD_REQUEST)
