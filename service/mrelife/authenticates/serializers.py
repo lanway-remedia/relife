@@ -2,7 +2,7 @@
     Authenticate Serializer
 """
 from rest_framework.serializers import (CharField, EmailField, Serializer,
-                                        ValidationError)
+                                        ValidationError, DateField)
 
 from mrelife.authenticates.lanway_portal import lanway_login, lanway_user_exist
 from mrelife.utils.validates import email_exist, username_exist
@@ -92,6 +92,9 @@ class RegisterV2Serializer(Serializer):
     username = CharField(required=True)
     password1 = CharField(required=True)
     password2 = CharField(required=True)
+    birth_date = DateField(required=True)
+    first_name = CharField(required=True)
+    last_name = CharField(required=True)
     domain = CharField(required=True)
 
     def validate(self, attrs):
