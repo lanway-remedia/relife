@@ -63,4 +63,4 @@ def lanway_user_exist(email):
             User.objects.create(username=email, email=email, is_active=True,
                                 first_name=reponse.json()['detail']['first_name'])
         return (True, reponse.json()['detail'])
-    return (False, )
+    return (False, reponse.json()['detail']['error_code'])
