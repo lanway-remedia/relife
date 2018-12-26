@@ -44,13 +44,13 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(create_user_id=request.user.id)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreContactReplySerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR001.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR001.value, {}), status=status.HTTP_200_OK)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR009.value, "Invalid ID supplied"), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR002.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR002.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR002.value, ""), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR002.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def create(self, request):
         try:
@@ -58,10 +58,10 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR003.value, ""), status=status.HTTP_201_CREATED)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR003.value, {}), status=status.HTTP_201_CREATED)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR004.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR004.value, ""), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR004.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
@@ -76,14 +76,14 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR005.value, ""), status=status.HTTP_200_OK)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR005.value, {}), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR006.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR009.value, "Invalid ID supplied"), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR002.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR002.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR006.value, ""), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR006.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         try:
@@ -98,11 +98,11 @@ class OutletStoreContactReplyViewSet(viewsets.ModelViewSet):
             serializer = OutletStoreContactReplySerializer(outletstoreObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR007.value, ""), status=status.HTTP_200_OK)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSCR007.value, {}), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR008.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR009.value, "Invalid ID supplied"), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR009.value,{}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR002.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR002.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR008.value, ""), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSCR008.value, {}), status=status.HTTP_400_BAD_REQUEST)
