@@ -66,6 +66,7 @@ class MessageCode(Enum):
     EX006 = 'EX006'  # update with err data
     EX007 = 'EX007'  # delete sussess
     EX008 = 'EX008'  # delete fail
+    EX009 = 'EX009'  # Invalid ID supplied
 
     EXC001 = 'EXC001'  # get detail
     EXC002 = 'EXC002'  # get detail. not found request
@@ -75,6 +76,7 @@ class MessageCode(Enum):
     EXC006 = 'EXC006'  # update with err data
     EXC007 = 'EXC007'  # delete sussess
     EXC008 = 'EXC008'  # delete fail
+    EXC009 = 'EXC009'  # Invalid ID supplied
 
     EXCR001 = 'EXCR001'  # get detail
     EXCR002 = 'EXCR002'  # get detail. not found request
@@ -84,6 +86,7 @@ class MessageCode(Enum):
     EXCR006 = 'EXCR006'  # update with err data
     EXCR007 = 'EXCR007'  # delete sussess
     EXCR008 = 'EXCR008'  # delete fail
+    EXCR009 = 'EXCR009'  # Invalid ID supplied
 
     EV001 = 'EV001'  # get detail
     EV002 = 'EV002'  # get detail. not found request
@@ -93,6 +96,27 @@ class MessageCode(Enum):
     EV006 = 'EV006'  # update with err data
     EV007 = 'EV007'  # delete sussess
     EV008 = 'EV008'  # get detail
+    EV009 = 'EV009'  # Invalid ID supplied
+
+    EVC001 = 'EVC001'  # get detail to Event contact
+    EVC002 = 'EVC002'  # get detail. not found request
+    EVC003 = 'EVC003'  # create susscess
+    EVC004 = 'EVC004'  # create with err data
+    EVC005 = 'EVC005'  # update sussess
+    EVC006 = 'EVC006'  # update with err data
+    EVC007 = 'EVC007'  # delete sussess
+    EVC008 = 'EVC008'  # get detail
+    EVC009 = 'EVC009'  # Invalid ID supplied
+
+    EVCR001 = 'EVCR001'  # get detail to Event contact
+    EVCR002 = 'EVCR002'  # get detail. not found request
+    EVCR003 = 'EVCR003'  # create susscess
+    EVCR004 = 'EVCR004'  # create with err data
+    EVCR005 = 'EVCR005'  # update sussess
+    EVCR006 = 'EVCR006'  # update with err data
+    EVCR007 = 'EVCR007'  # delete sussess
+    EVCR008 = 'EVCR008'  # get detail
+    EVCR009 = 'EVCR009'  # Invalid ID supplied
 
     EVMH001 = 'EVMH001'  # get detail
     EVMH002 = 'EVMH002'  # get detail. not found request
@@ -102,15 +126,27 @@ class MessageCode(Enum):
     EVMH006 = 'EVMH006'  # update with err data
     EVMH007 = 'EVMH007'  # delete sussess
     EVMH008 = 'EVMH008'  # get detail
+    EVMH009 = 'EVMH009'  # Invalid ID supplied
+
+    EVE001 = 'EVE001'  # get detail
+    EVE002 = 'EVE002'  # get detail. not found request
+    EVE003 = 'EVE003'  # create susscess
+    EVE004 = 'EVE004'  # create with err data
+    EVE005 = 'EVE005'  # update sussess
+    EVE006 = 'EVE006'  # update with err data
+    EVE007 = 'EVE007'  # delete sussess
+    EVE008 = 'EVE008'  # get detail
+    EVE009 = 'EVE009'  # Invalid ID supplied
 
     EXT001 = 'EXT001'  # get detail
     EXT002 = 'EXT002'  # get detail. not found request
-    EXT003 = 'EXT004'  # create susscess
-    EXT004 = 'EXT005'  # create with err data
-    EXT005 = 'EXT006'  # update sussess
-    EXT006 = 'EXT007'  # update with err data
-    EXT007 = 'EXT008'  # delete sussess
-    EXT008 = 'EXT009'  # get detail
+    EXT003 = 'EXT003'  # create susscess
+    EXT004 = 'EXT004'  # create with err data
+    EXT005 = 'EXT005'  # update sussess
+    EXT006 = 'EXT006'  # update with err data
+    EXT007 = 'EXT007'  # delete sussess
+    EXT008 = 'EXT008'  # get detail
+    EXT009 = 'EXT009'  # Invalid ID supplied
 
     OMH001 = 'OMH001'  # get detail
     OMH002 = 'OMH002'  # get detail. not found request

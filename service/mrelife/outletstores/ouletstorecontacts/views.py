@@ -27,6 +27,9 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
     serializer_class = OutletStoreContactSerializer
     permission_classes = (OutletStoreContactPermission,)
     pagination_class = LimitOffsetPagination
+    lookup_field = 'pk'
+    lookup_value_regex = '[^/]+'
+
 
     def list(self, request):
         self.queryset = OutletStoreContact.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
