@@ -33,8 +33,12 @@ def lanway_register(data):
     """
         Register to Lanway
     """
-    register_data = {"last_name": data.last_name, "first_name": data.first_name,
-                     "birthday": data.birthday, "email": data.email, "password": data.password}
+    register_data = {
+        "last_name": data['last_name'],
+        "first_name": data['first_name'],
+        "birthday": data['birthday'],
+        "email": data['email'],
+        "password": data['password']}
     reponse = requests.post(LANWAY_BASE_URL + LANWAY_LOGIN_URL, data=register_data)
     if reponse.status_code > 299:
         return (False, reponse.json()['detail']['error_code'])
