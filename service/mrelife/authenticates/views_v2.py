@@ -17,7 +17,7 @@ from mrelife.authenticates.serializers import LoginSerializer, RegisterV2Seriali
 from mrelife.utils.groups import GroupUser
 from mrelife.utils.response import response_200, response_201, response_400, response_404, response_503
 from mrelife.utils.validates import email_exist
-
+from mrelife.authenticates.lanway_portal import lanway_register
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
 User = get_user_model()
@@ -81,6 +81,16 @@ class RegisterV2View(APIView):
         # validate
         if not serializer.is_valid():
             response_400('RG004', '', serializer.errors)
+
+        created, detail = lanway_register({
+            "last_name": serializer.data['last_name'],
+            "first_name": serializer.data['first_name'],
+            "birthday": serializer.data['birth_date'],
+            "email": serializer.data['mail'],
+            "password": serializer.data['password1']
+        })
+        if not created:
+            response_400('RG004', '', detail)
         email = serializer.data['mail']
         username = serializer.data['username']
         domain = serializer.data['domain']
