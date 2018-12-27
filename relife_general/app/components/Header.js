@@ -7,7 +7,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import { DropdownToggle, DropdownMenu, DropdownItem, ButtonDropdown, Button } from 'reactstrap'
+import { DropdownToggle, DropdownMenu, DropdownItem, ButtonDropdown } from 'reactstrap'
 import I18nUtils from '../utils/I18nUtils'
 import AppUtils from '../utils/AppUtils'
 import logo from '../images/logo.png'
@@ -80,7 +80,7 @@ class Header extends React.Component {
           <nav id="gnav">
             <ul className="gnav">
               <li>
-                <Link to="/example">建築会社・工務店</Link>
+                <Link to="/builder">建築会社・工務店</Link>
               </li>
               <li>
                 <Link to="/example">建築実例</Link>

@@ -116,7 +116,7 @@ class Routes extends React.Component {
                             component={requireLogin(ProfileBookingHistoryPage)}
                         />
                         <Route
-                            exact path="/example/"
+                            exact path="/example"
                             component={ExampleHouseListPage}
                         />
                         <Route
@@ -124,7 +124,7 @@ class Routes extends React.Component {
                             component={ExampleHouseViewPage}
                         />
                         <Route
-                            exact path="/builder/"
+                            exact path="/builder"
                             component={OutletStoresListPage}
                         />
                         <Route

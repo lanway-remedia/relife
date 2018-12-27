@@ -7,6 +7,7 @@ import { DefaultValue } from '../../constants'
 import I18nUtils from '../../utils/I18nUtils'
 import SidebarFilterPC from '../../components/outletStores/SidebarFilterPC'
 import SidebarFilterSP from '../../components/outletStores/SidebarFilterSP'
+import Paginate from './../../components/Paginate'
 class OutletStoresListPage extends React.Component {
   constructor(props) {
     super(props)
@@ -49,9 +50,12 @@ class OutletStoresListPage extends React.Component {
     }
   }
 
+  pageChanged = () => {
+    this.getStoreList()
+  }
+
   render() {
-    let {storeList} = this.state
-    console.log(storeList)
+    let {storeList, count} = this.state
     return (
       <div>
         <SidebarFilterSP />
@@ -95,6 +99,7 @@ class OutletStoresListPage extends React.Component {
                   )
                 })}
               </div>
+              <Paginate count={count} pageChanged={() => this.pageChanged()} />
             </section>
             <SidebarFilterPC />
           </div>
