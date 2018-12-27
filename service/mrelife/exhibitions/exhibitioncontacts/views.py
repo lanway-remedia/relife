@@ -56,7 +56,7 @@ class ExhibitionContactViewSet(viewsets.ModelViewSet):
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXC003.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC004.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC004.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
@@ -71,11 +71,11 @@ class ExhibitionContactViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id)
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXC005.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC006.value, serializer.errors), status=status.HTTP_405_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC011.value, serializer.errors), status=status.HTTP_405_BAD_REQUEST)
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC012.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC006.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
@@ -94,6 +94,6 @@ class ExhibitionContactViewSet(viewsets.ModelViewSet):
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC013.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC008.value, {}), status=status.HTTP_400_BAD_REQUEST)

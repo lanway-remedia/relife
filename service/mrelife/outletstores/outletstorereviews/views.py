@@ -59,7 +59,7 @@ class OutletStoreReviewViewSet(viewsets.ModelViewSet):
                 serializer.save(create_user_id=request.user.id,update_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSR003.value, {}), status=status.HTTP_201_CREATED)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR010.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR004.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
@@ -77,11 +77,11 @@ class OutletStoreReviewViewSet(viewsets.ModelViewSet):
                 serializer.save(update_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSR005.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR006.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR012.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR006.value, {}),  status=status.HTTP_400_BAD_REQUEST)
 
@@ -99,7 +99,7 @@ class OutletStoreReviewViewSet(viewsets.ModelViewSet):
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR013.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR008.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
