@@ -37,7 +37,6 @@ import ReleaseInvoicePage from './containers/invoices/ReleaseInvoicePage'
 
 //Test page
 import TestPage from './containers/TestPage'
-import TestPage2 from './containers/TestPage2'
 
 import { StorageKeyConstants } from './constants'
 
@@ -161,7 +160,6 @@ class Routes extends React.Component {
                     component={requireLogin(ReleaseInvoicePage)}
                   />
                   <Route path="/test" component={requireLogin(TestPage)} />
-                  <Route path="/test2" component={requireLogin(TestPage2)} />
                 </Switch>
               </div>
             </div>
