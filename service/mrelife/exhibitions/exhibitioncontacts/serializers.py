@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from mrelife.exhibitions.models import Exhibition, ExhibitionContact, ExhibitionContactReply
+from mrelife.exhibitions.models import (Exhibition, ExhibitionContact,
+                                        ExhibitionContactReply)
 from mrelife.users.models import User
 from mrelife.users.serializers import UserSerializer
 
@@ -12,8 +13,7 @@ class ExhibitionVSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ExhibitionContactReplyVSerializer(serializers.ModelSerializer):
-    
+class ExhibitionContactReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = ExhibitionContactReply
         fields = '__all__'
@@ -21,14 +21,21 @@ class ExhibitionContactReplyVSerializer(serializers.ModelSerializer):
 
 class ExhibitionContactSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    content = serializers.CharField(max_length=None)
+    comment = serializers.CharField()
     create_user = UserSerializer(read_only=True, required=False)
-    create_user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.filter(is_active=1), write_only=True)
-    exhibition_id = serializers.PrimaryKeyRelatedField(queryset=Exhibition.objects.filter(is_active=1), write_only=True)
-    exhibition = ExhibitionVSerializer(many=True, read_only=True, required=False)
-    exhibition_contact_reply = ExhibitionContactReplyVSerializer(read_only=True)
-    is_active = serializers.BooleanField(default=True)
+    exhibition_contact_id = serializers.IntegerField(write_only=True, required=True)
+    exhibition_contact = ExhibitionContactReplySerializer(read_only=True,required=False,many=False)
+    is_active = serializers.BooleanField(default=True, read_only=True)
 
     class Meta:
         model = ExhibitionContact
-        fields = ('id', 'content', 'create_user', 'create_user_id', 'exhibition_id', 'exhibition', 'exhibition_contact_reply','is_active')
+        fields = ('id', 'comment', 'create_user', 'exhibition_contact_id','exhibition_contact',  'is_active')
+
+    def validate_exhibition_contact_id(self, exhibition_contact_id):
+        try:
+            item = Exhibition.objects.get(id=exhibition_contact_id)
+            if(not item.is_active):
+                raise
+        except Exception as e:
+            raise serializers.ValidationError(e)
+        return exhibition_contact_id

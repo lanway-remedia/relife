@@ -18,6 +18,7 @@ class OutletStoreReviewSerializer(serializers.ModelSerializer):
     outlet_store = OutletStoreSerializer(read_only=True, required=False)
     create_user = UserSerializer(read_only=True, required=False),
     update_user = UserSerializer(read_only=True, required=False)
+    is_active = serializers.BooleanField(default=True,read_only=False)
 
     class Meta:
         model = OutletStoreReview

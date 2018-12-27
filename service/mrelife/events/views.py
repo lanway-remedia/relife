@@ -25,12 +25,12 @@ class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     pagination_class = LimitOffsetPagination
     permission_classes = (EventPermission,)
+    lookup_field = 'pk'
+    lookup_value_regex = '[^/]+'
 
     def list(self, request):
         self.queryset = Event.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         return super(EventViewSet, self).list(request)
-        lookup_field = 'pk'
-        lookup_value_regex = '[^/]+'
 
     def retrieve(self, request, pk=None):
         try:
