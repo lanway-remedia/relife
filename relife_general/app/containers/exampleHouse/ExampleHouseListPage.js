@@ -7,18 +7,18 @@ import AttributesSearchPC from '../../components/exampleHouse/AttributesSearchPC
 import AttributesSearchSP from '../../components/exampleHouse/AttributesSearchSP'
 import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
 import OutletStoresActions from '../../redux/wrapper/OutletStoresRedux'
-import PaginationComponent from '../../components/PaginationComponent'
-
-import Paginate from '../../components/Paginate'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 import { DefaultValue } from '../../constants'
+
+import Paginate from './../../components/Paginate'
 class ExampleHouseListPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       count: 0,
       limit: 0,
+      page: 0,
       exampleHouseList : [],
       outletStoreList: [],
       exampleHouseNew: []
@@ -75,6 +75,10 @@ class ExampleHouseListPage extends React.Component {
     }
   }
 
+  pageChanged = () => {
+    this.getListExampleHouse()
+  }
+
   render() {
     let {exampleHouseList, exampleHouseNew, count} = this.state
     return (
@@ -128,12 +132,11 @@ class ExampleHouseListPage extends React.Component {
                   }
                 })}
               </div>
-              <Paginate />
+              <Paginate count={count} pageChanged={() => this.pageChanged()} />
             </section>
             <AttributesSearchPC />
           </div>
         </div>
-        
       </div>
     )
   }
