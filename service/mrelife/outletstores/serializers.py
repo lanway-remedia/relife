@@ -55,9 +55,9 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     time_serving = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     regular_holiday = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     district_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
-    is_active = serializers.BooleanField(default=True)
     district = DistrictSerializer(read_only=True)
     create_user = UserSerializer(read_only=True)
+    is_active = serializers.BooleanField(default=True,read_only=False)
 
     class Meta:
         model = OutletStore

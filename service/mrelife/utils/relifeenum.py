@@ -145,7 +145,7 @@ class MessageCode(Enum):
     EXT005 = 'EXT005'  # update sussess
     EXT006 = 'EXT006'  # update with err data
     EXT007 = 'EXT007'  # delete sussess
-    EXT008 = 'EXT008'  # get detail
+    EXT008 = 'EXT008'  # delete err
     EXT009 = 'EXT009'  # Invalid ID supplied
 
     OMH001 = 'OMH001'  # get detail
