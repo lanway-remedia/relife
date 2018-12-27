@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import I18nUtils from '../../utils/I18nUtils'
 import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
 class TabHouse extends React.Component {
   constructor(props) {
@@ -26,7 +25,6 @@ class TabHouse extends React.Component {
     }
       if (this.props.data != nextProps.data) {
         let response = nextProps.data
-        console.log(response)
         if (response.isListHouseByStore) {
           this.setState({
             houseList: response.data

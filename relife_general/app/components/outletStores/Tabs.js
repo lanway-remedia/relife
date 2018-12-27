@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom'
 import classnames from 'classnames'
 import TabIntroduction from './../../components/outletStores/TabIntroduction'
 import TabHouse from './../../components/outletStores/TabHouse'
+import TabContact from './../../components/outletStores/TabContact'
 import I18nUtils from '../../utils/I18nUtils'
 class Tabs extends React.Component {
   constructor(props) {
@@ -57,11 +58,7 @@ class Tabs extends React.Component {
             <TabHouse storeId={this.props.storeId} />
           </TabPane>
           <TabPane tabId="3">
-            <Row>
-              <Col sm="12">
-                <h4>Tab 3 Contents</h4>
-              </Col>
-            </Row>
+            <TabContact />
           </TabPane>
         </TabContent>
         <Nav className="tab bottom">
