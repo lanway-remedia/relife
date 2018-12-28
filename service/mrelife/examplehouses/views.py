@@ -17,9 +17,9 @@ from mrelife.examplehouses.serializers import (
 )
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
-from mrelife.utils.groups import IsStore, IsSub
 from mrelife.utils.ex_house_permission import ExampleHousePermission
-from mrelife.utils.response import response_404, response_201, response_200
+from mrelife.utils.groups import IsStore, IsSub
+from mrelife.utils.response import response_200, response_201, response_404
 
 
 class ExampleHouseViewSet(ModelViewSet):
@@ -29,7 +29,8 @@ class ExampleHouseViewSet(ModelViewSet):
     parser_class = (FormParser, MultiPartParser, JSONParser)
     pagination_class = LimitOffsetPagination
     filter_backends = [DjangoFilterBackend]
-    filter_fields = ['store_id']
+    filter_fields = ['store_id', 'title', 'status_flag', 'contruction',
+                     'price_range', 'floor', 'household_size', 'household_income', 'styles']
 
     def list(self, request, *args, **kwargs):
         """
