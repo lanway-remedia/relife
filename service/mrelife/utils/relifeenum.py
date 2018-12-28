@@ -215,6 +215,11 @@ class MessageCode(Enum):
     EHR006 = 'EHR006'  # update with err data
     EHR007 = 'EHR007'  # delete sussess
     EHR008 = 'EHR008'  # delete fail
+    EHR009 = 'EHR009'  # Invalid ID supplied
+    EHR010 = 'EHR010'  # Not created new example house review: Invalid Data
+    EHR011 = 'EHR011'  # Not updated example house review: Invalid Data
+    EHR012 = 'EHR012'  # Not updated example house review: example house review not found
+    EHR013 = 'EHR013'  # Not deleted example house review: example house review not found
 
     CAT001 = 'CAT001'  # create success
     CAT002 = 'CAT002'  # create with err data
