@@ -44,8 +44,6 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR002.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR002.value, {}), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -57,8 +55,6 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR004.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
@@ -76,8 +72,6 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR012.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR006.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         try:
@@ -96,5 +90,3 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR013.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR002.value, {}), status=status.HTTP_400_BAD_REQUEST)

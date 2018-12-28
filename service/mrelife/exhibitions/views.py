@@ -49,8 +49,6 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX002.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX002.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def create(self, request):
@@ -71,7 +69,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                 outletstoreObject = get_object_or_404(queryset, pk=serializer.data['id'])
                 serializer = ExhibitionSerializer(outletstoreObject)
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX003.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except Exception as e:
             transaction.set_rollback(True)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX004.value, {}), status=status.HTTP_400_BAD_REQUEST)
@@ -108,11 +106,11 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                 outletstoreObject = get_object_or_404(queryset, pk=serializer.data['id'])
                 serializer = ExhibitionSerializer(outletstoreObject)
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX005.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX012.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             transaction.set_rollback(True)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX006.value, {}), status=status.HTTP_400_BAD_REQUEST)
@@ -144,7 +142,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX013.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             transaction.set_rollback(True)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX008.value, {}), status=status.HTTP_400_BAD_REQUEST)
