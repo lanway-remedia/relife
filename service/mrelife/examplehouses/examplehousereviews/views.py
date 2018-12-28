@@ -42,9 +42,9 @@ class ExampleHouseReviewViewSet(viewsets.ModelViewSet):
             serializer = ExampleHouseReviewSerializer(modelhouseObject)
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EHR001.value, ""), status=status.HTTP_200_OK)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EHR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EHR002.value, {}), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -86,7 +86,7 @@ class ExampleHouseReviewViewSet(viewsets.ModelViewSet):
             serializer = ExampleHouseReviewSerializer(outletstoreObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(update_user=request.user.id, updated=datetime.now())
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EHR008.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EHR008.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EHR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
