@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import StoreListModal from '../components/StoreListModal'
 import Select from 'react-select'
-import AttributesComponent from './AttributesComponent'
+// import AttributesComponent from './AttributesComponent'
 import {
   Row,
   Col,
@@ -153,22 +153,17 @@ class SearchCondition extends Component {
     )
   }
 
-  selectOption = selectedOption => {
-    console.log(selectedOption)
-    // this.setState({
-    //   if(selectedOption) {
-    //     contruction: selectedOption.contruction[0]
-    //   }
-    // })
-  }
+  // selectOption = selectedOption => {
+  //   console.log(selectedOption)
+  // }
 
   render() {
     let {
       hasFreeword,
       hasGroup,
       hasStore,
-      hasStatus,
-      hasAttribute
+      hasStatus
+      // hasAttribute
     } = this.props
     let {
       showStoreList,
@@ -282,32 +277,13 @@ class SearchCondition extends Component {
                         </FormGroup>
                       </Col>
                     )}
-                    {hasAttribute && (
+                    {/* {hasAttribute && (
                       <AttributesComponent
                         selectOption={selectedOption =>
                           this.selectOption(selectedOption)
                         }
                       />
-                      // <Col xs="12" md="4">
-                      //   <FormGroup className="react-select">
-                      //     <Label for="status">
-                      //       {I18nUtils.t('contruction')}
-                      //     </Label>
-                      //     <Select
-                      //       className="react-select-ops"
-                      //       classNamePrefix="rs-cus"
-                      //       isClearable={false}
-                      //       isSearchable={false}
-                      //       id="contruction"
-                      //       defaultValue={dataStatus[0]}
-                      //       value={status || dataStatus[0]}
-                      //       options={dataStatus}
-                      //       placeholder={I18nUtils.t('lb-select-vl')}
-                      //       onChange={e => this.handleChange(e, 'contruction')}
-                      //     />
-                      //   </FormGroup>
-                      // </Col>
-                    )}
+                    )} */}
                     <Col xs="12" md="12">
                       <div className="btns-group text-center mt-2">
                         <Button
