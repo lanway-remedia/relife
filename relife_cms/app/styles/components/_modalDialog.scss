@@ -86,6 +86,23 @@
         border-top: 4px double $border-color-3;
       }
     }
+
+    &.preview-modal {
+      max-width: 1170px;
+
+      .modal-content {
+        padding: 30px 10px 30px 10px;
+      }
+
+      .modal-header {
+        display: none;
+      }
+
+      .modal-body {
+        border-top: 4px double $border-color-3;
+        padding: 1rem;
+      }
+    }
   }
 }
 

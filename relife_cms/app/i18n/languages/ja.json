@@ -275,6 +275,7 @@
   "toast-add-error": "{name}を追加するとき、エラーが発生されました。",
   "toast-no-data": "データがありません。",
   "toast-no-record": "テープルにはレコードがありません。",
+  "no-data": "No Data",
 
   "toolbar-totalRecords": "<strong>{total}</strong>の{limit} のレコードが表示されています。",
   "toolbar-limit": "表示件数",

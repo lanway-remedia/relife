@@ -265,9 +265,29 @@ class AddNewExampleHousePage extends React.Component {
     }
   }
 
+  previewPage = data => {
+    return (
+      <Container className="preview-content">
+        <Row>
+          <Col xs="12" md="12">
+            {data.title && <h1 className="preview-title">{data.title}</h1>}
+            {!data.title && (
+              <p className="text-danger">{I18nUtils.t('no-data')}</p>
+            )}
+            {data.imgThumb && <img alt={data.title} src={data.imgThumb} />}
+            {!data.imgThumb && (
+              <p className="text-danger">{I18nUtils.t('no-data')}</p>
+            )}
+          </Col>
+        </Row>
+      </Container>
+    )
+  }
+
   handlePreview = e => {
     e.preventDefault()
     const data = {
+      imgThumb: URL.createObjectURL(this.state.thumbnailImage),
       title: this.state.title,
       content: this.state.content,
       store: this.state.store.id,
@@ -277,7 +297,15 @@ class AddNewExampleHousePage extends React.Component {
       household_income: this.state.household_income,
       household_size: this.state.household_size
     }
-    console.log('Preview Page: ', data)
+    console.log(
+      'Preview Page: ',
+      URL.createObjectURL(this.state.thumbnailImage)
+    )
+
+    this.props.show(ModalName.COMMON, {
+      modalClass: 'preview-modal',
+      message: this.previewPage(data)
+    })
   }
 
   render() {
@@ -566,7 +594,8 @@ AddNewExampleHousePage.propTypes = {
   show: PropTypes.func,
   hide: PropTypes.func,
   dataExample: PropTypes.object,
-  dataAttributes: PropTypes.object
+  dataAttributes: PropTypes.object,
+  data: PropTypes.object
 }
 
 const mapStateToProps = state => {
