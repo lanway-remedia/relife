@@ -8,6 +8,7 @@ import TabIntroduction from './../../components/outletStores/TabIntroduction'
 import TabHouse from './../../components/outletStores/TabHouse'
 import TabContact from './../../components/outletStores/TabContact'
 import I18nUtils from '../../utils/I18nUtils'
+import scrollToElement from 'scroll-to-element'
 class Tabs extends React.Component {
   constructor(props) {
     super(props)
@@ -25,12 +26,16 @@ class Tabs extends React.Component {
         activeTab: tab
       })
     }
+    scrollToElement('#top', {
+      offset: 0,
+      duration: 1000
+    })
   }
 
   render () {
     return (
       <div>
-        <Nav className="tab top">
+        <Nav className="tab top" id="top">
             <li 
               className={classnames({ current: this.state.activeTab === '1' })}
               onClick={() => { this.toggle('1') }}

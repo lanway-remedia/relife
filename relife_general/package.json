@@ -107,6 +107,7 @@
     "redux-saga": "^0.15.6",
     "reduxsauce": "^0.7.0",
     "save": "^2.3.2",
+    "scroll-to-element": "^2.0.2",
     "slick-carousel": "^1.8.1",
     "url-search-params": "^0.10.0",
     "validator": "^10.9.0"

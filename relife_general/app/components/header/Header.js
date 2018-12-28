@@ -8,11 +8,14 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { DropdownToggle, DropdownMenu, DropdownItem, ButtonDropdown } from 'reactstrap'
-import I18nUtils from '../utils/I18nUtils'
-import AppUtils from '../utils/AppUtils'
-import logo from '../images/logo.png'
+import I18nUtils from '../../utils/I18nUtils'
+import AppUtils from '../../utils/AppUtils'
+import logo from '../../images/logo.png'
 import ReactDrawer from 'react-drawer'
 import 'react-drawer/lib/react-drawer.css'
+
+import HeaderLogo from './HeaderLogo'
+import HeaderNav from './HeaderNav'
 class Header extends React.Component {
   constructor(props) {
     super(props)
@@ -70,26 +73,8 @@ class Header extends React.Component {
       <div>
       <header className="header pc">
         <div className="header-inner">
-          <div className="header-logo">
-            <Link to="/" className="header-logo-inner">
-              <img src={logo} className="header-logo-img" />
-              <span className="header-logo-text">{I18nUtils.t('header-logo-text')}</span>
-            </Link>
-            <Link to="/about-us" className="header-logo-link">Re:Lifeとは </Link>
-          </div>
-          <nav id="gnav">
-            <ul className="gnav">
-              <li>
-                <Link to="/builder">建築会社・工務店</Link>
-              </li>
-              <li>
-                <Link to="/example">建築実例</Link>
-              </li>
-              <li>
-                <Link to="/example">Re:Life style</Link>
-              </li>
-            </ul>
-          </nav>
+          <HeaderLogo />
+          <HeaderNav />
           {!isAuthenticated ? (
           <ul className="header-login">
             <li>

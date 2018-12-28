@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { Button } from 'reactstrap'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
+import I18nUtils from '../../utils/I18nUtils'
 import ContactTableTr from './ContactTableTr'
 import ContactTableTh from './ContactTableTh'
 import ContactRadio from './ContactRadio'
@@ -56,7 +57,6 @@ class TabContact extends React.Component {
       let response = nextProps.data
       //list price range
       if (response.isGetListPrice) {
-        console.log(response.data)
         this.setState({
           listPrice: response.data
         })
@@ -143,7 +143,6 @@ class TabContact extends React.Component {
       { 'id': 1, 'title': '工事に着手している', 'order': 0},
       { 'id': 1, 'title': 'すでに完成している', 'order': 0},
       { 'id': 1, 'title': 'その他', 'order': 0},
-      
     ]
     const { listPrice, listFamilyMember, listHouseIncome } = this.state
     return (
