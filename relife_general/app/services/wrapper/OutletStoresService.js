@@ -8,4 +8,8 @@ export default class OutletStoresService {
   listStores(data) {
     return apiClient.get(`/outletstores/?limit=${data.limit}&offset=${data.offset}`)
   }
+
+  contactStores(data) {
+    return apiClient.post(`/outletstores/contact`, data)
+  }
 }

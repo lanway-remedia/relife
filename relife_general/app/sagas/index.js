@@ -127,6 +127,12 @@ export default function* root() {
     takeLatest(
       OutletStoresTypes.OUTLET_STORES_LIST_REQUEST,
       OutletStoresSagas.listStores
+    ),
+
+    // Contact Outlet Store
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORES_CONTACT_REQUEST,
+      OutletStoresSagas.contactStores
     )
   ]
 }
