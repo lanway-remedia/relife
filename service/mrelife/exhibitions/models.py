@@ -33,7 +33,7 @@ class Exhibition(Model):
     longtitude = TextField(null=True)
     address = CharField(max_length=800)
     district = ForeignKey(District, on_delete=CASCADE)
-    zipcode = CharField(max_length=800, null=True)
+    zipcode = CharField(max_length=8, null=True)
     num_attend = IntegerField()
     start_time = DateTimeField(auto_now_add=False)
     end_time = DateTimeField(auto_now_add=False)
