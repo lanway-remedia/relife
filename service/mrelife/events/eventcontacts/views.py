@@ -50,8 +50,6 @@ class EventContactViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC002.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC002.value, e), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -59,14 +57,12 @@ class EventContactViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=1, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVC003.value, ""), status=status.HTTP_201_CREATED)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVC003.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC009.value, {}), status=status.HTTP_400_BAD_REQUEST)
-        except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC002.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC004.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC004.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
@@ -81,13 +77,11 @@ class EventContactViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id)
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVC005.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC002.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC006.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC012.value, {}), status=status.HTTP_404_NOT_FOUND)
 
     def destroy(self, request, pk=None):
         try:
@@ -102,11 +96,8 @@ class EventContactViewSet(viewsets.ModelViewSet):
             serializer = EventContactSerializer(event_obj, data=data, partial=True)
             if(serializer.is_valid()):
                 serializer.save(updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVC007.value, ""), status=status.HTTP_200_NO_CONTENT)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC008.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVC007.value, ""), status=status.HTTP_200_OK)
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC002.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC008.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC013.value, {}), status=status.HTTP_404_NOT_FOUND)

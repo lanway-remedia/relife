@@ -17,6 +17,10 @@ class MessageCode(Enum):
     OS007 = 'OS007'  # delete sussess
     OS008 = 'OS008'  # delete fail
     OS009 = 'OS009'  # Invalid ID supplied
+    OS010 = 'OS010'  # Not created new Outletstore : Invalid Data
+    OS011 = 'OS011'  # Not updated Oultetstore : Invalid Data
+    OS012 = 'OS012'  # Not updated Outletstore : Outletstore not  found
+    OS013 = 'OS0013'  # Not deleted Outletstore : Outletstore not  found
 
     OSC001 = 'OSC001'  # get outletstore contact's information detail successfully
     OSC002 = 'OSC002'  # get outletstore contact's information detail failly
@@ -27,26 +31,21 @@ class MessageCode(Enum):
     OSC007 = 'OSC007'  # delete sussess
     OSC008 = 'OSC008'  # delete fail
     OSC009 = 'OSC009'  # Invalid ID supplied
+    OSC010 = 'OSC010'  # Not created new Outletstore Contact :  Invalid Data
+    OSC011 = 'OSC011'  # Not updated Oultetstore Contact : Invalid Data
+    OSC012 = 'OSC012'  # Not updated Outletstore Contact: Outletstore Contact not found
+    OSC013 = 'OSC013'  # Not deleted Outletstore Contact: Outletstore Contact not found
+
 
     OSCR001 = 'OSCR001'  # get outletstore contact reply's information detail successfully
     OSCR002 = 'OSCR002'  # get outletstore contact reply's information detail failly
-    OSCR003 = 'OSCR002'  # add new a outletstore contact  successfully
+    OSCR003 = 'OSCR002'  # add new a outletstore contact successfully
     OSCR004 = 'OSCR004'  # not add new outletstore contact reply
     OSCR005 = 'OSCR005'  # update information
     OSCR006 = 'OSCR006'  # update with err data
     OSCR007 = 'OSCR007'  # delete sussess
     OSCR008 = 'OSCR008'  # delete fail
     OSCR009 = 'OSCR009'  # Invalid ID supplied
-
-    OSM001 = 'OSM001'  # get outletstore media's information detail successfully
-    OSM002 = 'OSM002'  # get outletstore media's information detail failly
-    OSM003 = 'OSM002'  # add new a outletstore media  successfully
-    OSM004 = 'OSM004'  # not add new outletstore media
-    OSM005 = 'OSM005'  # update information
-    OSM006 = 'OSM006'  # update with err data
-    OSM007 = 'OSM007'  # delete sussess
-    OSM008 = 'OSM008'  # delete fail
-    OSM009 = 'OSM009'  # Invalid ID supplied
 
     OSR001 = 'OSR001'  # get outletstore review information detail successfully
     OSR002 = 'OSR002'  # getoutletstore review information detail failly
@@ -57,6 +56,10 @@ class MessageCode(Enum):
     OSR007 = 'OSR007'  # delete sussess
     OSR008 = 'OSR008'  # delete fail
     OSR009 = 'OSR009'  # Invalid ID supplied
+    OSR010 = 'OSR010'  # Not created new Outletstore Review : Invalid Data
+    OSR011 = 'OSR011'  # Not updated Oultetstore Review : Invalid Data
+    OSR012 = 'OSR012'  # Not updated Outletstore Review: Outletstore Review not found
+    OSR013 = 'OSR013'  # Not deleted Outletstore Review: Outletstore Review not found
 
     EX001 = 'EX001'  # get exhibition's information detail successfully
     EX002 = 'EX002'  # get exhibition's information detail failly
@@ -67,9 +70,13 @@ class MessageCode(Enum):
     EX007 = 'EX007'  # delete sussess
     EX008 = 'EX008'  # delete fail
     EX009 = 'EX009'  # Invalid ID supplied
+    EX010 = 'EX010'  # Not created new Exhibition: Invalid Data
+    EX011 = 'EX011'  # Not updated Exhibition: Invalid Data
+    EX012 = 'EX012'  # Not updated Exhibition: Exhibition not found
+    EX013 = 'EX013'  # Not deleted Exhibition: Exhibition not found
 
-    EXC001 = 'EXC001'  # get detail
-    EXC002 = 'EXC002'  # get detail. not found request
+    EXC001 = 'EXC001'  # get exhibition contact information detail successfully
+    EXC002 = 'EXC002'  # get exhibition contact's information detail failly
     EXC003 = 'EXC003'  # create susscess
     EXC004 = 'EXC004'  # create with err data
     EXC005 = 'EXC005'  # update sussess
@@ -77,9 +84,13 @@ class MessageCode(Enum):
     EXC007 = 'EXC007'  # delete sussess
     EXC008 = 'EXC008'  # delete fail
     EXC009 = 'EXC009'  # Invalid ID supplied
+    EXC010 = 'EXC010'  # Not created new exhibition contact: Invalid Data
+    EXC011 = 'EXC011'  # Not updated exhibition contact: Invalid Data
+    EXC012 = 'EXC012'  # Not updated exhibition contact: exhibition contact not found
+    EXC013 = 'EXC013'  # Not deleted exhibition contact: exhibition contact not found
 
-    EXCR001 = 'EXCR001'  # get detail
-    EXCR002 = 'EXCR002'  # get detail. not found request
+    EXCR001 = 'EXCR001'  # get exhibition contact reply's information detail successfully
+    EXCR002 = 'EXCR002'  # get exhibition contact reply's information detail failly
     EXCR003 = 'EXCR003'  # create susscess
     EXCR004 = 'EXCR004'  # create with err data
     EXCR005 = 'EXCR005'  # update sussess
@@ -87,8 +98,26 @@ class MessageCode(Enum):
     EXCR007 = 'EXCR007'  # delete sussess
     EXCR008 = 'EXCR008'  # delete fail
     EXCR009 = 'EXCR009'  # Invalid ID supplied
+    EXCR010 = 'EXCR010'  # Not created new exhibition contact reply: Invalid Data
+    EXCR011 = 'EXCR011'  # Not updated exhibition contact reply: Invalid Data
+    EXCR012 = 'EXCR012'  # Not updated exhibition contact reply: exhibition contact reply not found
+    EXCR013 = 'EXCR013'  # Not deleted exhibition contact reply: exhibition contact reply not found
 
-    EV001 = 'EV001'  # get detail
+    EXT001 = 'EXT001'  # get outletstore review information detail successfully
+    EXT002 = 'EXT002'  # get detail. not found request
+    EXT003 = 'EXT003'  # create susscess
+    EXT004 = 'EXT004'  # create with err data
+    EXT005 = 'EXT005'  # update sussess
+    EXT006 = 'EXT006'  # update with err data
+    EXT007 = 'EXT007'  # delete sussess
+    EXT008 = 'EXT008'  # delete err
+    EXT009 = 'EXT009'  # Invalid ID supplied
+    EXT010 = 'EXT010'  # Not created new Exhibition Tag: Invalid Data
+    EXT011 = 'EXT011'  # Not updated Exhibition Tag: Invalid Data
+    EXT012 = 'EXT012'  # Not updated Exhibition Tag: Exhibition Tag not found
+    EXT013 = 'EXT013'  # Not deleted Exhibition Tag: Exhibition Tag not found
+
+    EV001 = 'EV001'  # get outletstore review information detail successfully
     EV002 = 'EV002'  # get detail. not found request
     EV003 = 'EV003'  # create susscess
     EV004 = 'EV004'  # create with err data
@@ -97,6 +126,10 @@ class MessageCode(Enum):
     EV007 = 'EV007'  # delete sussess
     EV008 = 'EV008'  # get detail
     EV009 = 'EV009'  # Invalid ID supplied
+    EV010 = 'EV010'  # Not created new Event: Invalid Data
+    EV011 = 'EV011'  # Not updated Event: Invalid Data
+    EV012 = 'EV012'  # Not updated Event: Event not found
+    EV013 = 'EV013'  # Not deleted Event: Event not found
 
     EVC001 = 'EVC001'  # get detail to Event contact
     EVC002 = 'EVC002'  # get detail. not found request
@@ -107,8 +140,12 @@ class MessageCode(Enum):
     EVC007 = 'EVC007'  # delete sussess
     EVC008 = 'EVC008'  # get detail
     EVC009 = 'EVC009'  # Invalid ID supplied
+    EVC010 = 'EVC010'  # Not created new Event contact: Invalid Data
+    EVC011 = 'EVC011'  # Not updated Event contact: Invalid Data
+    EVC012 = 'EVC012'  # Not updated Event contact: Event contact not found
+    EVC013 = 'EVC013'  # Not deleted Event contact: Event contact not found
 
-    EVCR001 = 'EVCR001'  # get detail to Event contact
+    EVCR001 = 'EVCR001'  # get detail to Event Contact Reply
     EVCR002 = 'EVCR002'  # get detail. not found request
     EVCR003 = 'EVCR003'  # create susscess
     EVCR004 = 'EVCR004'  # create with err data
@@ -117,6 +154,10 @@ class MessageCode(Enum):
     EVCR007 = 'EVCR007'  # delete sussess
     EVCR008 = 'EVCR008'  # get detail
     EVCR009 = 'EVCR009'  # Invalid ID supplied
+    EVCR010 = 'EVCR010'  # Not created new Event Contact Reply:  Invalid Data
+    EVCR011 = 'EVCR011'  # Not updated Event Contact Reply: Invalid Data
+    EVCR012 = 'EVCR012'  # Not updated Event Contact Reply: Event Contact Reply not found
+    EVCR013 = 'EVCR013'  # Not deleted Event Contact Reply: Event Contact Reply not found
 
     EVMH001 = 'EVMH001'  # get detail
     EVMH002 = 'EVMH002'  # get detail. not found request
@@ -127,6 +168,10 @@ class MessageCode(Enum):
     EVMH007 = 'EVMH007'  # delete sussess
     EVMH008 = 'EVMH008'  # get detail
     EVMH009 = 'EVMH009'  # Invalid ID supplied
+    EVMH010 = 'EVMH010'  # Not created new Event Model House:  Invalid Data
+    EVMH011 = 'EVMH011'  # Not updated Event Model House: Invalid Data
+    EVMH012 = 'EVMH012'  # Not updated Event Model House: Event Model House not found
+    EVMH013 = 'EVMH013'  # Not deleted Event Model House: Event Model House not found
 
     EVE001 = 'EVE001'  # get detail
     EVE002 = 'EVE002'  # get detail. not found request
@@ -137,16 +182,10 @@ class MessageCode(Enum):
     EVE007 = 'EVE007'  # delete sussess
     EVE008 = 'EVE008'  # get detail
     EVE009 = 'EVE009'  # Invalid ID supplied
-
-    EXT001 = 'EXT001'  # get detail
-    EXT002 = 'EXT002'  # get detail. not found request
-    EXT003 = 'EXT003'  # create susscess
-    EXT004 = 'EXT004'  # create with err data
-    EXT005 = 'EXT005'  # update sussess
-    EXT006 = 'EXT006'  # update with err data
-    EXT007 = 'EXT007'  # delete sussess
-    EXT008 = 'EXT008'  # delete err
-    EXT009 = 'EXT009'  # Invalid ID supplied
+    EVE010 = 'EVE010'  # Not created new Event Exhibition: Invalid Data
+    EVE011 = 'EVE011'  # Not updated Event Exhibition: Invalid Data
+    EVE012 = 'EVE012'  # Not updated Event Exhibition: Event Exhibition not found
+    EVE013 = 'EVE013'  # Not deleted Event Exhibition: Event Exhibition not found
 
     OMH001 = 'OMH001'  # get detail
     OMH002 = 'OMH002'  # get detail. not found request
