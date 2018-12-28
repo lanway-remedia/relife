@@ -368,19 +368,6 @@ class AddNewExampleHousePage extends React.Component {
                 <Col xs="12" md="6">
                   <FormGroup className="react-select">
                     <Label for="status">{I18nUtils.t('status')}</Label>
-                    {/* <SelectGroup
-                      type="select"
-                      name="status"
-                      id="status"
-                      onChange={this.handleChange}
-                      value={status}
-                      required
-                      errorMessage={I18nUtils.t('lb-select')}
-                    >
-                      <option value="">{I18nUtils.t('lb-select')}</option>
-                      <option value="1">{I18nUtils.t('lb-enable')}</option>
-                      <option value="0">{I18nUtils.t('lb-disabled')}</option>
-                    </SelectGroup> */}
                     <Select
                       className="react-select-ops"
                       classNamePrefix="rs-cus"
