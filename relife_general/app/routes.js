@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import {Route, Redirect, withRouter, Switch} from 'react-router-dom'
 import {ToastContainer} from 'react-toastify'
 //header
-import Header from './components/Header'
+import Header from './components/header/Header'
 import PageTop from './components/PageTop'
 import Footer from './components/Footer'
 //breadcrumb

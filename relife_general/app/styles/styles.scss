@@ -3,18 +3,20 @@
 @import './vendors/mixins';
 
 //Components
-@import './components/header';
 @import './components/footer';
 @import './components/language';
 @import './components/spaceList';
 @import './components/profileNav';
-// @import './components/paginationComponent';
 @import './components/profileImage';
 @import './components/imageUploadComponent';
 @import './components/exampleHouse';
 @import './components/breadcrumb';
 @import './components/paginate';
 @import './components/pageTop';
+
+//Components/Header
+@import './components/header/header';
+@import './components/header/headerNav';
 
 //Components/Home
 @import './components/home/exampleHouseList';

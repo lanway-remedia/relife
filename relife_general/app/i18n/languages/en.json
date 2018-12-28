@@ -48,8 +48,11 @@
 
   "store-intro-title": "会社紹介",
   "store-data-title": "会社紹介",
-  "example-house-title": "建築実例",
   "infomation-request" : "資料請求",
+
+  "builder-title": "建築会社・工務店",
+  "example-house-title": "建築実例",
+  "re-style-title": "Re:Life style",
 
   "login-page-title": "Re:Life ログイン",
   "forgotpassword-page-title": "Re:Life パスワードを忘れました",
