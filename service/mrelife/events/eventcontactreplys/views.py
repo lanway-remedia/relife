@@ -51,8 +51,6 @@ class EventContactReplyViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVCR002.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVCR002.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def create(self, request):
         try:
@@ -60,7 +58,7 @@ class EventContactReplyViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=1, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVCR003.value, {}), status=status.HTTP_201_CREATED)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVCR003.value, {}), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVCR010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVCR004.value, {}), status=status.HTTP_400_BAD_REQUEST)
@@ -83,8 +81,6 @@ class EventContactReplyViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVCR012.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVCR006.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         try:
@@ -105,5 +101,3 @@ class EventContactReplyViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVCR013.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)

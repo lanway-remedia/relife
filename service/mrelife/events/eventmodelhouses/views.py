@@ -47,8 +47,6 @@ class EventModelhouseViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC002.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH002.value, {}), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -57,7 +55,7 @@ class EventModelhouseViewSet(viewsets.ModelViewSet):
                 serializer.save(is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVMH003.value, ""), status=status.HTTP_201_CREATED)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH004.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH004.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
@@ -72,13 +70,11 @@ class EventModelhouseViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save()
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVMH005.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC002.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH006.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC012.value, {}), status=status.HTTP_404_NOT_FOUND)
 
     def destroy(self, request, pk=None):
         try:
@@ -98,6 +94,4 @@ class EventModelhouseViewSet(viewsets.ModelViewSet):
         except KeyError:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC002.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVMH008.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVC013.value, {}), status=status.HTTP_404_NOT_FOUND)
