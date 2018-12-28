@@ -14,6 +14,10 @@ const { Types, Creators } = createActions({
   outletStoresGetSuccess: ['data'],
   outletStoresGetFailure: ['error'],
 
+  outletStoresContactRequest: ['data'],
+  outletStoresContactSuccess: ['data'],
+  outletStoresContactFailure: ['error'],
+
 })
 
 export const OutletStoresTypes = Types
@@ -52,13 +56,30 @@ export const outletStoresGetFailure = (state, { error }) => {
   return { ...state, processing: false, error }
 }
 
+export const outletStoresContactRequest = state => {
+  return { ...state, processing: true }
+}
+
+export const outletStoresContactSuccess = (state, { data }) => {
+  return { ...state, processing: false, data, error: null }
+}
+
+export const outletStoresContactFailure = (state, { error }) => {
+  return { ...state, processing: false, error }
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.OUTLET_STORES_GET_REQUEST]: outletStoresGetRequest,
   [Types.OUTLET_STORES_GET_SUCCESS]: outletStoresGetSuccess,
   [Types.OUTLET_STORES_GET_FAILURE]: outletStoresGetFailure,
+
   [Types.OUTLET_STORES_LIST_REQUEST]: outletStoresListRequest,
   [Types.OUTLET_STORES_LIST_SUCCESS]: outletStoresListSuccess,
   [Types.OUTLET_STORES_LIST_FAILURE]: outletStoresListFailure,
+
+  [Types.OUTLET_STORES_CONTACT_REQUEST]: outletStoresContactRequest,
+  [Types.OUTLET_STORES_CONTACT_SUCCESS]: outletStoresContactSuccess,
+  [Types.OUTLET_STORES_CONTACT_FAILURE]: outletStoresContactFailure,
 
 })

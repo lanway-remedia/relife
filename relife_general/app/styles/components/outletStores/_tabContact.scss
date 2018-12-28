@@ -36,75 +36,27 @@
           padding: 10px 15px;
           line-height: 1.4rem;
           width: 100%;
+          border-radius: 0;
         }
         .contact_table_td_input {
           position: relative;
+
+          textarea {
+            padding: 10px 15px;
+            width: 100%;
+            border: #dadada 1px solid;
+          }
         }
-        .wpcf7-form-control-wrap {
-          position: relative;
 
-          .wpcf7-list-item {
-            display: inline-block;
-            margin: 0 0 0 1em;
-
-            input {
-              display: none;
-            }
-
-            .wpcf7-list-item-label {
-              padding-left: 25px;
-              position: relative;
-              margin-right: 25px;
-              font-size: 1.4rem;
-
-              &:before {
-                content: "";
-                display: block;
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 16px;
-                height: 16px;
-                border: 1px solid #dadada;
-                border-radius: 3px;
-                background: #f2f3f2;
-              }
-              &:after {
-                content: "";
-              }
-            }
-            .wpcf7-list-item input:checked + .wpcf7-list-item-label,
-            .wpcf7-list-item input[type="hidden"] + .wpcf7-list-item-label{
-              color: #057235;
-            }
-            .wpcf7-list-item input:checked + .wpcf7-list-item-label::after,
-            .wpcf7-list-item input[type="hidden"] + .wpcf7-list-item-label::after{
-              content: "";
-              display: block;
-              position: absolute;
-              top: 1px;
-              left: 5px;
-              width: 6px;
-              height: 11px;
-              transform: rotate(40deg);
-              border-bottom: 2px solid #057235;
-              border-right: 2px solid #057235;
-            }
-            .wpcf7-list-item input[type="hidden"]  + .wpcf7-list-item-label::after{
-              content: "";
-              display: block;
-              position: absolute;
-              top: 1px;
-              left: 5px;
-              width: 6px;
-              height: 11px;
-              transform: rotate(40deg);
-              border-bottom: 2px solid #057235;
-              border-right: 2px solid #057235;
-            }
-          } /* end .wpcf7-list-item */
+        .form-check-inline {
+          margin-right: 2rem;
+          .form-check-input {
+            margin-right: 0.9rem;
+            width: 16px;
+          }
         }
-      }
+      } /* end .contact_table_td */
+
       .addressbar {
         p {
           display: inline;
@@ -118,57 +70,55 @@
         .attention {
           display: block;
         }
+      } /* end .addressbar */
+    }
+    .form-text {
+      font-size: 1.2rem;
+      text-align: left;
+      margin: 30px 30px 30px 30px;
+
+      a {
+        color: $bkg-btn-color;
       }
+    }
+    .contact-button {
+      margin: 30px 0;
+      text-align: center;
+      button {
+        width: 180px;
+        height: 48px;
+        font-size: 1.6rem;
+        background: $bkg-btn-color;
+        text-align: center;
+        vertical-align: middle;
+        border-style: none;
+        color: #fff;
+        &:hover {
+          background: $bkg-hover-btn-color;
+        }
+      }
+      
     }
   }
 }
 
-.choices-item {
-  display: inline-block;
-  position: relative;
-  margin-right: 25px;
-  font-size: 1.4rem;
-}
-
-.choices-input {
-  display: none;
-}
-.choices-parts {
-  padding-left: 25px;
-  position: relative;
-  font-size: 1.4rem;
-  @media screen and (max-width: 767px) {
-    color: #fff;
-    display: flex;
-    padding-left: 25px;
-    position: relative;
-    margin: 0 20px 0 0;
-    font-size: 1.2rem;
-  }
-}
-
-.choices-parts::before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: -1px;
-  left: 0;
-  width: 16px;
-  height: 16px;
-  border: 1px solid #dadada;
-  border-radius: 3px;
+input[type='radio'] {
+  border: 1px solid #dadada !important;
+  padding: 0.5em !important;
+  -webkit-appearance: none;
   background: #f2f3f2;
+  border-radius: 3px !important;
 }
 
-.choices-input:checked + .choices-parts{
+input[type='radio']:checked + label.form-check-label {
   color: #057235;
 }
 
-.choices-input:checked + .choices-parts::after{
+input[type='radio']:checked + label.form-check-label:after {
   content: "";
   display: block;
   position: absolute;
-  top: 0;
+  top: 3px;
   left: 5px;
   width: 6px;
   height: 11px;
@@ -177,3 +127,9 @@
   border-right: 2px solid #057235;
 }
 
+.was-validated .form-check-input:invalid ~ .form-check-label, .form-check-input.is-invalid ~ .form-check-label {
+  color: #212529;
+}
+.was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {
+  color: #212529;
+}

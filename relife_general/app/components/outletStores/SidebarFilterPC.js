@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-import { Form, Label, Input, FormGroup, Button, Select} from 'reactstrap'
+import { Form, Label, Input, FormGroup, Button } from 'reactstrap'
 
 class SidebarFilterPC extends React.Component {
   handleResetForm = () => {

@@ -29,7 +29,20 @@ const OutletStoresSagas = {
     } catch (err) {
       yield put(OutletStoresActions.outletStoresListFailure(err))
     }
-  }
+  },
+  *contactStores({ data }) {
+    try {
+      let response = yield call(outletStoresService.contactStores, data)
+      yield put(
+        OutletStoresActions.outletStoresContactSuccess(
+          response.data,
+          (response.data.isContactStores = true)
+        )
+      )
+    } catch (err) {
+      yield put(OutletStoresActions.outletStoresContactFailure(err))
+    }
+  },
 }
 
 export default OutletStoresSagas
