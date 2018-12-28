@@ -206,6 +206,11 @@ class MessageCode(Enum):
     MHR006 = 'MHR006'  # update with err data
     MHR007 = 'MHR007'  # delete sussess
     MHR008 = 'MHR008'  # delete fail
+    MHR009 = 'MHR009'  # Invalid ID supplied
+    MHR010 = 'MHR010'  # Not created new model house review: Invalid Data
+    MHR011 = 'MHR011'  # Not updated model house review: Invalid Data
+    MHR012 = 'MHR012'  # Not updated model house review: model house review not found
+    MHR013 = 'MHR013'  # Not deleted model house review: model house review not found
 
     EHR001 = 'EHR001'  # get example house review detail
     EHR002 = 'EHR002'  # get detail. not found request

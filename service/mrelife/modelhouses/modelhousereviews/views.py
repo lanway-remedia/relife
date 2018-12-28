@@ -26,6 +26,8 @@ class ModelHouseReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ModelHouseReviewSerializer
     # permission_classes = (IsAuthenticated, OutletStorePermission,)
     pagination_class = LimitOffsetPagination
+    lookup_field = 'pk'
+    lookup_value_regex = '[^/]+'
 
     def list(self, request):
         self.queryset = ModelhouseReview.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
@@ -33,15 +35,17 @@ class ModelHouseReviewViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None):
         try:
-            # rex = re.compile("^[0-9]$")
-            # if not rex.match(pk):
-            #     return Response(CommonFuntion.resultResponse(False, "",  MessageCode.OSC004.value, ""), status=status.HTTP_400_BAD_REQUEST)
+            parten = "^[0-9]+$"
+            if not re.findall(parten, str(pk)):
+                raise KeyError
             queryset = ModelhouseReview.objects.all().filter(is_active=1).filter(is_active=1).order_by("-updated")
             modelhouseObject = get_object_or_404(queryset, pk=pk)
             serializer = ModelHouseReviewSerializer(modelhouseObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.MHR001.value, ""), status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR002.value, ""), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.MHR001.value, {}), status=status.HTTP_200_OK)
+        except KeyError:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+        except Http404:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR002.value, {}), status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
         try:
@@ -49,26 +53,28 @@ class ModelHouseReviewViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(update_user=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.MHR003.value, ""), status=status.HTTP_201_CREATED)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.MHR003.value, {}), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR004.value, ""), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR004.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
-        # rex = re.compile("^[0-9]$")
-        # if not rex.match(pk):
-        #     return Response(CommonFuntion.resultResponse(False, "",  MessageCode.OSC004.value, ""), status=status.HTTP_400_BAD_REQUEST)
         try:
+            parten = "^[0-9]+$"
+            if not re.findall(parten, str(pk)):
+                raise KeyError
             queryset = ModelhouseReview.objects.all().filter(is_active=1)
             modelhouseObject = get_object_or_404(queryset, pk=pk)
             serializer = ModelHouseReviewSerializer(modelhouseObject, data=request.data)
             if serializer.is_valid():
                 serializer.save(update_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.MHR005.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR006.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR006.value, ""),  status=status.HTTP_404_NOT_FOUND)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.MHR005.value, {}), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        except KeyError:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EHR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+        except Http404:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR012.value, {}),  status=status.HTTP_404_NOT_FOUND)
 
     def destroy(self, request, pk=None):
         try:
@@ -78,6 +84,8 @@ class ModelHouseReviewViewSet(viewsets.ModelViewSet):
             serializer = ModelHouseReviewSerializer(outletstoreObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(update_user=request.user.id, updated=datetime.now())
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR008.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR008.value, ""), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR008.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        except KeyError:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EHR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+        except Http404:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.MHR013.value, {}), status=status.HTTP_404_NOT_FOUND)
