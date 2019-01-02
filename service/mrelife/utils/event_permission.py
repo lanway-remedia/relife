@@ -58,7 +58,7 @@ class EventExhibitionPermission(BasePermission):
         try:
             if(view.action in ["list", "retrieve"]):
                 return True
-            return User.objects.filter(id=request.user.id).exists()
+            return (IsStore(request.user) or IsAdmin(request.user))
         except Exception:
             return False
 
