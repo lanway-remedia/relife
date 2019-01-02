@@ -8,13 +8,17 @@ class OrderMHViewadminPermission(BasePermission):
     def has_permission(self, request, view):
         try:
             if(view.action in ["list", "retrieve"]):
-                return IsAdmin(request.user) or IsStore(request.user) or IsSub(request.user)
-            elif view.action in ["create", "update", "selfGetlistBooking"]:
-                return IsUser(request.user)
+                return IsAdmin(request.user) or IsStore(request.user)
+            elif view.action in ["create", "update", "selfGetlistBooking","updateStatus"]:
+                return   IsAdmin(request.user) or IsUser(request.user) 
+            elif view.action in ["destroy"]:
+                return   IsAdmin(request.user)
             else:
                 return False
         except Exception:
             return False
+    def has_object_permission(self, request, view, obj):
+        return IsAdmin(request.user) or IsUser(request.user)
 
 
 class OrderMHUserListPermission(BasePermission):
@@ -24,9 +28,3 @@ class OrderMHUserListPermission(BasePermission):
             return IsUser(request.user)
         except Exception:
             return False
-
-    # def has_object_permission(self, request, view, obj):
-    #     if IsUser(request.user):
-    #         return True
-    #     return False
-        # and request.user.outletstore_user.filter(outlet_store=obj).exists()
