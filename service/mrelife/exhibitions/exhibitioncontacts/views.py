@@ -64,8 +64,8 @@ class ExhibitionContactViewSet(viewsets.ModelViewSet):
             if not re.findall(parten, str(pk)):
                 raise KeyError
             queryset = ExhibitionContact.objects.filter(is_active=settings.IS_ACTIVE)
-            event_obj = get_object_or_404(queryset, pk=pk)
-            serializer = ExhibitionContactSerializer(event_obj, data=request.data)
+            exhibitionCObjet = get_object_or_404(queryset, pk=pk)
+            serializer = ExhibitionContactSerializer(exhibitionCObjet, data=request.data)
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id)
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXC005.value, {}), status=status.HTTP_200_OK)
@@ -81,9 +81,9 @@ class ExhibitionContactViewSet(viewsets.ModelViewSet):
             if not re.findall(parten, str(pk)):
                 raise KeyError
             queryset = ExhibitionContact.objects.filter(is_active=settings.IS_ACTIVE)
-            event_obj = get_object_or_404(queryset, pk=pk)
+            exhibitionCObjet = get_object_or_404(queryset, pk=pk)
             data = {"is_active": settings.IS_INACTIVE}
-            serializer = ExhibitionContactSerializer(event_obj, data=data, partial=True)
+            serializer = ExhibitionContactSerializer(exhibitionCObjet, data=data, partial=True)
             if(serializer.is_valid()):
                 serializer.save(updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXC007.value, ""), status=status.HTTP_200_NO_CONTENT)
