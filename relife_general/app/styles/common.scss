@@ -10,6 +10,11 @@ input, select {
   border: 1px solid $border-color !important;
 }
 
+.form-control {
+  border: none !important;
+  border-radius: 0px; 
+}
+
 .lower-contents {
   margin: 0 0 70px 0;
 

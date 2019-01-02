@@ -50,6 +50,10 @@
   "store-data-title": "会社紹介",
   "infomation-request" : "資料請求",
 
+  "search-keyword": "キーワードで検索",
+  "search-keyword-most": "よく検索されているワード",
+  "search-map": "地図から探す",
+
   "builder-title": "建築会社・工務店",
   "example-house-title": "建築実例",
   "re-style-title": "Re:Life style",

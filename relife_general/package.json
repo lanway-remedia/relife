@@ -100,6 +100,7 @@
     "react-scroll": "^1.5.5",
     "react-share": "^2.0.0",
     "react-slick": "^0.23.2",
+    "react-transition-group": "^1.2.1",
     "react-ultimate-pagination-bootstrap-4": "^1.1.0",
     "reactstrap": "^6.5.0",
     "redux": "^3.7.2",

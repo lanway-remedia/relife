@@ -68,6 +68,10 @@
 
   "btn-change-avatar": "画像変更",
 
+  "search-keyword": "キーワードで検索",
+  "search-keyword-most": "よく検索されているワード",
+  "search-map": "地図から探す",
+
   "validate-email": "メールアドレスが正しくありません。",
   "validate-field-0": "フィルドには必ず情報を入力しください。",
   "validate-field-3": "ユーザーネームは３字以外でなければなりません。",

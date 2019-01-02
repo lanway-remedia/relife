@@ -19,7 +19,7 @@
       list-style: none;
       font-size: 1.4rem;
       border-left: 1px solid #dadada;
-      
+
       a {
         display: block;
         color: #333;
@@ -55,15 +55,15 @@
 
       .menu__second-level {
         position: absolute;
-        top: 40px;
+        top: 55px;
         left: 0;
         box-sizing: border-box;
         width: 100%;
         padding: 35px 50px;
         background: #fff;
         -webkit-transition: all .2s ease;
-        transition: all .2s ease;
-        border: 3px double #057235;
+        border: 3px solid #057235;
+        min-height: 321px;
 
         z-index: 1;
 
@@ -124,15 +124,100 @@
         .mega-menu-inner-right {
           width: 40%;
           float: right;
-
+          .mega-menu-inner-title {
+            color: #666;
+            font-size: 1.2rem;
+            line-height: 1.2rem;
+            padding: 10px 0;
+          }
           .mega-menu-form {
             margin: 0 0 10px 0;
+            form {
+              position: relative;
+              input {
+                &.search-keyword {
+                  background: #f2f3f2;
+                  font-size: 1rem;
+                  margin: 0 1px 0 0;
+                  padding: 12px;
+                }
+              }
+              .btn-search-keyword {
+                position: absolute;
+                right: 0;
+                top: 5px;
+                background: no-repeat;
+                color: #057235;
+                padding: 7px 11px;
+                font-size: 1.5rem;
+                border: none;
+                &:hover {
+                  cursor: pointer;
+                }
+              }
+            }
+            
+          } /*end .mega-menu-form */
 
-            .mega-menu-inner-title {
-              color: #666;
-              font-size: 1.2rem;
-              line-height: 1.2rem;
-              padding: 10px 0;
+          .mega-menu-keyword-area {
+            .mega-keywords {
+              padding: 0;
+              li {
+                display: inline-block;
+                list-style: none;
+                font-size: 1.2rem;
+                border: #ddd 1px solid;
+                padding: 5px;
+                margin: 0 4px 4px 0;
+                transition-duration: 0.3s;
+                &:hover {
+                  border: #057235 1px solid;
+                  transition-duration: 0.3s;
+                  .mega-keyword-count {
+                    background: #057235;
+                    transition-duration: 0.3s;
+                  }
+                }
+                a {
+                  padding: 0;
+                  color: #333;
+                  transition-duration: 0.3s;
+
+                  &:hover {
+                    background: none;
+                    color: #057235;
+                    transition-duration: 0.3s;
+                  }
+
+                  .mega-keyword {
+                    margin: 0 5px 0 0;
+                  }
+
+                  .mega-keyword-count {
+                    background: #999;
+                    color: #fff;
+                    padding: 1px 4px;
+                    line-height: 1.1rem;
+                    font-size: 1.1rem;
+                    transition-duration: 0.3s;
+                  }
+                }
+              }
+            }
+          } /* end .mega-menu-keyword-area */
+
+          .mega-menu-map {
+            color: #fff !important;
+            display: inline-block;
+            position: absolute;
+            bottom: -100px;
+            right: 0px;
+            font-size: 1.6rem;
+            padding: 25px 50px;
+            transition-duration: 0.3s;
+            &:hover {
+              background: $bkg-hover-btn-color;
+              transition-duration: 0.3s;
             }
           }
         }/*end .mega-menu-inner-right*/
