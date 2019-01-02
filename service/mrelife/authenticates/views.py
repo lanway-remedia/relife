@@ -142,7 +142,7 @@ class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
         """
         serializer = self.get_serializer(data=request.data)
 
-        if serializer.is_valid():
+        if not serializer.is_valid():
             return response_400('AU003', '', serializer.errors)
         user = serializer.object.get('user') or request.user
         token = serializer.object.get('token')
