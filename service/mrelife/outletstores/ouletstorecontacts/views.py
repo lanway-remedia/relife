@@ -23,7 +23,9 @@ from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStoreContactPermission
 from mrelife.utils.relifeenum import MessageCode
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMessage
+from django.utils.html import strip_tags
+
 
 class OutletStoreContactViewSet(viewsets.ModelViewSet):
     queryset = OutletStoreContact.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
@@ -62,11 +64,12 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
                                 created=datetime.now(), updated=datetime.now())
                 detail = 'you confirm '
                 mail_status=send_mail('create new contact', detail, settings.DEFAULT_FROM_EMAIL, [request.data['email']],fail_silently=False,)
-                subject, from_email, to = 'hello', 'from@example.com', request.data['email']
+                subject, from_email= 'hello', 'from@example.com'
                 text_content = 'This is an important message.'
-                html_content = '<p>This is an <strong>important</strong> message.</p>'
-                msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-                msg.attach_alternative(html_content, "text/html")
+                html_content = '<html><body>hello <strong>{{username}}</strong>your account activated.<img src="mysite.com/logo.gif" /></body>'
+                text_content=strip_tags(html_content)
+                msg = EmailMessage(subject, html_content, from_email, [request.data['email']])
+                msg.content_subtype = "html"  # Main content is now text/html
                 msg.send()
                 if not mail_status:
                    return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, ""), status=status.HTTP_400_BAD_REQUEST)
