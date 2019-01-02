@@ -29,10 +29,15 @@ class ExampleHouseListPage extends React.Component {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
+    let floor = params.get('floor__in')
+    let price_range = params.get('price_range__in')
+    let construction = params.get('contruction__in')
     let data = {
       offset: (page - 1) * limit,
       limit: limit,
-      page: page
+      ...(price_range && { price_range__in: price_range }),
+      ...(floor && { floor__in: floor }),
+      ...(construction && { contruction__in: construction }),
     }
     this.setState({
       page: data.page,
@@ -54,7 +59,7 @@ class ExampleHouseListPage extends React.Component {
     if(this.props.data != nextProps.data) {
       let response = nextProps.data
       if (response.isGetList) {
-        if (response.messageCode == 'EX200') {
+        if (response.data.count > 0) {
           let exampleHouseNewId = response.data.results[0].id
           this.props.exampleHousesGetRequest(exampleHouseNewId)
           this.setState({
@@ -79,8 +84,13 @@ class ExampleHouseListPage extends React.Component {
     this.getListExampleHouse()
   }
 
+  onPageLoad = () => {
+    this.getListExampleHouse()
+  }
+
   render() {
     let {exampleHouseList, exampleHouseNew, count} = this.state
+    console.log(exampleHouseList)
     return (
       <div>
         <AttributesSearchSP />
@@ -88,6 +98,8 @@ class ExampleHouseListPage extends React.Component {
           <div className="lower-contents-inner clearfix">
             <section className="main">
               <h1 className="search-result page-title">{I18nUtils.t('list-example-house')}</h1>
+
+              {exampleHouseNew != null && (
               <div className="adv-example">
                 <div className="adv-example-once">
                   <div className="adv-example-one-img">
@@ -113,28 +125,38 @@ class ExampleHouseListPage extends React.Component {
 
                 </div>
               </div>
-
-              <div className="example-list clearfix">
-                {exampleHouseList.map((val, key) => {
-                  if (val.id != exampleHouseNew.id) {
-                    return (
-                    <Link key={key} to={'example/' + val.id} className="example-list-once">
-                      <div className="example-list-once-img">
-                        <img src={val.img_large} alt={val.title} />
-                      </div>
-                      <h3 className="example-list-once-title">
-                        {val.title}
-                      </h3>
-                      <div className="example-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
-                      <div className="example-list-once-company">{val.store.title}</div>
-                    </Link>
-                    )
-                  }
-                })}
-              </div>
-              <Paginate count={count} pageChanged={() => this.pageChanged()} />
+              )}
+                
+              {exampleHouseList.length > 0 ? (
+                <div>
+                <div className="example-list clearfix">
+                    {exampleHouseList.map((val, key) => {
+                      if (val.id != exampleHouseNew.id) {
+                        return (
+                        <Link key={key} to={'example/' + val.id} className="example-list-once">
+                          <div className="example-list-once-img">
+                            <img src={val.img_large} alt={val.title} />
+                          </div>
+                          <h3 className="example-list-once-title">
+                            {val.title}
+                          </h3>
+                          <div className="example-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
+                          <div className="example-list-once-company">{val.store.title}</div>
+                        </Link>
+                        )
+                      }
+                    })}
+                </div>
+                <Paginate count={count} pageChanged={() => this.pageChanged()} />
+                </div>
+              ) : (
+                <p className="search_page_sorry" style={{fontSize: `1.2rem`}}>
+                  申し訳ございません。該当する記事がございません。
+                </p>
+              )}
+              
             </section>
-            <AttributesSearchPC />
+            <AttributesSearchPC onPageLoad={() => this.onPageLoad()} />
           </div>
         </div>
       </div>

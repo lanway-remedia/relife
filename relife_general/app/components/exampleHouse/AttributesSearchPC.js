@@ -14,6 +14,14 @@ class AttributesSearchPC extends React.Component {
       listStyle: [],
       listHouseSize: [],
       listHouseIncome: [],
+
+      price_range: {},
+      construction: {},
+      floor: {},
+      household_size: '',
+      household_income: '',
+      style: ''
+
     }
   }
 
@@ -80,11 +88,69 @@ class AttributesSearchPC extends React.Component {
     document.getElementById('frm-search').reset()
   }
 
+  handleChange = (e) => {
+    const name = e.target.name
+    let itemChecked
+    if (name == 'price_range') {
+      itemChecked = this.state.price_range
+    } else if (name == 'construction') {
+      itemChecked = this.state.construction
+    } else if (name == 'floor') {
+      itemChecked = this.state.floor
+    }
+    const value = e.target.value
+    const isChecked = e.target.checked
+
+    itemChecked[value] = isChecked
+    this.setState({
+      [e.target.name] : itemChecked
+    })
+  }
+
+  onClickSubmit = () => {
+    let {price_range, floor, construction} = this.state
+
+    let arrPrice = []
+    for(let key in price_range) {
+      if (price_range[key] == true) {
+        arrPrice.push(key)
+      }
+    }
+
+    let arrFloor = []
+    for(let key in floor) {
+      if (floor[key] == true) {
+        arrFloor.push(key)
+      }
+    }
+
+    let arrConstruction = []
+    for(let key in construction) {
+      if (construction[key] == true) {
+        arrConstruction.push(key)
+      }
+    }
+
+    let parsed = {
+      ...(arrPrice.length > 0 && { price_range__in: arrPrice.join() }),
+      ...(arrFloor.length > 0 && { floor__in: arrFloor.join() }),
+      ...(arrConstruction.length > 0 && { contruction__in: arrConstruction.join() }),
+    }
+    let search = new URLSearchParams(parsed)
+    this.props.history.push({
+      search: `?${search.toString()}`
+    })
+
+    this.props.onPageLoad()
+  }
+
   render() {
     const { listConstruction, listFloor, listPrice, listStyle, listHouseSize, listHouseIncome } = this.state
     return (
       <section className="side pc">
-        <Form id="frm-search">
+        <Form 
+          id="frm-search"
+        >
           <div className="sidebar-search-choices">
             {/* list price */}
             <div className="sidebar-search-choices-inner">
@@ -92,7 +158,7 @@ class AttributesSearchPC extends React.Component {
                   <FormGroup>
                     {listPrice.map((price, key) => (
                       <Label key={key}>
-                        <Input className="choices-input" type="checkbox" name="price_range[]" value="" id={price.id} />
+                        <Input className="choices-input" type="checkbox" name="price_range" value={price.id} id={price.id} onChange={this.handleChange} />
                         <span className="choices-parts">{price.title}</span>
                       </Label>
                     ))}
@@ -104,7 +170,7 @@ class AttributesSearchPC extends React.Component {
                 <FormGroup>
                   {listConstruction.map((contruction, keyConstr) => (
                   <Label key={keyConstr}>
-                    <Input className="choices-input" type="checkbox" name="contruction[]" value={contruction.title} id={contruction.id} />
+                    <Input className="choices-input" type="checkbox" name="construction" value={contruction.id} id={contruction.id} onChange={this.handleChange} />
                     <span className="choices-parts">{contruction.title}</span>
                   </Label>
                   ))}
@@ -117,7 +183,7 @@ class AttributesSearchPC extends React.Component {
                 <FormGroup>
                   {listFloor.map((floor, key) => (
                   <Label key={key}>
-                    <Input className="choices-input" type="checkbox" name="contruction[]" value={floor.title} id={floor.id} />
+                    <Input className="choices-input" type="checkbox" name="floor" value={floor.id} id={floor.id} onChange={this.handleChange} />
                     <span className="choices-parts">{floor.title}</span>
                   </Label>
                   ))}
@@ -166,7 +232,7 @@ class AttributesSearchPC extends React.Component {
             <button type="button" onClick={this.handleResetForm} className="sidebar-clear-btn btn clear-button">
               入力値をリセット
             </button>
-            <Button type="button" className="sidebar-search-btn btn btn-default">
+            <Button type="button" onClick={this.onClickSubmit} className="sidebar-search-btn btn btn-default">
               <i className="fa fa-search" />
               検索
             </Button>
@@ -186,6 +252,8 @@ AttributesSearchPC.propTypes = {
   attributeStyleListRequest: PropTypes.func,
   attributeHouseSizeListRequest: PropTypes.func,
   attributeHouseIncomeListRequest: PropTypes.func,
+  history: PropTypes.object,
+  onPageLoad: PropTypes.func,
 }
 
 const mapStateToProps = state => {
