@@ -1,28 +1,29 @@
-from datetime import datetime
 import re
+from datetime import datetime
 
 from django.conf import settings
+from django.core.mail import send_mail
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from rest_framework.decorators import action
+from rest_framework.authentication import (BasicAuthentication,
+                                           SessionAuthentication)
+from rest_framework.decorators import (action, detail_route, list_route,
+                                       permission_classes)
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.core.mail import send_mail
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.outletstores.models import OutletStoreContact
-from mrelife.outletstores.ouletstorecontacts.serializers import OutletStoreContactSerializer
+from mrelife.outletstores.ouletstorecontacts.serializers import \
+    OutletStoreContactSerializer
 from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStoreContactPermission
 from mrelife.utils.relifeenum import MessageCode
-from rest_framework.decorators import action, detail_route, list_route, permission_classes
-from mrelife.authenticates.mails import auth_mail
-
+from django.core.mail import EmailMultiAlternatives
 
 class OutletStoreContactViewSet(viewsets.ModelViewSet):
     queryset = OutletStoreContact.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
@@ -60,8 +61,13 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
                 serializer.save(is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
                 detail = 'you confirm '
-                mail_status = auth_mail('create new contact', detail, "dungvumta@gmail.com")
-                send_mail('create new contact', detail, settings.DEFAULT_FROM_EMAIL, ["dungvumta@gmail.com"],fail_silently=False,)
+                mail_status=send_mail('create new contact', detail, settings.DEFAULT_FROM_EMAIL, [request.data['email']],fail_silently=False,)
+                subject, from_email, to = 'hello', 'from@example.com', request.data['email']
+                text_content = 'This is an important message.'
+                html_content = '<p>This is an <strong>important</strong> message.</p>'
+                msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
                 if not mail_status:
                    return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, ""), status=status.HTTP_400_BAD_REQUEST)
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC003.value, {}), status=status.HTTP_200_OK)
