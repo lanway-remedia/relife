@@ -2,9 +2,12 @@ import re
 from datetime import datetime
 
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage, EmailMultiAlternatives, send_mail
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from django.template import Context
+from django.template.loader import get_template, render_to_string
+from django.utils.html import strip_tags
 from rest_framework import status, viewsets
 from rest_framework.authentication import (BasicAuthentication,
                                            SessionAuthentication)
@@ -23,9 +26,6 @@ from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStoreContactPermission
 from mrelife.utils.relifeenum import MessageCode
-from django.core.mail import EmailMessage,EmailMultiAlternatives
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 
 
 class OutletStoreContactViewSet(viewsets.ModelViewSet):
@@ -35,7 +35,6 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
     pagination_class = LimitOffsetPagination
     lookup_field = 'pk'
     lookup_value_regex = '[^/]+'
-
 
     def list(self, request):
         self.queryset = OutletStoreContact.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
@@ -63,16 +62,14 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                detail = 'you confirm '
-                mail_status=send_mail('create new contact', detail, settings.DEFAULT_FROM_EMAIL, [request.data['email']],fail_silently=False,)
                 subject, from_email, to = 'hello', settings.DEFAULT_FROM_EMAIL, 'dungvumta@gmail.com'
+                c = {'username': "dung"}
+                html_content = render_to_string('email.html', c)
                 text_content = 'This is an important message.'
-                html_content = '<p>This is an <strong>important</strong> message.</p>'
-                msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-                msg.attach_alternative(html_content, "text/html")
-                msg.send()
-                if not mail_status:
-                   return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, ""), status=status.HTTP_400_BAD_REQUEST)
+                email = EmailMultiAlternatives('Subject', text_content)
+                email.attach_alternative(html_content, "text/html")
+                email.to = ['dungvumta@gmail.com']
+                email.send()
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC003.value, {}), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except Exception as e:
@@ -89,8 +86,6 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                detail = 'you confirm '
-                mail_status=send_mail('create new contact', detail, settings.DEFAULT_FROM_EMAIL, [request.data['email']],fail_silently=False,)
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC005.value, {}), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except KeyError:
