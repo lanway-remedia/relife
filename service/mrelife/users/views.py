@@ -2,6 +2,8 @@
     User Module
     By Bin Nguyen
 """
+from datetime import datetime
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
@@ -11,18 +13,23 @@ from django.db.models import Q
 from django.http import Http404
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from rest_framework import status
 from rest_framework.decorators import list_route
+from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from url_filter.integrations.drf import DjangoFilterBackend
 
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
+from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.file_managements.serializers import FileSerializer
 from mrelife.outletstores.models import OutletStore
+from mrelife.outletstores.serializers import OutletStoreSerializer
 from mrelife.users.serializers import (
     PasswordSerializer,
     ProfileSerializer,
@@ -32,9 +39,11 @@ from mrelife.users.serializers import (
 )
 from mrelife.utils.groups import GroupUser, IsStore
 from mrelife.utils.querys import get_or_none
+from mrelife.utils.relifeenum import MessageCode
 from mrelife.utils.relifepermissions import AdminOrStoreOrDenyPermission
 from mrelife.utils.response import response_200, response_201, response_400, response_404, response_405, response_503
 from mrelife.utils.validates import email_exist
+from mrelife.utils.bc_store_owner_permission import BecomStoreOwnerPermision
 
 User = get_user_model()
 
@@ -233,3 +242,20 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
         user.set_password(serializer.data['password1'])
         user.save()
         return response_200('US014', '', serializer.data)
+
+
+class BecomeOwner(GenericAPIView, CreateModelMixin):
+    serializer_class = OutletStoreSerializer
+    permission_classes = (IsAuthenticated,BecomStoreOwnerPermision)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            serializer = OutletStoreSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                                created=datetime.now(), updated=datetime.now())
+                User.objects.filter(id=request.user.id).update(store_id=serializer.data['id'], group_id=2)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.BSO003.value, {}), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.BSO010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        except Exception as e:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.BSO004.value, {}), status=status.HTTP_400_BAD_REQUEST)
