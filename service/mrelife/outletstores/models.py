@@ -93,27 +93,29 @@ class OutletStore(Model):
 
 class OutletStoreContact(Model):
     outlet_store = ForeignKey(OutletStore, related_name='outlet_store_contact', on_delete=CASCADE)
-    create_user = ForeignKey('users.User', on_delete=CASCADE)
-    comment = CharField(max_length=255)
+    name = CharField(max_length=255)
+    name_kana = CharField(max_length=255)
+    zipcode = CharField(max_length=8)
+    address = CharField(max_length=800)
+    email = CharField(max_length=255)
+    tel = CharField(max_length=13)
+    age = IntegerField(default=0)
+    household_size = IntegerField()
+    acreage = IntegerField()
+    construction_position_type = IntegerField()
+    construction_position = CharField(max_length=255)
+    construction_duration = IntegerField()
+    budger = IntegerField()
+    household_income = IntegerField()
+    construction_type = IntegerField()
+    current_situation = IntegerField()
+    content = TextField()
     is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
+    created = DateTimeField(auto_now_add=True)
+    updated = DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'outlet_store_contact'
-        ordering = ['created', ]
-
-
-class OutletStoreContactReply(Model):
-    outlet_store_contact = ForeignKey(OutletStoreContact, related_name='outlet_store_contact_relpy', on_delete=CASCADE)
-    user = ForeignKey('users.User', on_delete=CASCADE)
-    comment = CharField(max_length=255)
-    is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
-
-    class Meta:
-        db_table = 'outlet_store_contact_reply'
         ordering = ['created', ]
 
 

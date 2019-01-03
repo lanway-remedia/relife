@@ -14,8 +14,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from mrelife.commons.common_fnc import CommonFuntion
-from mrelife.outletstores.models import (OutletStore, OutletStoreContact,
-                                         OutletStoreContactReply)
+from mrelife.outletstores.models import OutletStore, OutletStoreContact
 from mrelife.outletstores.serializers import OutletStoreSerializer
 from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
@@ -46,9 +45,9 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             serializer = OutletStoreSerializer(outletstoreObject)
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OS001.value, {}), status=status.HTTP_200_OK)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OS009.value,{}), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OS009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OS002.value,{}), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OS002.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OS002.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
@@ -98,11 +97,8 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             serializer = OutletStoreSerializer(outletstoreObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
-                outletContact = OutletStoreContact.objects.filter(is_active=1, outlet_store_id=outletstoreObject.id)
-                for item in outletContact:
-                    outletContact_reply = OutletStoreContactReply.objects.filter(
-                        outlet_store_contact_id=item.id, is_active=1).update(is_active=settings.IS_INACTIVE, updated=datetime.now())
-                    outletContact.update(is_active=settings.IS_INACTIVE, updated=datetime.now())
+                outletContact = OutletStoreContact.objects.filter(is_active=1, outlet_store_id=outletstoreObject.id).update(
+                    is_active=settings.IS_INACTIVE, updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OS007.value, {}), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OS008.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
         except KeyError:
