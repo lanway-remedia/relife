@@ -15,13 +15,12 @@ class AttributesSearchPC extends React.Component {
       listHouseSize: [],
       listHouseIncome: [],
 
-      price_range: {},
+      priceRange: {},
       construction: {},
       floor: {},
-      household_size: '',
-      household_income: '',
-      style: ''
-
+      style: {},
+      houseSize: {},
+      houseIncome: {},
     }
   }
 
@@ -86,18 +85,27 @@ class AttributesSearchPC extends React.Component {
 
   handleResetForm = () => {
     document.getElementById('frm-search').reset()
+    this.props.history.push('/example')
+    this.props.onPageLoad()
   }
 
   handleChange = (e) => {
     const name = e.target.name
     let itemChecked
-    if (name == 'price_range') {
-      itemChecked = this.state.price_range
+    if (name == 'priceRange') {
+      itemChecked = this.state.priceRange
     } else if (name == 'construction') {
       itemChecked = this.state.construction
     } else if (name == 'floor') {
       itemChecked = this.state.floor
+    } else if (name == 'style') {
+      itemChecked = this.state.style
+    } else if (name == 'houseSize') {
+      itemChecked = this.state.houseSize
+    } else if (name == 'houseIncome') {
+      itemChecked = this.state.houseIncome
     }
+
     const value = e.target.value
     const isChecked = e.target.checked
 
@@ -108,11 +116,11 @@ class AttributesSearchPC extends React.Component {
   }
 
   onClickSubmit = () => {
-    let {price_range, floor, construction} = this.state
+    let {priceRange, floor, construction, style, houseSize, houseIncome} = this.state
 
     let arrPrice = []
-    for(let key in price_range) {
-      if (price_range[key] == true) {
+    for(let key in priceRange) {
+      if (priceRange[key] == true) {
         arrPrice.push(key)
       }
     }
@@ -131,14 +139,38 @@ class AttributesSearchPC extends React.Component {
       }
     }
 
+    let arrStyle = []
+    for(let key in style) {
+      if (style[key] == true) {
+        arrStyle.push(key)
+      }
+    }
+
+    let arrHouseSize = []
+    for(let key in houseSize) {
+      if (houseSize[key] == true) {
+        arrHouseSize.push(key)
+      }
+    }
+
+    let arrHouseIncome = []
+    for(let key in houseIncome) {
+      if (houseIncome[key] == true) {
+        arrHouseIncome.push(key)
+      }
+    }
+
     let parsed = {
       ...(arrPrice.length > 0 && { price_range__in: arrPrice.join() }),
       ...(arrFloor.length > 0 && { floor__in: arrFloor.join() }),
       ...(arrConstruction.length > 0 && { contruction__in: arrConstruction.join() }),
+      ...(arrStyle.length > 0 && { style__in: arrStyle.join() }),
+      ...(arrHouseSize.length > 0 && { household_size__in: arrHouseSize.join() }),
+      ...(arrHouseIncome.length > 0 && { household_income__in: arrHouseIncome.join() }),
     }
     let search = new URLSearchParams(parsed)
     this.props.history.push({
-      search: `?${search.toString()}`
+      search: `?${search.toString()}&page=1`
     })
 
     this.props.onPageLoad()
@@ -148,9 +180,7 @@ class AttributesSearchPC extends React.Component {
     const { listConstruction, listFloor, listPrice, listStyle, listHouseSize, listHouseIncome } = this.state
     return (
       <section className="side pc">
-        <Form 
-          id="frm-search"
-        >
+        <Form id="frm-search" >
           <div className="sidebar-search-choices">
             {/* list price */}
             <div className="sidebar-search-choices-inner">
@@ -158,19 +188,34 @@ class AttributesSearchPC extends React.Component {
                   <FormGroup>
                     {listPrice.map((price, key) => (
                       <Label key={key}>
-                        <Input className="choices-input" type="checkbox" name="price_range" value={price.id} id={price.id} onChange={this.handleChange} />
+                        <Input 
+                          className="choices-input" 
+                          type="checkbox" 
+                          name="priceRange" 
+                          value={price.id} 
+                          id={price.id} 
+                          onChange={this.handleChange} 
+                        />
                         <span className="choices-parts">{price.title}</span>
                       </Label>
                     ))}
                   </FormGroup>
             </div>
+
             {/* listConstruction */}
             <div className="sidebar-search-choices-inner">
               <div className="search-title">構造 </div>
                 <FormGroup>
                   {listConstruction.map((contruction, keyConstr) => (
                   <Label key={keyConstr}>
-                    <Input className="choices-input" type="checkbox" name="construction" value={contruction.id} id={contruction.id} onChange={this.handleChange} />
+                    <Input 
+                      className="choices-input" 
+                      type="checkbox" 
+                      name="construction" 
+                      value={contruction.id} 
+                      id={contruction.id} 
+                      onChange={this.handleChange} 
+                    />
                     <span className="choices-parts">{contruction.title}</span>
                   </Label>
                   ))}
@@ -183,7 +228,14 @@ class AttributesSearchPC extends React.Component {
                 <FormGroup>
                   {listFloor.map((floor, key) => (
                   <Label key={key}>
-                    <Input className="choices-input" type="checkbox" name="floor" value={floor.id} id={floor.id} onChange={this.handleChange} />
+                    <Input 
+                      className="choices-input" 
+                      type="checkbox" 
+                      name="floor" 
+                      value={floor.id} 
+                      id={floor.id} 
+                      onChange={this.handleChange} 
+                    />
                     <span className="choices-parts">{floor.title}</span>
                   </Label>
                   ))}
@@ -196,7 +248,14 @@ class AttributesSearchPC extends React.Component {
                 <FormGroup>
                   {listStyle.map((style, key) => (
                   <Label key={key}>
-                    <Input className="choices-input" type="checkbox" name="contruction[]" value={style.title} id={style.id} />
+                    <Input 
+                      className="choices-input" 
+                      type="checkbox" 
+                      name="style" 
+                      value={style.id} 
+                      id={style.id} 
+                      onChange={this.handleChange} 
+                    />
                     <span className="choices-parts">{style.title}</span>
                   </Label>
                   ))}
@@ -209,7 +268,14 @@ class AttributesSearchPC extends React.Component {
                 <FormGroup>
                   {listHouseSize.map((size, key) => (
                   <Label key={key}>
-                    <Input className="choices-input" type="checkbox" name="contruction[]" value={size.title} id={size.id} />
+                    <Input 
+                      className="choices-input" 
+                      type="checkbox" 
+                      name="houseSize" 
+                      value={size.id} 
+                      id={size.id} 
+                      onChange={this.handleChange}
+                    />
                     <span className="choices-parts">{size.title}</span>
                   </Label>
                   ))}
@@ -222,17 +288,32 @@ class AttributesSearchPC extends React.Component {
                 <FormGroup>
                   {listHouseIncome.map((income, key) => (
                   <Label key={key}>
-                    <Input className="choices-input" type="checkbox" name="contruction[]" value={income.title} id={income.id} />
+                    <Input 
+                      className="choices-input" 
+                      type="checkbox" 
+                      name="houseIncome" 
+                      value={income.id} 
+                      id={income.id} 
+                      onChange={this.handleChange}
+                    />
                     <span className="choices-parts">{income.title}</span>
                   </Label>
                   ))}
                 </FormGroup>
             </div>
 
-            <button type="button" onClick={this.handleResetForm} className="sidebar-clear-btn btn clear-button">
+            <button 
+              type="button" 
+              onClick={this.handleResetForm} 
+              className="sidebar-clear-btn btn clear-button"
+            >
               入力値をリセット
             </button>
-            <Button type="button" onClick={this.onClickSubmit} className="sidebar-search-btn btn btn-default">
+            <Button 
+              type="button" 
+              onClick={this.onClickSubmit} 
+              className="sidebar-search-btn btn btn-default"
+            >
               <i className="fa fa-search" />
               検索
             </Button>
