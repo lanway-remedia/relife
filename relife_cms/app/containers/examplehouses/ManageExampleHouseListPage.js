@@ -43,14 +43,16 @@ class ManageExampleHouseListPage extends React.Component {
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
     let title = params.get('freeword')
-    let status = params.get('status')
+    let status = params.get('status_flag')
     let store_id = params.get('store')
     let data = {
       offset: (page - 1) * limit,
       limit: limit,
       page: page,
       ...(title && { title: title }),
-      ...(status && { status: status }),
+      ...(status && {
+        status_flag: status
+      }),
       ...(store_id && { store_id: store_id })
     }
     this.setState({

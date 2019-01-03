@@ -48,12 +48,12 @@ class SearchCondition extends Component {
           label: I18nUtils.t('lb-select-vl')
         },
         {
-          value: 0,
-          label: I18nUtils.t('lb-disabled')
-        },
-        {
           value: 1,
           label: I18nUtils.t('lb-enable')
+        },
+        {
+          value: 0,
+          label: I18nUtils.t('lb-disabled')
         }
       ],
       collapse: true,
@@ -64,9 +64,16 @@ class SearchCondition extends Component {
 
   componentDidMount() {
     let params = new URLSearchParams(this.props.history.location.search)
-    let status = this.state.dataStatus.find(
-      item => item.value == params.get('status')
-    )
+    let paramStatus = params.get('status_flag')
+    let statusVal = 0
+    if (paramStatus === 'true') {
+      statusVal = 1
+    } else {
+      statusVal = 0
+    }
+    console.log(paramStatus)
+    let status = this.state.dataStatus.find(item => item.value === statusVal)
+
     this.setState({
       freeword: params.get('freeword') || '',
       group: params.get('group') || 0,
@@ -77,13 +84,13 @@ class SearchCondition extends Component {
       collapse: !!(
         params.get('freeword') ||
         params.get('group') ||
-        params.get('status') ||
+        params.get('status_flag') ||
         params.get('store')
       ),
       timeout:
         params.get('freeword') ||
         params.get('group') ||
-        params.get('status') ||
+        params.get('status_flag') ||
         params.get('store')
           ? 0
           : TIMEOUT
@@ -97,7 +104,9 @@ class SearchCondition extends Component {
       ...(group && group != 0 && { group: group }),
       ...(status &&
         status.value != 2 &&
-        status.value != null && { status: status.value }),
+        status.value != null && {
+          status_flag: status.value === 0 ? false : true
+        }),
       ...(store.id && { store: store.id }),
       ...(store.title && { store_title: store.title })
     }
