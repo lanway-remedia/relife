@@ -187,10 +187,11 @@ class AttributesSearchPC extends React.Component {
     const value = e.target.value
     const isChecked = e.target.checked
 
-
-    itemChecked[value] = isChecked
-
-    console.log(itemChecked)
+    if (isChecked == false) {
+      delete itemChecked[value]
+    } else {
+      itemChecked[value] = value
+    }
     this.setState({
       [e.target.name] : itemChecked
     })
@@ -198,56 +199,20 @@ class AttributesSearchPC extends React.Component {
 
   onClickSubmit = () => {
     let {priceRange, floor, construction, style, houseSize, houseIncome} = this.state
-
-    let arrPrice = []
-    for(let key in priceRange) {
-      if (priceRange[key] == true) {
-        arrPrice.push(key)
-      }
-    }
-
-    let arrFloor = []
-    for(let key in floor) {
-      if (floor[key] == true) {
-        arrFloor.push(key)
-      }
-    }
-
-    let arrConstruction = []
-    for(let key in construction) {
-      if (construction[key] == true) {
-        arrConstruction.push(key)
-      }
-    }
-
-    let arrStyle = []
-    for(let key in style) {
-      if (style[key] == true) {
-        arrStyle.push(key)
-      }
-    }
-
-    let arrHouseSize = []
-    for(let key in houseSize) {
-      if (houseSize[key] == true) {
-        arrHouseSize.push(key)
-      }
-    }
-
-    let arrHouseIncome = []
-    for(let key in houseIncome) {
-      if (houseIncome[key] == true) {
-        arrHouseIncome.push(key)
-      }
-    }
+    let priceParam = Object.values(priceRange).join(',')
+    let floorParam = Object.values(floor).join(',')
+    let constructionParam = Object.values(construction).join(',')
+    let styleParam = Object.values(style).join(',')
+    let houseSizeParam = Object.values(houseSize).join(',')
+    let houseIncomeParam = Object.values(houseIncome).join(',')
 
     let parsed = {
-      ...(arrPrice.length > 0 && { price_range__in: arrPrice.join() }),
-      ...(arrFloor.length > 0 && { floor__in: arrFloor.join() }),
-      ...(arrConstruction.length > 0 && { contruction__in: arrConstruction.join() }),
-      ...(arrStyle.length > 0 && { styles__style__in: arrStyle.join() }),
-      ...(arrHouseSize.length > 0 && { household_size__in: arrHouseSize.join() }),
-      ...(arrHouseIncome.length > 0 && { household_income__in: arrHouseIncome.join() }),
+      ...(Object.keys(priceRange).length > 0 && { price_range__in: priceParam }),
+      ...(Object.keys(floor).length > 0 && { floor__in: floorParam }),
+      ...(Object.keys(construction).length > 0 && { contruction__in: constructionParam }),
+      ...(Object.keys(style).length > 0 && { styles__style__in: styleParam }),
+      ...(Object.keys(houseSize).length > 0 && { household_size__in: houseSizeParam }),
+      ...(Object.keys(houseIncome).length > 0 && { household_income__in: houseIncomeParam }),
     }
     let search = new URLSearchParams(parsed)
     this.props.history.push({
