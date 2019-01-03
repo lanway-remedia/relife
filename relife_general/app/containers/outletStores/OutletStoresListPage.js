@@ -55,7 +55,7 @@ class OutletStoresListPage extends React.Component {
   }
 
   render() {
-    let {storeList, count} = this.state
+    let {storeList, count, page} = this.state
     return (
       <div>
         <SidebarFilterSP />
@@ -99,7 +99,7 @@ class OutletStoresListPage extends React.Component {
                   )
                 })}
               </div>
-              <Paginate count={count} pageChanged={() => this.pageChanged()} />
+              <Paginate count={count} pageChanged={() => this.pageChanged()} currentPage={page} />
             </section>
             <SidebarFilterPC />
           </div>

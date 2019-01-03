@@ -45,7 +45,6 @@ class ExampleHouseViewPage extends React.Component {
           offset: ''
         }
         this.props.exampleHousesListByStoreRequest(dataHouseByStoreId)
-        console.log(nextProps)
       }
       if(response.isListHouseByStore){
         this.setState({

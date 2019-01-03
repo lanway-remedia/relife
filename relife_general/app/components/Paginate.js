@@ -65,13 +65,13 @@ class Paginate extends React.Component {
   }
 
   render() {
-    let {count} = this.props
+    let {count, currentPage} = this.props
     let {limit, page} = this.state
     let pagesCount = count == 0 ? 1 : Math.ceil(count / limit)
     return (
       <div className="pagination-custom clearfix">
         {
-          page <= 2 ? (
+          currentPage <= 2 ? (
             <span className="first">
               «
             </span>
@@ -83,7 +83,7 @@ class Paginate extends React.Component {
         }
 
         {
-          page <= 1 ? (
+          currentPage <= 1 ? (
             <span className="previous">
               ‹
             </span>
@@ -95,11 +95,11 @@ class Paginate extends React.Component {
         }
 
         <span className="pagination-count">
-          {page} / {pagesCount}
+          {currentPage} / {pagesCount}
         </span>
 
         {
-          page >= pagesCount ? (
+          currentPage >= pagesCount ? (
             <span className="next">
               ›
             </span>
@@ -110,7 +110,7 @@ class Paginate extends React.Component {
           )
         }
         {
-          page >= pagesCount - 1 ? (
+          currentPage >= pagesCount - 1 ? (
             <span className="last">
               »
             </span>
@@ -130,7 +130,8 @@ Paginate.propTypes = {
   history: PropTypes.object,
   location: PropTypes.object,
   count: PropTypes.number.isRequired,
-  pageChanged: PropTypes.func
+  pageChanged: PropTypes.func,
+  currentPage: PropTypes.number
 }
 
 export default connect()(withRouter(Paginate))
