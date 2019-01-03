@@ -10,6 +10,7 @@ import OutletStoresService from './wrapper/OutletStoresService'
 import LocationsService from './wrapper/LocationsService'
 import ExampleHousesService from './wrapper/ExampleHousesService'
 import AttributesService from './wrapper/AttributesService'
+import TagsService from './wrapper/TagsService'
 
 export const languageService = new LanguageService()
 export const authsService = new AuthsService()
@@ -19,3 +20,4 @@ export const outletStoresService = new OutletStoresService()
 export const locationsService = new LocationsService()
 export const exampleHousesService = new ExampleHousesService()
 export const attributesService = new AttributesService()
+export const tagsService = new TagsService()

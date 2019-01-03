@@ -161,6 +161,7 @@
   "username": "Username",
   "group": "Group",
   "store": "Store",
+  "tag": "Tags",
   "lname": "Last Name",
   "fname": "First Name",
   "fullName": "Full Name",
@@ -276,6 +277,9 @@
   "toast-add-error": "Add new {name} error",
   "toast-no-data": "No Data",
   "toast-no-record": "No Records In Table",
+  "no-data": "No Data",
+  "modal-prev-data": "Please fill in the data to be able to preview",
+  "modal-tags-no": "Tag are not in the database",
 
   "toolbar-totalRecords": "Showing <strong>{limit}</strong> in <strong>{total}</strong> record(s)",
   "toolbar-limit": "Visible",

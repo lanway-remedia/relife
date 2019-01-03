@@ -5,7 +5,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import {
   Container,
   Button,
@@ -22,6 +22,7 @@ import { Helmet } from 'react-helmet'
 import I18nUtils from '../../utils/I18nUtils'
 import ExampleHouseActions from '../../redux/wrapper/ExampleHousesRedux'
 import AttributeActions from '../../redux/wrapper/AttributesRedux'
+import TagActions from '../../redux/wrapper/TagsRedux'
 import StoreListModal from '../../components/StoreListModal'
 
 import ImageUploadComponent from './../../components/ImageUploadComponent'
@@ -29,6 +30,9 @@ import ImageUploadComponent from './../../components/ImageUploadComponent'
 import { ModalName } from '../../constants'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
+
+import { WithContext as ReactTags } from 'react-tag-input'
+
 // Require Editor JS files.
 import 'froala-editor/js/froala_editor.pkgd.min.js'
 
@@ -50,7 +54,9 @@ const initialState = {
   dataHouseIncome: [],
   dataHouseSize: [],
   showStoreList: false,
+  suggestions: [],
   store: {},
+  tags: [],
   title: '',
   status: '',
   content: '',
@@ -61,6 +67,12 @@ const initialState = {
   houseincome: '',
   housesize: ''
 }
+
+const KeyCodes = {
+  comma: 188,
+  enter: 13
+}
+const delimiters = [KeyCodes.comma, KeyCodes.enter]
 
 class AddNewExampleHousePage extends React.Component {
   constructor(props) {
@@ -91,6 +103,9 @@ class AddNewExampleHousePage extends React.Component {
     this.getStyleList = this.getStyleList.bind(this)
     this.getHouseIncomeList = this.getHouseIncomeList.bind(this)
     this.getHouseSizeList = this.getHouseSizeList.bind(this)
+    this.getTagList = this.getTagList.bind(this)
+    this.handleDeleteTag = this.handleDeleteTag.bind(this)
+    this.handleAdditionTag = this.handleAdditionTag.bind(this)
   }
 
   getContructionList() {
@@ -117,6 +132,10 @@ class AddNewExampleHousePage extends React.Component {
     this.props.attributeHouseSizeListRequest({})
   }
 
+  getTagList() {
+    this.props.tagListRequest()
+  }
+
   componentDidMount() {
     this.getContructionList()
     this.getFloorList()
@@ -124,6 +143,7 @@ class AddNewExampleHousePage extends React.Component {
     this.getStyleList()
     this.getHouseIncomeList()
     this.getHouseSizeList()
+    this.getTagList()
   }
 
   handleChange = (e, name) => {
@@ -201,7 +221,6 @@ class AddNewExampleHousePage extends React.Component {
     if (this.props.dataExample !== nextProps.dataExample) {
       let data = nextProps.dataExample
       if (data.isAddHouse) {
-        // this.setState(initialState)
         this.props.show(ModalName.COMMON, {
           message: (
             <span className="text-success">
@@ -210,6 +229,22 @@ class AddNewExampleHousePage extends React.Component {
           )
         })
         this.props.history.push('/manage-example-house-list')
+      }
+    }
+    if (this.props.dataTags !== nextProps.dataTags) {
+      let response = nextProps.dataTags
+      if (response.isGetTagList) {
+        let data = response.data
+        let tags = []
+        data.map(function(e) {
+          let obj = {}
+          obj['id'] = e['id'].toString()
+          obj['name'] = e['name']
+          return tags.push(obj)
+        })
+        this.setState({
+          suggestions: tags
+        })
       }
     }
 
@@ -251,11 +286,16 @@ class AddNewExampleHousePage extends React.Component {
       data.append('store', this.state.store.id)
       data.append('contruction', this.state.contruction.id)
       data.append('price_range', this.state.price.id)
-      // data.append('styles', this.state.housestyle)
       if (this.state.housestyle.length)
         for (let i = 0; i < this.state.housestyle.length; i++) {
           data.append('styles', this.state.housestyle[i].id)
         }
+      if (this.state.tags.length > 0) {
+        for (let i = 0; i < this.state.tags.length; i++) {
+          data.append('tags', this.state.tags[i].name)
+        }
+      }
+
       data.append('floor', this.state.floor.id)
       data.append('household_income', this.state.houseincome.id)
       data.append('household_size', this.state.housesize.id)
@@ -267,45 +307,92 @@ class AddNewExampleHousePage extends React.Component {
 
   previewPage = data => {
     return (
-      <Container className="preview-content">
-        <Row>
-          <Col xs="12" md="12">
-            {data.title && <h1 className="preview-title">{data.title}</h1>}
-            {!data.title && (
-              <p className="text-danger">{I18nUtils.t('no-data')}</p>
-            )}
-            {data.imgThumb && <img alt={data.title} src={data.imgThumb} />}
-            {!data.imgThumb && (
-              <p className="text-danger">{I18nUtils.t('no-data')}</p>
-            )}
-          </Col>
-        </Row>
-      </Container>
+      <div className="preview-content">
+        {data.title && <h1 className="preview-title">{data.title}</h1>}
+        {data.store && <div className="store-title">{data.store}</div>}
+        {data.imgThumb && (
+          <div className="detail-img">
+            <img alt={data.title} src={data.imgThumb} />
+          </div>
+        )}
+        {data.tags.length > 0 && (
+          <div className="detail-tags">
+            <ul className="list-tags">
+              {data.tags.map(tag => (
+                <li key={tag.id}>
+                  <Link
+                    to="/"
+                    onClick={e => {
+                      e.preventDefault()
+                    }}
+                    title={tag.name}
+                  >
+                    # {tag.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div
+          className="detail-content"
+          dangerouslySetInnerHTML={{ __html: data.content }}
+        />
+      </div>
     )
   }
 
   handlePreview = e => {
     e.preventDefault()
     const data = {
-      imgThumb: URL.createObjectURL(this.state.thumbnailImage),
+      imgThumb: this.state.thumbnailImage
+        ? URL.createObjectURL(this.state.thumbnailImage)
+        : null,
       title: this.state.title,
       content: this.state.content,
-      store: this.state.store.id,
+      store: this.state.store.title,
       contruction: this.state.contruction,
       price_range: this.state.price_range,
       floor: this.state.floor,
       household_income: this.state.household_income,
-      household_size: this.state.household_size
+      household_size: this.state.household_size,
+      tags: this.state.tags
     }
-    console.log(
-      'Preview Page: ',
-      URL.createObjectURL(this.state.thumbnailImage)
-    )
 
-    this.props.show(ModalName.COMMON, {
-      modalClass: 'preview-modal',
-      message: this.previewPage(data)
+    if (
+      !data.imgThumb &&
+      !data.title &&
+      !data.content &&
+      !data.store &&
+      !data.contruction &&
+      !data.price_range &&
+      !data.floor &&
+      !data.household_income &&
+      !data.household_size &&
+      data.tags.length > 0
+    )
+      this.props.show(ModalName.COMMON, {
+        modalClass: 'preview-modal',
+        message: (
+          <span className="text-danger">{I18nUtils.t('modal-prev-data')}</span>
+        )
+      })
+    else
+      this.props.show(ModalName.COMMON, {
+        modalClass: 'preview-modal',
+        message: this.previewPage(data)
+      })
+  }
+
+  handleDeleteTag(i) {
+    const { tags } = this.state
+    this.setState({
+      tags: tags.filter((tag, index) => index !== i)
     })
+  }
+
+  handleAdditionTag(tag) {
+    this.setState(state => ({ tags: [...state.tags, tag] }))
   }
 
   render() {
@@ -328,8 +415,34 @@ class AddNewExampleHousePage extends React.Component {
       housestyle,
       floor,
       houseincome,
-      housesize
+      housesize,
+      tags,
+      suggestions
     } = this.state
+
+    const config = {
+      imageUploadURL:
+        'https://d2t3gximuwdg8x.cloudfront.net/api/file-managements/v1/upload/',
+      imageUploadMethod: 'POST',
+      events: {
+        'froalaEditor.image.uploaded': (e, editor, response) => {
+          response = JSON.parse(response)
+          editor.image.insert(
+            response.data.url,
+            true,
+            null,
+            editor.image.get(),
+            null
+          )
+          return false
+        }
+      }
+    }
+
+    const classTag = {
+      tagInputField: 'form-control'
+    }
+
     return (
       <Container fluid className="add-new-examplehouse">
         <Helmet>
@@ -547,10 +660,29 @@ class AddNewExampleHousePage extends React.Component {
                 </Col>
                 <Col xs="12" md="12">
                   <FormGroup>
+                    <Label for="tag">{I18nUtils.t('tag')}</Label>
+                    <ReactTags
+                      name="tag"
+                      tags={tags}
+                      labelField={'name'}
+                      id="tag"
+                      placeholder={I18nUtils.t('tag-add-page-title')}
+                      inline={false}
+                      classNames={classTag}
+                      suggestions={suggestions}
+                      handleDelete={this.handleDeleteTag}
+                      handleAddition={this.handleAdditionTag}
+                      delimiters={delimiters}
+                      allowDragDrop={false}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="12">
+                  <FormGroup>
                     <Label htmlFor="content">{I18nUtils.t('content')}</Label>
                     <FroalaEditor
                       tag="textarea"
-                      // config={this.config}
+                      config={config}
                       model={content}
                       onModelChange={this.handleModelChange}
                     />
@@ -591,10 +723,12 @@ AddNewExampleHousePage.propTypes = {
   attributeStyleListRequest: PropTypes.func,
   attributeHouseIncomeListRequest: PropTypes.func,
   attributeHouseSizeListRequest: PropTypes.func,
+  tagListRequest: PropTypes.func,
   show: PropTypes.func,
   hide: PropTypes.func,
   dataExample: PropTypes.object,
   dataAttributes: PropTypes.object,
+  dataTags: PropTypes.object,
   data: PropTypes.object
 }
 
@@ -602,7 +736,8 @@ const mapStateToProps = state => {
   return {
     processing: state.exampleHouses.processing,
     dataExample: state.exampleHouses.data,
-    dataAttributes: state.attributes.data
+    dataAttributes: state.attributes.data,
+    dataTags: state.tags.data
   }
 }
 
@@ -621,7 +756,8 @@ const mapDispatchToProps = dispatch => ({
   attributeHouseSizeListRequest: dataAttributes =>
     dispatch(AttributeActions.attributeHouseSizeListRequest(dataAttributes)),
   attributePriceListRequest: dataAttributes =>
-    dispatch(AttributeActions.attributePriceListRequest(dataAttributes))
+    dispatch(AttributeActions.attributePriceListRequest(dataAttributes)),
+  tagListRequest: dataTags => dispatch(TagActions.tagListRequest(dataTags))
 })
 
 export default connect(

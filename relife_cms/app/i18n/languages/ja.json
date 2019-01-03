@@ -163,6 +163,7 @@
   "fullName": "フルネーム",
   "group": "グループ",
   "store": "格納",
+  "tag": "Tags",
   "created-date": "作成日付(From - To)",
   "start-date": "スタート日付(From - To)",
   "created": "作成日付",
@@ -276,6 +277,8 @@
   "toast-no-data": "データがありません。",
   "toast-no-record": "テープルにはレコードがありません。",
   "no-data": "No Data",
+  "modal-prev-data": "Please fill in the data to be able to preview",
+  "modal-tags-no": "Tag are not in the database",
 
   "toolbar-totalRecords": "<strong>{total}</strong>の{limit} のレコードが表示されています。",
   "toolbar-limit": "表示件数",
