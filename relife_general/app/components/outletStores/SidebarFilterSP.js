@@ -32,18 +32,18 @@ class SidebarFilterSP extends React.Component {
           <div className="filter-block">
             <div className="filter-block-inner">
               <Form id="frm-search">
-              <div className="sidebar-search-choices">
-                <div className="sidebar-search-choices-inner">
-                  <div className="sidebar-search-place">
-                    <div className="search-title">地域</div>
-                    <input className="field" placeholder="地域" />
-                  </div>
+                <div className="sidebar-search-choices">
+                  <div className="sidebar-search-choices-inner">
+                    <div className="sidebar-search-place">
+                      <div className="search-title">地域</div>
+                      <input className="field" placeholder="地域" />
+                    </div>
 
-                  <div className="sidebar-search-word">
-                    <div className="search-title">フリーワード</div>
-                    <input className="field" placeholder="フリーワード" />
+                    <div className="sidebar-search-word">
+                      <div className="search-title">フリーワード</div>
+                      <input className="field" placeholder="フリーワード" />
+                    </div>
                   </div>
-                </div>
                   <div className="sidebar-search-choices-inner">
                     <div className="search-title">依頼先</div>
                     <FormGroup>

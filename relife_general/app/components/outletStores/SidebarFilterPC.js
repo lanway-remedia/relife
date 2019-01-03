@@ -6,6 +6,7 @@ import { Form, Label, Input, FormGroup, Button } from 'reactstrap'
 class SidebarFilterPC extends React.Component {
   handleResetForm = () => {
     document.getElementById('frm-search').reset()
+    this.form && this.form.reset()
   }
   render () {
     return (

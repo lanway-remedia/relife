@@ -98,7 +98,7 @@ class ExampleHouseListPage extends React.Component {
   }
 
   render() {
-    let {exampleHouseList, exampleHouseNew, count} = this.state
+    let {exampleHouseList, exampleHouseNew, count, page} = this.state
     return (
       <div>
         <AttributesSearchSP onPageLoad={() => this.onPageLoad()} />
@@ -154,11 +154,11 @@ class ExampleHouseListPage extends React.Component {
                         }
                       })}
                   </div>
-                  <Paginate count={count} pageChanged={() => this.pageChanged()} />
+                  <Paginate count={count} pageChanged={() => this.pageChanged()} currentPage={page} />
                 </div>
               ) : (
                 <p className="search-page-sorry">
-                  申し訳ございません。該当する記事がございません。
+                  {I18nUtils.t('search-no-record')}
                 </p>
               )}
 

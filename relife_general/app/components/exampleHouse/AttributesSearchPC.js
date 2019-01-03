@@ -21,20 +21,14 @@ class AttributesSearchPC extends React.Component {
       style: {},
       houseSize: {},
       houseIncome: {},
-    }
-  }
 
-  componentDidMount() {
-    let data = {
-      limit: '',
-      offset: '' 
+      priceOld: [],
+      constructionOld: [],
+      floorOld: [],
+      styleOld: [],
+      houseSizeOld: [],
+      houseIncomeOld: [],
     }
-    this.props.attributeContructionListRequest(data)
-    this.props.attributeFloorListRequest(data)
-    this.props.attributeStyleListRequest(data)
-    this.props.attributeHouseIncomeListRequest(data)
-    this.props.attributeHouseSizeListRequest(data)
-    this.props.attributePriceListRequest(data)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -89,6 +83,90 @@ class AttributesSearchPC extends React.Component {
     this.props.onPageLoad()
   }
 
+  componentDidMount() {
+    let data = {
+      limit: '',
+      offset: '' 
+    }
+    this.props.attributeContructionListRequest(data)
+    this.props.attributeFloorListRequest(data)
+    this.props.attributeStyleListRequest(data)
+    this.props.attributeHouseIncomeListRequest(data)
+    this.props.attributeHouseSizeListRequest(data)
+    this.props.attributePriceListRequest(data)
+
+    let params = new URLSearchParams(this.props.history.location.search)
+
+    let priceParams = params.get('price_range__in')
+    let floorParams = params.get('floor__in')
+    let constructionParams = params.get('contruction__in')
+    let styleParams = params.get('styles__style__in')
+    let houseSizeParams = params.get('household_size__in')
+    let houseIncomeParams = params.get('household_income__in')
+
+    let {priceRange, floor, construction, style, houseSize, houseIncome} = this.state
+
+    if (priceParams) {
+      let arrPriceOld = priceParams.split(',')
+      for (let key in arrPriceOld) {
+        priceRange[arrPriceOld[key]] = true
+      }
+    }
+
+    if (floorParams) {
+      let arrFloorOld = floorParams.split(',')
+      for (let key in arrFloorOld) {
+        floor[arrFloorOld[key]] = true
+      }
+    }
+
+    if (constructionParams) {
+      let arrConstructionOld = constructionParams.split(',')
+      for (let key in arrConstructionOld) {
+        construction[arrConstructionOld[key]] = true
+      }
+    }
+
+    if (styleParams) {
+      let arrStyleOld = styleParams.split(',')
+      for (let key in arrStyleOld) {
+        style[arrStyleOld[key]] = true
+      }
+    }
+
+    if (houseSizeParams) {
+      let arrHouseSizeOld = houseSizeParams.split(',')
+      for (let key in arrHouseSizeOld) {
+        houseSize[arrHouseSizeOld[key]] = true
+      }
+    }
+
+    if (houseIncomeParams) {
+      let arrHouseIncomeOld = houseIncomeParams.split(',')
+      for (let key in arrHouseIncomeOld) {
+        houseIncome[arrHouseIncomeOld[key]] = true
+      }
+    }
+
+    this.setState({
+      priceOld: priceParams ? priceParams.split(',') : '',
+      constructionOld: constructionParams ? constructionParams.split(',') : '',
+      floorOld: floorParams ? floorParams.split(',') : '',
+      styleOld: styleParams ? styleParams.split(',') : '',
+      houseSizeOld: houseSizeParams ? houseSizeParams.split(',') : '',
+      houseIncomeOld: houseIncomeParams ? houseIncomeParams.split(',') : ''
+    })
+
+    this.setState({
+      priceRange: priceRange,
+      floor: floor,
+      construction: construction,
+      style: style,
+      houseSize: houseSize,
+      houseIncome: houseIncome
+    })
+  }
+
   handleChange = (e) => {
     const name = e.target.name
     let itemChecked
@@ -109,7 +187,10 @@ class AttributesSearchPC extends React.Component {
     const value = e.target.value
     const isChecked = e.target.checked
 
+
     itemChecked[value] = isChecked
+
+    console.log(itemChecked)
     this.setState({
       [e.target.name] : itemChecked
     })
@@ -164,7 +245,7 @@ class AttributesSearchPC extends React.Component {
       ...(arrPrice.length > 0 && { price_range__in: arrPrice.join() }),
       ...(arrFloor.length > 0 && { floor__in: arrFloor.join() }),
       ...(arrConstruction.length > 0 && { contruction__in: arrConstruction.join() }),
-      ...(arrStyle.length > 0 && { style__in: arrStyle.join() }),
+      ...(arrStyle.length > 0 && { styles__style__in: arrStyle.join() }),
       ...(arrHouseSize.length > 0 && { household_size__in: arrHouseSize.join() }),
       ...(arrHouseIncome.length > 0 && { household_income__in: arrHouseIncome.join() }),
     }
@@ -177,7 +258,9 @@ class AttributesSearchPC extends React.Component {
   }
 
   render() {
-    const { listConstruction, listFloor, listPrice, listStyle, listHouseSize, listHouseIncome } = this.state
+    const { listConstruction, listFloor, listPrice, listStyle, listHouseSize, listHouseIncome, 
+            priceOld, constructionOld, floorOld, styleOld, houseSizeOld, houseIncomeOld} 
+            = this.state
     return (
       <section className="side pc">
         <Form id="frm-search" >
@@ -194,7 +277,8 @@ class AttributesSearchPC extends React.Component {
                           name="priceRange" 
                           value={price.id} 
                           id={price.id} 
-                          onChange={this.handleChange} 
+                          onChange={this.handleChange}
+                          defaultChecked={priceOld.includes(price.id.toString())}
                         />
                         <span className="choices-parts">{price.title}</span>
                       </Label>
@@ -214,7 +298,8 @@ class AttributesSearchPC extends React.Component {
                       name="construction" 
                       value={contruction.id} 
                       id={contruction.id} 
-                      onChange={this.handleChange} 
+                      onChange={this.handleChange}
+                      defaultChecked={constructionOld.includes(contruction.id.toString())}
                     />
                     <span className="choices-parts">{contruction.title}</span>
                   </Label>
@@ -234,7 +319,8 @@ class AttributesSearchPC extends React.Component {
                       name="floor" 
                       value={floor.id} 
                       id={floor.id} 
-                      onChange={this.handleChange} 
+                      onChange={this.handleChange}
+                      defaultChecked={floorOld.includes(floor.id.toString())}
                     />
                     <span className="choices-parts">{floor.title}</span>
                   </Label>
@@ -249,12 +335,13 @@ class AttributesSearchPC extends React.Component {
                   {listStyle.map((style, key) => (
                   <Label key={key}>
                     <Input 
-                      className="choices-input" 
-                      type="checkbox" 
-                      name="style" 
-                      value={style.id} 
-                      id={style.id} 
-                      onChange={this.handleChange} 
+                      className="choices-input"
+                      type="checkbox"
+                      name="style"
+                      value={style.id}
+                      id={style.id}
+                      onChange={this.handleChange}
+                      defaultChecked={styleOld.includes(style.id.toString())}
                     />
                     <span className="choices-parts">{style.title}</span>
                   </Label>
@@ -275,6 +362,7 @@ class AttributesSearchPC extends React.Component {
                       value={size.id} 
                       id={size.id} 
                       onChange={this.handleChange}
+                      defaultChecked={houseSizeOld.includes(size.id.toString())}
                     />
                     <span className="choices-parts">{size.title}</span>
                   </Label>
@@ -295,6 +383,7 @@ class AttributesSearchPC extends React.Component {
                       value={income.id} 
                       id={income.id} 
                       onChange={this.handleChange}
+                      defaultChecked={houseIncomeOld.includes(income.id.toString())}
                     />
                     <span className="choices-parts">{income.title}</span>
                   </Label>

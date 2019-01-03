@@ -2,7 +2,6 @@ import apiClient from '../../shared/apiClient'
 export default class ExampleHousesService {
   listExampleHouses(data) {
     let search = new URLSearchParams(data)
-    console.log(search.toString())
     return apiClient.get(
       `/examplehouses/v1/?${search.toString()}`
     )
