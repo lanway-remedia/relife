@@ -1,8 +1,8 @@
-{% comment %} {% load inlinecss %}
-{% inlinecss "css/email.css" %} {% endcomment %}
+
+
 <html>
 <header>
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/email.css" />
+<link rel="stylesheet" type="text/css" href="{{ TEMPLATE_URL }}css/email.css" />
 </header>
 <body>
     <div class="header">
@@ -13,7 +13,7 @@
         <a href="/about_us/" class="header-logo-link">Re:Lifeとは</a>
     </div>
 <div>
-<img class="header-logo-img" src="{{ STATIC_URL }}/image/logo.png" alt="Re:style">
+<img class="header-logo-img" src="{{ MEDIA_URL }}/outhouse.png" alt="Re:style">
 </div>
 <table>
 <tr>
