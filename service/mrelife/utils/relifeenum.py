@@ -10,7 +10,7 @@ class MessageCode(Enum):
 
     OS001 = 'OS001'  # get outletstore's information detail successfully
     OS002 = 'OS002'  # get outletstore's information detail failly
-    OS003 = 'OS002'  # add new a outletstore  successfully
+    OS003 = 'OS003'  # add new a outletstore  successfully
     OS004 = 'OS004'  # not add new ouletstore
     OS005 = 'OS005'  # update information
     OS006 = 'OS006'  # update with err data
@@ -21,6 +21,9 @@ class MessageCode(Enum):
     OS011 = 'OS011'  # Not updated Oultetstore : Invalid Data
     OS012 = 'OS012'  # Not updated Outletstore : Outletstore not  found
     OS013 = 'OS0013'  # Not deleted Outletstore : Outletstore not  found
+    BSO003 = 'BSO003'  # register become store owner successfully
+    BSO004 = 'BSO004'  # register become store owner failly
+    BSO010 = 'BSO010'  # Not register become store: Invalid Data
 
     OSC001 = 'OSC001'  # get outletstore contact's information detail successfully
     OSC002 = 'OSC002'  # get outletstore contact's information detail failly

@@ -19,9 +19,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from mrelife.commons.common_fnc import CommonFuntion
-from mrelife.outletstores.models import OutletStoreContact
+from mrelife.outletstores.models import OutletStore, OutletStoreContact
 from mrelife.outletstores.ouletstorecontacts.serializers import \
     OutletStoreContactSerializer
+from mrelife.users.models import User
 from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStoreContactPermission
@@ -55,30 +56,33 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC002.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC002.value, {}), status=status.HTTP_400_BAD_REQUEST)
-    def sendEmailConfirmContact(self, subject, data ,mailfrom,mailto):
-        try:
-            # subject, from_email, to = 'hello', settings.DEFAULT_FROM_EMAIL, mailto
-            # c = {'username': "dung"}
-            html_content = render_to_string('email.html', data)
-            text_content = 'This is an important message.'
-            email = EmailMultiAlternatives('Subject', text_content)
-            email.attach_alternative(html_content, "text/html")
-            email.to = [mailto]
-            return email.send()
-        except Exception as e:
-            return False
-    
+
+    def sendEmailConfirmContact(self, subject, data, mailfrom, mailto1, mailto2):
+        # try:
+        html_content = render_to_string('email.html', data)
+        text_content = 'This is an important message.'
+        email = EmailMultiAlternatives('Subject', text_content)
+        email.attach_alternative(html_content, "text/html")
+        email.to = [mailto1, mailto2]
+        return email.send()
+        # except Exception as e:
+        #     return False
+
     def create(self, request):
-        try:
-            serializer = OutletStoreContactSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save(is_active=settings.IS_ACTIVE,
-                                created=datetime.now(), updated=datetime.now())
-                self.sendEmailConfirmContact("Wellcome to outlet store",serializer.data,settings.DEFAULT_FROM_EMAIL,request.data['email'])
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC003.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, {}), status=status.HTTP_400_BAD_REQUEST)
+        # try:
+        serializer = OutletStoreContactSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(is_active=settings.IS_ACTIVE,
+                            created=datetime.now(), updated=datetime.now())
+            userCreate = OutletStore.objects.get(id=request.data['outlet_store_id']).create_user
+            statusSendMail = self.sendEmailConfirmContact("Wellcome to outlet store", serializer.data,
+                                                          settings.DEFAULT_FROM_EMAIL, request.data['email'], userCreate.email)
+            if(not statusSendMail):
+                return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC003.value, {}), status=status.HTTP_200_OK)
+        return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        # except Exception as e:
+        #     return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
@@ -91,6 +95,9 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
+                userCreate = OutletStore.objects.get(id=request.data['outlet_store_id']).create_user
+                self.sendEmailConfirmContact("Wellcome to outlet store", serializer.data,
+                                             settings.DEFAULT_FROM_EMAIL, request.data['email'], userCreate.email)
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC005.value, {}), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except KeyError:
