@@ -66,7 +66,7 @@ class Paginate extends React.Component {
 
   render() {
     let {count, currentPage} = this.props
-    let {limit, page} = this.state
+    let {limit} = this.state
     let pagesCount = count == 0 ? 1 : Math.ceil(count / limit)
     return (
       <div className="pagination-custom clearfix">

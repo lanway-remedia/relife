@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import I18nUtils from './../utils/I18nUtils'
-import { Label, Input } from 'reactstrap'
 import UltimatePagination from 'react-ultimate-pagination-bootstrap-4'
 import { DefaultValue } from '../constants'
 

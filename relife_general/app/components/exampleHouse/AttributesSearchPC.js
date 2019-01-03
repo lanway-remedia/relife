@@ -15,19 +15,12 @@ class AttributesSearchPC extends React.Component {
       listHouseSize: [],
       listHouseIncome: [],
 
-      priceRange: {},
-      construction: {},
-      floor: {},
-      style: {},
-      houseSize: {},
-      houseIncome: {},
-
-      priceOld: [],
-      constructionOld: [],
-      floorOld: [],
-      styleOld: [],
-      houseSizeOld: [],
-      houseIncomeOld: [],
+      priceRange: [],
+      construction: [],
+      floor: [],
+      style: [],
+      houseSize: [],
+      houseIncome: [],
     }
   }
 
@@ -78,7 +71,7 @@ class AttributesSearchPC extends React.Component {
   }
 
   handleResetForm = () => {
-    document.getElementById('frm-search').reset()
+    document.getElementById('frm-search-ex-pc').reset()
     this.props.history.push('/example')
     this.props.onPageLoad()
   }
@@ -104,66 +97,13 @@ class AttributesSearchPC extends React.Component {
     let houseSizeParams = params.get('household_size__in')
     let houseIncomeParams = params.get('household_income__in')
 
-    let {priceRange, floor, construction, style, houseSize, houseIncome} = this.state
-
-    if (priceParams) {
-      let arrPriceOld = priceParams.split(',')
-      for (let key in arrPriceOld) {
-        priceRange[arrPriceOld[key]] = true
-      }
-    }
-
-    if (floorParams) {
-      let arrFloorOld = floorParams.split(',')
-      for (let key in arrFloorOld) {
-        floor[arrFloorOld[key]] = true
-      }
-    }
-
-    if (constructionParams) {
-      let arrConstructionOld = constructionParams.split(',')
-      for (let key in arrConstructionOld) {
-        construction[arrConstructionOld[key]] = true
-      }
-    }
-
-    if (styleParams) {
-      let arrStyleOld = styleParams.split(',')
-      for (let key in arrStyleOld) {
-        style[arrStyleOld[key]] = true
-      }
-    }
-
-    if (houseSizeParams) {
-      let arrHouseSizeOld = houseSizeParams.split(',')
-      for (let key in arrHouseSizeOld) {
-        houseSize[arrHouseSizeOld[key]] = true
-      }
-    }
-
-    if (houseIncomeParams) {
-      let arrHouseIncomeOld = houseIncomeParams.split(',')
-      for (let key in arrHouseIncomeOld) {
-        houseIncome[arrHouseIncomeOld[key]] = true
-      }
-    }
-
     this.setState({
-      priceOld: priceParams ? priceParams.split(',') : '',
-      constructionOld: constructionParams ? constructionParams.split(',') : '',
-      floorOld: floorParams ? floorParams.split(',') : '',
-      styleOld: styleParams ? styleParams.split(',') : '',
-      houseSizeOld: houseSizeParams ? houseSizeParams.split(',') : '',
-      houseIncomeOld: houseIncomeParams ? houseIncomeParams.split(',') : ''
-    })
-
-    this.setState({
-      priceRange: priceRange,
-      floor: floor,
-      construction: construction,
-      style: style,
-      houseSize: houseSize,
-      houseIncome: houseIncome
+      priceRange: priceParams ? priceParams.split(',') : [],
+      floor: floorParams ? floorParams.split(',') : [],
+      construction: constructionParams ? constructionParams.split(',') : [],
+      style: styleParams ? styleParams.split(',') : [],
+      houseSize: houseSizeParams ? houseSizeParams.split(',') : [],
+      houseIncome: houseIncomeParams ? houseIncomeParams.split(',') : [],
     })
   }
 
@@ -187,11 +127,12 @@ class AttributesSearchPC extends React.Component {
     const value = e.target.value
     const isChecked = e.target.checked
 
-    if (isChecked == false) {
-      delete itemChecked[value]
+    if (isChecked === false) {
+      itemChecked = itemChecked.filter(item => item !== value)
     } else {
-      itemChecked[value] = value
+      itemChecked.push(value)
     }
+    console.log(itemChecked)
     this.setState({
       [e.target.name] : itemChecked
     })
@@ -199,20 +140,20 @@ class AttributesSearchPC extends React.Component {
 
   onClickSubmit = () => {
     let {priceRange, floor, construction, style, houseSize, houseIncome} = this.state
-    let priceParam = Object.values(priceRange).join(',')
-    let floorParam = Object.values(floor).join(',')
-    let constructionParam = Object.values(construction).join(',')
-    let styleParam = Object.values(style).join(',')
-    let houseSizeParam = Object.values(houseSize).join(',')
-    let houseIncomeParam = Object.values(houseIncome).join(',')
+    let priceParam = priceRange.join(',')
+    let floorParam = floor.join(',')
+    let constructionParam = construction.join(',')
+    let styleParam = style.join(',')
+    let houseSizeParam = houseSize.join(',')
+    let houseIncomeParam = houseIncome.join(',')
 
     let parsed = {
-      ...(Object.keys(priceRange).length > 0 && { price_range__in: priceParam }),
-      ...(Object.keys(floor).length > 0 && { floor__in: floorParam }),
-      ...(Object.keys(construction).length > 0 && { contruction__in: constructionParam }),
-      ...(Object.keys(style).length > 0 && { styles__style__in: styleParam }),
-      ...(Object.keys(houseSize).length > 0 && { household_size__in: houseSizeParam }),
-      ...(Object.keys(houseIncome).length > 0 && { household_income__in: houseIncomeParam }),
+      ...(priceRange.length > 0 && { price_range__in: priceParam }),
+      ...(floor.length > 0 && { floor__in: floorParam }),
+      ...(construction.length > 0 && { contruction__in: constructionParam }),
+      ...(style > 0 && { styles__style__in: styleParam }),
+      ...(houseSize.length > 0 && { household_size__in: houseSizeParam }),
+      ...(houseIncome.length > 0 && { household_income__in: houseIncomeParam }),
     }
     let search = new URLSearchParams(parsed)
     this.props.history.push({
@@ -224,11 +165,11 @@ class AttributesSearchPC extends React.Component {
 
   render() {
     const { listConstruction, listFloor, listPrice, listStyle, listHouseSize, listHouseIncome, 
-            priceOld, constructionOld, floorOld, styleOld, houseSizeOld, houseIncomeOld} 
-            = this.state
+            priceRange, floor, construction, style, houseSize, houseIncome  
+          } = this.state
     return (
       <section className="side pc">
-        <Form id="frm-search" >
+        <Form id="frm-search-ex-pc" >
           <div className="sidebar-search-choices">
             {/* list price */}
             <div className="sidebar-search-choices-inner">
@@ -243,7 +184,7 @@ class AttributesSearchPC extends React.Component {
                           value={price.id} 
                           id={price.id} 
                           onChange={this.handleChange}
-                          defaultChecked={priceOld.includes(price.id.toString())}
+                          defaultChecked={priceRange.includes(price.id.toString())}
                         />
                         <span className="choices-parts">{price.title}</span>
                       </Label>
@@ -255,18 +196,18 @@ class AttributesSearchPC extends React.Component {
             <div className="sidebar-search-choices-inner">
               <div className="search-title">構造 </div>
                 <FormGroup>
-                  {listConstruction.map((contruction, keyConstr) => (
-                  <Label key={keyConstr}>
+                  {listConstruction.map((val, key) => (
+                  <Label key={key}>
                     <Input 
                       className="choices-input" 
                       type="checkbox" 
                       name="construction" 
-                      value={contruction.id} 
-                      id={contruction.id} 
+                      value={val.id} 
+                      id={val.id} 
                       onChange={this.handleChange}
-                      defaultChecked={constructionOld.includes(contruction.id.toString())}
+                      defaultChecked={construction.includes(val.id.toString())}
                     />
-                    <span className="choices-parts">{contruction.title}</span>
+                    <span className="choices-parts">{val.title}</span>
                   </Label>
                   ))}
                 </FormGroup>
@@ -276,18 +217,18 @@ class AttributesSearchPC extends React.Component {
             <div className="sidebar-search-choices-inner">
               <div className="search-title">階数 </div>
                 <FormGroup>
-                  {listFloor.map((floor, key) => (
+                  {listFloor.map((val, key) => (
                   <Label key={key}>
                     <Input 
                       className="choices-input" 
                       type="checkbox" 
                       name="floor" 
-                      value={floor.id} 
-                      id={floor.id} 
+                      value={val.id} 
+                      id={val.id} 
                       onChange={this.handleChange}
-                      defaultChecked={floorOld.includes(floor.id.toString())}
+                      defaultChecked={floor.includes(val.id.toString())}
                     />
-                    <span className="choices-parts">{floor.title}</span>
+                    <span className="choices-parts">{val.title}</span>
                   </Label>
                   ))}
                 </FormGroup>
@@ -297,18 +238,18 @@ class AttributesSearchPC extends React.Component {
             <div className="sidebar-search-choices-inner">
               <div className="search-title">テイスト </div>
                 <FormGroup>
-                  {listStyle.map((style, key) => (
+                  {listStyle.map((val, key) => (
                   <Label key={key}>
                     <Input 
                       className="choices-input"
                       type="checkbox"
                       name="style"
-                      value={style.id}
-                      id={style.id}
+                      value={val.id}
+                      id={val.id}
                       onChange={this.handleChange}
-                      defaultChecked={styleOld.includes(style.id.toString())}
+                      defaultChecked={style.includes(val.id.toString())}
                     />
-                    <span className="choices-parts">{style.title}</span>
+                    <span className="choices-parts">{val.title}</span>
                   </Label>
                   ))}
                 </FormGroup>
@@ -318,18 +259,18 @@ class AttributesSearchPC extends React.Component {
             <div className="sidebar-search-choices-inner">
               <div className="search-title">世帯人数 </div>
                 <FormGroup>
-                  {listHouseSize.map((size, key) => (
+                  {listHouseSize.map((val, key) => (
                   <Label key={key}>
                     <Input 
                       className="choices-input" 
                       type="checkbox" 
                       name="houseSize" 
-                      value={size.id} 
-                      id={size.id} 
+                      value={val.id} 
+                      id={val.id} 
                       onChange={this.handleChange}
-                      defaultChecked={houseSizeOld.includes(size.id.toString())}
+                      defaultChecked={houseSize.includes(val.id.toString())}
                     />
-                    <span className="choices-parts">{size.title}</span>
+                    <span className="choices-parts">{val.title}</span>
                   </Label>
                   ))}
                 </FormGroup>
@@ -339,18 +280,18 @@ class AttributesSearchPC extends React.Component {
             <div className="sidebar-search-choices-inner">
               <div className="search-title">世帯年収 </div>
                 <FormGroup>
-                  {listHouseIncome.map((income, key) => (
+                  {listHouseIncome.map((val, key) => (
                   <Label key={key}>
                     <Input 
                       className="choices-input" 
                       type="checkbox" 
                       name="houseIncome" 
-                      value={income.id} 
-                      id={income.id} 
+                      value={val.id} 
+                      id={val.id} 
                       onChange={this.handleChange}
-                      defaultChecked={houseIncomeOld.includes(income.id.toString())}
+                      defaultChecked={houseIncome.includes(val.id.toString())}
                     />
-                    <span className="choices-parts">{income.title}</span>
+                    <span className="choices-parts">{val.title}</span>
                   </Label>
                   ))}
                 </FormGroup>

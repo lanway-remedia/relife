@@ -1,5 +1,5 @@
 import React from 'react'
-import { TabContent, TabPane, Nav, Row, Col } from 'reactstrap'
+import { TabContent, TabPane, Nav } from 'reactstrap'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
