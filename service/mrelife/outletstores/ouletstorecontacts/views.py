@@ -58,38 +58,40 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC002.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def sendEmailConfirmContact(self, subject, data, mailfrom, mailto1, mailto2):
-        try:
-            html_content = render_to_string('email.html', data)
-            text_content = 'This is an important message.'
-            email = EmailMultiAlternatives('Subject', text_content)
-            email.attach_alternative(html_content, "text/html")
-            email.to = [mailto1, mailto2]
-            return email.send()
-        except Exception as e:
-            return False
+        # try:
+        html_content = render_to_string('email.html', data)
+        text_content = 'This is an important message.'
+        email = EmailMultiAlternatives('Subject', text_content)
+        email.attach_alternative(html_content, "text/html")
+        email.to = [mailto1, mailto2]
+        return email.send()
+        # except Exception as e:
+        #     return False
 
     def create(self, request):
-        try:
-            serializer = OutletStoreContactSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save(is_active=settings.IS_ACTIVE,
-                                created=datetime.now(), updated=datetime.now())
-                userCreate = OutletStore.objects.get(id=request.data['outlet_store_id']).create_user
-                self.sendEmailConfirmContact("Wellcome to outlet store", serializer.data,
-                                             settings.DEFAULT_FROM_EMAIL, request.data['email'], userCreate.email)
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC003.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, {}), status=status.HTTP_400_BAD_REQUEST)
+        # try:
+        serializer = OutletStoreContactSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(is_active=settings.IS_ACTIVE,
+                            created=datetime.now(), updated=datetime.now())
+            userCreate = OutletStore.objects.get(id=request.data['outlet_store_id']).create_user
+            statusSendMail = self.sendEmailConfirmContact("Wellcome to outlet store", serializer.data,
+                                                          settings.DEFAULT_FROM_EMAIL, request.data['email'], userCreate.email)
+            if(not statusSendMail):
+                return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC003.value, {}), status=status.HTTP_200_OK)
+        return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        # except Exception as e:
+        #     return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
-            parten="^[0-9]+$"
+            parten = "^[0-9]+$"
             if not re.findall(parten, str(pk)):
                 raise KeyError
-            queryset=OutletStoreContact.objects.filter(is_active=1)
-            outletstoreObject=get_object_or_404(queryset, pk=pk)
-            serializer=OutletStoreContactSerializer(outletstoreObject, data=request.data, partial=True)
+            queryset = OutletStoreContact.objects.filter(is_active=1)
+            outletstoreObject = get_object_or_404(queryset, pk=pk)
+            serializer = OutletStoreContactSerializer(outletstoreObject, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
@@ -107,13 +109,13 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, pk=None):
         try:
-            parten="^[0-9]+$"
+            parten = "^[0-9]+$"
             if not re.findall(parten, str(pk)):
                 raise KeyError
-            queryset=OutletStoreContact.objects.filter(is_active=1)
-            outletstoreObject=get_object_or_404(queryset, pk=pk)
-            data={"is_active": settings.IS_INACTIVE}
-            serializer=OutletStoreContactSerializer(outletstoreObject, data=data, partial=True)
+            queryset = OutletStoreContact.objects.filter(is_active=1)
+            outletstoreObject = get_object_or_404(queryset, pk=pk)
+            data = {"is_active": settings.IS_INACTIVE}
+            serializer = OutletStoreContactSerializer(outletstoreObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSC007.value, {}), status=status.HTTP_200_OK)

@@ -1,6 +1,20 @@
+{% comment %} {% load inlinecss %}
+{% inlinecss "css/email.css" %} {% endcomment %}
 <html>
+<header>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/email.css" />
+</header>
 <body>
-<p> He's Information contact</p>
+    <div class="header">
+        <a class="header-logo-inner" href="/">
+          <img class="header-logo-img" src="http://relf.jp/wp/wp-content/themes/smile-concierge/lib/images/logo.png" alt="Re:style">
+          <span class="header-logo-text">暮らしづくりのコンシェルジュ</span>
+        </a>
+        <a href="/about_us/" class="header-logo-link">Re:Lifeとは</a>
+    </div>
+<div>
+<img class="header-logo-img" src="{{ STATIC_URL }}/image/logo.png" alt="Re:style">
+</div>
 <table>
 <tr>
 <td><p style="color:blue;"> <strong>Name:</strong></p></td><td>{{name}}</td></tr>
