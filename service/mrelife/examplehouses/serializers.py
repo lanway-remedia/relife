@@ -112,6 +112,7 @@ class ExampleHouseNestedNameOnlySerializer(ModelSerializer):
     floor = FloorSerializer()
     household_size = HouseHoldSizeSerializer()
     household_income = HouseHoldIncomeSerializer()
+    styles = ExampleHouseStyleSerializer(many=True, read_only=False)
 
     class Meta:
         model = ExampleHouse
