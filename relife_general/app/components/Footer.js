@@ -36,22 +36,22 @@ class Footer extends React.Component {
             <div className="footer-sns-title">FOLLOW US!</div>
             <ul>
               <li>
-                <a href="https://www.facebook.com/relf.jp/" target="_blank">
+                <a href="https://www.facebook.com/relf.jp/">
                   <img src={fbIcon} alt="fb-icon" />
                 </a>
               </li>
               <li>
-                <a href="https://twitter.com/relf_jp" target="_blank">
+                <a href="https://twitter.com/relf_jp">
                   <img src={twiIcon} alt="fb-icon" />
                 </a>
               </li>
               <li>
-                <a href="https://www.instagram.com/relf_jp/" target="_blank">
+                <a href="https://www.instagram.com/relf_jp/">
                   <img src={instaIcon} alt="fb-icon" />
                 </a>
               </li>
               <li>
-                <a href="https://www.pinterest.jp/relf_jp/" target="_blank">
+                <a href="https://www.pinterest.jp/relf_jp/">
                   <img src={pinIcon} alt="fb-icon" />
                 </a>
               </li>
@@ -64,7 +64,7 @@ class Footer extends React.Component {
               <img src={lanwayLogo} alt="Lanway" />
             </div>
             <ul className="footer-bottom-link">
-              <li><a href="http://remedia.lanway.jp/" target="_blank">運営会社</a></li>
+              <li><a href="http://remedia.lanway.jp/">運営会社</a></li>
               <li><Link to="/privacypolicy/">プライバシーポリシー</Link></li>
               <li><Link to="/rule/">利用規約</Link></li>
             </ul>
