@@ -15,6 +15,13 @@ class AttributesSearchSP extends React.Component {
       listHouseSize: [],
       listHouseIncome: [],
       collapse: false,
+
+      priceRange: {},
+      construction: {},
+      floor: {},
+      style: {},
+      houseSize: {},
+      houseIncome: {},
     }
     this.toggle = this.toggle.bind(this)
   }
@@ -82,6 +89,96 @@ class AttributesSearchSP extends React.Component {
 
   handleResetForm = () => {
     document.getElementById('frm-search').reset()
+    this.props.history.push('/example')
+    this.props.onPageLoad()
+  }
+
+  handleChange = (e) => {
+    const name = e.target.name
+    let itemChecked
+    if (name == 'priceRange') {
+      itemChecked = this.state.priceRange
+    } else if (name == 'construction') {
+      itemChecked = this.state.construction
+    } else if (name == 'floor') {
+      itemChecked = this.state.floor
+    } else if (name == 'style') {
+      itemChecked = this.state.style
+    } else if (name == 'houseSize') {
+      itemChecked = this.state.houseSize
+    } else if (name == 'houseIncome') {
+      itemChecked = this.state.houseIncome
+    }
+
+    const value = e.target.value
+    const isChecked = e.target.checked
+
+    itemChecked[value] = isChecked
+    this.setState({
+      [e.target.name] : itemChecked
+    })
+    console.log(itemChecked)
+  }
+
+  onClickSubmit = () => {
+    let {priceRange, floor, construction, style, houseSize, houseIncome} = this.state
+
+    let arrPrice = []
+    for(let key in priceRange) {
+      if (priceRange[key] == true) {
+        arrPrice.push(key)
+      }
+    }
+
+    let arrFloor = []
+    for(let key in floor) {
+      if (floor[key] == true) {
+        arrFloor.push(key)
+      }
+    }
+
+    let arrConstruction = []
+    for(let key in construction) {
+      if (construction[key] == true) {
+        arrConstruction.push(key)
+      }
+    }
+
+    let arrStyle = []
+    for(let key in style) {
+      if (style[key] == true) {
+        arrStyle.push(key)
+      }
+    }
+
+    let arrHouseSize = []
+    for(let key in houseSize) {
+      if (houseSize[key] == true) {
+        arrHouseSize.push(key)
+      }
+    }
+
+    let arrHouseIncome = []
+    for(let key in houseIncome) {
+      if (houseIncome[key] == true) {
+        arrHouseIncome.push(key)
+      }
+    }
+
+    let parsed = {
+      ...(arrPrice.length > 0 && { price_range__in: arrPrice.join() }),
+      ...(arrFloor.length > 0 && { floor__in: arrFloor.join() }),
+      ...(arrConstruction.length > 0 && { contruction__in: arrConstruction.join() }),
+      ...(arrStyle.length > 0 && { style__in: arrStyle.join() }),
+      ...(arrHouseSize.length > 0 && { household_size__in: arrHouseSize.join() }),
+      ...(arrHouseIncome.length > 0 && { household_income__in: arrHouseIncome.join() }),
+    }
+    let search = new URLSearchParams(parsed)
+    this.props.history.push({
+      search: `?${search.toString()}&page=1`
+    })
+
+    this.props.onPageLoad()
   }
 
   render() {
@@ -105,19 +202,34 @@ class AttributesSearchSP extends React.Component {
                         <FormGroup>
                           {listPrice.map((price, key) => (
                             <Label key={key}>
-                              <Input className="choices-input" type="checkbox" name="price_range[]" value="" id={price.id} />
+                              <Input 
+                                className="choices-input" 
+                                type="checkbox" 
+                                name="priceRange" 
+                                value={price.id} 
+                                id={price.id} 
+                                onChange={this.handleChange} 
+                              />
                               <span className="choices-parts">{price.title}</span>
                             </Label>
                           ))}
                         </FormGroup>
                   </div>
+
                   {/* listConstruction */}
                   <div className="sidebar-search-choices-inner">
                     <div className="search-title">構造 </div>
                       <FormGroup>
                         {listConstruction.map((contruction, keyConstr) => (
                         <Label key={keyConstr}>
-                          <Input className="choices-input" type="checkbox" name="contruction[]" value={contruction.title} id={contruction.id} />
+                          <Input 
+                            className="choices-input" 
+                            type="checkbox" 
+                            name="construction" 
+                            value={contruction.id} 
+                            id={contruction.id} 
+                            onChange={this.handleChange} 
+                          />
                           <span className="choices-parts">{contruction.title}</span>
                         </Label>
                         ))}
@@ -130,7 +242,14 @@ class AttributesSearchSP extends React.Component {
                       <FormGroup>
                         {listFloor.map((floor, key) => (
                         <Label key={key}>
-                          <Input className="choices-input" type="checkbox" name="contruction[]" value={floor.title} id={floor.id} />
+                          <Input 
+                            className="choices-input" 
+                            type="checkbox" 
+                            name="floor" 
+                            value={floor.id} 
+                            id={floor.id} 
+                            onChange={this.handleChange} 
+                          />
                           <span className="choices-parts">{floor.title}</span>
                         </Label>
                         ))}
@@ -143,7 +262,14 @@ class AttributesSearchSP extends React.Component {
                       <FormGroup>
                         {listStyle.map((style, key) => (
                         <Label key={key}>
-                          <Input className="choices-input" type="checkbox" name="contruction[]" value={style.title} id={style.id} />
+                        <Input 
+                          className="choices-input" 
+                          type="checkbox" 
+                          name="style" 
+                          value={style.id} 
+                          id={style.id} 
+                          onChange={this.handleChange} 
+                        />
                           <span className="choices-parts">{style.title}</span>
                         </Label>
                         ))}
@@ -156,7 +282,14 @@ class AttributesSearchSP extends React.Component {
                       <FormGroup>
                         {listHouseSize.map((size, key) => (
                         <Label key={key}>
-                          <Input className="choices-input" type="checkbox" name="contruction[]" value={size.title} id={size.id} />
+                        <Input 
+                          className="choices-input" 
+                          type="checkbox" 
+                          name="houseSize" 
+                          value={size.id} 
+                          id={size.id} 
+                          onChange={this.handleChange}
+                        />
                           <span className="choices-parts">{size.title}</span>
                         </Label>
                         ))}
@@ -169,17 +302,33 @@ class AttributesSearchSP extends React.Component {
                       <FormGroup>
                         {listHouseIncome.map((income, key) => (
                         <Label key={key}>
-                          <Input className="choices-input" type="checkbox" name="contruction[]" value={income.title} id={income.id} />
+                        <Input 
+                          className="choices-input" 
+                          type="checkbox" 
+                          name="houseIncome" 
+                          value={income.id} 
+                          id={income.id} 
+                          onChange={this.handleChange}
+                        />
                           <span className="choices-parts">{income.title}</span>
                         </Label>
                         ))}
                       </FormGroup>
                   </div>
                 </div>
-                  <button type="button" onClick={this.handleResetForm} className="sidebar-clear-btn btn clear-button">
+
+                  <button 
+                    type="button" 
+                    onClick={this.handleResetForm} 
+                    className="sidebar-clear-btn btn clear-button"
+                  >
                     入力値をリセット
                   </button>
-                  <Button type="button" className="sidebar-search-btn btn btn-default">
+                  <Button 
+                    type="button" 
+                    onClick={this.onClickSubmit} 
+                    className="sidebar-search-btn btn btn-default"
+                  >
                     <i className="fa fa-search" />
                     検索
                   </Button>
@@ -204,6 +353,8 @@ AttributesSearchSP.propTypes = {
   attributeStyleListRequest: PropTypes.func,
   attributeHouseSizeListRequest: PropTypes.func,
   attributeHouseIncomeListRequest: PropTypes.func,
+  history: PropTypes.object,
+  onPageLoad: PropTypes.func,
 }
 
 const mapStateToProps = state => {
