@@ -32,7 +32,7 @@ class ExampleHouseListPage extends React.Component {
     let floor = params.get('floor__in')
     let price_range = params.get('price_range__in')
     let construction = params.get('contruction__in')
-    let style = params.get('style__in')
+    let style = params.get('styles__style__in')
     let houseSize = params.get('household_size__in')
     let houseIncome = params.get('household_income__in')
     let data = {
@@ -42,7 +42,7 @@ class ExampleHouseListPage extends React.Component {
       ...(price_range && { price_range__in: price_range }),
       ...(floor && { floor__in: floor }),
       ...(construction && { contruction__in: construction }),
-      ...(style && { style__in: style }),
+      ...(style && { styles__style__in: style }),
       ...(houseSize && { household_size__in: houseSize }),
       ...(houseIncome && { household_income__in: houseIncome }),
     }

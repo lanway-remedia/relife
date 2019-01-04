@@ -22,8 +22,12 @@ class Paginate extends React.Component {
   }
 
   onFirstPageGo = () => {
+    let params = new URLSearchParams(this.props.history.location.search)
+    params.set('page', 1)
+    params.set('limit', this.state.limit)
+
     this.props.history.push({
-      search: `?page=1&limit=${this.state.limit}`
+      search: `?${params.toString()}`
     })
     this.setState({
       page : 1
@@ -33,8 +37,12 @@ class Paginate extends React.Component {
 
   onLastPageGo = () => {
     let pageCount = this.props.count == 0 ? 1 : Math.ceil(this.props.count / this.state.limit)
+    let params = new URLSearchParams(this.props.history.location.search)
+    params.set('page', pageCount)
+    params.set('limit', this.state.limit)
+
     this.props.history.push({
-      search: `?page=${pageCount}&limit=${this.state.limit}`
+      search: `?${params.toString()}`
     })
     this.setState({
       page : pageCount
@@ -44,8 +52,11 @@ class Paginate extends React.Component {
 
   onNextPageGo = () => {
     let page = this.state.page
+    let params = new URLSearchParams(this.props.history.location.search)
+    params.set('page', page + 1)
+    params.set('limit', this.state.limit)
     this.props.history.push({
-      search: `?page=${page + 1}&limit=${this.state.limit}`
+      search: `?${params.toString()}`
     })
     this.setState({
       page: this.state.page + 1
@@ -55,8 +66,11 @@ class Paginate extends React.Component {
 
   onPrevPageGo = () => {
     let page = this.state.page
+    let params = new URLSearchParams(this.props.history.location.search)
+    params.set('page', page - 1)
+    params.set('limit', this.state.limit)
     this.props.history.push({
-      search: `?page=${page - 1}&limit=${this.state.limit}`
+      search: `?${params.toString()}`
     })
     this.setState({
       page: this.state.page - 1
