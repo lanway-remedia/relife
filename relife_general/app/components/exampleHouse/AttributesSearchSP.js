@@ -89,7 +89,7 @@ class AttributesSearchSP extends React.Component {
 
   handleResetForm = () => {
     this.props.history.push({
-      search: `?page=1` 
+      search: `` 
     })
 
     this.setState({
@@ -152,7 +152,7 @@ class AttributesSearchSP extends React.Component {
     }
     let search = new URLSearchParams(parsed)
     this.props.history.push({
-      search: `?${search.toString()}&page=1`
+      search: `?${search.toString()}`
     })
 
     this.props.onPageLoad()

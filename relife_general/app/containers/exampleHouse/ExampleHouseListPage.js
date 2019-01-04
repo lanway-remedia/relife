@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
+import { Container, Row, Col } from 'reactstrap'
 import I18nUtils from '../../utils/I18nUtils'
 import AttributesSearchPC from '../../components/exampleHouse/AttributesSearchPC'
 import AttributesSearchSP from '../../components/exampleHouse/AttributesSearchSP'
@@ -102,70 +103,75 @@ class ExampleHouseListPage extends React.Component {
     return (
       <div>
         <AttributesSearchSP onPageLoad={() => this.onPageLoad()} />
-        <div className="lower-contents">
-          <div className="lower-contents-inner clearfix">
-            <section className="main">
-              <h1 className="search-result page-title">{I18nUtils.t('list-example-house')}</h1>
-
-              {count > 0 && (
-                <div className="adv-example">
-                  <div className="adv-example-once">
-                    <div className="adv-example-one-img">
-                      <img src={exampleHouseNew.img_large} alt="exh01" />
-                    </div>
-
-                    <div className="adv-example-once-title-wrap clearfix">
-                      <div className="adv-example-once-title-left">
-                        <h2 className="adv-example-once-title">{exampleHouseNew.title}
-                          <span className="pr-icon">PR</span>
-                        </h2>
+        <Container fluid className="lower-contents">
+          <Row className="lower-contents-inner clearfix">
+            <Col md="3">
+              <AttributesSearchPC onPageLoad={() => this.onPageLoad()} />
+            </Col>
+            <Col xs="12" md="9" style={{padding: `0`}}>
+              <section className="main">
+                <h1 className="search-result page-title">{I18nUtils.t('list-example-house')}</h1>
+                {count > 0 && (
+                  <div className="adv-example">
+                    <div className="adv-example-once">
+                      <div className="adv-example-one-img">
+                        <img src={exampleHouseNew.img_large} alt="exh01" />
                       </div>
 
-                      <div className="adv-example-once-title-right">
-                        <div className="adv-example-once-link">
-                          <Link to={'/example/' + exampleHouseNew.id}>{I18nUtils.t('view-detail')}</Link>
+                      <div className="adv-example-once-title-wrap clearfix">
+                        <div className="adv-example-once-title-left">
+                          <h2 className="adv-example-once-title">{exampleHouseNew.title}
+                            <span className="pr-icon">PR</span>
+                          </h2>
+                        </div>
+
+                        <div className="adv-example-once-title-right">
+                          <div className="adv-example-once-link">
+                            <Link to={'/example/' + exampleHouseNew.id}>{I18nUtils.t('view-detail')}</Link>
+                          </div>
                         </div>
                       </div>
+                      <div className="adv-example-once-text">シンプルだけど存在感の大きさを感じる絶妙なデザイン</div>
+                      <div className="adv-example-once-company-area">{exampleHouseNew.store ? exampleHouseNew.store.district.name + ' ' + exampleHouseNew.store.district.city.name : ''}</div>
+                      <div className="adv-example-once-company">{exampleHouseNew.store ? exampleHouseNew.store.title : ''}</div>
                     </div>
-                    <div className="adv-example-once-text">シンプルだけど存在感の大きさを感じる絶妙なデザイン</div>
-                    <div className="adv-example-once-company-area">{exampleHouseNew.store ? exampleHouseNew.store.district.name + ' ' + exampleHouseNew.store.district.city.name : ''}</div>
-                    <div className="adv-example-once-company">{exampleHouseNew.store ? exampleHouseNew.store.title : ''}</div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {count > 0 ? (
-                <div>
-                  <div className="example-list clearfix">
-                      {exampleHouseList.map((val, key) => {
-                        if (val.id != exampleHouseNew.id) {
-                          return (
-                          <Link key={key} to={'example/' + val.id} className="example-list-once">
-                            <div className="example-list-once-img">
-                              <img src={val.img_large} alt={val.title} />
-                            </div>
-                            <h3 className="example-list-once-title">
-                              {val.title}
-                            </h3>
-                            <div className="example-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
-                            <div className="example-list-once-company">{val.store.title}</div>
-                          </Link>
-                          )
-                        }
-                      })}
+                {count > 0 ? (
+                  <div>
+                    <Row className="example-list clearfix">
+                        {exampleHouseList.map((val, key) => {
+                          if (val.id != exampleHouseNew.id) {
+                            return (
+                            <Col xs="6" md="4" className="example-list-item">
+                              <Link key={key} to={'example/' + val.id} className="example-list-once">
+                                <div className="example-list-once-img">
+                                  <img src={val.img_large} alt={val.title} />
+                                </div>
+                                <h3 className="example-list-once-title">
+                                  {val.title}
+                                </h3>
+                                <div className="example-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
+                                <div className="example-list-once-company">{val.store.title}</div>
+                              </Link>
+                            </Col>
+                            )
+                          }
+                        })}
+                    </Row>
+                    <Paginate count={count} pageChanged={() => this.pageChanged()} currentPage={page} />
                   </div>
-                  <Paginate count={count} pageChanged={() => this.pageChanged()} currentPage={page} />
-                </div>
-              ) : (
-                <p className="search-page-sorry">
-                  {I18nUtils.t('search-no-record')}
-                </p>
-              )}
+                ) : (
+                  <p className="search-page-sorry">
+                    {I18nUtils.t('search-no-record')}
+                  </p>
+                )}
+              </section>
+            </Col>
 
-            </section>
-            <AttributesSearchPC onPageLoad={() => this.onPageLoad()} />
-          </div>
-        </div>
+          </Row>
+        </Container>
       </div>
     )
   }

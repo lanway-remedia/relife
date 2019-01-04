@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
+import { Container, Row, Col } from 'reactstrap'
 
 import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
 import I18nUtils from '../../utils/I18nUtils'
@@ -65,61 +66,65 @@ class ExampleHouseViewPage extends React.Component {
       company_id = exampleHouse.store.id
     }
     return (
-      <div className="lower-contents one-column">
-        <div className="lower-contents-inner clearfix">
-          <section className="main">
-            <h1 className="page-title detail-title"> 
-              {exampleHouse.title}
-            </h1>
+      <Container fluid className="lower-contents one-column">
+        <Row className="lower-contents-inner clearfix">
+          <Col md="12" xs="12" style={{padding:`0`}}>
+            <section className="main">
+              <h1 className="page-title detail-title"> 
+                {exampleHouse.title}
+              </h1>
 
-            <div className="example-detail-company-name">
-              {exampleHouse.store ? exampleHouse.store.title : ''}
-            </div>
-
-            <div className="detail-img">
-              <img src={exampleHouse.img_large} />
-            </div>
-            {isTags && (
-              <ul className="detail-keywords-link">
-                  {ex_tags.map((val, key) => (
-                    <li key={key}>
-                      <Link to="">{val}</Link>
-                    </li>
-                  ))}
-              </ul>
-            )}
-            <div className="example-detail" dangerouslySetInnerHTML={{ __html: exampleHouse.content}} />
-
-            <div className="detail-btn-wrap clearfix">
-              <div className="detail-btn">
-                <Link to={'/builder/'+company_id}>{I18nUtils.t('go-to-store')}</Link>
+              <div className="example-detail-company-name">
+                {exampleHouse.store ? exampleHouse.store.title : ''}
               </div>
-            </div>
 
-            <h2 className="detail-subtitle">{I18nUtils.t('house-related')}</h2>
+              <div className="detail-img">
+                <img src={exampleHouse.img_large} />
+              </div>
+              {isTags && (
+                <ul className="detail-keywords-link">
+                    {ex_tags.map((val, key) => (
+                      <li key={key}>
+                        <Link to="">{val}</Link>
+                      </li>
+                    ))}
+                </ul>
+              )}
+              <div className="example-detail" dangerouslySetInnerHTML={{ __html: exampleHouse.content}} />
 
-            <div className="detail-list clearfix">
-              {listExampleHouseByStore.map((val, key) => {
-                if (val.id != exampleHouse.id) {
-                  return (
-                    <Link to={'/example/' +val.id} key={key} className="detail-list-once">
-                      <div className="detail-list-once-img">
-                        <img src={val.img_large} alt="exh-item" />
-                      </div>
-                      <h3 className="detail-list-once-title">
-                        {val.title}
-                      </h3>
-                      <div className="detail-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
-                      <div className="detail-list-once-company">{val.store.title}</div>
-                    </Link>
+              <div className="detail-btn-wrap clearfix">
+                <div className="detail-btn">
+                  <Link to={'/builder/'+company_id}>{I18nUtils.t('go-to-store')}</Link>
+                </div>
+              </div>
+
+              <h2 className="detail-subtitle">{I18nUtils.t('house-related')}</h2>
+
+              <Row className="detail-list clearfix">
+                {listExampleHouseByStore.map((val, key) => {
+                  if (val.id != exampleHouse.id) {
+                    return (
+                      <Col xs="6" md="3" style={{padding:`0`}}>
+                        <Link to={'/example/' +val.id} key={key} className="detail-list-once">
+                          <div className="detail-list-once-img">
+                            <img src={val.img_large} alt="exh-item" />
+                          </div>
+                          <h3 className="detail-list-once-title">
+                            {val.title}
+                          </h3>
+                          <div className="detail-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
+                          <div className="detail-list-once-company">{val.store.title}</div>
+                        </Link>
+                      </Col>
                     )
-                }
-              })}
-            </div>
-            <ShareHouse />
-          </section>
-        </div>
-      </div>
+                  }
+                })}
+              </Row>
+              <ShareHouse />
+            </section>
+          </Col>
+        </Row>
+      </Container>
     )
   }
 }
