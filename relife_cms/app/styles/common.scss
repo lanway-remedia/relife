@@ -12,7 +12,15 @@
       z-index: 800;
       transition: 0.3s ease-in-out, width 0.3s ease-in-out;
       // margin-left: 350px;
-      margin-left: 230px;
+      // margin-left: 230px;
+      max-width: 930px;
+      margin-left: auto;
+      //float: right;
+
+      @media screen and (max-width: 1199px) {
+        margin-left: 200px;
+        max-width: none;
+      }
     }
   }
 }
@@ -100,6 +108,7 @@ a:focus {
     height: 24px;
     text-align: center;
     margin: 0 0 5px;
+    min-width: 50px;
 
     &.last-child,
     &:last-child {
@@ -108,7 +117,9 @@ a:focus {
   }
 }
 
-.content {
+.content,
+.main-content,
+.container {
   &:after {
     content: '';
     display: block;

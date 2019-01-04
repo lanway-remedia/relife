@@ -94,73 +94,78 @@ class Routes extends React.Component {
             </Switch>
           ) : (
             <div className="main-wrapper">
-              <Navigation />
-              <div className="main-content">
-                <Switch>
-                  <Route
-                    exact
-                    path="/"
-                    component={requireLogin(ProfileInfoPage)}
-                  />
-                  <Route
-                    path="/profile"
-                    component={requireLogin(ProfileInfoPage)}
-                  />
-                  <Route
-                    path="/profile-edit"
-                    component={requireLogin(ProfileEditPage)}
-                  />
-                  <Route
-                    path="/profile-change-password"
-                    component={requireLogin(ProfileChangePassPage)}
-                  />
-                  <Route path="/users" component={requireLogin(UserListPage)} />
-                  <Route
-                    path="/user/:id"
-                    component={requireLogin(UserDetailPage)}
-                  />
-                  <Route
-                    path="/add-user"
-                    component={requireLogin(AddUserPage)}
-                  />
-                  <Route
-                    path="/edit-user/:id"
-                    component={requireLogin(EditUserPage)}
-                  />
-                  <Route
-                    path="/reset-password-user/:id"
-                    component={requireLogin(ResetPassUserPage)}
-                  />
-                  <Route
-                    path="/edit-outlet-store/:id"
-                    component={requireLogin(EditOutletStorePage)}
-                  />
-                  <Route
-                    path="/manage-outlet-store-list"
-                    component={requireLogin(ManageOutletStoreListPage)}
-                  />
-                  <Route
-                    path="/add-new-outlet-store"
-                    component={requireLogin(AddNewOutletStorePage)}
-                  />
-                  <Route
-                    path="/edit-example-house/:id"
-                    component={requireLogin(EditExampleHousePage)}
-                  />
-                  <Route
-                    path="/manage-example-house-list"
-                    component={requireLogin(ManageExampleHouseListPage)}
-                  />
-                  <Route
-                    path="/add-new-example-house"
-                    component={requireLogin(AddNewExampleHousePage)}
-                  />
-                  <Route
-                    path="/invoice-release"
-                    component={requireLogin(ReleaseInvoicePage)}
-                  />
-                  <Route path="/test" component={requireLogin(TestPage)} />
-                </Switch>
+              <div className="container">
+                <Navigation />
+                <div className="main-content">
+                  <Switch>
+                    <Route
+                      exact
+                      path="/"
+                      component={requireLogin(ProfileInfoPage)}
+                    />
+                    <Route
+                      path="/profile"
+                      component={requireLogin(ProfileInfoPage)}
+                    />
+                    <Route
+                      path="/profile-edit"
+                      component={requireLogin(ProfileEditPage)}
+                    />
+                    <Route
+                      path="/profile-change-password"
+                      component={requireLogin(ProfileChangePassPage)}
+                    />
+                    <Route
+                      path="/users"
+                      component={requireLogin(UserListPage)}
+                    />
+                    <Route
+                      path="/user/:id"
+                      component={requireLogin(UserDetailPage)}
+                    />
+                    <Route
+                      path="/add-user"
+                      component={requireLogin(AddUserPage)}
+                    />
+                    <Route
+                      path="/edit-user/:id"
+                      component={requireLogin(EditUserPage)}
+                    />
+                    <Route
+                      path="/reset-password-user/:id"
+                      component={requireLogin(ResetPassUserPage)}
+                    />
+                    <Route
+                      path="/edit-outlet-store/:id"
+                      component={requireLogin(EditOutletStorePage)}
+                    />
+                    <Route
+                      path="/manage-outlet-store-list"
+                      component={requireLogin(ManageOutletStoreListPage)}
+                    />
+                    <Route
+                      path="/add-new-outlet-store"
+                      component={requireLogin(AddNewOutletStorePage)}
+                    />
+                    <Route
+                      path="/edit-example-house/:id"
+                      component={requireLogin(EditExampleHousePage)}
+                    />
+                    <Route
+                      path="/manage-example-house-list"
+                      component={requireLogin(ManageExampleHouseListPage)}
+                    />
+                    <Route
+                      path="/add-new-example-house"
+                      component={requireLogin(AddNewExampleHousePage)}
+                    />
+                    <Route
+                      path="/invoice-release"
+                      component={requireLogin(ReleaseInvoicePage)}
+                    />
+                    <Route path="/test" component={requireLogin(TestPage)} />
+                  </Switch>
+                </div>
               </div>
             </div>
           )}
