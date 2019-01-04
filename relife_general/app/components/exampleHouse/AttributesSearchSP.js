@@ -16,12 +16,12 @@ class AttributesSearchSP extends React.Component {
       listHouseIncome: [],
       collapse: false,
 
-      priceRange: {},
-      construction: {},
-      floor: {},
-      style: {},
-      houseSize: {},
-      houseIncome: {},
+      priceRange: [],
+      construction: [],
+      floor: [],
+      style: [],
+      houseSize: [],
+      houseIncome: [],
     }
     this.toggle = this.toggle.bind(this)
   }
@@ -88,8 +88,19 @@ class AttributesSearchSP extends React.Component {
   }
 
   handleResetForm = () => {
-    document.getElementById('frm-search').reset()
-    this.props.history.push('/example')
+    this.props.history.push({
+      search: `?page=1` 
+    })
+
+    this.setState({
+      priceRange: [],
+      construction: [],
+      floor: [],
+      style: [],
+      houseSize: [],
+      houseIncome: [],
+    })
+    document.getElementById('frm-search-sp').reset()
     this.props.onPageLoad()
   }
 
@@ -113,7 +124,11 @@ class AttributesSearchSP extends React.Component {
     const value = e.target.value
     const isChecked = e.target.checked
 
-    itemChecked[value] = isChecked
+    if (isChecked === false) {
+      itemChecked = itemChecked.filter(item => item !== value)
+    } else {
+      itemChecked.push(value)
+    }
     this.setState({
       [e.target.name] : itemChecked
     })
@@ -121,56 +136,19 @@ class AttributesSearchSP extends React.Component {
 
   onClickSubmit = () => {
     let {priceRange, floor, construction, style, houseSize, houseIncome} = this.state
-
-    let arrPrice = []
-    for(let key in priceRange) {
-      if (priceRange[key] == true) {
-        arrPrice.push(key)
-      }
-    }
-
-    let arrFloor = []
-    for(let key in floor) {
-      if (floor[key] == true) {
-        arrFloor.push(key)
-      }
-    }
-
-    let arrConstruction = []
-    for(let key in construction) {
-      if (construction[key] == true) {
-        arrConstruction.push(key)
-      }
-    }
-
-    let arrStyle = []
-    for(let key in style) {
-      if (style[key] == true) {
-        arrStyle.push(key)
-      }
-    }
-
-    let arrHouseSize = []
-    for(let key in houseSize) {
-      if (houseSize[key] == true) {
-        arrHouseSize.push(key)
-      }
-    }
-
-    let arrHouseIncome = []
-    for(let key in houseIncome) {
-      if (houseIncome[key] == true) {
-        arrHouseIncome.push(key)
-      }
-    }
-
+    let priceParam = priceRange.join(',')
+    let floorParam = floor.join(',')
+    let constructionParam = construction.join(',')
+    let styleParam = style.join(',')
+    let houseSizeParam = houseSize.join(',')
+    let houseIncomeParam = houseIncome.join(',')
     let parsed = {
-      ...(arrPrice.length > 0 && { price_range__in: arrPrice.join() }),
-      ...(arrFloor.length > 0 && { floor__in: arrFloor.join() }),
-      ...(arrConstruction.length > 0 && { contruction__in: arrConstruction.join() }),
-      ...(arrStyle.length > 0 && { style__in: arrStyle.join() }),
-      ...(arrHouseSize.length > 0 && { household_size__in: arrHouseSize.join() }),
-      ...(arrHouseIncome.length > 0 && { household_income__in: arrHouseIncome.join() }),
+      ...(priceRange.length > 0 && { price_range__in: priceParam }),
+      ...(floor.length > 0 && { floor__in: floorParam }),
+      ...(construction.length > 0 && { contruction__in: constructionParam }),
+      ...(style > 0 && { styles__style__in: styleParam }),
+      ...(houseSize.length > 0 && { household_size__in: houseSizeParam }),
+      ...(houseIncome.length > 0 && { household_income__in: houseIncomeParam }),
     }
     let search = new URLSearchParams(parsed)
     this.props.history.push({
@@ -193,7 +171,7 @@ class AttributesSearchSP extends React.Component {
         <Collapse isOpen={this.state.collapse}>
           <div className="filter-block">
             <div className="filter-block-inner">
-              <Form id="frm-search">
+              <Form id="frm-search-sp">
                 <div className="sidebar-search-choices">
                   {/* list price */}
                   <div className="sidebar-search-choices-inner">
