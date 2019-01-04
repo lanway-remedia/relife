@@ -5,21 +5,20 @@ from django.http import Http404
 from rest_framework.decorators import detail_route
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
-from url_filter.integrations.drf import DjangoFilterBackend
 
-from mrelife.examplehouses.models import ExampleHouse, ExampleHouseCommitment, ExampleHouseStyle, ExampleHouseTag
-from mrelife.examplehouses.serializers import (
-    ExampleHouseNestedNameOnlySerializer,
-    ExampleHouseNestedSerializer,
-    ExampleHouseSerializer
-)
+from mrelife.examplehouses.models import (ExampleHouse, ExampleHouseCommitment,
+                                          ExampleHouseStyle, ExampleHouseTag)
+from mrelife.examplehouses.serializers import (ExampleHouseNestedNameOnlySerializer,
+                                               ExampleHouseNestedSerializer,
+                                               ExampleHouseSerializer)
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
 from mrelife.utils.ex_house_permission import ExampleHousePermission
 from mrelife.utils.groups import IsStore, IsSub
 from mrelife.utils.response import response_200, response_201, response_404
+from url_filter.integrations.drf import DjangoFilterBackend
 
 
 class ExampleHouseViewSet(ModelViewSet):
@@ -37,6 +36,7 @@ class ExampleHouseViewSet(ModelViewSet):
             Can filter store_id by adding parameter on url
             GET: ?store_id=INT
         """
+        self.permission_classes = (AllowAny, )
         try:
             self.serializer_class = ExampleHouseNestedNameOnlySerializer
             response = super(ExampleHouseViewSet, self).list(request, *args, **kwargs)
@@ -45,6 +45,7 @@ class ExampleHouseViewSet(ModelViewSet):
             return response_404('EX404')
 
     def retrieve(self, request, *args, **kwargs):
+        self.permission_classes = (AllowAny, )
         try:
             self.serializer_class = ExampleHouseNestedSerializer
             response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)
