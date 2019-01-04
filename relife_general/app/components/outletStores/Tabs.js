@@ -63,7 +63,7 @@ class Tabs extends React.Component {
             <TabHouse storeId={this.props.storeId} />
           </TabPane>
           <TabPane tabId="3">
-            <TabContact />
+            <TabContact storeId={this.props.storeId} />
           </TabPane>
         </TabContent>
         <Nav className="tab bottom">

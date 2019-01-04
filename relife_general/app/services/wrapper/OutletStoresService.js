@@ -10,6 +10,7 @@ export default class OutletStoresService {
   }
 
   contactStores(data) {
-    return apiClient.post(`/outletstores/contact`, data)
+    console.log(data)
+    return apiClient.post(`/outletstores/contacts/`, data)
   }
 }
