@@ -7,7 +7,7 @@ import { TextInput } from 'react-bootstrap4-form-validation'
 import validator from 'validator'
 class ContactTableTr extends React.Component {
   render () {
-    let { title, name, placeholder, required, onChange } = this.props
+    let { title, name, placeholder, required, onChange, value} = this.props
     return (
       <div>
 
@@ -27,6 +27,7 @@ class ContactTableTr extends React.Component {
                     validator: 'メールアドレスの形式が正しくないようです。'
                   }}
                   onChange={onChange}
+                  value={value}
                 />
               ) : (
                 <TextInput 
@@ -35,6 +36,7 @@ class ContactTableTr extends React.Component {
                   placeholder={placeholder}
                   required
                   onChange={onChange}
+                  value={value}
                 />
               )
             }
@@ -52,7 +54,8 @@ ContactTableTr.propTypes = {
   name: PropTypes.string,
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
-  required: PropTypes.bool
+  required: PropTypes.bool,
+  value: PropTypes.string
 }
 
 export default connect()(withRouter(ContactTableTr))

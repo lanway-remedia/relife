@@ -1,9 +1,6 @@
 .contact-body {
   border: #f2f3f2 20px solid;
   margin-bottom: 100px;
-  .contact-form {
-    margin: 0;
-    padding: 0;
     .contact_table_tr {
       display: table;
       border-bottom: 1px solid #dadada;
@@ -49,7 +46,7 @@
         }
 
         .form-check-inline {
-          margin-right: 2rem;
+          margin: 0 2rem 0.5rem 0;
           .form-check-input {
             margin-right: 0.9rem;
             width: 16px;
@@ -99,7 +96,6 @@
       }
       
     }
-  }
 }
 
 input[type='radio'] {
