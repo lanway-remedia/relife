@@ -22,15 +22,15 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
     email=serializers.EmailField()
     tel=serializers.CharField(max_length=255)
     age=serializers.IntegerField()
-    household_size=serializers.IntegerField()
+    household_size=serializers.ChoiceField(choices=settings.HOUSEHOLDSIZE,default='現住所と同じ',style={'base_template': 'radio.html'} )
     acreage = serializers.IntegerField()
-    construction_position_type = serializers.IntegerField()
+    construction_position_type = serializers.ChoiceField(choices=settings.CONSTRUCTIONPOSITIONTYPE,default='現住所と同じ' )
     construction_position = serializers.CharField(max_length=255)
-    construction_duration = serializers.IntegerField()
-    budger = serializers.IntegerField()
-    household_income = serializers.IntegerField()
-    construction_type = serializers.IntegerField()
-    current_situation = serializers.IntegerField()
+    construction_duration = serializers.ChoiceField(choices=settings.CONSTRUCTIONDURATION,default='現住所と同じ' )
+    budger = serializers.ChoiceField(choices=settings.BUDGET,default='現住所と同じ' )
+    household_income = serializers.ChoiceField(choices=settings.HOUSEHOLDINCOME,default='現住所と同じ' )
+    construction_type =serializers.ChoiceField(choices=settings.CONSTRUCTION_TYPE,default='現住所と同じ' )
+    current_situation = serializers.ChoiceField(choices=settings.CURRENTSITUATION,default='現住所と同じ' )
     content = serializers.CharField()
     is_active = serializers.BooleanField(default=True,read_only=False)
     class Meta:
@@ -46,3 +46,17 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise serializers.ValidationError(e)
         return outlet_store_id
+    def validate_household_size(self, household_size):
+        return settings.HOUSEHOLDSIZE[household_size-1][1]
+    def validate_construction_position_type(self, construction_position_type):
+        return settings.CONSTRUCTIONPOSITIONTYPE[construction_position_type-1][1]
+    def validate_construction_duration(self, construction_duration):
+        return settings.CONSTRUCTIONDURATION[construction_duration-1][1]
+    def validate_budger(self, budger):
+        return settings.BUDGET[budger-1][1]
+    def validate_household_income(self, household_income):
+        return settings.HOUSEHOLDINCOME[household_income-1][1]
+    def validate_construction_type(self, construction_type):
+        return settings.CONSTRUCTION_TYPE[construction_type-1][1]
+    def validate_current_situation(self, current_situation):
+        return settings.CURRENTSITUATION[current_situation-1][1]
