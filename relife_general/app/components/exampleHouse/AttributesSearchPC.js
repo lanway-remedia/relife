@@ -4,6 +4,7 @@ import {withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Form, Label, Input, FormGroup, Button } from 'reactstrap'
 import AttributeActions from '../../redux/wrapper/AttributesRedux'
+
 class AttributesSearchPC extends React.Component {
   constructor(props) {
     super(props)
@@ -71,8 +72,19 @@ class AttributesSearchPC extends React.Component {
   }
 
   handleResetForm = () => {
-    document.getElementById('frm-search-ex-pc').reset()
-    this.props.history.push('/example')
+    this.props.history.push({
+      search: `?page=1` 
+    })
+
+    this.setState({
+      priceRange: [],
+      construction: [],
+      floor: [],
+      style: [],
+      houseSize: [],
+      houseIncome: [],
+    })
+    document.getElementById('frm-search-pc').reset()
     this.props.onPageLoad()
   }
 
@@ -146,7 +158,6 @@ class AttributesSearchPC extends React.Component {
     let styleParam = style.join(',')
     let houseSizeParam = houseSize.join(',')
     let houseIncomeParam = houseIncome.join(',')
-
     let parsed = {
       ...(priceRange.length > 0 && { price_range__in: priceParam }),
       ...(floor.length > 0 && { floor__in: floorParam }),
@@ -165,11 +176,11 @@ class AttributesSearchPC extends React.Component {
 
   render() {
     const { listConstruction, listFloor, listPrice, listStyle, listHouseSize, listHouseIncome, 
-            priceRange, floor, construction, style, houseSize, houseIncome  
+            priceRange, floor, construction, style, houseSize, houseIncome
           } = this.state
     return (
       <section className="side pc">
-        <Form id="frm-search-ex-pc" >
+        <Form id="frm-search-pc" >
           <div className="sidebar-search-choices">
             {/* list price */}
             <div className="sidebar-search-choices-inner">

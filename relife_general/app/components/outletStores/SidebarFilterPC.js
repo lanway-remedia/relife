@@ -5,13 +5,13 @@ import { Form, Label, Input, FormGroup, Button } from 'reactstrap'
 
 class SidebarFilterPC extends React.Component {
   handleResetForm = () => {
-    document.getElementById('frm-search').reset()
+    document.getElementById('frm-search-pc').reset()
     this.form && this.form.reset()
   }
   render () {
     return (
       <section className="side pc">
-        <Form id="frm-search">
+        <Form id="frm-search-pc">
           <div className="sidebar-search-choices">
             <div className="sidebar-search-choices-inner">
               <div className="sidebar-search-place">
