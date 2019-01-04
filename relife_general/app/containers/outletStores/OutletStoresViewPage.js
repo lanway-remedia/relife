@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import {Container, Row, Col} from 'reactstrap'
 import { withRouter } from 'react-router-dom'
 import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
 
@@ -37,21 +38,23 @@ class OutletStoresViewPage extends React.Component {
   render() {
     let { outletStore } = this.state
     return (
-      <div className="lower-contents one-column">
-        <div className="lower-contents-inner clearfix">
-        <section className="main">
-          <h1 className="page-title detail-title">
-            {outletStore.title}
-          </h1>
-          <div className="detail-img">
-            <img src={outletStore.img_large} />
-          </div>
-          <div className="tab-wrap">
-            <Tabs storeId={outletStore.id} outletStore={outletStore} />
-          </div>
-        </section>
-        </div>
-      </div>
+      <Container className="lower-contents one-column">
+        <Row className="lower-contents-inner clearfix">
+          <Col xs="12" md="12" className="padding-0">
+            <section className="main">
+              <h1 className="page-title detail-title">
+                {outletStore.title}
+              </h1>
+              <div className="detail-img">
+                <img src={outletStore.img_large} />
+              </div>
+              <div className="tab-wrap">
+                <Tabs storeId={outletStore.id} outletStore={outletStore} />
+              </div>
+            </section>
+          </Col>
+        </Row>
+      </Container>
     )
   }
 }

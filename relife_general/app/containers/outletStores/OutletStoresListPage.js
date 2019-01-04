@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
+import { Container, Row, Col } from 'reactstrap'
 import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
 import { DefaultValue } from '../../constants'
 import I18nUtils from '../../utils/I18nUtils'
@@ -59,51 +60,55 @@ class OutletStoresListPage extends React.Component {
     return (
       <div>
         <SidebarFilterSP />
-        <div className="lower-contents">
-          <div className="lower-contents-inner clearfix">
-            <section className="main">
-              <h1 className="search-result page-title">{I18nUtils.t('list-example-house')}</h1>
-              <div className="builder-list-img">
-                {storeList.map((val, key) => {
-                return (
-                  <div className="builder-list-once-img" key={key}>
-                    <div className="adv-builder-once-img">
-                      <img src={val.img_large} />
-                    </div>
-                    <div className="adv-builder-once-title-wrap clearfix">
-                      <div className="adv-builder-once-title-left">
-                        <h2 className="adv-builder-once-title">
-                          {val.title}
-                          <span className="pr-icon">PR</span>
-                        </h2>
-                        <div className="adv-builder-once-area">
-                        {val.district ? val.district.name : ''} {val.district.city ? val.district.city.name : '' }
+        <Container fluid className="lower-contents">
+          <Row className="lower-contents-inner clearfix">
+            <Col md="3">
+              <SidebarFilterPC />
+            </Col>
+            <Col xs="12" md="9" className="padding-0">
+              <section className="main">
+                <h1 className="search-result page-title">{I18nUtils.t('list-example-house')}</h1>
+                <div className="builder-list-img">
+                  {storeList.map((val, key) => {
+                  return (
+                    <div className="builder-list-once-img" key={key}>
+                      <div className="adv-builder-once-img">
+                        <img src={val.img_large} />
+                      </div>
+                      <div className="adv-builder-once-title-wrap clearfix">
+                        <div className="adv-builder-once-title-left">
+                          <h2 className="adv-builder-once-title">
+                            {val.title}
+                            <span className="pr-icon">PR</span>
+                          </h2>
+                          <div className="adv-builder-once-area">
+                          {val.district ? val.district.name : ''} {val.district.city ? val.district.city.name : '' }
+                          </div>
+                        </div>
+
+                        <div className="adv-builder-once-title-right">
+                          <div className="adv-builder-once-link">
+                            <Link to={'/builder/'+ val.id}>詳細はこちら</Link>
+                          </div>
                         </div>
                       </div>
-
-                      <div className="adv-builder-once-title-right">
+                      {/* <div className="adv-builder-once-title-right sp">
                         <div className="adv-builder-once-link">
                           <Link to={'/builder/'+ val.id}>詳細はこちら</Link>
                         </div>
-                      </div>
-                    </div>
-                    {/* <div className="adv-builder-once-title-right sp">
-                      <div className="adv-builder-once-link">
-                        <Link to={'/builder/'+ val.id}>詳細はこちら</Link>
-                      </div>
-                    </div> */}
+                      </div> */}
 
-                    <div className="adv-builder-once-intro-title" />
-                    <div className="adv-builder-once-intro" />
-                  </div>
-                  )
-                })}
-              </div>
-              <Paginate count={count} pageChanged={() => this.pageChanged()} currentPage={page} />
-            </section>
-            <SidebarFilterPC />
-          </div>
-        </div>
+                      <div className="adv-builder-once-intro-title" />
+                      <div className="adv-builder-once-intro" />
+                    </div>
+                    )
+                  })}
+                </div>
+                <Paginate count={count} pageChanged={() => this.pageChanged()} currentPage={page} />
+              </section>
+            </Col>
+          </Row>
+        </Container>
       </div>
     )
   }

@@ -105,7 +105,11 @@
         width: 100%;
         box-sizing: border-box;
         z-index: 100;
-
+        .tab-intro {
+          @media screen and (max-width:767px){
+            padding: 0 20px;
+          }
+        }
         .detail-subtitle {
           font-size: 2.8rem;
           padding: 0 0 10px 0;

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import { Button, Input, Container } from 'reactstrap'
+import { Button, Input, Container, Row } from 'reactstrap'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import ContactTableTr from './ContactTableTr'
 import ContactTableTh from './ContactTableTh'
@@ -186,7 +186,7 @@ class TabContact extends React.Component {
     ]
     const {showAddress} = this.state
     return (
-      <div className="content">
+      <Row className="content">
         <div className="contact-body clearfix">
           <ValidationForm
             onSubmit={this.handleSubmit}
@@ -434,7 +434,7 @@ class TabContact extends React.Component {
             </p>
           </ValidationForm>
         </div>
-      </div>
+      </Row>
     )
   }
 }

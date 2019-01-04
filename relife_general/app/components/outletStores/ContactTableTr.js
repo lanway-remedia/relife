@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import {Row, Col} from 'reactstrap'
 import { PropTypes } from 'prop-types'
 import ContactTableTh from './ContactTableTh'
 import { TextInput } from 'react-bootstrap4-form-validation'
@@ -9,8 +10,6 @@ class ContactTableTr extends React.Component {
   render () {
     let { title, name, placeholder, required, onChange, value} = this.props
     return (
-      <div>
-
       <div className="contact_table_tr">
         <ContactTableTh title={title} required={required} />
         <div className="contact_table_td">
@@ -43,7 +42,6 @@ class ContactTableTr extends React.Component {
             
           </span>
         </div>
-      </div>
       </div>
     )
   }

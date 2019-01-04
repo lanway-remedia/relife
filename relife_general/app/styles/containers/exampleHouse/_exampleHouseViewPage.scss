@@ -124,13 +124,11 @@
 
       .detail-list-once, .tab-list-once {
         display: block;
-        width: 25%;
         float: left;
         border-right: solid #f2f3f2 1px;
         border-bottom: solid #f2f3f2 1px;
         @media screen and (max-width: 767px) {
           display: block;
-          width: 50%;
           float: left;
           border-right: solid #f2f3f2 1px;
           border-bottom: solid #f2f3f2 1px;

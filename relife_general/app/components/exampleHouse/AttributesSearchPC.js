@@ -25,6 +25,37 @@ class AttributesSearchPC extends React.Component {
     }
   }
 
+  componentDidMount() {
+    let data = {
+      limit: '',
+      offset: '' 
+    }
+    this.props.attributeContructionListRequest(data)
+    this.props.attributeFloorListRequest(data)
+    this.props.attributeStyleListRequest(data)
+    this.props.attributeHouseIncomeListRequest(data)
+    this.props.attributeHouseSizeListRequest(data)
+    this.props.attributePriceListRequest(data)
+
+    let params = new URLSearchParams(this.props.history.location.search)
+
+    let priceParams = params.get('price_range__in')
+    let floorParams = params.get('floor__in')
+    let constructionParams = params.get('contruction__in')
+    let styleParams = params.get('styles__style__in')
+    let houseSizeParams = params.get('household_size__in')
+    let houseIncomeParams = params.get('household_income__in')
+
+    this.setState({
+      priceRange: priceParams ? priceParams.split(',') : [],
+      floor: floorParams ? floorParams.split(',') : [],
+      construction: constructionParams ? constructionParams.split(',') : [],
+      style: styleParams ? styleParams.split(',') : [],
+      houseSize: houseSizeParams ? houseSizeParams.split(',') : [],
+      houseIncome: houseIncomeParams ? houseIncomeParams.split(',') : [],
+    })
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
@@ -73,7 +104,7 @@ class AttributesSearchPC extends React.Component {
 
   handleResetForm = () => {
     this.props.history.push({
-      search: `?page=1` 
+      search: `` 
     })
 
     this.setState({
@@ -86,37 +117,6 @@ class AttributesSearchPC extends React.Component {
     })
     document.getElementById('frm-search-pc').reset()
     this.props.onPageLoad()
-  }
-
-  componentDidMount() {
-    let data = {
-      limit: '',
-      offset: '' 
-    }
-    this.props.attributeContructionListRequest(data)
-    this.props.attributeFloorListRequest(data)
-    this.props.attributeStyleListRequest(data)
-    this.props.attributeHouseIncomeListRequest(data)
-    this.props.attributeHouseSizeListRequest(data)
-    this.props.attributePriceListRequest(data)
-
-    let params = new URLSearchParams(this.props.history.location.search)
-
-    let priceParams = params.get('price_range__in')
-    let floorParams = params.get('floor__in')
-    let constructionParams = params.get('contruction__in')
-    let styleParams = params.get('styles__style__in')
-    let houseSizeParams = params.get('household_size__in')
-    let houseIncomeParams = params.get('household_income__in')
-
-    this.setState({
-      priceRange: priceParams ? priceParams.split(',') : [],
-      floor: floorParams ? floorParams.split(',') : [],
-      construction: constructionParams ? constructionParams.split(',') : [],
-      style: styleParams ? styleParams.split(',') : [],
-      houseSize: houseSizeParams ? houseSizeParams.split(',') : [],
-      houseIncome: houseIncomeParams ? houseIncomeParams.split(',') : [],
-    })
   }
 
   handleChange = (e) => {
@@ -144,7 +144,6 @@ class AttributesSearchPC extends React.Component {
     } else {
       itemChecked.push(value)
     }
-    console.log(itemChecked)
     this.setState({
       [e.target.name] : itemChecked
     })
@@ -168,7 +167,7 @@ class AttributesSearchPC extends React.Component {
     }
     let search = new URLSearchParams(parsed)
     this.props.history.push({
-      search: `?${search.toString()}&page=1`
+      search: `?${search.toString()}`
     })
 
     this.props.onPageLoad()
