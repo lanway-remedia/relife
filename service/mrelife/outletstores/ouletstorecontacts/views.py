@@ -27,6 +27,7 @@ from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStoreContactPermission
 from mrelife.utils.relifeenum import MessageCode
+from django.contrib.sites.models import Site
 
 
 class OutletStoreContactViewSet(viewsets.ModelViewSet):
@@ -58,18 +59,26 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC002.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def sendEmailConfirmContact(self, subject, data, mailfrom, mailto1, mailto2):
-        # try:
-        html_content = render_to_string('email.html', data)
-        text_content = 'This is an important message.'
-        email = EmailMultiAlternatives('Subject', text_content)
-        email.attach_alternative(html_content, "text/html")
-        email.to = [mailto1, mailto2]
-        return email.send()
-        # except Exception as e:
-        #     return False
+        try:
+            current_site = Site.objects.get_current()
+            print(current_site.domain)
+            site=Site.objects.filter(id=1)
+            domain = site[0].domain
+            data["domain"]="{0}".format(domain)
+            print(data)
+            html_content = render_to_string('email.html', data)
+            text_content = 'This is an important message.'
+            email = EmailMultiAlternatives('Subject', text_content)
+            email.attach_alternative(html_content, "text/html")
+            email.to = [mailto1, mailto2]
+            return email.send()
+        except Exception as e:
+            return False
 
     def create(self, request):
         # try:
+        print(request.get_host)
+        print( request.META['HTTP_HOST'])
         serializer = OutletStoreContactSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE,
