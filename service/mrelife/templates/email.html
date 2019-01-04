@@ -1,9 +1,14 @@
-
-<!DOCTYPE html>
-{% load static %}
+{% load inlinecss  static %}
+{% inlinecss "css/email.css" %}
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="{% static "css/email.css" %}" />
+ <title>Contact outlet store</title>
+
+<style>
+.header{
+color:red
+}
+</style>
 </head>
 <body>
     <div class="header">
@@ -14,10 +19,12 @@
         <a href="/about_us/" class="header-logo-link">Re:Lifeとは</a>
     </div>
 <div>
-<img class="header-logo-img" src="{% static "images/logo.png" %}" alt="Re:style">
+<img class="header-logo-img" src="{{ request.get_host }}{% static "images/logo.png" %}" alt="Re:style">
+<img src="{{domain}}/static/rango.jpg" alt="Picture of Rango" />
 </div>
 <table>
 <tr>
 <td><p style="color:blue;"> <strong>Name:</strong></p></td><td>{{name}}</td></tr>
 </table>
 </body>
+{% endinlinecss %}
