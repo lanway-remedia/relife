@@ -28,6 +28,7 @@ from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStoreContactPermission
 from mrelife.utils.relifeenum import MessageCode
 from django.contrib.sites.models import Site
+import socket
 
 
 class OutletStoreContactViewSet(viewsets.ModelViewSet):
@@ -60,11 +61,17 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
 
     def sendEmailConfirmContact(self,request, subject, data, mailfrom, mailto1, mailto2):
         try:
+            ip=socket.gethostbyname(socket.gethostname())
+            print('---------------------------------------------------------------------'+str(ip))
             current_site = Site.objects.get_current()
             print(current_site.domain)
-            domain = request.get_host()
-            data["domain"]="{0}".format(domain)
+            base_url =  "{0}://{1}".format(request.scheme, request.get_host())
+            print('base'+base_url)
+            domain = base_url
+            data['domain']=domain
+            print("**************************************************************")
             print(data)
+            
             html_content = render_to_string('email.html', data)
             text_content = 'This is an important message.'
             email = EmailMultiAlternatives('Subject', text_content)
@@ -76,9 +83,7 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         # try:
-        domain = request.get_host()
-        print("*************************************** dh{0}",domain)
-        print( request.META['HTTP_HOST'])
+        
         serializer = OutletStoreContactSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE,
