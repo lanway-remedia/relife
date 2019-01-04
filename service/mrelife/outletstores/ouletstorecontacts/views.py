@@ -58,12 +58,11 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC002.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
-    def sendEmailConfirmContact(self, subject, data, mailfrom, mailto1, mailto2):
+    def sendEmailConfirmContact(self,request, subject, data, mailfrom, mailto1, mailto2):
         try:
             current_site = Site.objects.get_current()
             print(current_site.domain)
-            site=Site.objects.filter(id=1)
-            domain = site[0].domain
+            domain = request.get_host()
             data["domain"]="{0}".format(domain)
             print(data)
             html_content = render_to_string('email.html', data)
@@ -77,14 +76,15 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         # try:
-        print(request.get_host)
+        domain = request.get_host()
+        print("*************************************** dh{0}",domain)
         print( request.META['HTTP_HOST'])
         serializer = OutletStoreContactSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE,
                             created=datetime.now(), updated=datetime.now())
             userCreate = OutletStore.objects.get(id=request.data['outlet_store_id']).create_user
-            statusSendMail = self.sendEmailConfirmContact("Wellcome to outlet store", serializer.data,
+            statusSendMail = self.sendEmailConfirmContact(request,"Wellcome to outlet store", serializer.data,
                                                           settings.DEFAULT_FROM_EMAIL, request.data['email'], userCreate.email)
             if(not statusSendMail):
                 return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, {}), status=status.HTTP_400_BAD_REQUEST)
