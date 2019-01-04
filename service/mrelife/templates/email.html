@@ -3,6 +3,64 @@
 <html>
 <head>
  <title>Contact outlet store</title>
+
+<style>
+.content .header {
+    color: orange;
+    text-align: center;
+	height:120px;
+	background:orange;
+}
+.content{
+	width:50%;
+	margin:auto;
+}
+.tablecontext
+{
+width:100%;
+margin: auto;
+width:100%;
+border:1px solid $color-form-highlight;
+}
+.tablecontext td
+{
+	height: 50px;
+	padding: 15px;
+  border-collapse: collapse;
+}
+.tablecontext th
+{
+font-size:20px;
+text-align:left;
+padding-left:20px;
+height:80px;
+}
+.content .title
+{
+width:100%;
+height:100px;
+
+}
+.icontile
+{
+width:20px;
+height:inherit;}
+.textitle
+{
+font-size:20px;
+color: color:blue;}
+.footer
+{
+background: black;
+height:50px;
+
+}
+.imagefoot
+{
+
+}
+
+</style>
 </head>
 <body >
     <div class="content">
@@ -28,42 +86,42 @@
 <td><p style="color:blue;"> <strong>お名前:</strong></p></td><td>{{name}}</td>
 </tr>
 <tr>
-<td><p style="color:blue;"> <strong>ふりがな:</strong></p></td><td>{{name_kana}}</td>
+<td class="trchil"><p style="color:blue;"> <strong>ふりがな:</strong></p></td><td>{{name_kana}}</td>
 </tr>
 <tr>
 <td><p style="color:blue;"> <strong>ご住所:</strong></p></td><td>{{zipcode}}/{{address}}</td>
 </tr>
 <tr>
-<td><p style="color:blue;"> <strong>メールアドレス:</strong></p></td><td>{{email}}</td>
+<td class="trchil"><p style="color:blue;"> <strong>メールアドレス:</strong></p></td><td>{{email}}</td>
 </tr>
 <tr>
-<td><p style="color:blue;"> <strong>電話番号:</strong></p></td><td>{{tel}}</td>
+<td ><p style="color:blue;"> <strong>電話番号:</strong></p></td><td>{{tel}}</td>
 </tr>
-<tr>
+<tr class="trchil">
 <td><p style="color:blue;"> <strong>年齢:</strong></p></td><td>{{age}}</td>
 </tr>
 <tr>
 <td><p style="color:blue;"> <strong>家族構成:</strong></p></td><td>{{household_size}}</td>
 </tr>
 <tr>
-<td><p style="color:blue;"> <strong>希望の広さ（敷地面積:</strong></p></td><td>{{acreage}}</td>
+<td class="trchil"><p style="color:blue;"> <strong>希望の広さ（敷地面積:</strong></p></td><td>{{acreage}}</td>
 </tr>
 <tr>
 <td><p style="color:blue;"> <strong>建設予定地:</strong></p></td><td>{{construction_position_type}}/{{construction_position}}</td>
 </tr>
-<tr>
+<tr class="trchil">
 <td><p style="color:blue;"> <strong>建設予定時期:</strong></p></td><td>{{construction_duration}}</td>
 </tr>
 <tr>
 <td><p style="color:blue;"> <strong>予算:</strong></p></td><td>{{budger}}</td>
 </tr>
-<tr>
+<tr class="trchil">
 <td><p style="color:blue;"> <strong>世帯年収:</strong></p></td><td>{{household_income}}</td>
 </tr>
 <tr>
 <td><p style="color:blue;"> <strong>建設内容:</strong></p></td><td>{{construction_type}}</td>
 </tr>
-<tr>
+<tr class="trchil">
 <td><p style="color:blue;"> <strong>現在の状況:</strong></p></td><td>content</td>
 </tr>
 </table>

@@ -1,4 +1,56 @@
-.header{
-    color:red
-    }
-    
+.content .header {
+    color: orange;
+    text-align: center;
+	height:120px;
+	background:orange;
+}
+.content{
+	width:50%;
+	margin:auto;
+}
+.tablecontext
+{
+width:100%;
+margin: auto;
+width:100%;
+border:1px solid ;
+}
+.tablecontext td
+{
+	height: 50px;
+	padding: 15px;
+  border-collapse: collapse;
+}
+
+.tablecontext th
+{
+font-size:20px;
+text-align:left;
+padding-left:20px;
+height:80px;
+}
+.content .title
+{
+width:100%;
+height:100px;
+
+}
+.icontile
+{
+width:20px;
+height:inherit;}
+.textitle
+{
+font-size:20px;
+color:blue;
+}
+.footer
+{
+background: black;
+height:50px;
+
+}
+.trchil
+{
+background-color: #f2f2f2;
+}
