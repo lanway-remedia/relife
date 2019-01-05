@@ -4,7 +4,7 @@ from mrelife.attributes.models import (Contruction, Floor, HouseHoldIncome,
                                        HouseHoldSize, PriceRange, Style)
 from mrelife.examplehouses.models import (ExampleHouse, ExampleHouseCommitment,
                                           ExampleHouseStyle, ExampleHouseTag)
-from mrelife.locations.models import City, District
+from mrelife.locations.models import Region, City
 from mrelife.outletstores.models import OutletStore
 
 
@@ -48,27 +48,27 @@ class ExampleHouseSerializer(ModelSerializer):
         return data
 
 
-class CitySerializer(ModelSerializer):
+class RegionSerializer(ModelSerializer):
 
     class Meta:
-        model = City
+        model = Region
         fields = ('id', 'name', 'name_en',)
 
 
-class DistrictSerializer(ModelSerializer):
-    city = CitySerializer()
+class CitySerializer(ModelSerializer):
+    region = RegionSerializer()
 
     class Meta:
-        model = District
-        fields = ('id', 'name', 'name_en', 'city',)
+        model = City
+        fields = ('id', 'name', 'name_en', 'region')
 
 
 class OutletStoreSerializer(ModelSerializer):
-    district = DistrictSerializer()
+    city = CitySerializer()
 
     class Meta:
         model = OutletStore
-        fields = ('id', 'title', 'district')
+        fields = ('id', 'title', 'city')
 
 
 class ContructionSerializer(ModelSerializer):

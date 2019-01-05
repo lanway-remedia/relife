@@ -4,8 +4,6 @@ from django.conf import settings
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from mrelife.locations.models import District
-from mrelife.locations.serializers import DistrictSerializer
 from mrelife.modelhouses.models import ModelHouse, ModelhouseReview
 from mrelife.modelhouses.serializers import ModelHouseSerializer
 from mrelife.users.models import User

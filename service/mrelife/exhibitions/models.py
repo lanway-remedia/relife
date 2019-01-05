@@ -19,7 +19,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image
 
-from mrelife.locations.models import District
+from mrelife.locations.models import City
 from mrelife.tags.models import Tag
 
 
@@ -32,7 +32,7 @@ class Exhibition(Model):
     latitude = TextField(null=True)
     longtitude = TextField(null=True)
     address = CharField(max_length=800)
-    district = ForeignKey(District, on_delete=CASCADE)
+    city = ForeignKey(City, on_delete=CASCADE,null=True, blank=True)
     zipcode = CharField(max_length=8, null=True)
     num_attend = IntegerField()
     start_time = DateTimeField(auto_now_add=False)
