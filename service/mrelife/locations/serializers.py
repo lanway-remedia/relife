@@ -67,7 +67,7 @@ class RegionSerializer(serializers.ModelSerializer):
         max_length=255,
         validators=[UniqueValidator(queryset=Region.objects.all())]
     )
-    citys = CitySerializer(many=True, read_only=True)
+    cities = CitySerializer(many=True, read_only=True)
 
     class Meta:
         model = Region
