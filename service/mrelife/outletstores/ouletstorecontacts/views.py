@@ -1,7 +1,10 @@
 import re
+import socket
+import sys
 from datetime import datetime
 
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.core.mail import EmailMessage, EmailMultiAlternatives, send_mail
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -27,8 +30,6 @@ from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStoreContactPermission
 from mrelife.utils.relifeenum import MessageCode
-from django.contrib.sites.models import Site
-import socket
 
 
 class OutletStoreContactViewSet(viewsets.ModelViewSet):
@@ -59,19 +60,13 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC002.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
-    def sendEmailConfirmContact(self,request, subject, data, mailfrom, mailto1, mailto2):
+    def sendEmailConfirmContact(self, request, subject, data, mailfrom, mailto1, mailto2):
         try:
-            ip=socket.gethostbyname(socket.gethostname())
-            print('---------------------------------------------------------------------'+str(ip))
-            current_site = Site.objects.get_current()
-            print(current_site.domain)
-            base_url =  "{0}://{1}".format(request.scheme, request.get_host())
+            ip = socket.gethostbyname(socket.gethostname())
+            base_url = "{0}://{1}".format(request.scheme, request.get_host())
             print('base'+base_url)
-            domain = base_url
-            data['domain']=domain
-            print("**************************************************************")
-            print(data)
-            
+            domain = settings.URL_IMAGE
+            data['domain'] = domain
             html_content = render_to_string('email.html', data)
             text_content = 'This is an important message.'
             email = EmailMultiAlternatives('Subject', text_content)
@@ -83,13 +78,13 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         # try:
-        
+
         serializer = OutletStoreContactSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(is_active=settings.IS_ACTIVE,
                             created=datetime.now(), updated=datetime.now())
             userCreate = OutletStore.objects.get(id=request.data['outlet_store_id']).create_user
-            statusSendMail = self.sendEmailConfirmContact(request,"Wellcome to outlet store", serializer.data,
+            statusSendMail = self.sendEmailConfirmContact(request, "Wellcome to outlet store", serializer.data,
                                                           settings.DEFAULT_FROM_EMAIL, request.data['email'], userCreate.email)
             if(not statusSendMail):
                 return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC004.value, {}), status=status.HTTP_400_BAD_REQUEST)
@@ -140,6 +135,7 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC013.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC008.value, {}), status=status.HTTP_400_BAD_REQUEST)
+
     @list_route()
     def deleteall(self, request):
         queryset = OutletStoreContact.objects.all().delete()

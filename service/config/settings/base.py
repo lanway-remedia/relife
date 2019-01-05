@@ -174,7 +174,7 @@ STATICFILES_FINDERS = [
 MEDIA_ROOT = str(APPS_DIR('media'))
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'
-
+URL_IMAGE='http://18.179.32.241:8000'
 # TEMPLATES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
