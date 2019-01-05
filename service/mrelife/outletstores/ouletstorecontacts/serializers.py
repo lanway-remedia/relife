@@ -46,17 +46,17 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise serializers.ValidationError(e)
         return outlet_store_id
-    def validate_household_size(self, household_size):
-        return settings.HOUSEHOLDSIZE[household_size-1][1]
-    def validate_construction_position_type(self, construction_position_type):
-        return settings.CONSTRUCTIONPOSITIONTYPE[construction_position_type-1][1]
-    def validate_construction_duration(self, construction_duration):
-        return settings.CONSTRUCTIONDURATION[construction_duration-1][1]
-    def validate_budger(self, budger):
-        return settings.BUDGET[budger-1][1]
-    def validate_household_income(self, household_income):
-        return settings.HOUSEHOLDINCOME[household_income-1][1]
-    def validate_construction_type(self, construction_type):
-        return settings.CONSTRUCTION_TYPE[construction_type-1][1]
-    def validate_current_situation(self, current_situation):
-        return settings.CURRENTSITUATION[current_situation-1][1]
+    # def validate_household_size(self, household_size):
+    #     return settings.HOUSEHOLDSIZE[household_size-1][1]
+    # def validate_construction_position_type(self, construction_position_type):
+    #     return settings.CONSTRUCTIONPOSITIONTYPE[construction_position_type-1][1]
+    # def validate_construction_duration(self, construction_duration):
+    #     return settings.CONSTRUCTIONDURATION[construction_duration-1][1]
+    # def validate_budger(self, budger):
+    #     return settings.BUDGET[budger-1][1]
+    # def validate_household_income(self, household_income):
+    #     return settings.HOUSEHOLDINCOME[household_income-1][1]
+    # def validate_construction_type(self, construction_type):
+    #     return settings.CONSTRUCTION_TYPE[construction_type-1][1]
+    # def validate_current_situation(self, current_situation):
+    #     return settings.CURRENTSITUATION[current_situation-1][1]
