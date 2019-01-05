@@ -171,7 +171,7 @@ class Header extends React.Component {
                     </DropdownMenu>
                   </ButtonDropdown>
                 </div>
-                <div className="box-noti box-full d-none d-md-block d-xl-none">
+                <div className="box-noti box-full d-none d-md-block">
                   <Link
                     to="/"
                     title={I18nUtils.formatMessage(
@@ -183,7 +183,7 @@ class Header extends React.Component {
                     <i className="fa fa-bell-o" aria-hidden="true" />
                   </Link>
                 </div>
-                <div className="box-mail box-full d-none d-md-block d-xl-none">
+                <div className="box-mail box-full d-none d-md-block">
                   <Link
                     to="/"
                     title={I18nUtils.formatMessage(
