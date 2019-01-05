@@ -13,6 +13,7 @@ import { show, hide } from 'redux-modal'
 import { DefaultValue } from '../../constants'
 
 import Paginate from './../../components/Paginate'
+import BreadcrumbComponent from '../../components/BreadcrumbComponent'
 class ExampleHouseListPage extends React.Component {
   constructor(props) {
     super(props)
@@ -102,13 +103,14 @@ class ExampleHouseListPage extends React.Component {
     let {exampleHouseList, exampleHouseNew, count, page} = this.state
     return (
       <div>
+        {/* <BreadcrumbComponent /> */}
         <AttributesSearchSP onPageLoad={() => this.onPageLoad()} />
         <Container fluid className="lower-contents">
           <Row className="lower-contents-inner clearfix">
-            <Col md="3">
+            <Col md="3" className="padding-0">
               <AttributesSearchPC onPageLoad={() => this.onPageLoad()} />
             </Col>
-            <Col xs="12" md="9" style={{padding: `0`}}>
+            <Col xs="12" md="9" className="padding-0">
               <section className="main">
                 <h1 className="search-result page-title">{I18nUtils.t('list-example-house')}</h1>
                 {count > 0 && (

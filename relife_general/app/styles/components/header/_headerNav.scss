@@ -29,7 +29,7 @@
 
         &:hover {
           color: #fff;
-          background: #057235;
+          background: $bkg-green-color;
           transition-duration: 0.3s;
         }
       }
@@ -62,7 +62,7 @@
         padding: 35px 50px;
         background: #fff;
         -webkit-transition: all .2s ease;
-        border: 3px solid #057235;
+        border: 3px solid $bkg-green-color;
         min-height: 321px;
 
         z-index: 1;
@@ -111,7 +111,7 @@
 
                     &:hover {
                       color: #fff;
-                      background: #057235;
+                      background: $bkg-green-color;
                       transition-duration: 0.3s;
                     }
                   }
@@ -147,7 +147,7 @@
                 right: 0;
                 top: 5px;
                 background: no-repeat;
-                color: #057235;
+                color: $bkg-green-color;
                 padding: 7px 11px;
                 font-size: 1.5rem;
                 border: none;
@@ -171,10 +171,10 @@
                 margin: 0 4px 4px 0;
                 transition-duration: 0.3s;
                 &:hover {
-                  border: #057235 1px solid;
+                  border: $bkg-green-color 1px solid;
                   transition-duration: 0.3s;
                   .mega-keyword-count {
-                    background: #057235;
+                    background: $bkg-green-color;
                     transition-duration: 0.3s;
                   }
                 }
@@ -185,7 +185,7 @@
 
                   &:hover {
                     background: none;
-                    color: #057235;
+                    color: $bkg-green-color;
                     transition-duration: 0.3s;
                   }
 
@@ -216,7 +216,7 @@
             padding: 25px 50px;
             transition-duration: 0.3s;
             &:hover {
-              background: $bkg-hover-btn-color;
+              background: $bkg-green-color-hover;
               transition-duration: 0.3s;
             }
           }

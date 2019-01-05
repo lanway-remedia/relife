@@ -101,12 +101,12 @@
             height: 48px;
             display: table-cell;
             vertical-align: middle;
-            background: #057235;
+            background: $bkg-green-color;
             transition-duration: 0.3s;
             text-decoration: none;
 
             &:hover {
-              background: $bg-hover-btn-color;
+              background: $bkg-green-color-hover;
               transition-duration: 0.3s;
             }
           }

@@ -38,7 +38,7 @@ class OutletStoresViewPage extends React.Component {
   render() {
     let { outletStore } = this.state
     return (
-      <Container className="lower-contents one-column">
+      <Container fluid className="lower-contents one-column">
         <Row className="lower-contents-inner clearfix">
           <Col xs="12" md="12" className="padding-0">
             <section className="main">

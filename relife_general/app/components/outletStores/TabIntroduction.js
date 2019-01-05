@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Col, Table } from 'reactstrap'
+import {Row, Col, Table } from 'reactstrap'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import I18nUtils from '../../utils/I18nUtils'
@@ -9,8 +9,8 @@ class TabIntroduction extends React.Component {
   render () {
     let outletStore = this.props.outletStore
     return (
-      <div className="content tab-intro">
-        <div className="builder-detail clearfix">
+      <Row className="tab-content-item">
+        <Col xs="12" md="12" className="tab-intro">
           <h2 className="detail-subtitle">
             {I18nUtils.t('store-intro-title')}
           </h2>
@@ -35,8 +35,8 @@ class TabIntroduction extends React.Component {
               </tbody>
             </Table>
           </div>
-        </div>
-      </div>
+        </Col>
+      </Row>
     )
   }
 }

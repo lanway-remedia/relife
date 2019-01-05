@@ -57,11 +57,11 @@
 
     button {
       display: block;
-      background: #057235;
+      background: $bkg-green-color;
       color: #fff;
       border:none;
       &:hover {
-        background: $bkg-hover-btn-color;
+        background: $bkg-green-color-hover;
         cursor: pointer;
       }
       &.next {
@@ -96,7 +96,7 @@
 
     a {
       display: block;
-      background: #057235;
+      background: $bkg-green-color;
       color: #fff;
       &:hover {
         text-decoration: none;

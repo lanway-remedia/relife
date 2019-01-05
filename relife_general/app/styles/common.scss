@@ -39,16 +39,16 @@ a.btn-default{
 
 a.btn-default:hover{
   color: #fff;
-  background: #2c9a5c;
+  background: $bkg-green-color-hover;
 }
 
 button.btn-default:hover{
-  background: #2c9a5c;
+  background: $bkg-green-color-hover;
 }
 
 .btn-default {
   border-radius: 0px;
-  background: #057235;
+  background: $bkg-green-color;
   color: #fff;
 }
 

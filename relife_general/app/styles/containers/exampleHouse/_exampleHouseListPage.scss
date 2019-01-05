@@ -105,14 +105,14 @@
             color: #fff;
             width: 180px;
             height: 48px;
-            background: #057235;
+            background: $bkg-green-color;
             display: table-cell;
             vertical-align: middle;
             transition-duration: 0.3s;
             text-decoration: none;
 
             &:hover {
-              background: #2c9a5c;
+              background: $bkg-green-color-hover;
               transition-duration: 0.3s;
             }
           }
@@ -244,10 +244,10 @@
 
     a {
       &:hover.example-list-once {
-        color: #057235;
+        color: $bkg-green-color;
         .example-list-once-company-area,
           .example-list-once-company {
-            color: #057235;
+            color: $bkg-green-color;
           }
       }
     }

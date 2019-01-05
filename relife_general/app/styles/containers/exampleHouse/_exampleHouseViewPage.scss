@@ -56,15 +56,15 @@
             transition-duration: 0.3s;
 
             &:hover {
-              color: #057235;
-              border: #057235 1px solid;
+              color: $bkg-green-color;
+              border: $bkg-green-color 1px solid;
               transition-duration: 0.3s;
             }
 
             &::before {
               content: '#';
               margin: 0 2px 0 3px;
-              color: #057235;
+              color: $bkg-green-color;
             }
           }
         }
@@ -91,12 +91,12 @@
           color: #fff;
           font-size: 1.4rem;
           padding: 15px 40px;
-          background: $bg-btn-color;
+          background: $bkg-green-color;
           text-decoration: none;
           transition-duration: 0.3s;
 
           &:hover {
-            background: $bg-hover-btn-color;
+            background: $bkg-green-color-hover;
             transition-duration: 0.3s;
           }
         }
@@ -185,7 +185,7 @@
             .detail-list-once-title,
             .detail-list-once-company-area,
             .detail-list-once-company {
-              color: #057235;
+              color: $bkg-green-color;
             }
           }
         }

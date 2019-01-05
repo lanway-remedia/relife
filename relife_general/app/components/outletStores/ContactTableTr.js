@@ -16,7 +16,7 @@ class ContactTableTr extends React.Component {
           <span className="contact_table_td_input">
             {
               name == 'email' ? (
-                <TextInput 
+                <TextInput
                   type="email"
                   name={name}
                   placeholder={placeholder}

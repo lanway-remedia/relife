@@ -1,4 +1,4 @@
-.contact-body {
+.tab-contact {
   border: #f2f3f2 20px solid;
   margin-bottom: 100px;
     .contact_table_tr {
@@ -24,7 +24,7 @@
         }
         span {
           margin: 0 0 0 10px;
-          background: #057235;
+          background: $bkg-green-color;
           font-size: 10px;
           color: #fff;
           padding: 4px;
@@ -96,7 +96,7 @@
       margin: 30px 30px 30px 30px;
 
       a {
-        color: $bkg-btn-color;
+        color: $bkg-green-color;
       }
     }
     .contact-button {
@@ -106,13 +106,13 @@
         width: 180px;
         height: 48px;
         font-size: 1.6rem;
-        background: $bkg-btn-color;
+        background: $bkg-green-color;
         text-align: center;
         vertical-align: middle;
         border-style: none;
         color: #fff;
         &:hover {
-          background: $bkg-hover-btn-color;
+          background: $bkg-green-color-hover;
         }
       }
       
@@ -128,7 +128,7 @@ input[type='radio'] {
 }
 
 input[type='radio']:checked + label.form-check-label {
-  color: #057235;
+  color: $bkg-green-color;
 }
 
 input[type='radio']:checked + label.form-check-label:after {
@@ -140,8 +140,8 @@ input[type='radio']:checked + label.form-check-label:after {
   width: 6px;
   height: 11px;
   transform: rotate(40deg);
-  border-bottom: 2px solid #057235;
-  border-right: 2px solid #057235;
+  border-bottom: 2px solid $bkg-green-color;
+  border-right: 2px solid $bkg-green-color;
   @media screen and (max-width: 767px) {
     top: 0px;
   }

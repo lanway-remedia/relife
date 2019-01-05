@@ -66,7 +66,7 @@
       }
 
       .choices-input:checked + .choices-parts{
-        color: #057235;
+        color: $bkg-green-color;
       }
 
       .choices-input:checked + .choices-parts::after{
@@ -78,8 +78,8 @@
         width: 6px;
         height: 11px;
         transform: rotate(40deg);
-        border-bottom: 2px solid #057235;
-        border-right: 2px solid #057235;
+        border-bottom: 2px solid $bkg-green-color;
+        border-right: 2px solid $bkg-green-color;
       }
     }
     .select-wrap {
@@ -160,6 +160,6 @@
 }
 .sidebar-clear-btn:hover {
   background: #fff;
-  border: 1px solid #057235;
-  color: #057235;
+  border: 1px solid $bkg-green-color;
+  color: $bkg-green-color;
 }
