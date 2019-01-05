@@ -6,6 +6,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
+import {Container, Row, Col} from 'reactstrap'
 import I18nUtils from '../../utils/I18nUtils'
 import LocationActions from '../../redux/wrapper/LocationsRedux'
 class TopMap extends React.Component {
@@ -47,40 +48,43 @@ class TopMap extends React.Component {
   render () {
     let locationList = this.state.locationList
     return (
-      <div className="top-map">
-        <div className="top-map-inner clearfix">
-          <div className="top-map-left">
-            <h2 className="top-map-title">{I18nUtils.t('top-map-title-1')}<br />
-            {I18nUtils.t('top-map-title-2')}
-            </h2>
-            <p className="top-map-text">{I18nUtils.t('top-map-text')}</p>
-            <Link to="/map" className="btn-default pc">地図から探す</Link>
-          </div>
-
-          <div className="top-map-right">
-            <div className="top-map-list">
-              {locationList.map((city, key) => {
-                return (
-                  <div key={key} className="top-map-list-once clearfix">
-                      <div className="top-map-list-area">{city.name}</div>
-                      <ul>
-                        {city.districts.map((dis, k) => {
-                          return (
-                            <li key={k}><Link to="/hokkaidou">{dis.name}</Link></li>
-                          )
-                        })}
-                      </ul>
-                  </div>
-                )
-                })}
+      <Container fluid className="top-map">
+        <Row className="top-map-inner clearfix">
+          <Col md="3" xs="12">
+            <div className="top-map-left">
+              <h2 className="top-map-title">{I18nUtils.t('top-map-title-1')}<br />
+              {I18nUtils.t('top-map-title-2')}
+              </h2>
+              <p className="top-map-text">{I18nUtils.t('top-map-text')}</p>
+              <Link to="/map" className="btn-default pc">地図から探す</Link>
             </div>
-          </div>
+          </Col>
+          <Col md="9" xs="12">
+            <div className="top-map-right">
+              <div className="top-map-list">
+                {locationList.map((region, key) => {
+                  return (
+                    <div key={key} className="top-map-list-once clearfix">
+                        <div className="top-map-list-area">{region.name}</div>
+                        <ul>
+                          {region.cities.map((city, k) => {
+                            return (
+                              <li key={k}><Link to="/hokkaidou">{city.name}</Link></li>
+                            )
+                          })}
+                        </ul>
+                    </div>
+                  )
+                  })}
+              </div>
+            </div>
+          </Col>
 
           <div className="top-map-sp-btn sp">
             <Link to="/map" className="btn-default">地図から探す</Link>
           </div>
-        </div>
-      </div>
+        </Row>
+      </Container>
     )
   }
 }

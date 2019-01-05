@@ -44,13 +44,13 @@ class HeaderSubMenu extends React.Component {
       <div className="menu__second-level clearfix">
         <div className="mega-menu-inner-left">
           <div className="top-map-list">
-            {locationList.map((city, key) => (
+            {locationList.map((region, key) => (
               <div key={key} className="top-map-list-once clearfix">
-                <div className="top-map-list-area">{city.name}</div>
+                <div className="top-map-list-area">{region.name}</div>
                 <ul>
-                  {city.districts.map((dis, k) => (
+                  {region.cities.map((city, k) => (
                     <li key={k}>
-                      <Link to="">{dis.name}</Link>
+                      <Link to="">{city.name}</Link>
                     </li>
                   ))}
                 </ul>
