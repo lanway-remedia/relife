@@ -23,7 +23,7 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
     tel=serializers.CharField(max_length=255)
     age=serializers.IntegerField()
     household_size=serializers.ChoiceField(choices=settings.HOUSEHOLDSIZE,default='現住所と同じ',style={'base_template': 'radio.html'} )
-    acreage = serializers.IntegerField()
+    acreage = serializers.ChoiceField(choices=settings.ACREAGE,default='20坪以下',style={'base_template': 'radio.html'} )
     construction_position_type = serializers.ChoiceField(choices=settings.CONSTRUCTIONPOSITIONTYPE,default='現住所と同じ' )
     construction_position = serializers.CharField(max_length=255)
     construction_duration = serializers.ChoiceField(choices=settings.CONSTRUCTIONDURATION,default='現住所と同じ' )
@@ -48,6 +48,8 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
         return outlet_store_id
     def validate_household_size(self, household_size):
         return settings.HOUSEHOLDSIZE[household_size-1][1]
+    def validate_acreage(self, acreage):
+        return settings.ACREAGE[acreage-1][1]
     def validate_construction_position_type(self, construction_position_type):
         return settings.CONSTRUCTIONPOSITIONTYPE[construction_position_type-1][1]
     def validate_construction_duration(self, construction_duration):
