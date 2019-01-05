@@ -11,8 +11,7 @@ import {ToastContainer} from 'react-toastify'
 import Header from './components/header/Header'
 import PageTop from './components/PageTop'
 import Footer from './components/Footer'
-//breadcrumb
-import Breadcrumb from './components/Breadcrumb'
+
 //homepage
 import HomePage from './containers/HomePage'
 //auths
@@ -86,7 +85,6 @@ class Routes extends React.Component {
                         name={username}
                         image={userimage}
                     />
-                    <Breadcrumb />
                     <Switch>
                         <Route path="/login" component={LoginPage} />
                         <Route path="/forgot-password" component={ForgotPasswordPage} />

@@ -4,6 +4,7 @@
  */
 import React from 'react'
 import { connect } from 'react-redux'
+import {Container, Row, Col} from 'reactstrap'
 import { withRouter, Link } from 'react-router-dom'
 import Slider from 'react-slick'
 
@@ -19,109 +20,121 @@ class SliderKeyword extends React.Component {
       infinite: true,
       speed: 800,
       slidesToShow: 3,
-      slidesToScroll: 1
+      slidesToScroll: 1,
+      responsive: [
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 2
+          }
+        }
+      ]
     }
 
     return (
-      <div className="top-result-search">
-        <div className="top-result-search-inner">
-          <h4 className="top-result-search-title">
-            予算から建築実績を探す
-          </h4>
+      <Container fluid className="top-result-search padding-0">
+        <Row className="top-result-search-inner">
+          <Col md="12" xs="12">
+            <h4 className="top-result-search-title">
+              予算から建築実績を探す
+            </h4>
+          </Col>
           <div className="slider-search-wrap" id="my-slider2">
-          <Slider {...settings}>
-            <div className="slider-item">
-              <Link to="">
-                <img src={slider01} />
-              </Link>
-              <div className="slider-title">
-                <h3>ローコスト</h3>
+            <Slider {...settings}>
+              <div className="slider-item">
+                <Link to="">
+                  <img src={slider01} />
+                  <div className="slider-title">
+                    <h3>ローコスト</h3>
+                  </div>
+                </Link>
               </div>
-            </div>
-            <div className="slider-item">
-              <Link to="">
-                <img src={slider02} />
-              </Link>
-              <div className="slider-title">
-                <h3>1000万円台</h3>
+              <div className="slider-item">
+                <Link to="">
+                  <img src={slider02} />
+                  <div className="slider-title">
+                    <h3>1000万円台</h3>
+                  </div>
+                </Link>
               </div>
-            </div>
-            <div className="slider-item">
-              <Link to="">
-                <img src={slider03} />
-              </Link>
-              <div className="slider-title">
-                <h3>2000万円台</h3>
+              <div className="slider-item">
+                <Link to="">
+                  <img src={slider03} />
+                  <div className="slider-title">
+                    <h3>2000万円台</h3>
+                  </div>
+                </Link>
               </div>
-            </div>
-            <div className="slider-item">
-              <Link to="">
-                <img src={slider04} />
-              </Link>
-              <div className="slider-title">
-                <h3>3000万円台</h3>
+              <div className="slider-item">
+                <Link to="">
+                  <img src={slider04} />
+                  <div className="slider-title">
+                    <h3>3000万円台</h3>
+                  </div>
+                </Link>
               </div>
-            </div>
-            <div className="slider-item">
-              <Link to="">
-                <img src={slider05} />
-              </Link>
-              <div className="slider-title">
-                <h3>3000万円台</h3>
+              <div className="slider-item">
+                <Link to="">
+                  <img src={slider05} />
+                  <div className="slider-title">
+                    <h3>3000万円台</h3>
+                  </div>
+                </Link>
               </div>
-            </div>
-          </Slider>
+            </Slider>
           </div>
 
-          <h4 className="top-result-search-title">
-            こだわりから建築実績を探す
-          </h4>
+          <Col md="12" xs="12">
+            <h4 className="top-result-search-title">
+              こだわりから建築実績を探す
+            </h4>
+          </Col>
           <div className="slider-search-wrap" id="my-slider3">
           <Slider {...settings}>
             <div className="slider-item">
               <Link to="">
                 <img src={slider01} />
+                <div className="slider-title">
+                  <h3>狭小住宅</h3>
+                </div>
               </Link>
-              <div className="slider-title">
-                <h3>狭小住宅</h3>
-              </div>
             </div>
             <div className="slider-item">
               <Link to="">
                 <img src={slider02} />
+                <div className="slider-title">
+                  <h3>二世帯住宅</h3>
+                </div>
               </Link>
-              <div className="slider-title">
-                <h3>二世帯住宅</h3>
-              </div>
             </div>
             <div className="slider-item">
               <Link to="">
                 <img src={slider03} />
+                <div className="slider-title">
+                  <h3>地下室</h3>
+                </div>
               </Link>
-              <div className="slider-title">
-                <h3>地下室</h3>
-              </div>
             </div>
             <div className="slider-item">
               <Link to="">
                 <img src={slider04} />
+                <div className="slider-title">
+                  <h3>平屋住宅</h3>
+                </div>
               </Link>
-              <div className="slider-title">
-                <h3>平屋住宅</h3>
-              </div>
             </div>
             <div className="slider-item">
               <Link to="">
                 <img src={slider05} />
+                <div className="slider-title">
+                  <h3>平屋住宅</h3>
+                </div>
               </Link>
-              <div className="slider-title">
-                <h3>平屋住宅</h3>
-              </div>
             </div>
           </Slider>
           </div>
-        </div>
-      </div>
+        </Row>
+      </Container>
     )
   }
 }

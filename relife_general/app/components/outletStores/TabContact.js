@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import { Button, Input, Container, Row } from 'reactstrap'
+import { Row, Col, Button, Input} from 'reactstrap'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import ContactTableTr from './ContactTableTr'
 import ContactTableTh from './ContactTableTh'
@@ -100,8 +100,7 @@ class TabContact extends React.Component {
     data.append('email', this.state.email)
     data.append('tel', this.state.tel)
     data.append('age', this.state.age)
-    data.append('zipcode', this.state.zip1)
-    // data.append('zip2', this.state.zip2)
+    data.append('zipcode', `${this.state.zip1}－${this.state.zip2}`)
     data.append('address', this.state.address)
 
     data.append('household_size', this.state.household_size)
@@ -186,8 +185,8 @@ class TabContact extends React.Component {
     ]
     const {showAddress} = this.state
     return (
-      <Row className="content">
-        <div className="contact-body clearfix">
+      <Row className="tab-content-item clearfix">
+        <Col xs="12" md="12" className="tab-contact padding-0">
           <ValidationForm
             onSubmit={this.handleSubmit}
             defaultErrorMessage={{ required: '必須項目に記入もれがあります。'}}
@@ -227,7 +226,7 @@ class TabContact extends React.Component {
                         type="text"
                         name="zip2"
                         onChange={this.handleChange}
-                        value={this.state.zip12}
+                        value={this.state.zip2}
                     />
                   </p>
                   <p className="attention">※半角で入力してください。住所が自動で入力されます</p>
@@ -433,7 +432,7 @@ class TabContact extends React.Component {
               をご覧ください。
             </p>
           </ValidationForm>
-        </div>
+        </Col>
       </Row>
     )
   }

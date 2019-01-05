@@ -1,0 +1,47 @@
+.tab-intro {
+  padding: 0;
+  @media screen and (max-width:767px){ 
+    padding: 0 20px;
+  }
+
+  .detail-subtitle {
+    font-size: 2.8rem;
+    padding: 0 0 10px 0;
+    border-bottom: solid 3px #2e3230;
+    margin: 0 0 30px 0;
+  }
+
+  .company-intro {
+    margin: 35px 0;
+  }
+
+  .company-data {
+    table {
+      margin: 30px 0;
+      width: 100%;
+      font-size: 1.4rem;
+
+      th {
+        padding: 18px;
+        width: 20%;
+        font-weight: normal;
+        text-align: left;
+        vertical-align: top;
+        background: #fafafa;
+        border: #dadada 1px solid;
+        font-size: 1.4rem;
+        color: #151515;
+      }
+
+      td {
+        padding: 18px;
+        text-align: left;
+        vertical-align: top;
+        border: #dadada 1px solid;
+        color: #151515;
+        font-size: 1.4rem;
+        line-height: 2.0rem;
+      }
+    }
+  }/* end .company-data */
+}

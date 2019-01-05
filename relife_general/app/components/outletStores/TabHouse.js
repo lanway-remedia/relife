@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import {Row, Col} from 'reactstrap'
 import { withRouter, Link } from 'react-router-dom'
 import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
 class TabHouse extends React.Component {
@@ -35,10 +36,10 @@ class TabHouse extends React.Component {
   render () {
     let {houseList} = this.state
     return (
-      <div className="content">
-        <div className="detail-list clearfix">
-          {houseList.map((val, key) => (
-            <Link key={key} to={'/example/'+val.id} className="detail-list-once">
+      <Row className="tab-content-item clearfix">
+        {houseList.map((val, key) => (
+          <Col xs="6" md="3" key={key} className="tab-house detail-list ">
+            <Link to={'/example/'+val.id} className="detail-list-once">
               <div className="detail-list-once-img">
                 <img src={val.img_large} />
               </div>
@@ -46,9 +47,9 @@ class TabHouse extends React.Component {
               <div className="detail-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
                 <div className="detail-list-once-company">{val.store.title}</div>
             </Link>
-            ))}
-        </div>
-      </div>
+          </Col>
+          ))}
+      </Row>
     )
   }
 }
