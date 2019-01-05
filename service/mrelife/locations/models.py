@@ -11,7 +11,7 @@ from django.db.models import (
 )
 
 
-class City(Model):
+class Region(Model):
     name = CharField(max_length=255)
     name_en = CharField(max_length=255)
     order = IntegerField(default=1)
@@ -20,11 +20,11 @@ class City(Model):
     updated = DateTimeField(auto_now_add=False, blank=True)
 
     class Meta:
-        db_table = 'city'
+        db_table = 'Region'
         ordering = ['order', ]
 
-class District(Model):
-    city = ForeignKey(City, related_name='districts', on_delete=CASCADE)
+class City(Model):
+    region = ForeignKey(Region, related_name='city', on_delete=CASCADE,null=True, blank=True)
     name = CharField(max_length=255)
     name_en = CharField(max_length=255)
     order = IntegerField(default=1)
@@ -33,7 +33,7 @@ class District(Model):
     updated = DateTimeField(auto_now_add=False, blank=True)
 
     class Meta:
-        db_table = 'district'
+        db_table = 'City'
         ordering = ['order', ]
         
     def __unicode__(self):

@@ -12,30 +12,38 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image
 
-from mrelife.locations.models import District
+from mrelife.locations.models import City
 
 
 class OutletStore(Model):
     title = CharField(max_length=255)
+    slogan_title=CharField(max_length=255,null=True)
+    slogan_content=CharField(max_length=255,null=True)
+    type=IntegerField(default=1)
     content = TextField()
     img_thumbnail = CharField(max_length=800, null=True)
     img_large = ImageField(upload_to='outletimag/', null=True, blank=True)
     latitude = TextField(null=True)
     longitude = TextField(null=True)
+    zipcode = CharField(max_length=8, null=True)
     address = CharField(max_length=800)
-    district = ForeignKey(District, related_name="outlet_dict", on_delete=CASCADE, null=True, blank=True)
+    city = ForeignKey(City, related_name="outlet_dict", on_delete=CASCADE, null=True, blank=True)
     tel = CharField(max_length=13)
     email = CharField(max_length=100)
-    zipcode = CharField(max_length=8, null=True)
-    home_page = CharField(max_length=255, null=True)
-    traffic = CharField(max_length=255, null=True)
+    establish=DateTimeField(auto_now_add=False,null=True)
+    charter_capital=IntegerField(default=1)
+    employee_total=IntegerField(default=1)
+    qualification=CharField(max_length=255,null=True)
+    permit_number=CharField(max_length=255,null=True)
+    construction_area=CharField(max_length=255,null=True)
+    construction_result=CharField(max_length=255,null=True)
+    min_price=IntegerField(default=1)
+    max_price=IntegerField(default=1)
     time_serving = CharField(max_length=255, null=True)
-    regular_holiday = CharField(max_length=255, null=True)
     create_user = ForeignKey('users.User', on_delete=CASCADE, null=True)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False)
     updated = DateTimeField(auto_now_add=False)
-
     class Meta:
         db_table = 'outlet_store'
         ordering = ['created', ]
@@ -131,4 +139,15 @@ class OutletStoreReview(Model):
 
     class Meta:
         db_table = 'outlet_store_review'
+        ordering = ['created', ]
+
+class OutletStoreBusiness(Model):
+    outlet_store = ForeignKey(OutletStore, related_name='outlet_store_business', on_delete=CASCADE)
+    business=IntegerField(default=1)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
+    class Meta:
+        db_table = 'outlet_store_business'
         ordering = ['created', ]
