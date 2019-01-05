@@ -58,6 +58,13 @@ class PaginationComponent extends Component {
       isSearch = false
     else isSearch = true
 
+    let dataLimit
+    if (limit > count) {
+      dataLimit = count
+    } else {
+      dataLimit = limit
+    }
+
     return (
       <div className="toolbar">
         <div className="total">
@@ -76,7 +83,7 @@ class PaginationComponent extends Component {
               dangerouslySetInnerHTML={{
                 __html: I18nUtils.formatMessage(
                   { id: 'toolbar-totalRecords' },
-                  { limit: limit, total: count }
+                  { limit: dataLimit, total: count }
                 )
               }}
             />
