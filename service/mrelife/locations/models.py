@@ -24,7 +24,7 @@ class Region(Model):
         ordering = ['order', ]
 
 class City(Model):
-    region = ForeignKey(Region, related_name='citys', on_delete=CASCADE,null=True, blank=True)
+    region = ForeignKey(Region, related_name='cities', on_delete=CASCADE,null=True, blank=True)
     name = CharField(max_length=255)
     name_en = CharField(max_length=255)
     order = IntegerField(default=1)
