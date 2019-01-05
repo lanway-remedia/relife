@@ -24,7 +24,7 @@ from url_filter.integrations.drf import DjangoFilterBackend
 class ExampleHouseViewSet(ModelViewSet):
     queryset = ExampleHouse.objects.all()
     serializer_class = ExampleHouseSerializer
-    permission_classes = (IsAuthenticated, ExampleHousePermission,)
+    permission_classes = (ExampleHousePermission,)
     parser_class = (FormParser, MultiPartParser, JSONParser)
     pagination_class = LimitOffsetPagination
     filter_backends = [DjangoFilterBackend]
