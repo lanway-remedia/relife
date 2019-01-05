@@ -140,3 +140,7 @@ class OutletStoreContactViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC013.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC008.value, {}), status=status.HTTP_400_BAD_REQUEST)
+    @list_route()
+    def deleteall(self, request):
+        queryset = OutletStoreContact.objects.all().delete()
+        return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSC008.value, {}), status=status.HTTP_204_NO_CONTENT)
