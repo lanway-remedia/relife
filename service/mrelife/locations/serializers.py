@@ -71,4 +71,4 @@ class RegionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Region
-        fields = ('id', 'name', 'name_en', 'order', 'citys')
+        fields = ('id', 'name', 'name_en', 'order', 'cities')
