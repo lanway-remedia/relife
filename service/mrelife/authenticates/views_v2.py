@@ -19,6 +19,7 @@ from mrelife.utils.response import response_200, response_201, response_400, res
 from mrelife.utils.validates import email_exist
 from mrelife.authenticates.lanway_portal import lanway_register
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
+from mrelife.users.serializers import UserSerializer
 
 User = get_user_model()
 
@@ -43,10 +44,10 @@ class JWTLoginView(JSONWebTokenAPIView):
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
             return response_400('AU003', '', serializer.errors)
-
         user = serializer.object.get('user') or request.user
         token = serializer.object.get('token')
         response_data = jwt_response_payload_handler(token, user, request)
+        
         response = response_200('AU004', '', response_data)
         if api_settings.JWT_AUTH_COOKIE:
             expiration = (datetime.utcnow() + timedelta(hours=2))

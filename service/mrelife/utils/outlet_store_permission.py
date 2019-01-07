@@ -10,7 +10,7 @@ class OutletStorePermission(BasePermission):
         try:
             if(view.action in ["list", "retrieve"]):
                 return True
-            return (IsStore(request.user) or IsAdmin(request.user))
+            return IsStore(request.user) or IsAdmin(request.user)
         except Exception:
             return False
 
