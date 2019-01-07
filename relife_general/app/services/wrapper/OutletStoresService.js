@@ -6,11 +6,11 @@ export default class OutletStoresService {
   }
 
   listStores(data) {
-    return apiClient.get(`/outletstores/?limit=${data.limit}&offset=${data.offset}`)
+    let search = new URLSearchParams(data)
+    return apiClient.get(`/outletstores/?${search.toString()}`)
   }
 
   contactStores(data) {
-    console.log(data)
     return apiClient.post(`/outletstores/contacts/`, data)
   }
 }
