@@ -13,7 +13,6 @@ import { show, hide } from 'redux-modal'
 import { DefaultValue } from '../../constants'
 
 import Paginate from './../../components/Paginate'
-import BreadcrumbComponent from '../../components/BreadcrumbComponent'
 class ExampleHouseListPage extends React.Component {
   constructor(props) {
     super(props)
@@ -129,13 +128,19 @@ class ExampleHouseListPage extends React.Component {
 
                         <div className="adv-example-once-title-right">
                           <div className="adv-example-once-link">
-                            <Link to={'/example/' + exampleHouseNew.id}>{I18nUtils.t('view-detail')}</Link>
+                            <Link to={'/example/' + exampleHouseNew.id}>{
+                              I18nUtils.t('view-detail')}
+                              </Link>
                           </div>
                         </div>
                       </div>
                       <div className="adv-example-once-text">シンプルだけど存在感の大きさを感じる絶妙なデザイン</div>
-                      <div className="adv-example-once-company-area">{exampleHouseNew.store ? exampleHouseNew.store.district.name + ' ' + exampleHouseNew.store.district.city.name : ''}</div>
-                      <div className="adv-example-once-company">{exampleHouseNew.store ? exampleHouseNew.store.title : ''}</div>
+                      <div className="adv-example-once-company-area">
+                        City/Region
+                      </div>
+                      <div className="adv-example-once-company">
+                        {exampleHouseNew.store ? exampleHouseNew.store.title : ''}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -146,7 +151,7 @@ class ExampleHouseListPage extends React.Component {
                         {exampleHouseList.map((val, key) => {
                           if (val.id != exampleHouseNew.id) {
                             return (
-                            <Col xs="6" md="4" className="example-list-item">
+                            <Col xs="6" md="4" className="example-list-item" key={key}>
                               <Link key={key} to={'example/' + val.id} className="example-list-once">
                                 <div className="example-list-once-img">
                                   <img src={val.img_large} alt={val.title} />
@@ -154,7 +159,9 @@ class ExampleHouseListPage extends React.Component {
                                 <h3 className="example-list-once-title">
                                   {val.title}
                                 </h3>
-                                <div className="example-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
+                                <div className="example-list-once-company-area">
+                                  City/Region
+                                </div>
                                 <div className="example-list-once-company">{val.store.title}</div>
                               </Link>
                             </Col>

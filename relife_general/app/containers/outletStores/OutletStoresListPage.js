@@ -9,6 +9,7 @@ import I18nUtils from '../../utils/I18nUtils'
 import SidebarFilterPC from '../../components/outletStores/SidebarFilterPC'
 import SidebarFilterSP from '../../components/outletStores/SidebarFilterSP'
 import Paginate from './../../components/Paginate'
+import BreadcrumbComponent from '../../components/BreadcrumbComponent'
 class OutletStoresListPage extends React.Component {
   constructor(props) {
     super(props)
@@ -82,7 +83,7 @@ class OutletStoresListPage extends React.Component {
                             <span className="pr-icon">PR</span>
                           </h2>
                           <div className="adv-builder-once-area">
-                          {val.district ? val.district.name : ''} {val.district.city ? val.district.city.name : '' }
+                            {val.address}
                           </div>
                         </div>
 
@@ -92,14 +93,13 @@ class OutletStoresListPage extends React.Component {
                           </div>
                         </div>
                       </div>
-                      {/* <div className="adv-builder-once-title-right sp">
-                        <div className="adv-builder-once-link">
-                          <Link to={'/builder/'+ val.id}>詳細はこちら</Link>
-                        </div>
-                      </div> */}
 
-                      <div className="adv-builder-once-intro-title" />
-                      <div className="adv-builder-once-intro" />
+                      <div className="adv-builder-once-intro-title">
+                        {val.slogan_title}
+                      </div>
+                      <div className="adv-builder-once-intro">
+                        {val.slogan_content}
+                      </div>
                     </div>
                     )
                   })}

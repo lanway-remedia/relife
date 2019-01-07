@@ -44,8 +44,8 @@ class TabHouse extends React.Component {
                 <img src={val.img_large} />
               </div>
               <h3 className="detail-list-once-title">{val.title}</h3>
-              <div className="detail-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
-                <div className="detail-list-once-company">{val.store.title}</div>
+              <div className="detail-list-once-company-area">{val.address}</div>
+              <div className="detail-list-once-company">{val.store.title}</div>
             </Link>
           </Col>
           ))}
