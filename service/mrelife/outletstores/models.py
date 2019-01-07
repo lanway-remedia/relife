@@ -100,7 +100,7 @@ class OutletStore(Model):
 
 
 class OutletStoreContact(Model):
-    outlet_store = ForeignKey(OutletStore, related_name='OutletStoreContacts', on_delete=CASCADE)
+    outlet_store = ForeignKey(OutletStore, related_name='outlet_store_contact', on_delete=CASCADE)
     name = CharField(max_length=255)
     name_kana = CharField(max_length=255)
     zipcode = CharField(max_length=8)
@@ -130,7 +130,7 @@ class OutletStoreContact(Model):
 class OutletStoreReview(Model):
     rating = IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
     review = TextField()
-    outlet_store = ForeignKey(OutletStore, related_name='OutletStoreReviews', on_delete=CASCADE)
+    outlet_store = ForeignKey(OutletStore, related_name='outlet_store_review', on_delete=CASCADE)
     create_user = ForeignKey('users.User', related_name='create_user_outletstore_review', on_delete=CASCADE)
     update_user = ForeignKey('users.User', related_name='update_user_outletstore_review', on_delete=CASCADE)
     is_active = BooleanField(default=True)
@@ -142,7 +142,7 @@ class OutletStoreReview(Model):
         ordering = ['created', ]
 
 class OutletStoreBusiness(Model):
-    outlet_store = ForeignKey(OutletStore, related_name='OutletStoreBusiness', on_delete=CASCADE)
+    outlet_store = ForeignKey(OutletStore, related_name='outlet_store_business', on_delete=CASCADE)
     business=IntegerField(default=1)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)
