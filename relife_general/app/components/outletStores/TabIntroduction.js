@@ -29,7 +29,7 @@ class TabIntroduction extends React.Component {
                 </tr>
                 <tr>
                   <th>所在地</th>
-                  <td>{outletStore.district && outletStore.district.name} {outletStore.district && outletStore.district.city ? outletStore.district.city.name : ''}</td>
+                  <td>{outletStore.address}</td>
                 </tr>
                 
               </tbody>

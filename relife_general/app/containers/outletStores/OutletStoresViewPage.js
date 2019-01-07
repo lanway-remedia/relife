@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import {Container, Row, Col} from 'reactstrap'
 import { withRouter } from 'react-router-dom'
 import OutletStoreActions from '../../redux/wrapper/OutletStoresRedux'
-
 import Tabs from './../../components/outletStores/Tabs'
 
 class OutletStoresViewPage extends React.Component {

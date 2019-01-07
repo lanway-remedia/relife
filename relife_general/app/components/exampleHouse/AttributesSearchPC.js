@@ -147,6 +147,7 @@ class AttributesSearchPC extends React.Component {
     this.setState({
       [e.target.name] : itemChecked
     })
+    console.log(e.target.type)
   }
 
   onClickSubmit = () => {

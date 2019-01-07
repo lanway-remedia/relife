@@ -7,6 +7,7 @@ import { Container, Row, Col } from 'reactstrap'
 import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import ShareHouse from '../../components/exampleHouse/ShareHouse'
+
 class ExampleHouseViewPage extends React.Component {
   constructor(props) {
     super(props)
@@ -104,15 +105,17 @@ class ExampleHouseViewPage extends React.Component {
                 {listExampleHouseByStore.map((val, key) => {
                   if (val.id != exampleHouse.id) {
                     return (
-                      <Col xs="6" md="3" style={{padding:`0`}}>
-                        <Link to={'/example/' +val.id} key={key} className="detail-list-once">
+                      <Col xs="6" md="3" key={key} style={{padding:`0`}}>
+                        <Link to={'/example/' +val.id} className="detail-list-once">
                           <div className="detail-list-once-img">
                             <img src={val.img_large} alt="exh-item" />
                           </div>
                           <h3 className="detail-list-once-title">
                             {val.title}
                           </h3>
-                          <div className="detail-list-once-company-area">{val.store.district.name + ' ' + val.store.district.city.name}</div>
+                          <div className="detail-list-once-company-area">
+                            {val.store.address ? val.store.address : ''}
+                          </div>
                           <div className="detail-list-once-company">{val.store.title}</div>
                         </Link>
                       </Col>

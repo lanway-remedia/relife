@@ -8,6 +8,8 @@ class SidebarFilterSP extends React.Component {
     super(props)
     this.state = {
       collapse: false,
+
+      keyword: '',
     }
     this.toggle = this.toggle.bind(this)
     this.handleResetForm = this.handleResetForm.bind(this)
@@ -102,9 +104,9 @@ class SidebarFilterSP extends React.Component {
                       </select>
                     </div>
                   </div>
-                  <button type="button" onClick={this.handleResetForm} className="sidebar-clear-btn btn clear-button">
+                  <Button type="button" onClick={this.handleResetForm} className="sidebar-clear-btn btn clear-button">
                     入力値をリセット
-                  </button>
+                  </Button>
                   <Button type="button" className="sidebar-search-btn btn btn-default">
                     <i className="fa fa-search" />
                     検索
