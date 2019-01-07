@@ -23,6 +23,7 @@ from mrelife.utils.relifeenum import MessageCode
 from django.http import HttpResponse 
 from url_filter.integrations.drf import DjangoFilterBackend
 from mrelife.utils.custom_exception import CustomException
+from django.db.models import Q
 
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
@@ -32,9 +33,13 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
     lookup_field = 'pk'
     lookup_value_regex = '[^/]+'
     filter_backends = [DjangoFilterBackend]
-    filter_fields = ['city_id','type','content', 'title','min_price','max_price','outlet_store_business']
+    filter_fields = ['city_id','type','min_price','max_price','outlet_store_business']
     def list(self, request):
         self.queryset = OutletStore.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
+        keyword= request.GET.get('keyword')
+        if keyword is not None:
+            self.queryset = self.queryset.filter(Q(title__contains=keyword) | Q(
+                title__contains=keyword) )
         return super(OutletStoreViewSet, self).list(request)
 
     def retrieve(self, request, *args, **kwargs):
