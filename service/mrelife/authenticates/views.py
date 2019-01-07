@@ -2,6 +2,7 @@
     User version 1
 """
 from datetime import datetime, timedelta
+from rest_framework.generics import GenericAPIView
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -148,7 +149,7 @@ class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
         user = serializer.object.get('user') or request.user
         token = serializer.object.get('token')
         response_data = jwt_response_payload_handler(token, user, request)
-        response_data['user']=UserSerializer(user).data
+        response_data['user'] = UserSerializer(user).data
         response = response_200('', '', response_data)
         if api_settings.JWT_AUTH_COOKIE:
             expiration = (datetime.utcnow() + timedelta(hours=2))
@@ -168,8 +169,10 @@ class RegisterView(APIView):
             POST:
                 mail: str require
                 username: str require
+                first_name:  str require
+                last_name :  str require
                 password1: str require
-                password2: str require
+                password2: str require   
                 domain: str require
         """
         if request.user.is_authenticated:
@@ -182,7 +185,10 @@ class RegisterView(APIView):
         email = serializer.data['mail']
         username = serializer.data['username']
         domain = serializer.data['domain']
-        user = User.objects.create(username=username, email=email, group=GroupUser())
+        firstname = serializer.data['first_name']
+        lastname = serializer.data['last_name']
+        user = User.objects.create(username=username, email=email, group=GroupUser(),
+                                   first_name=firstname, last_name=lastname)
         user.set_password(serializer.data['password1'])
         user.save()
         # Generate token

@@ -1,8 +1,8 @@
 """
     Authenticate Serializer
 """
-from rest_framework.serializers import (CharField, EmailField, Serializer,
-                                        ValidationError, DateField)
+from rest_framework.serializers import (CharField, DateField, EmailField,
+                                        Serializer, ValidationError)
 
 from mrelife.authenticates.lanway_portal import lanway_login, lanway_user_exist
 from mrelife.utils.validates import email_exist, username_exist
@@ -43,9 +43,10 @@ class RegisterSerializer(Serializer):
     mail = EmailField(required=True)
     username = CharField(required=True)
     password1 = CharField(required=True)
+    first_name = CharField(required=True)
+    last_name = CharField(required=True)
     password2 = CharField(required=True)
     domain = CharField(required=True)
-
     def validate(self, attrs):
         """
         Check that the start is before the stop.
