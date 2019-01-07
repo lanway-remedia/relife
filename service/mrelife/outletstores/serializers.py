@@ -62,12 +62,12 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     city = CitySerializer(read_only=True)
     create_user = UserSerializer(read_only=True)
     is_active = serializers.BooleanField(default=True, read_only=False)
-    outlet_store_business = OutletStoreBusinessSerializer(many=True, read_only=False,required=False)
+    OutletStoreBusiness = OutletStoreBusinessSerializer(many=True, read_only=False,required=False)
 
     class Meta:
         model = OutletStore
         fields = ('id', 'title', 'type', 'slogan_title', 'slogan_content', 'content', 'img_thumbnail', 'img_large', 'latitude', 'longitude', 'zipcode', 'address', 'city_id', 'city',
-                  'tel', 'email', 'establish', 'charter_capital', 'employee_total', 'qualification', 'permit_number', 'construction_area', 'construction_result', 'min_price', 'max_price', 'time_serving', 'create_user','outlet_store_business',  'is_active')
+                  'tel', 'email', 'establish', 'charter_capital', 'employee_total', 'qualification', 'permit_number', 'construction_area', 'construction_result', 'min_price', 'max_price', 'time_serving', 'create_user','OutletStoreBusiness',  'is_active')
 
     def validate_city_id(self, city_id):
         try:
