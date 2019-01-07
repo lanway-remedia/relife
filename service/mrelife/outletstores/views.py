@@ -30,7 +30,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
     lookup_field = 'pk'
     lookup_value_regex = '[^/]+'
     filter_backends = [DjangoFilterBackend]
-    filter_fields = ['city_id','type', 'title','outlet_store_business']
+    filter_fields = ['city_id','type','content', 'title','min_price','max_price','OutletStoreBusiness']
     def list(self, request):
         self.queryset = OutletStore.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         return super(OutletStoreViewSet, self).list(request)
