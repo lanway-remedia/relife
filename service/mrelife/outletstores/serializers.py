@@ -24,8 +24,6 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
 
 class OutletStoreBusinessSerializer(serializers.ModelSerializer):
 
-    
-
     class Meta:
         model = OutletStoreBusiness
         fields = '__all__'
@@ -61,7 +59,7 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     time_serving = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
     city = CitySerializer(read_only=True)
     create_user = UserSerializer(read_only=True)
-    is_active = serializers.BooleanField(default=True, read_only=False)
+    is_active = serializers.BooleanField(default=True, read_only=True)
     OutletStoreBusiness = OutletStoreBusinessSerializer(many=True, read_only=False,required=False)
 
     class Meta:

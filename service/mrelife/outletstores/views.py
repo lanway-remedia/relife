@@ -20,6 +20,7 @@ from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStorePermission
 from mrelife.utils.relifeenum import MessageCode
+from django.http import HttpResponse 
 from url_filter.integrations.drf import DjangoFilterBackend
 
 class OutletStoreViewSet(viewsets.ModelViewSet):
@@ -87,7 +88,9 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
                 raise KeyError
             queryset = OutletStore.objects.filter(is_active=1)
             if(IsStore(request.user)):
-                queryset = OutletStore.objects.filter(create_user_id=request.user.id, is_active=1)
+                queryset = OutletStore.objects.filter(create_user_id=request.user.id, is_active=1,pk=pk)
+                if not queryset:
+                    raise status.HTTP_401_UNAUTHORIZED
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreSerializer(outletstoreObject, data=request.data, partial=True)
             if serializer.is_valid():
@@ -112,7 +115,9 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
                 raise KeyError
             queryset = OutletStore.objects.filter(is_active=1)
             if(IsStore(request.user)):
-                queryset = OutletStore.objects.filter(create_user_id=request.user.id, is_active=1)
+                queryset = OutletStore.objects.filter(create_user_id=request.user.id, is_active=1,pk=pk)
+                if not queryset:
+                    raise HttpResponse('Authentication credentials were not provided.', status=status.HTTP_401_UNAUTHORIZED)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             data = {"is_active": settings.IS_INACTIVE}
             serializer = OutletStoreSerializer(outletstoreObject, data=data, partial=True)

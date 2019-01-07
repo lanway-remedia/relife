@@ -20,6 +20,7 @@ from mrelife.utils.groups import GroupUser
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.response import response_200, response_201, response_400, response_404, response_503
 from mrelife.utils.validates import email_exist
+from mrelife.users.serializers import UserSerializer
 
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
@@ -147,6 +148,7 @@ class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
         user = serializer.object.get('user') or request.user
         token = serializer.object.get('token')
         response_data = jwt_response_payload_handler(token, user, request)
+        response_data['user']=UserSerializer(user).data
         response = response_200('', '', response_data)
         if api_settings.JWT_AUTH_COOKIE:
             expiration = (datetime.utcnow() + timedelta(hours=2))
