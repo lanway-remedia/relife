@@ -14,6 +14,10 @@
 @import './components/paginate';
 @import './components/pageTop';
 
+//Components/Sidebar
+@import './components/sidebarSearch/sidebarSearch';
+@import './components/sidebarSearch/sidebarSearchSp';
+
 //Components/Header
 @import './components/header/header';
 @import './components/header/headerNav';
@@ -27,7 +31,6 @@
 @import './components/reactSlickTheme';
 
 //Components/ExampleHouse
-@import './components/exampleHouse/attributesSearchSP';
 
 //Components/Outletstores
 @import './components/outletStores/tabContent';

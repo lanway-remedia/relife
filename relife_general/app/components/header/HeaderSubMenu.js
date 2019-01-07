@@ -29,7 +29,7 @@ class HeaderSubMenu extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data != nextProps.data) {
       let response = nextProps.data
-      if (response.isGetList == true) {
+      if (response.isGetListLocation == true) {
         let data = response.data
         this.setState({
           locationList: data
