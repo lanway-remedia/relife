@@ -22,6 +22,7 @@ from mrelife.utils.outlet_store_permission import OutletStorePermission
 from mrelife.utils.relifeenum import MessageCode
 from django.http import HttpResponse 
 from url_filter.integrations.drf import DjangoFilterBackend
+from mrelife.utils.custom_exception import CustomException
 
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
@@ -90,7 +91,9 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             if(IsStore(request.user)):
                 queryset = OutletStore.objects.filter(create_user_id=request.user.id, is_active=1,pk=pk)
                 if not queryset:
-                    raise status.HTTP_401_UNAUTHORIZED
+                    exception = CustomException()
+                    exception.set_error_code(status.HTTP_401_UNAUTHORIZED, "", "")
+                    raise exception
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreSerializer(outletstoreObject, data=request.data, partial=True)
             if serializer.is_valid():
@@ -105,8 +108,8 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OS009.value, {}), status=status.HTTP_400_BAD_REQUEST)
         except Http404:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OS012.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OS006.value, {}), status=status.HTTP_400_BAD_REQUEST)
+        # except Exception as e:
+        #     return Response(CommonFuntion.resultResponse(False, "", MessageCode.OS006.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         try:
@@ -117,7 +120,9 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             if(IsStore(request.user)):
                 queryset = OutletStore.objects.filter(create_user_id=request.user.id, is_active=1,pk=pk)
                 if not queryset:
-                    raise HttpResponse('Authentication credentials were not provided.', status=status.HTTP_401_UNAUTHORIZED)
+                    exception = CustomException()
+                    exception.set_error_code(status.HTTP_401_UNAUTHORIZED, "", "")
+                    raise exception
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             data = {"is_active": settings.IS_INACTIVE}
             serializer = OutletStoreSerializer(outletstoreObject, data=data, partial=True)
