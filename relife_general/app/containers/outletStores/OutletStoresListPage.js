@@ -9,10 +9,6 @@ import I18nUtils from '../../utils/I18nUtils'
 import SidebarFilterPC from '../../components/outletStores/SidebarFilterPC'
 import SidebarFilterSP from '../../components/outletStores/SidebarFilterSP'
 import Paginate from './../../components/Paginate'
-import {
-  isBrowser,
-  isMobile
-} from 'react-device-detect'
 import LocationActions from '../../redux/wrapper/LocationsRedux'
 class OutletStoresListPage extends React.Component {
   constructor(props) {
@@ -40,10 +36,22 @@ class OutletStoresListPage extends React.Component {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
+    let city = params.get('city')
+    let keyword = params.get('keyword')
+    let type = params.get('type__in')
+    let business = params.get('business__business__in')
+    let min_price = params.get('min_price__gte')
+    let max_price = params.get('max_price__lte')
     let data = {
       offset: (page - 1) * limit,
       limit: limit,
-      page: page
+      page: page,
+      ...(city && { city: city}),
+      ...(keyword && { keyword: keyword}),
+      ...(type && { type__in: type}),
+      ...(business && { business__business__in: business}),
+      ...(min_price && { min_price__gte: min_price}),
+      ...(max_price && { max_price__lte: max_price})
     }
     this.setState({
       page: data.page,
@@ -82,19 +90,19 @@ class OutletStoresListPage extends React.Component {
     this.getStoreList()
   }
 
+  onPageLoad = () => {
+    this.getStoreList()
+  }
+
   render() {
     let {storeList, locationList, count, page} = this.state
     return (
       <div>
-        {isMobile && (
-          <SidebarFilterSP locationList={locationList} />
-        )}
+        <SidebarFilterSP locationList={locationList} onPageLoad={this.onPageLoad} />
         <Container fluid className="lower-contents">
           <Row className="lower-contents-inner clearfix">
             <Col md="3">
-              {isBrowser && (
-                <SidebarFilterPC locationList={locationList} />
-              )}
+              <SidebarFilterPC locationList={locationList} onPageLoad={this.onPageLoad} />
             </Col>
             <Col xs="12" md="9" className="padding-0">
               <section className="main">
