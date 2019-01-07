@@ -32,7 +32,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
     lookup_field = 'pk'
     lookup_value_regex = '[^/]+'
     filter_backends = [DjangoFilterBackend]
-    filter_fields = ['city_id','type','content', 'title','min_price','max_price','OutletStoreBusiness']
+    filter_fields = ['city_id','type','content', 'title','min_price','max_price','outlet_store_business']
     def list(self, request):
         self.queryset = OutletStore.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         return super(OutletStoreViewSet, self).list(request)
@@ -60,7 +60,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                listbusinessid = request.data.get('businessids')
+                listbusinessid = request.data.get('new_business')
                 if listbusinessid is not None:
                     for bu_id in listbusinessid:
                             OutletStoreBusiness.objects.create(
@@ -99,8 +99,8 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                newoutbusiness = request.data.get('newoutbusiness')
-                removebusiness = request.data.get('removebusiness')
+                newoutbusiness = request.data.get('new_business')
+                removebusiness = request.data.get('remove_business')
                 self.updatebessiness(pk,newoutbusiness,removebusiness)
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OS005.value, {}), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OS011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
