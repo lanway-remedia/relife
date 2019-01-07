@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { Form, Label, Input, FormGroup, Button, Collapse } from 'reactstrap'
+import { Form, FormGroup, Button, Collapse, CustomInput} from 'reactstrap'
 import AttributeActions from '../../redux/wrapper/AttributesRedux'
 class AttributesSearchSP extends React.Component {
   constructor(props) {
@@ -39,6 +39,24 @@ class AttributesSearchSP extends React.Component {
     this.props.attributeHouseIncomeListRequest(data)
     this.props.attributeHouseSizeListRequest(data)
     this.props.attributePriceListRequest(data)
+
+    let params = new URLSearchParams(this.props.history.location.search)
+
+    let priceParams = params.get('price_range__in')
+    let floorParams = params.get('floor__in')
+    let constructionParams = params.get('contruction__in')
+    let styleParams = params.get('styles__style__in')
+    let houseSizeParams = params.get('household_size__in')
+    let houseIncomeParams = params.get('household_income__in')
+
+    this.setState({
+      priceRange: priceParams ? priceParams.split(',') : [],
+      floor: floorParams ? floorParams.split(',') : [],
+      construction: constructionParams ? constructionParams.split(',') : [],
+      style: styleParams ? styleParams.split(',') : [],
+      houseSize: houseSizeParams ? houseSizeParams.split(',') : [],
+      houseIncome: houseIncomeParams ? houseIncomeParams.split(',') : [],
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -159,7 +177,9 @@ class AttributesSearchSP extends React.Component {
   }
 
   render() {
-    const { listConstruction, listFloor, listPrice, listStyle, listHouseSize, listHouseIncome } = this.state
+    const { listConstruction, listFloor, listPrice, listStyle, listHouseSize, listHouseIncome, 
+      priceRange, floor, construction, style, houseSize, houseIncome
+    } = this.state
     return (
       <div className="filter-group sp">
         <div className="filter-button-open" onClick={this.toggle}>
@@ -175,122 +195,116 @@ class AttributesSearchSP extends React.Component {
                 <div className="sidebar-search-choices">
                   {/* list price */}
                   <div className="sidebar-search-choices-inner">
-                      <div className="search-title">価格帯（価格）</div>
-                        <FormGroup>
-                          {listPrice.map((price, key) => (
-                            <Label key={key}>
-                              <Input 
-                                className="choices-input" 
-                                type="checkbox" 
-                                name="priceRange" 
-                                value={price.id} 
-                                id={price.id} 
-                                onChange={this.handleChange} 
-                              />
-                              <span className="choices-parts">{price.title}</span>
-                            </Label>
-                          ))}
-                        </FormGroup>
+                    <div className="search-title">価格帯（価格）</div>
+                    <FormGroup check>
+                      {listPrice.map((val, key) => (
+                        <CustomInput
+                          key={key}
+                          type="checkbox"
+                          value={val.id}
+                          id={`${val.title}_sp`}
+                          label={val.title}
+                          name="priceRange"
+                          onChange={this.handleChange}
+                          defaultChecked={priceRange.includes(val.id.toString())}
+                        />
+                      ))}
+                    </FormGroup>
                   </div>
 
                   {/* listConstruction */}
                   <div className="sidebar-search-choices-inner">
                     <div className="search-title">構造 </div>
-                      <FormGroup>
-                        {listConstruction.map((contruction, keyConstr) => (
-                        <Label key={keyConstr}>
-                          <Input 
-                            className="choices-input" 
-                            type="checkbox" 
-                            name="construction" 
-                            value={contruction.id} 
-                            id={contruction.id} 
-                            onChange={this.handleChange} 
-                          />
-                          <span className="choices-parts">{contruction.title}</span>
-                        </Label>
-                        ))}
-                      </FormGroup>
+                    <FormGroup check>
+                      {listConstruction.map((val, key) => (
+                        <CustomInput
+                          key={key}
+                          type="checkbox"
+                          value={val.id}
+                          id={`${val.title}_sp`}
+                          label={val.title}
+                          name="construction"
+                          onChange={this.handleChange}
+                          defaultChecked={construction.includes(val.id.toString())}
+                        />
+                      ))}
+                    </FormGroup>
                   </div>
 
                   {/* list floor */}
                   <div className="sidebar-search-choices-inner">
                     <div className="search-title">階数 </div>
-                      <FormGroup>
-                        {listFloor.map((floor, key) => (
-                        <Label key={key}>
-                          <Input 
-                            className="choices-input" 
-                            type="checkbox" 
-                            name="floor" 
-                            value={floor.id} 
-                            id={floor.id} 
-                            onChange={this.handleChange} 
-                          />
-                          <span className="choices-parts">{floor.title}</span>
-                        </Label>
-                        ))}
-                      </FormGroup>
+                    <FormGroup check>
+                      {listFloor.map((val, key) => (
+                        <CustomInput
+                        key={key}
+                        type="checkbox"
+                        value={val.id}
+                        id={`${val.title}_sp`}
+                        label={val.title}
+                        name="floor"
+                        onChange={this.handleChange}
+                        defaultChecked={floor.includes(val.id.toString())}
+                        />
+                      ))}
+                    </FormGroup>
                   </div>
 
                   {/* list style */}
                   <div className="sidebar-search-choices-inner">
                     <div className="search-title">テイスト </div>
-                      <FormGroup>
-                        {listStyle.map((style, key) => (
-                        <Label key={key}>
-                        <Input 
-                          className="choices-input" 
-                          type="checkbox" 
-                          name="style" 
-                          value={style.id} 
-                          id={style.id} 
-                          onChange={this.handleChange} 
+                    <FormGroup check>
+                      {listStyle.map((val, key) => (
+                        <CustomInput
+                          key={key}
+                          type="checkbox"
+                          value={val.id}
+                          id={`${val.title}_sp`}
+                          label={val.title}
+                          name="style"
+                          onChange={this.handleChange}
+                          defaultChecked={style.includes(val.id.toString())}
                         />
-                          <span className="choices-parts">{style.title}</span>
-                        </Label>
-                        ))}
-                      </FormGroup>
+                      ))}
+                    </FormGroup>
                   </div>
 
                   {/* list house hold size */}
                   <div className="sidebar-search-choices-inner">
                     <div className="search-title">世帯人数 </div>
-                      <FormGroup>
-                        {listHouseSize.map((size, key) => (
-                        <Label key={key}>
-                        <Input 
-                          className="choices-input" 
-                          type="checkbox" 
-                          name="houseSize" 
-                          value={size.id} 
-                          id={size.id} 
+                    <FormGroup check>
+                      {listHouseSize.map((val, key) => (
+                        <CustomInput
+                          key={key}
+                          type="checkbox"
+                          value={val.id}
+                          id={`${val.title}_sp`}
+                          label={val.title}
+                          name="houseSize"
                           onChange={this.handleChange}
+                          defaultChecked={houseSize.includes(val.id.toString())}
                         />
-                          <span className="choices-parts">{size.title}</span>
-                        </Label>
-                        ))}
-                      </FormGroup>
+                      ))}
+                    </FormGroup>
                   </div>
 
                   {/* list house hold income */}
                   <div className="sidebar-search-choices-inner">
                     <div className="search-title">世帯年収 </div>
-                      <FormGroup>
-                        {listHouseIncome.map((income, key) => (
-                        <Label key={key}>
-                        <Input 
-                          className="choices-input" 
-                          type="checkbox" 
-                          name="houseIncome" 
-                          value={income.id} 
-                          id={income.id} 
+                    <FormGroup check> 
+                      {listHouseIncome.map((val, key) => (
+                        <CustomInput
+                          key={key}
+                          type="checkbox"
+                          value={val.id}
+                          id={`${val.title}_sp`}
+                          label={val.title}
+                          name="houseIncome"
                           onChange={this.handleChange}
+                          defaultChecked={houseIncome.includes(val.id.toString())}
                         />
-                          <span className="choices-parts">{income.title}</span>
-                        </Label>
-                        ))}
-                      </FormGroup>
+                      ))}
+                    </FormGroup>
                   </div>
                 </div>
 

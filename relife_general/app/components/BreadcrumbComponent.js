@@ -6,7 +6,7 @@ import homeIcon from '../images/home-icon.png'
 class BreadcrumbComponent extends React.Component {
   render() {
     return (
-      <div fluid className="breadcrumb-wrap">
+      <div className="breadcrumb-wrap">
         <div className="breadcrumb-inner">
           {/* <Breadcrumb>
             <BreadcrumbItem>

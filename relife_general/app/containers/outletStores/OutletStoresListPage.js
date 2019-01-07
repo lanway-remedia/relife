@@ -9,11 +9,16 @@ import I18nUtils from '../../utils/I18nUtils'
 import SidebarFilterPC from '../../components/outletStores/SidebarFilterPC'
 import SidebarFilterSP from '../../components/outletStores/SidebarFilterSP'
 import Paginate from './../../components/Paginate'
-import BreadcrumbComponent from '../../components/BreadcrumbComponent'
+import {
+  isBrowser,
+  isMobile
+} from 'react-device-detect'
+import LocationActions from '../../redux/wrapper/LocationsRedux'
 class OutletStoresListPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      locationList: [],
       storeList: [],
       count: 0,
       page: 0,
@@ -21,6 +26,16 @@ class OutletStoresListPage extends React.Component {
     }
     this.getStoreList = this.getStoreList.bind(this)
   }
+
+  getLocationList = () => {
+    let data = {
+      limit: '',
+      offset: '',
+      type: 2
+    }
+    this.props.locationListRequest(data)
+  }
+
   getStoreList = () => {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
@@ -37,6 +52,7 @@ class OutletStoresListPage extends React.Component {
     this.props.outletStoresListRequest(data)
   }
   componentDidMount() {
+    this.getLocationList()
     this.getStoreList()
   }
 
@@ -50,6 +66,16 @@ class OutletStoresListPage extends React.Component {
         })
       }
     }
+
+    if (this.props.dataLocation != nextProps.dataLocation) {
+      let response = nextProps.dataLocation
+      if (response.isGetListLocation == true) {
+        let data = response.data
+        this.setState({
+          locationList: data
+        })
+      }
+    }
   }
 
   pageChanged = () => {
@@ -57,14 +83,18 @@ class OutletStoresListPage extends React.Component {
   }
 
   render() {
-    let {storeList, count, page} = this.state
+    let {storeList, locationList, count, page} = this.state
     return (
       <div>
-        <SidebarFilterSP />
+        {isMobile && (
+          <SidebarFilterSP locationList={locationList} />
+        )}
         <Container fluid className="lower-contents">
           <Row className="lower-contents-inner clearfix">
             <Col md="3">
-              <SidebarFilterPC />
+              {isBrowser && (
+                <SidebarFilterPC locationList={locationList} />
+              )}
             </Col>
             <Col xs="12" md="9" className="padding-0">
               <section className="main">
@@ -89,7 +119,7 @@ class OutletStoresListPage extends React.Component {
 
                         <div className="adv-builder-once-title-right">
                           <div className="adv-builder-once-link">
-                            <Link to={'/builder/'+ val.id}>詳細はこちら</Link>
+                            <Link to={'/builder/'+ val.id}>{I18nUtils.t('view-detail')}</Link>
                           </div>
                         </div>
                       </div>
@@ -117,7 +147,8 @@ class OutletStoresListPage extends React.Component {
 const mapStateToProps = state => {
   return {
     processing: state.outletStores.processing,
-    data: state.outletStores.data
+    data: state.outletStores.data,
+    dataLocation: state.locations.data
   }
 }
 
@@ -125,12 +156,16 @@ OutletStoresListPage.propTypes = {
   history: PropTypes.object,
   location: PropTypes.object,
   data: PropTypes.object,
+  dataLocation: PropTypes.object,
   outletStoresListRequest: PropTypes.func,
+  locationListRequest : PropTypes.func,
 }
 
 const mapDispatchToProps = dispatch => ({
   outletStoresListRequest: data =>
     dispatch(OutletStoreActions.outletStoresListRequest(data)),
+  locationListRequest: dataLocation =>
+    dispatch(LocationActions.locationListRequest(dataLocation)),
 })
 
 export default connect(

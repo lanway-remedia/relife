@@ -134,12 +134,5 @@
   float: left;
   width: 180px;
   margin: 0 70px 0 0;
-  @import './components/exampleHouse/formSearch';
-
-
-
-  @import './components/sidebarSearch';
-
-
-
+  @import './components/sidebarSearch/sidebarSearch';
 }
