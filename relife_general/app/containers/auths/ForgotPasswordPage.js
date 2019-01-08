@@ -15,11 +15,7 @@ import AuthsActions from '../../redux/wrapper/AuthsRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import validator from 'validator'
-import {
-  Button,
-  FormGroup,
-  Label
-} from 'reactstrap'
+import { Button, FormGroup, Label } from 'reactstrap'
 import formLogo from '../../images/form-logo.png'
 
 class ForgotPasswordPage extends React.Component {
@@ -45,7 +41,10 @@ class ForgotPasswordPage extends React.Component {
     if (this.props.response != nextProps.response) {
       let response = nextProps.response
       if (response.forgotPassword) {
-        this.props.show(ModalName.COMMON, { message: I18nUtils.t(response.messageCode), okFunction: () => this.okFunction()})
+        this.props.show(ModalName.COMMON, {
+          message: I18nUtils.t(response.messageCode),
+          okFunction: () => this.okFunction()
+        })
       }
     }
   }
