@@ -107,42 +107,50 @@ class OutletStoresListPage extends React.Component {
             <Col xs="12" md="9" className="padding-0">
               <section className="main">
                 <h1 className="search-result page-title">{I18nUtils.t('list-example-house')}</h1>
-                <div className="builder-list-img">
-                  {storeList.map((val, key) => {
-                  return (
-                    <div className="builder-list-once-img" key={key}>
-                      <div className="adv-builder-once-img">
-                        <img src={val.img_large} />
-                      </div>
-                      <div className="adv-builder-once-title-wrap clearfix">
-                        <div className="adv-builder-once-title-left">
-                          <h2 className="adv-builder-once-title">
-                            {val.title}
-                            <span className="pr-icon">PR</span>
-                          </h2>
-                          <div className="adv-builder-once-area">
-                            {val.address}
+                {count > 0 ? (
+                  <div>
+                    <div className="builder-list-img">
+                      {storeList.map((val, key) => {
+                      return (
+                        <div className="builder-list-once-img" key={key}>
+                          <div className="adv-builder-once-img">
+                            <img src={val.img_large} />
+                          </div>
+                          <div className="adv-builder-once-title-wrap clearfix">
+                            <div className="adv-builder-once-title-left">
+                              <h2 className="adv-builder-once-title">
+                                {val.title}
+                                <span className="pr-icon">PR</span>
+                              </h2>
+                              <div className="adv-builder-once-area">
+                                {val.address}
+                              </div>
+                            </div>
+
+                            <div className="adv-builder-once-title-right">
+                              <div className="adv-builder-once-link">
+                                <Link to={'/builder/'+ val.id}>{I18nUtils.t('view-detail')}</Link>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="adv-builder-once-intro-title">
+                            {val.slogan_title}
+                          </div>
+                          <div className="adv-builder-once-intro">
+                            {val.slogan_content}
                           </div>
                         </div>
-
-                        <div className="adv-builder-once-title-right">
-                          <div className="adv-builder-once-link">
-                            <Link to={'/builder/'+ val.id}>{I18nUtils.t('view-detail')}</Link>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="adv-builder-once-intro-title">
-                        {val.slogan_title}
-                      </div>
-                      <div className="adv-builder-once-intro">
-                        {val.slogan_content}
-                      </div>
+                        )
+                      })}
                     </div>
-                    )
-                  })}
-                </div>
-                <Paginate count={count} pageChanged={() => this.pageChanged()} currentPage={page} />
+                    <Paginate count={count} pageChanged={() => this.pageChanged()} currentPage={page} />
+                  </div>
+                ) : (
+                  <p className="search-page-sorry">
+                    {I18nUtils.t('search-no-record')}
+                  </p>
+                )}
               </section>
             </Col>
           </Row>

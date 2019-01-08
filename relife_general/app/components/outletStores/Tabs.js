@@ -40,7 +40,7 @@ class Tabs extends React.Component {
               className={classnames({ current: this.state.activeTab === '1' })}
               onClick={() => { this.toggle('1') }}
             >
-              {I18nUtils.t('store-intro-title')}
+              {I18nUtils.t('company-intro-title')}
             </li>
             <li 
               className={classnames({ current: this.state.activeTab === '2' })}
@@ -71,7 +71,7 @@ class Tabs extends React.Component {
               className={classnames({ current: this.state.activeTab === '1' })}
               onClick={() => { this.toggle('1') }}
             >
-              {I18nUtils.t('store-intro-title')}
+              {I18nUtils.t('company-intro-title')}
             </li>
             <li 
               className={classnames({ current: this.state.activeTab === '2' })}

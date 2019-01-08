@@ -88,6 +88,7 @@ class SidebarFilterPC extends React.Component {
     })
     this.props.onPageLoad()
   }
+
   componentDidMount() {
     let params = new URLSearchParams(this.props.history.location.search)
     let city = params.get('city')
@@ -110,7 +111,16 @@ class SidebarFilterPC extends React.Component {
   render () {
     let {locationList} = this.props
     let {city, keyword, type, business, min_price, max_price} = this.state
-    console.log(type.includes('1'))
+    const dataType = [
+      { 'id': 1, 'title': 'ハウスメーカー'},
+      { 'id': 2, 'title': '工務店'},
+      { 'id': 3, 'title': '設計事務所'},
+    ]
+    const dataBussines = [
+      { 'id': 1, 'title': '注文住宅'},
+      { 'id': 2, 'title': 'リフォーム'},
+      { 'id': 3, 'title': 'リノベーション'},
+    ]
     return (
       <section className="side pc">
         <Form id="frm-search-pc">
@@ -144,7 +154,6 @@ class SidebarFilterPC extends React.Component {
                 className="field"
                 placeholder={I18nUtils.t('search-freeword')}
                 onChange={this.handleChange}
-                defaultChecked="true"
               />
             </div>
           </div>
@@ -154,33 +163,18 @@ class SidebarFilterPC extends React.Component {
               {I18nUtils.t('search-request')}
             </div>
             <FormGroup check>
-              <CustomInput 
+              {dataType.map((val, key) => (
+                <CustomInput
+                key={key}
                 type="checkbox" 
-                id="ハウスメーカー_pc" 
-                label="ハウスメーカー"
-                value="1"
+                id={`${val.title}_pc`}
+                label={val.title}
+                value={val.id}
                 name="type"
                 onChange={this.handleChange}
-                defaultChecked
-              />
-              <CustomInput 
-                type="checkbox" 
-                id="工務店_pc" 
-                label="工務店"
-                value="2"
-                name="type"
-                onChange={this.handleChange}
-                defaultChecked={type.includes('2')}
-              />
-              <CustomInput 
-                type="checkbox" 
-                id="設計事務所_pc" 
-                label="設計事務所"
-                value="3"
-                name="type"
-                onChange={this.handleChange}
-                defaultChecked={type.includes('3')}
-              />
+                defaultChecked={type.includes(val.id.toString())}
+                />
+              ))}
             </FormGroup>
           </div>
 
@@ -189,30 +183,18 @@ class SidebarFilterPC extends React.Component {
               {I18nUtils.t('search-content-request')}
             </div>
             <FormGroup check>
-              <CustomInput 
+              {dataBussines.map((val, key) => (
+                <CustomInput
+                key={key}
                 type="checkbox" 
-                id="注文住宅_pc" 
-                label="注文住宅"
-                value="1"
+                id={`${val.title}_pc`}
+                label={val.title}
+                value={val.id}
                 name="business"
                 onChange={this.handleChange}
-              />
-              <CustomInput 
-                type="checkbox" 
-                id="リフォーム_pc" 
-                label="リフォーム"
-                value="2"
-                name="business"
-                onChange={this.handleChange}
-              />
-              <CustomInput 
-                type="checkbox" 
-                id="リノベーション_pc" 
-                label="リノベーション"
-                value="3"
-                name="business"
-                onChange={this.handleChange}
-              />
+                defaultChecked={business.includes(val.id.toString())}
+                />
+              ))}
             </FormGroup>
           </div>
 

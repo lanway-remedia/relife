@@ -31,7 +31,7 @@ class TabContact extends React.Component {
       construction_position_type: '',
       construction_position: '',
       construction_duration: '',
-      budger: '',
+      budget: '',
       household_income: '',
       construction_type: '',
       current_situation: '',
@@ -108,7 +108,7 @@ class TabContact extends React.Component {
     data.append('construction_position', this.state.construction_position)
     data.append('construction_position_type', this.state.construction_position_type)
     data.append('construction_duration', this.state.construction_duration)
-    data.append('budger', this.state.budger)
+    data.append('budget', this.state.budget)
     data.append('household_income', this.state.household_income)
     data.append('construction_type', this.state.construction_type)
     data.append('current_situation', this.state.current_situation)
@@ -327,10 +327,10 @@ class TabContact extends React.Component {
                 required={false} 
               />
               <ContactRadio 
-                name="budger" 
+                name="budget" 
                 data={budget} 
                 onChange={this.handleChange} 
-                value={this.state.budger} 
+                value={this.state.budget} 
               />
             </div>
 
