@@ -80,6 +80,8 @@
   "search-price-range": "価格帯（坪単価）",
   "search-clear": "入力値をリセット",
   "search": "検索",
+  "search-from-price": "予算から建築実績を探す",
+  "search-from-performance": "こだわりから建築実績を探す",
 
   "validate-email": "メールアドレスが正しくありません。",
   "validate-field-0": "フィルドには必ず情報を入力しください。",
