@@ -35,7 +35,7 @@ from mrelife.users.serializers import (PasswordSerializer, ProfileSerializer,
                                        UserShowSerializer,
                                        UserWithoutRequireInfoSerializer)
 from mrelife.utils.bc_store_owner_permission import BecomStoreOwnerPermision
-from mrelife.utils.groups import GroupUser, IsStore
+from mrelife.utils.groups import GroupUser, IsStore,GroupSub
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.relifeenum import MessageCode
 from mrelife.utils.relifepermissions import AdminOrStoreOrDenyPermission
@@ -95,6 +95,8 @@ class UserVs(ModelViewSet):
                 user.save()
                 if not (user.group):
                     user.group=GroupUser()
+                    if IsStore(request.user):
+                        user.group=GroupSub()
                     user.save()
                 return Response(CommonFuntion.resultResponse(True, UserShowSerializer(user).data, MessageCode.BSO003.value, {}), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.BSO003.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
