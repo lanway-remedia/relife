@@ -68,7 +68,7 @@ class OutletStoreSerializer(ModelSerializer):
 
     class Meta:
         model = OutletStore
-        fields = ('id', 'title', 'city')
+        fields = '__all__'
 
 
 class ContructionSerializer(ModelSerializer):
