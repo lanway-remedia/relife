@@ -45,7 +45,7 @@ class CommonModal extends Component {
 
           {okFunction && (
             <div className="modal-btns">
-              <Button color="secondary" onClick={okFunction}>
+              <Button color="secondary" className="btn-secondary" onClick={okFunction}>
                 {I18nUtils.t('ok')}
               </Button>
               <Button color="success" className="btn-default" onClick={handleHide}>
@@ -55,7 +55,7 @@ class CommonModal extends Component {
           )}
           {deleteFunction && (
             <div className="modal-btns">
-              <Button color="secondary" onClick={deleteFunction}>
+              <Button color="secondary" className="btn-secondary" onClick={deleteFunction}>
                 {I18nUtils.t('delete')}
               </Button>
               <Button color="success" className="btn-default" onClick={handleHide}>
