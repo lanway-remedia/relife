@@ -2,26 +2,29 @@
     User version 1
 """
 from datetime import datetime, timedelta
-from rest_framework.generics import GenericAPIView
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from rest_framework.generics import GenericAPIView
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
-from rest_framework_jwt.serializers import JSONWebTokenSerializer
-from rest_framework_jwt.settings import api_settings
-from rest_framework_jwt.views import JSONWebTokenAPIView
 
 from mrelife.authenticates.lanway_portal import lanway_edit_user_password
 from mrelife.authenticates.mails import auth_mail
-from mrelife.authenticates.serializers import PasswordSerializer, RegisterSerializer, ResetPasswordSerializer
+from mrelife.authenticates.serializers import (PasswordSerializer,
+                                               RegisterSerializer,
+                                               ResetPasswordSerializer)
+from mrelife.users.serializers import UserSerializer
 from mrelife.utils.groups import GroupUser
 from mrelife.utils.querys import get_or_none
-from mrelife.utils.response import response_200, response_201, response_400, response_404, response_503
+from mrelife.utils.response import (response_200, response_201, response_400,
+                                    response_404, response_503)
 from mrelife.utils.validates import email_exist
-from mrelife.users.serializers import UserSerializer
+from rest_framework_jwt.serializers import JSONWebTokenSerializer
+from rest_framework_jwt.settings import api_settings
+from rest_framework_jwt.views import JSONWebTokenAPIView
 
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
 
@@ -163,6 +166,15 @@ class RelifeJSONWebTokenAPIView(JSONWebTokenAPIView):
 class RegisterView(APIView):
     serializer_class = RegisterSerializer
     parser_classes = (JSONParser,)
+# mail = EmailField(required=True)
+#     username = CharField(required=True)
+#     password1 = CharField(required=True)
+#     first_name = CharField(required=False)
+#     last_name = CharField(required=False)
+#     birth_date = CharField(required=False)
+#     address = CharField(required=False)
+#     password2 = CharField(required=True)
+#     domain = CharField(required=True)
 
     def post(self, request):
         """
@@ -172,7 +184,9 @@ class RegisterView(APIView):
                 first_name:  str require
                 last_name :  str require
                 password1: str require
-                password2: str require   
+                password2: str require  
+                birth_date: str
+                address: str
                 domain: str require
         """
         if request.user.is_authenticated:
@@ -187,6 +201,8 @@ class RegisterView(APIView):
         domain = serializer.data['domain']
         firstname = serializer.data['first_name']
         lastname = serializer.data['last_name']
+        birth_date = serializer.data['birth_date']
+        address = serializer.data['address']
         user = User.objects.create(username=username, email=email, group=GroupUser(),
                                    first_name=firstname, last_name=lastname)
         user.set_password(serializer.data['password1'])

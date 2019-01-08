@@ -25,7 +25,7 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
     construction_position_type = serializers.ChoiceField(choices=settings.CONSTRUCTIONPOSITIONTYPE,default='現住所と同じ' )
     construction_position = serializers.CharField(max_length=255)
     construction_duration = serializers.ChoiceField(choices=settings.CONSTRUCTIONDURATION,default='現住所と同じ' )
-    budger = serializers.ChoiceField(choices=settings.BUDGET,default='現住所と同じ' )
+    budget = serializers.ChoiceField(choices=settings.BUDGET,default='現住所と同じ' )
     household_income = serializers.ChoiceField(choices=settings.HOUSEHOLDINCOME,default='現住所と同じ' )
     construction_type =serializers.ChoiceField(choices=settings.CONSTRUCTION_TYPE,default='現住所と同じ' )
     current_situation = serializers.ChoiceField(choices=settings.CURRENTSITUATION,default='現住所と同じ' )
@@ -34,7 +34,7 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = OutletStoreContact
         fields = ('id','outlet_store_id','outlet_store','name','name_kana','zipcode','address','email','tel',
-                  'age','household_size','acreage','construction_position_type','construction_position','construction_duration','budger','household_income','construction_type','current_situation','content', 'is_active')
+                  'age','household_size','acreage','construction_position_type','construction_position','construction_duration','budget','household_income','construction_type','current_situation','content', 'is_active')
 
     def validate_outlet_store_id(self, outlet_store_id):
         try:
@@ -52,8 +52,8 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
         return settings.CONSTRUCTIONPOSITIONTYPE[construction_position_type-1][1]
     def validate_construction_duration(self, construction_duration):
         return settings.CONSTRUCTIONDURATION[construction_duration-1][1]
-    def validate_budger(self, budger):
-        return settings.BUDGET[budger-1][1]
+    def validate_budget(self, budget):
+        return settings.BUDGET[budget-1][1]
     def validate_household_income(self, household_income):
         return settings.HOUSEHOLDINCOME[household_income-1][1]
     def validate_construction_type(self, construction_type):

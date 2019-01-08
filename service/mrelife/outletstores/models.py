@@ -113,7 +113,7 @@ class OutletStoreContact(Model):
     construction_position_type =CharField(max_length=255, choices=settings.CONSTRUCTIONPOSITIONTYPE,default='現住所と同じ' )
     construction_position = CharField(max_length=255 )
     construction_duration = CharField(max_length=255, choices=settings.CONSTRUCTIONDURATION,default='3ヵ月以内' )
-    budger = CharField(max_length=255, choices=settings.BUDGET,default='1500万未満' )
+    budget= CharField(max_length=255, choices=settings.BUDGET,default='1500万未満' )
     household_income = CharField(max_length=255, choices=settings.HOUSEHOLDINCOME,default='350万未満以下' )
     construction_type = CharField(max_length=255, choices=settings.CONSTRUCTION_TYPE,default='新規' )
     current_situation = CharField(max_length=255, choices=settings.CURRENTSITUATION,default='住宅・リフォーム・リノベの検討を始めた' )
