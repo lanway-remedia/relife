@@ -12,13 +12,13 @@ class TabIntroduction extends React.Component {
       <Row className="tab-content-item">
         <Col xs="12" md="12" className="tab-intro">
           <h2 className="detail-subtitle">
-            {I18nUtils.t('store-intro-title')}
+            {I18nUtils.t('company-intro-title')}
           </h2>
           <div className="company-intro">
             {outletStore.content}
           </div>
           <h2 className="detail-subtitle">
-          {I18nUtils.t('store-data-title')}
+          {I18nUtils.t('company-data-title')}
           </h2>
           <div className="company-data">
             <Table>

@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {withRouter} from 'react-router-dom'
-import { Form, Label, Input, FormGroup, Button, Collapse, CustomInput } from 'reactstrap'
+import { Form, Input, FormGroup, Button, Collapse, CustomInput } from 'reactstrap'
 import I18nUtils from '../../utils/I18nUtils'
 class SidebarFilterSP extends React.Component {
   constructor(props) {
@@ -10,25 +10,121 @@ class SidebarFilterSP extends React.Component {
     this.state = {
       collapse: false,
 
+      locationList: [],
+      city: '',
       keyword: '',
+      type: [],
+      business: [],
+      min_price: '',
+      max_price: '',
     }
     this.toggle = this.toggle.bind(this)
     this.handleResetForm = this.handleResetForm.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange = e => {
-    console.log(e.target.value)
+    let type = e.target.type
+    let name = e.target.name
+    if (type == 'text' || type == 'select-one') {
+      this.setState({
+        [e.target.name]: e.target.value
+      })
+    } else if (type == 'checkbox') {
+      let itemChecked
+      if (name == 'type') {
+        itemChecked = this.state.type
+      } else if (name == 'business') {
+        itemChecked = this.state.business
+      }
+      const value = e.target.value
+      const isChecked = e.target.checked
+
+      if (isChecked === false) {
+        itemChecked = itemChecked.filter(item => item !== value)
+      } else {
+        itemChecked.push(value)
+      }
+      this.setState({
+        [e.target.name] : itemChecked
+      })
+    }
   }
   handleResetForm = () => {
-    document.getElementById('frm-search').reset()
+    this.props.history.push({
+      search: `` 
+    })
+
+    this.setState({
+      city: '',
+      keyword: '',
+      type: [],
+      business: [],
+      min_price: '',
+      max_price: '',
+    })
+
+    document.getElementById('frm-search-pc').reset()
+    this.props.onPageLoad()
   }
+
+  handleSubmit = () => {
+    let {city, keyword, type, business, min_price, max_price} = this.state
+    let typeParam = type.join(',')
+    let businessParam = business.join(',')
+    let parsed = {
+      ...(city && { city: city}),
+      ...(keyword && { keyword: keyword}),
+      ...(type.length > 0 && { type__in: typeParam}),
+      ...(business.length > 0 && { business__business__in: businessParam}),
+      ...(min_price && { min_price__gte: min_price}),
+      ...(max_price && { max_price__lte: max_price})
+    }
+    let search = new URLSearchParams(parsed)
+    this.props.history.push({
+      search: `?${search.toString()}`
+    })
+    this.props.onPageLoad()
+    this.toggle()
+  }
+
   toggle = () => {
     this.setState({ collapse: !this.state.collapse })
   }
 
+  componentDidMount() {
+    let params = new URLSearchParams(this.props.history.location.search)
+    let city = params.get('city')
+    let keyword = params.get('keyword')
+    let type = params.get('type__in')
+    let business = params.get('business__business__in')
+    let max_price = params.get('max_price__lte')
+    let min_price = params.get('min_price__gte')
+
+    this.setState({
+      city: city ? city : '',
+      keyword: keyword ? keyword : '',
+      type: type ? type.split(',') : [],
+      business: business ? business.split(',') : [],
+      max_price: max_price ? max_price : '',
+      min_price: min_price ? min_price : '',
+    })
+  }
+
   render() {
     let {locationList} = this.props
+    let {city, keyword, type, business, min_price, max_price} = this.state
+    const dataType = [
+      { 'id': 1, 'title': 'ハウスメーカー'},
+      { 'id': 2, 'title': '工務店'},
+      { 'id': 3, 'title': '設計事務所'},
+    ]
+    const dataBussines = [
+      { 'id': 1, 'title': '注文住宅'},
+      { 'id': 2, 'title': 'リフォーム'},
+      { 'id': 3, 'title': 'リノベーション'},
+    ]
     return (
       <div className="filter-group sp">
         <div className="filter-button-open" onClick={this.toggle}>
@@ -50,7 +146,7 @@ class SidebarFilterSP extends React.Component {
                           type="select"
                           name="city"
                           onChange={this.handleChange}
-                          value={this.state.city}
+                          value={city}
                         >
                           {locationList.map((val, key) => (
                             <option key={key}>{val.name}</option>
@@ -64,6 +160,7 @@ class SidebarFilterSP extends React.Component {
                         <Input
                           type="text"
                           name="keyword"
+                          value={keyword}
                           className="field"
                           placeholder={I18nUtils.t('search-freeword')}
                           onChange={this.handleChange}
@@ -73,48 +170,36 @@ class SidebarFilterSP extends React.Component {
                   <div className="sidebar-search-choices-inner">
                     <div className="search-title">{I18nUtils.t('search-request')}</div>
                       <FormGroup check>
-                        <CustomInput 
+                        {dataType.map((val, key) => (
+                          <CustomInput
+                          key={key}
                           type="checkbox" 
-                          id="ハウスメーカー" 
-                          label="ハウスメーカー"
+                          id={`${val.title}_sp`}
+                          label={val.title}
+                          value={val.id}
+                          name="type"
                           onChange={this.handleChange}
-                        />
-                        <CustomInput 
-                          type="checkbox" 
-                          id="工務店" 
-                          label="工務店"
-                          onChange={this.handleChange}
-                        />
-                        <CustomInput 
-                          type="checkbox" 
-                          id="設計事務所" 
-                          label="設計事務所"
-                          onChange={this.handleChange}
-                        />
+                          defaultChecked={type.includes(val.id.toString())}
+                          />
+                        ))}
                       </FormGroup>
                   </div>
 
                   <div className="sidebar-search-choices-inner">
                     <div className="search-title">{I18nUtils.t('search-content-request')}</div>
                       <FormGroup check>
-                        <CustomInput 
+                        {dataBussines.map((val, key) => (
+                          <CustomInput
+                          key={key}
                           type="checkbox" 
-                          id="注文住宅" 
-                          label="注文住宅"
+                          id={`${val.title}_sp`}
+                          label={val.title}
+                          value={val.id}
+                          name="business"
                           onChange={this.handleChange}
-                        />
-                        <CustomInput 
-                          type="checkbox" 
-                          id="リフォーム" 
-                          label="リフォーム"
-                          onChange={this.handleChange}
-                        />
-                        <CustomInput 
-                          type="checkbox" 
-                          id="リノベーション" 
-                          label="リノベーション"
-                          onChange={this.handleChange}
-                        />
+                          defaultChecked={business.includes(val.id.toString())}
+                          />
+                        ))}
                       </FormGroup>
                   </div>
 
@@ -125,6 +210,7 @@ class SidebarFilterSP extends React.Component {
                       type="select" 
                       name="min_price"
                       onChange={this.handleChange}
+                      value={min_price}
                       >
                         <option value="0">下限なし</option>
                         <option value="1">20万円以上</option>
@@ -141,13 +227,14 @@ class SidebarFilterSP extends React.Component {
                       </Input>
                     </div>
                     <span className="select-between">
-                    ～
+                      ～
                     </span>
                     <div className="select-wrap">
                       <Input 
                         type="select" 
                         name="max_price" 
                         onChange={this.handleChange}
+                        value={max_price}
                       >
                         <option value="1">20万円以下</option>
                         <option value="2">30万円以下</option>
@@ -164,10 +251,18 @@ class SidebarFilterSP extends React.Component {
                       </Input>
                     </div>
                   </div>
-                  <Button type="button" onClick={this.handleResetForm} className="sidebar-clear-btn btn clear-button">
+                  <Button 
+                    type="button" 
+                    onClick={this.handleResetForm} 
+                    className="sidebar-clear-btn btn clear-button"
+                  >
                     {I18nUtils.t('search-clear')}
                   </Button>
-                  <Button type="button" className="sidebar-search-btn btn btn-default">
+                  <Button 
+                    type="button" 
+                    className="sidebar-search-btn btn btn-default"
+                    onClick={this.handleSubmit}
+                  >
                     <i className="fa fa-search" />
                     {I18nUtils.t('search')}
                   </Button>
@@ -186,6 +281,8 @@ class SidebarFilterSP extends React.Component {
 
 SidebarFilterSP.propTypes = {
   locationList : PropTypes.array,
+  history: PropTypes.object,
+  onPageLoad: PropTypes.func,
 }
 
 export default connect()(withRouter(SidebarFilterSP))

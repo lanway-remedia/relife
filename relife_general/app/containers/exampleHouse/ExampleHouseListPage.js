@@ -130,13 +130,13 @@ class ExampleHouseListPage extends React.Component {
                           <div className="adv-example-once-link">
                             <Link to={'/example/' + exampleHouseNew.id}>{
                               I18nUtils.t('view-detail')}
-                              </Link>
+                            </Link>
                           </div>
                         </div>
                       </div>
                       <div className="adv-example-once-text">シンプルだけど存在感の大きさを感じる絶妙なデザイン</div>
                       <div className="adv-example-once-company-area">
-                        City/Region
+                        {exampleHouseNew.store ? (exampleHouseNew.store.address ? exampleHouseNew.store.address : '') : ''}
                       </div>
                       <div className="adv-example-once-company">
                         {exampleHouseNew.store ? exampleHouseNew.store.title : ''}
@@ -160,7 +160,7 @@ class ExampleHouseListPage extends React.Component {
                                   {val.title}
                                 </h3>
                                 <div className="example-list-once-company-area">
-                                  City/Region
+                                  {val.store ? (val.store.address ? val.store.address : '') : ''}
                                 </div>
                                 <div className="example-list-once-company">{val.store.title}</div>
                               </Link>

@@ -114,9 +114,11 @@ class ExampleHouseViewPage extends React.Component {
                             {val.title}
                           </h3>
                           <div className="detail-list-once-company-area">
-                            {val.store.address ? val.store.address : ''}
+                            {val.store ? (val.store.address ? val.store.address : '') : ''}
                           </div>
-                          <div className="detail-list-once-company">{val.store.title}</div>
+                          <div className="detail-list-once-company">
+                            {val.store ? val.store.title : ''}
+                          </div>
                         </Link>
                       </Col>
                     )

@@ -47,13 +47,15 @@ class HeaderSubMenu extends React.Component {
             {locationList.map((region, key) => (
               <div key={key} className="top-map-list-once clearfix">
                 <div className="top-map-list-area">{region.name}</div>
-                <ul>
-                  {region.cities.map((city, k) => (
-                    <li key={k}>
-                      <Link to="">{city.name}</Link>
-                    </li>
-                  ))}
-                </ul>
+                {region.cities && (
+                  <ul>
+                    {region.cities.map((city, k) => (
+                      <li key={k}>
+                        <Link to="">{city.name}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             ))}
           </div>
