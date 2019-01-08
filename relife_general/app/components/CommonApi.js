@@ -32,7 +32,7 @@ class CommonApi extends React.Component {
       this.props.getProfile(nextProps.data)
     }
     if (this.props.loginData != nextProps.loginData) {
-      if (nextProps.loginData.data.token)
+      if (nextProps.loginData.data.token && nextProps.loginData.data.user)
         this.props.profileRequest({})
     }
   }
