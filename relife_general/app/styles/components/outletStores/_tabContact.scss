@@ -1,0 +1,155 @@
+.tab-contact {
+  border: #f2f3f2 20px solid;
+  margin-bottom: 100px;
+    .contact_table_tr {
+      display: table;
+      border-bottom: 1px solid #dadada;
+      width: 100%;
+      .contact_table_th {
+        display: table-cell;
+        width: 25%;
+        font-size: 1.4rem;
+        padding: 30px 20px;
+        line-height: 1.4rem;
+        font-weight: bold;
+        vertical-align: middle;
+        @media screen and (max-width: 767px) {
+          display: inline-block;
+          width: 100%;
+          font-size: 1.2rem;
+          padding: 20px 20px 10px 20px;
+          line-height: 1.2rem;
+          font-weight: bold;
+          vertical-align: middle;
+        }
+        span {
+          margin: 0 0 0 10px;
+          background: $bkg-green-color;
+          font-size: 10px;
+          color: #fff;
+          padding: 4px;
+          letter-spacing: 0.1rem;
+          vertical-align: top;
+        }
+      }
+
+      .contact_table_td {
+        display: table-cell;
+        width: 75%;
+        font-size: 1.4rem;
+        padding: 30px 20px 30px 0;
+        @media screen and (max-width: 767px) {
+          display: inline-block;
+          width: 100%;
+          font-size: 1.2rem;
+          padding: 0 20px 20px 20px;
+        }
+        input {
+          padding: 10px 15px;
+          line-height: 1.4rem;
+          width: 100%;
+          border-radius: 0;
+        }
+        .contact_table_td_input {
+          position: relative;
+
+          textarea {
+            padding: 10px 15px;
+            width: 100%;
+            border: #dadada 1px solid;
+          }
+        }
+
+        .form-check-inline {
+          margin: 0 2rem 0.5rem 0;
+          position: relative;
+          .form-check-input {
+            margin-right: 0.9rem;
+            width: 16px;
+            position: absolute;
+            top: 0px;
+          }
+          .form-check-label {
+            margin-left: 25px;
+          }
+        }
+      } /* end .contact_table_td */
+
+      .addressbar {
+        p {
+          display: inline;
+          line-height: 40px;
+          input[type="text"] {
+            display: inline;
+            width: 100px;
+            margin: 0 5px;
+          }
+        }
+        .attention {
+          display: block;
+        }
+      } /* end .addressbar */
+    }
+    .form-text {
+      font-size: 1.2rem;
+      text-align: left;
+      margin: 30px 30px 30px 30px;
+
+      a {
+        color: $bkg-green-color;
+      }
+    }
+    .contact-button {
+      margin: 30px 0;
+      text-align: center;
+      button {
+        width: 180px;
+        height: 48px;
+        font-size: 1.6rem;
+        background: $bkg-green-color;
+        text-align: center;
+        vertical-align: middle;
+        border-style: none;
+        color: #fff;
+        &:hover {
+          background: $bkg-green-color-hover;
+        }
+      }
+      
+    }
+}
+
+input[type='radio'] {
+  border: 1px solid #dadada !important;
+  padding: 0.5em !important;
+  -webkit-appearance: none;
+  background: #f2f3f2;
+  border-radius: 3px !important;
+}
+
+input[type='radio']:checked + label.form-check-label {
+  color: $bkg-green-color;
+}
+
+input[type='radio']:checked + label.form-check-label:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 6px;
+  height: 11px;
+  transform: rotate(40deg);
+  border-bottom: 2px solid $bkg-green-color;
+  border-right: 2px solid $bkg-green-color;
+  @media screen and (max-width: 767px) {
+    top: 0px;
+  }
+}
+
+.was-validated .form-check-input:invalid ~ .form-check-label, .form-check-input.is-invalid ~ .form-check-label {
+  color: #212529;
+}
+.was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {
+  color: #212529;
+}

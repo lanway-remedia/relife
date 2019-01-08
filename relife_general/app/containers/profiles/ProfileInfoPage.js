@@ -120,7 +120,8 @@ ProfileInfoPage.propTypes = {
   history: PropTypes.object,
   data: PropTypes.object,
   profileRequest: PropTypes.func,
-  editProfileRequest: PropTypes.func
+  editProfileRequest: PropTypes.func,
+  show: PropTypes.func
 }
 
 const mapStateToProps = state => {

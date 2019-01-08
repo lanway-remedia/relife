@@ -1,0 +1,91 @@
+.sidebar-search-choices {
+  margin: 0 0 20px 0;
+  @media screen and(max-width: 767px) {
+    .sidebar-search-place,.sidebar-search-word {
+      width: calc(50% - 10px);
+      float: left;
+      margin: 0 10px 20px 0;
+      input {
+        width: 100%;
+        border: none;
+        padding: 10px 5px;
+      }
+    }
+  }
+  .search-title {
+    font-size: 1.2rem;
+    margin: 0 0 10px 0;
+    color: #666;
+    @media screen and (max-width: 767px) {
+      color: #fff;
+      font-size: 1.0rem;
+      margin: 0 0 10px 0;
+    }
+  }
+
+  .sidebar-search-choices-inner {
+    margin: 0 0 20px 0;
+    overflow: hidden;
+    label {
+      margin: 0 0 8px 0;
+      display: block;
+      @media screen and (max-width: 767px) {
+        width: 50%;
+        float: left;
+      }
+
+      .choices-input {
+        display: none;
+      }
+
+      .choices-parts {
+        padding-left: 25px;
+        position: relative;
+        font-size: 1.4rem;
+        @media screen and (max-width: 767px) {
+          color: #fff;
+          display: flex;
+          padding-left: 25px;
+          position: relative;
+          margin: 0 20px 0 0;
+          font-size: 1.2rem;
+        }
+      }
+
+      .choices-parts::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 16px;
+        height: 16px;
+        border: 1px solid #dadada;
+        border-radius: 3px;
+        background: #f2f3f2;
+      }
+
+      .choices-input:checked + .choices-parts{
+        color: $bkg-green-color;
+      }
+
+      .choices-input:checked + .choices-parts::after{
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 5px;
+        width: 6px;
+        height: 11px;
+        transform: rotate(40deg);
+        border-bottom: 2px solid $bkg-green-color;
+        border-right: 2px solid $bkg-green-color;
+      }
+    }
+
+    
+
+  }
+}
+
+

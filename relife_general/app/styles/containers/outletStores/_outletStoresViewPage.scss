@@ -1,0 +1,96 @@
+.one-column {
+  .main {
+    float: none;
+    width: 100%;
+    text-align: left;
+    margin: 0 0 70px 0;
+    .tab-wrap {
+      width: 100%;
+      margin: 0 auto 80px auto;
+
+      ul {
+        &.tab {
+          margin: 0 0 20px 0;
+          display: table;
+          width: 100%;
+          padding: 0;
+          box-sizing: border-box;
+          z-index: 200;
+          position: relative;
+          &.top {
+            li {
+              &.current {
+                &::after {
+                  position: absolute;
+                  content: '';
+                  border-top: 10px solid $bkg-green-color;
+                  border-right: 10px solid transparent;
+                  border-bottom: 10px solid transparent;
+                  border-left: 10px solid transparent;
+                  bottom: -18px;
+                  left: calc(50% - 10px);
+                }
+              }
+            }
+          }
+
+          &.bottom {
+            li {
+              &.current {
+                &::before {
+                  position: absolute;
+                  content: '';
+                  border-top: 10px solid transparent;
+                  border-right: 10px solid transparent;
+                  border-bottom: 10px solid $bkg-green-color;
+                  border-left: 10px solid transparent;
+                  top: -18px;
+                  left: calc(50% - 10px);
+                }
+              }
+            }
+          }
+        }
+        li {
+          display: table-cell;
+          list-style: none;
+          vertical-align: middle;
+          cursor: pointer;
+          border-left: none;
+          box-sizing: border-box;
+          background: #f2f3f2;
+          color: $bkg-green-color;
+          width: 33.33%;
+          text-align: center;
+          padding: 15px 0;
+          font-size: 1.6rem;
+          transition-duration: 0.3s;
+          &:hover {
+            background: $bkg-green-color-hover;
+            color: #fff;
+            transition-duration: 0.3s;
+          }
+          &:first-child {
+            border-right: 5px solid $bkg-white-color;
+          }
+          &:nth-child(2):not(:last-child) {
+            border-right: 5px solid $bkg-white-color;
+            border-left: 5px solid #fff;
+          }
+          &:last-child {
+            border-left: 5px solid $bkg-white-color;
+            border-right: none;
+          }
+          &.current {
+            background: $bkg-green-color;
+            color: $bkg-white-color;
+            position: relative;
+            &:hover {
+              background: $bkg-green-color;
+            }
+          }
+        }
+      }/* end tab */
+    }/* end .tab-wrap*/
+  }
+}

@@ -104,7 +104,10 @@ class ProfileNav extends React.Component {
 
 ProfileNav.propTypes = {
   location: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
+  data: PropTypes.object,
+  editProfileAvatarRequest: PropTypes.func,
+  profileRequest: PropTypes.func
 }
 
 const mapStateToProps = state => {

@@ -28,10 +28,19 @@
   "cancel": "キャンセル",
   "close": "閉じる",
   "update": "変更",
-  "search": "検索",
   "add": "追加",
   "delete": "削除",
   "if-forgot-password": "パスワードを忘れた方はこちらから",
+  "go-to-store": "この建築実例の会社案内",
+
+  "house-related": "この工務店の建築実例",
+  "list-example-house": "建築実例一覧",
+  "view-detail": "詳細はこちら",
+
+  "builder-title": "建築会社・工務店",
+  "example-house-title" : "建築実例",
+  "re-style-title": "Re:Life style",
+
   
   "profile-info": "プロフィール情報",
   "booking-history" : "予約履歴",
@@ -40,6 +49,10 @@
   "current-password": "現在のパスワード",
   "new-password": "新しいパスワード",
   "confirm-password": "パスワード認証",
+
+  "infomation-request" : "資料請求",
+  "company-intro-title": "会社紹介",
+  "company-data-title": "会社データ",
 
   "login-page-title": "Re:Life ログイン",
   "forgotpassword-page-title": "Re:Life パスワードを忘れました",
@@ -54,6 +67,19 @@
   "top-map-text" : "全国の建築会社・工務店を6,000件以上掲載しています。",
 
   "btn-change-avatar": "画像変更",
+
+  "search-keyword": "キーワードで検索",
+  "search-keyword-most": "よく検索されているワード",
+  "search-map": "地図から探す",
+  "search-no-record": "申し訳ございません。該当する記事がございません。",
+  "search-city": "地域",
+  "search-freeword": "フリーワード",
+  "search-view-more": "さらに詳しく検索する",
+  "search-request": "依頼先",
+  "search-content-request": "依頼内容",
+  "search-price-range": "価格帯（坪単価）",
+  "search-clear": "入力値をリセット",
+  "search": "検索",
 
   "validate-email": "メールアドレスが正しくありません。",
   "validate-field-0": "フィルドには必ず情報を入力しください。",

@@ -1,4 +1,4 @@
-.example-house-view{
+.one-column {
   .main {
     float: none;
     width: 100%;
@@ -10,12 +10,22 @@
       padding: 0;
       border-bottom: none;
       margin: 0 0 20px 0;
+      @media screen and (max-width: 767px) {
+        margin: 20px 10px 15px 10px;
+        font-size: 2.2rem;
+        line-height: 2.9rem;
+        padding: 0 0 5px 0;
+      }
     }
 
     .example-detail-company-name {
       font-size: 1.4rem;
       color: #666;
       margin: 0 0 20px 0;
+      @media screen and (max-width: 767px) {
+        font-size: 1.0rem;
+        padding: 0 10px;
+      }
     }
 
     .detail-img {
@@ -46,15 +56,15 @@
             transition-duration: 0.3s;
 
             &:hover {
-              color: #057235;
-              border: #057235 1px solid;
+              color: $bkg-green-color;
+              border: $bkg-green-color 1px solid;
               transition-duration: 0.3s;
             }
 
             &::before {
               content: '#';
               margin: 0 2px 0 3px;
-              color: #057235;
+              color: $bkg-green-color;
             }
           }
         }
@@ -81,12 +91,12 @@
           color: #fff;
           font-size: 1.4rem;
           padding: 15px 40px;
-          background: $bg-btn-color;
+          background: $bkg-green-color;
           text-decoration: none;
           transition-duration: 0.3s;
 
           &:hover {
-            background: $bg-hover-btn-color;
+            background: $bkg-green-color-hover;
             transition-duration: 0.3s;
           }
         }
@@ -100,17 +110,29 @@
       padding: 0 0 10px 0;
       border-bottom: double 3px #2e3230;
       margin: 0 0 30px 0;
+      @media screen and (max-width: 767px) {
+        margin: 25px 20px 20px 20px;
+        font-size: 2.0rem;
+        line-height: 2.0rem;
+        padding: 0 0 5px 0;
+        border-bottom: double 3px #2e3230;
+      }
     }
 
-    .detail-list {
+    .detail-list, .tab-list {
       margin: 0 0 80px 0;
 
-      .detail-list-once {
+      .detail-list-once, .tab-list-once {
         display: block;
-        width: 25%;
         float: left;
         border-right: solid #f2f3f2 1px;
         border-bottom: solid #f2f3f2 1px;
+        @media screen and (max-width: 767px) {
+          display: block;
+          float: left;
+          border-right: solid #f2f3f2 1px;
+          border-bottom: solid #f2f3f2 1px;
+        }
 
         .detail-list-once-img {
           width: 100%;
@@ -163,7 +185,7 @@
             .detail-list-once-title,
             .detail-list-once-company-area,
             .detail-list-once-company {
-              color: #057235;
+              color: $bkg-green-color;
             }
           }
         }
@@ -174,10 +196,16 @@
     .share-body {
       text-align: right;
       margin: 0 0 50px 0;
-
+      @media screen and (max-width: 767px) {
+        padding: 0 20px;
+      }
       .share-body-block {
         width: 80px;
         display: inline;
+        @media screen and (max-width: 767px) {
+          float: left;
+          margin: 0 2px 2px 0;
+        }
 
         img {
           width: 80px;

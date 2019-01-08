@@ -14,7 +14,7 @@ const LocationsSagas = {
       yield put(
         LocationActions.locationSuccess(
           response.data,
-          (response.data.isGetList = true)
+          (response.data.isGetListLocation = true)
         )
       )
     } catch (err) {
