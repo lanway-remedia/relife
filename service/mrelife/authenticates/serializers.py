@@ -43,10 +43,13 @@ class RegisterSerializer(Serializer):
     mail = EmailField(required=True)
     username = CharField(required=True)
     password1 = CharField(required=True)
-    first_name = CharField(required=True)
-    last_name = CharField(required=True)
+    first_name = CharField(required=False)
+    last_name = CharField(required=False)
+    birth_date = CharField(required=False)
+    address = CharField(required=False)
     password2 = CharField(required=True)
     domain = CharField(required=True)
+
     def validate(self, attrs):
         """
         Check that the start is before the stop.
