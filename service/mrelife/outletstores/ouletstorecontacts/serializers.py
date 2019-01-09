@@ -20,8 +20,8 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
     email=serializers.EmailField()
     tel=serializers.CharField(max_length=255)
     age=serializers.IntegerField()
-    household_size=serializers.ChoiceField(choices=settings.HOUSEHOLDSIZE,default='現住所と同じ',style={'base_template': 'radio.html'} )
-    acreage = serializers.ChoiceField(choices=settings.ACREAGE,default='20坪以下',style={'base_template': 'radio.html'} )
+    household_size=serializers.ChoiceField(choices=settings.HOUSEHOLDSIZE,default='現住所と同じ' )
+    acreage = serializers.ChoiceField(choices=settings.ACREAGE,default='20坪以下')
     construction_position_type = serializers.ChoiceField(choices=settings.CONSTRUCTIONPOSITIONTYPE,default='現住所と同じ' )
     construction_position = serializers.CharField(max_length=255)
     construction_duration = serializers.ChoiceField(choices=settings.CONSTRUCTIONDURATION,default='現住所と同じ' )
@@ -30,11 +30,11 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
     construction_type =serializers.ChoiceField(choices=settings.CONSTRUCTION_TYPE,default='現住所と同じ' )
     current_situation = serializers.ChoiceField(choices=settings.CURRENTSITUATION,default='現住所と同じ' )
     content = serializers.CharField()
-    is_active = serializers.BooleanField(default=True,read_only=False)
+    is_active = serializers.BooleanField(default=True,read_only=True)
     class Meta:
         model = OutletStoreContact
         fields = ('id','outlet_store_id','outlet_store','name','name_kana','zipcode','address','email','tel',
-                  'age','household_size','acreage','construction_position_type','construction_position','construction_duration','budget','household_income','construction_type','current_situation','content', 'is_active')
+                  'age','household_size','acreage','construction_position_type','construction_position','construction_duration','budget','household_income','construction_type','current_situation','content','status', 'is_active')
 
     def validate_outlet_store_id(self, outlet_store_id):
         try:
@@ -60,3 +60,32 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
         return settings.CONSTRUCTION_TYPE[construction_type-1][1]
     def validate_current_situation(self, current_situation):
         return settings.CURRENTSITUATION[current_situation-1][1]
+class StatusRequestSerializer(serializers.ModelSerializer):
+    status = serializers.BooleanField(default=True)
+    outlet_store_id = serializers.IntegerField(required=False,read_only=True, allow_null=False)
+    outlet_store = OutletStoreSerializer(read_only=True)
+    name = serializers.CharField(max_length=255,read_only=True)
+    name_kana=serializers.CharField(max_length=255,read_only=True)
+    zipcode = serializers.CharField(max_length=8,read_only=True)
+    address=serializers.CharField(max_length=255,read_only=True)
+    email=serializers.EmailField(read_only=True)
+    tel=serializers.CharField(max_length=255,read_only=True)
+    age=serializers.IntegerField(read_only=True)
+    household_size=serializers.ChoiceField(choices=settings.HOUSEHOLDSIZE,read_only=True,default='現住所と同じ',style={'base_template': 'radio.html'} )
+    acreage = serializers.ChoiceField(choices=settings.ACREAGE,read_only=True,default='20坪以下',style={'base_template': 'radio.html'} )
+    construction_position_type = serializers.ChoiceField(read_only=True,choices=settings.CONSTRUCTIONPOSITIONTYPE,default='現住所と同じ' )
+    construction_position = serializers.CharField(max_length=255,read_only=True)
+    construction_duration = serializers.ChoiceField(read_only=True,choices=settings.CONSTRUCTIONDURATION,default='現住所と同じ' )
+    budget = serializers.ChoiceField(read_only=True,choices=settings.BUDGET,default='現住所と同じ' )
+    household_income = serializers.ChoiceField(read_only=True,choices=settings.HOUSEHOLDINCOME,default='現住所と同じ' )
+    construction_type =serializers.ChoiceField(read_only=True,choices=settings.CONSTRUCTION_TYPE,default='現住所と同じ' )
+    current_situation = serializers.ChoiceField(read_only=True,choices=settings.CURRENTSITUATION,default='現住所と同じ' )
+    content = serializers.CharField(read_only=True)
+    is_active = serializers.BooleanField(default=True,read_only=True)
+    status = serializers.ChoiceField(read_only=True,choices=settings.STATUS,default=1,style={'base_template': 'radio.html'})
+    class Meta:
+        model = OutletStoreContact
+        fields = ('id','outlet_store_id','outlet_store','name','name_kana','zipcode','address','email','tel',
+                  'age','household_size','acreage','construction_position_type','construction_position','construction_duration','budget','household_income','construction_type','current_situation','content','status', 'is_active')
+
+    

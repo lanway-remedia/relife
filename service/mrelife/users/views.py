@@ -43,7 +43,8 @@ from mrelife.utils.response import (response_200, response_201, response_400,
                                     response_404, response_405, response_503)
 from mrelife.utils.validates import email_exist
 from url_filter.integrations.drf import DjangoFilterBackend
-
+from django.utils.decorators import method_decorator
+from drf_yasg.utils import swagger_auto_schema
 User = get_user_model()
 
 
@@ -58,7 +59,7 @@ class UserVs(ModelViewSet):
     # user
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['group_id', 'username', 'first_name', 'last_name', 'store_id']
-
+    @method_decorator(name='create', decorator=swagger_auto_schema(request_body=UserRequestSerializer))
     def list(self, request, *args, **kwargs):
         """
             Can filter group_id, username by adding parameter on url

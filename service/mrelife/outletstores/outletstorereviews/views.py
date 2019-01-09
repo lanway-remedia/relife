@@ -17,11 +17,13 @@ from rest_framework.views import APIView
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.examplehouses.models import ExampleHouse
 from mrelife.outletstores.models import OutletStore, OutletStoreReview
-from mrelife.outletstores.outletstorereviews.serializers import OutletStoreReviewSerializer
+from mrelife.outletstores.outletstorereviews.serializers import \
+    OutletStoreReviewSerializer
 from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStoreViewPermission
 from mrelife.utils.relifeenum import MessageCode
+from mrelife.utils.response import response_200
 
 
 class OutletStoreReviewViewSet(viewsets.ModelViewSet):
@@ -34,7 +36,8 @@ class OutletStoreReviewViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         self.queryset = OutletStoreReview.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
-        return super(OutletStoreReviewViewSet, self).list(request)
+        response = super(OutletStoreReviewViewSet, self).list(request)
+        return response_200('', '', response.data)
 
     def retrieve(self, request, pk=None):
         try:
@@ -56,7 +59,7 @@ class OutletStoreReviewViewSet(viewsets.ModelViewSet):
         try:
             serializer = OutletStoreReviewSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save(create_user_id=request.user.id,update_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                serializer.save(create_user_id=request.user.id, update_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OSR003.value, {}), status=status.HTTP_201_CREATED)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.OSR010.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)

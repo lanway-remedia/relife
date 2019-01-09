@@ -17,9 +17,9 @@ from mrelife.locations.models import City
 
 class OutletStore(Model):
     title = CharField(max_length=255)
-    slogan_title=CharField(max_length=255,null=True)
-    slogan_content=CharField(max_length=255,null=True)
-    type=IntegerField(default=1)
+    slogan_title = CharField(max_length=255, null=True)
+    slogan_content = CharField(max_length=255, null=True)
+    type = IntegerField(default=1)
     content = TextField()
     img_thumbnail = CharField(max_length=800, null=True)
     img_large = ImageField(upload_to='outletimag/', null=True, blank=True)
@@ -30,20 +30,21 @@ class OutletStore(Model):
     city = ForeignKey(City, related_name="outlet_dict", on_delete=CASCADE, null=True, blank=True)
     tel = CharField(max_length=13)
     email = CharField(max_length=100)
-    establish=DateTimeField(auto_now_add=False,null=True)
-    charter_capital=IntegerField(default=1)
-    employee_total=IntegerField(default=1)
-    qualification=CharField(max_length=255,null=True)
-    permit_number=CharField(max_length=255,null=True)
-    construction_area=CharField(max_length=255,null=True)
-    construction_result=CharField(max_length=255,null=True)
-    min_price=IntegerField(default=1)
-    max_price=IntegerField(default=1)
+    establish = DateTimeField(auto_now_add=False, null=True)
+    charter_capital = IntegerField(default=1)
+    employee_total = IntegerField(default=1)
+    qualification = CharField(max_length=255, null=True)
+    permit_number = CharField(max_length=255, null=True)
+    construction_area = CharField(max_length=255, null=True)
+    construction_result = CharField(max_length=255, null=True)
+    min_price = IntegerField(default=1)
+    max_price = IntegerField(default=1)
     time_serving = CharField(max_length=255, null=True)
     create_user = ForeignKey('users.User', on_delete=CASCADE, null=True)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False)
     updated = DateTimeField(auto_now_add=False)
+
     class Meta:
         db_table = 'outlet_store'
         ordering = ['created', ]
@@ -108,16 +109,17 @@ class OutletStoreContact(Model):
     email = CharField(max_length=255)
     tel = CharField(max_length=13)
     age = IntegerField(default=0)
-    household_size = CharField(max_length=255, choices=settings.HOUSEHOLDSIZE,default='1名〜2名' )
-    acreage = CharField(max_length=255, choices=settings.ACREAGE,default='20坪以下' )
-    construction_position_type =CharField(max_length=255, choices=settings.CONSTRUCTIONPOSITIONTYPE,default='現住所と同じ' )
-    construction_position = CharField(max_length=255 )
-    construction_duration = CharField(max_length=255, choices=settings.CONSTRUCTIONDURATION,default='3ヵ月以内' )
-    budget= CharField(max_length=255, choices=settings.BUDGET,default='1500万未満' )
-    household_income = CharField(max_length=255, choices=settings.HOUSEHOLDINCOME,default='350万未満以下' )
-    construction_type = CharField(max_length=255, choices=settings.CONSTRUCTION_TYPE,default='新規' )
-    current_situation = CharField(max_length=255, choices=settings.CURRENTSITUATION,default='住宅・リフォーム・リノベの検討を始めた' )
+    household_size = CharField(max_length=255, choices=settings.HOUSEHOLDSIZE, default='1名〜2名')
+    acreage = CharField(max_length=255, choices=settings.ACREAGE, default='20坪以下')
+    construction_position_type = CharField(max_length=255, choices=settings.CONSTRUCTIONPOSITIONTYPE, default='現住所と同じ')
+    construction_position = CharField(max_length=255)
+    construction_duration = CharField(max_length=255, choices=settings.CONSTRUCTIONDURATION, default='3ヵ月以内')
+    budget = CharField(max_length=255, choices=settings.BUDGET, default='1500万未満')
+    household_income = CharField(max_length=255, choices=settings.HOUSEHOLDINCOME, default='350万未満以下')
+    construction_type = CharField(max_length=255, choices=settings.CONSTRUCTION_TYPE, default='新規')
+    current_situation = CharField(max_length=255, choices=settings.CURRENTSITUATION, default='住宅・リフォーム・リノベの検討を始めた')
     content = TextField()
+    status = IntegerField(choices=settings.STATUS, default=1) 
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=True)
     updated = DateTimeField(auto_now_add=True)
@@ -125,7 +127,6 @@ class OutletStoreContact(Model):
     class Meta:
         db_table = 'outlet_store_contact'
         ordering = ['created', ]
-
 
 class OutletStoreReview(Model):
     rating = IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
@@ -141,13 +142,13 @@ class OutletStoreReview(Model):
         db_table = 'outlet_store_review'
         ordering = ['created', ]
 
+
 class OutletStoreBusiness(Model):
     outlet_store = ForeignKey(OutletStore, related_name='business', on_delete=CASCADE)
-    business=IntegerField(default=1)
+    business = IntegerField(default=1)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False, blank=True)
     updated = DateTimeField(auto_now_add=False, blank=True)
-    
 
     class Meta:
         db_table = 'outlet_store_business'

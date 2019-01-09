@@ -14,6 +14,7 @@ from mrelife.events.models import EventExhibition
 from mrelife.exhibitions.exhibitiontags.serializers import \
     ExhibitionTagSerializer
 from mrelife.exhibitions.models import ExhibitionTag
+from mrelife.utils.response import (response_200)
 from mrelife.utils import result
 from mrelife.utils.exhibition_permission import ExhibitionPermission
 from mrelife.utils.relifeenum import MessageCode
@@ -30,7 +31,8 @@ class ExhibitionTagViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         self.queryset = ExhibitionTag.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
-        return super(ExhibitionTagViewSet, self).list(request, *args, **kwargs)
+        response = super(ExhibitionTagViewSet, self).list(request, *args, **kwargs)
+        return response_200('', '', response.data)
 
     def retrieve(self, request, pk=None):
         try:

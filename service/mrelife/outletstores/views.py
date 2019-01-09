@@ -20,6 +20,7 @@ from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
 from mrelife.utils.outlet_store_permission import OutletStorePermission
 from mrelife.utils.relifeenum import MessageCode
+from mrelife.utils.response import (response_200)
 from django.http import HttpResponse 
 from url_filter.integrations.drf import DjangoFilterBackend
 from mrelife.utils.custom_exception import CustomException
@@ -40,7 +41,8 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         if keyword is not None:
             self.queryset = self.queryset.filter(Q(title__contains=keyword) | Q(
                 title__contains=keyword) )
-        return super(OutletStoreViewSet, self).list(request)
+        response = super(OutletStoreViewSet, self).list(request)
+        return response_200('', '', response.data)
 
     def retrieve(self, request, *args, **kwargs):
         try:

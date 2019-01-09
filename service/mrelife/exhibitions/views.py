@@ -11,6 +11,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from mrelife.utils.response import (response_200)
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import EventExhibition
@@ -34,7 +35,8 @@ class EhibitionViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         self.queryset = Exhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by("-updated")
-        return super(EhibitionViewSet, self).list(request, *args, **kwargs)
+        response = super(EhibitionViewSet, self).list(request, *args, **kwargs)
+        return response_200('', '', response.data)
 
     def retrieve(self, request, pk=None):
         try:

@@ -16,6 +16,7 @@ from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from mrelife.utils.response import (response_200)
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import Event, EventModelHouse
@@ -308,7 +309,8 @@ class OrderModelHouseViewSet(ModelViewSet):
 
     def list(self, request):
         self.queryset = OrderModelHouse.objects.filter(is_active=settings.IS_ACTIVE).order_by("-updated")
-        return super(OrderModelHouseViewSet, self).list(request)
+        response = super(OrderModelHouseViewSet, self).list(request)
+        return response_200('', '', response.data)
 
     def retrieve(self, request, pk=None):
         try:
