@@ -15,6 +15,8 @@ import BreadcrumbComponent from './components/BreadcrumbComponent'
 
 //homepage
 import HomePage from './containers/HomePage'
+
+import MapPage from './containers/MapPage'
 //auths
 import RegisterPage from './containers/auths/RegisterPage'
 import LoginPage from './containers/auths/LoginPage'
@@ -130,6 +132,10 @@ class Routes extends React.Component {
                         <Route
                             path="/builder/:id"
                             component={OutletStoresViewPage}
+                        />
+                        <Route
+                            path="/map"
+                            component={MapPage}
                         />
 
                     </Switch>

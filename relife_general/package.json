@@ -88,6 +88,7 @@
     "react-drawer": "^1.3.4",
     "react-facebook-login": "^4.1.1",
     "react-froala-wysiwyg": "^2.9.1",
+    "react-google-maps": "^9.4.5",
     "react-helmet": "^5.2.0",
     "react-iframe": "^1.1.0",
     "react-image-gallery": "^0.8.7",
