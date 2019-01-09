@@ -50,6 +50,16 @@ class Style(Model):
     class Meta:
         db_table = 'style'
         ordering = ['created', ]
+
+class Style(Model):
+    title = CharField(unique=True, max_length=255)
+    order = IntegerField()
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+    class Meta:
+        db_table = 'style'
+        ordering = ['created', ]
 class Commitment(Model):
     title = CharField(unique=True, max_length=255)
     order = IntegerField()

@@ -28,6 +28,20 @@ class MessageCode(Enum):
     BSO003 = 'BSO003'  # register become store owner successfully
     BSO004 = 'BSO004'  # register become store owner failly
     BSO010 = 'BSO010'  # Not register become store: Invalid Data
+    
+    CM001 = 'CM001'  # get Commitment's information detail successfully
+    CM002 = 'CM002'  # get Commitment's information detail failly
+    CM003 = 'CM003'  # add new a Commitment  successfully
+    CM004 = 'CM004'  # not add new Commitment
+    CM005 = 'CM005'  # update information
+    CM006 = 'CM006'  # update with err data
+    CM007 = 'CM007'  # delete sussess
+    CM008 = 'CM008'  # delete fail
+    CM009 = 'CM009'  # Invalid ID supplied
+    CM010 = 'CM010'  # Not created new Commitment :  Invalid Data
+    CM011 = 'CM011'  # Not updated Oultetstore Contact : Invalid Data
+    CM012 = 'CM012'  # Not updated Commitment: Commitment not found
+    CM013 = 'CM013'  # Not deleted Commitment: Commitment not found
 
     OSC001 = 'OSC001'  # get outletstore contact's information detail successfully
     OSC002 = 'OSC002'  # get outletstore contact's information detail failly

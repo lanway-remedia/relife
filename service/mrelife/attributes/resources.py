@@ -1,5 +1,5 @@
 from import_export import resources
-from mrelife.attributes.models import Contruction, PriceRange, Floor, Style, Commitment, HouseHoldSize, HouseHoldIncome
+from mrelife.attributes.models import Contruction, PriceRange, Floor, Style, Commitment, HouseHoldSize, HouseHoldIncome,Commitment
 
 
 class ContructionResource(resources.ModelResource):
@@ -23,6 +23,10 @@ class FloorResource(resources.ModelResource):
 class StyleResource(resources.ModelResource):
     class Meta:
         model = Style
+        fields = ('id', 'title', 'order')
+class CommitmentResource(resources.ModelResource):
+    class Meta:
+        model = Commitment
         fields = ('id', 'title', 'order')
 
 
