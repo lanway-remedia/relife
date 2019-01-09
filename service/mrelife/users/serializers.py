@@ -88,25 +88,19 @@ class UserRequestSerializer(ModelSerializer):
     store = serializers.PrimaryKeyRelatedField(
         queryset=OutletStore.objects.filter(is_active=1), required=False, allow_null=True)
     group = serializers.PrimaryKeyRelatedField(queryset=Group.objects.all(), required=False, allow_null=True)
-    # user_permissions=serializers.IntegerField(read_only=True, required=False, allow_null=True)
-
     class Meta:
         model = User
         fields =  '__all__'
-    # def validate_group(self, group):
-    #     request = getattr(self.context, 'request', None)
-    #     if True:
-    #         if not True:
-    #             raise  serializers.ValidationError("not permission! create")
-    #     return GroupUser()
-    # def validate(self, data):
-    #     # Check that the start time, end time.
-    #     try:
-    #         if data['group']=="3":
-    #             raise serializers.ValidationError("not permission! create")
-    #     except KeyError as e:
-    #         pass
-    #     return data
+    def validate_group(self, group):
+        try:
+           if(IsStore(self.context.get('user'))):
+                if group:
+                    if not group==GroupSub():
+                        print(group)
+                        raise serializers.ValidationError("not permission! create")
+        except KeyError as e:
+            pass
+        return group
 class GroupShowSerializer(ModelSerializer):
 
     class Meta:

@@ -83,12 +83,10 @@ class UserVs(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         try:
-            serializer = UserRequestSerializer(data=request.data)
+            data=request.data
+            print(data)
+            serializer = UserRequestSerializer(data=data, context={'user': request.user})
             if serializer.is_valid():
-                if IsStore(request.user):
-                    group_id=request.data['group']
-                    if(group_id=="3"):
-                        return Response(CommonFuntion.resultResponse(True, "", MessageCode.BSO003.value, {"group":"not permission"}), status=status.HTTP_401_UNAUTHORIZED)
                 serializer.save()
                 user = User.objects.get(id=serializer.data['id'])
                 user.set_password(user.password)

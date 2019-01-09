@@ -11,6 +11,7 @@ from mrelife.users.models import User
 from mrelife.users.serializers import UserSerializer
 
 
+
 class OutletStoreContactSerializer(serializers.ModelSerializer):
 
     create_user = UserSerializer(read_only=True)
