@@ -15,7 +15,7 @@
           width: 100%;
           padding: 0;
           box-sizing: border-box;
-          z-index: 200;
+          z-index: $zindex-lv-2;
           position: relative;
           &.top {
             li {
