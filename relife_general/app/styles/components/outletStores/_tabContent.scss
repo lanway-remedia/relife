@@ -9,7 +9,7 @@
   bottom: auto;
   width: 100%;
   box-sizing: border-box;
-  z-index: 100;
+  z-index: $zindex-lv-1;
 
   .tab-content-item {
     margin-right: 0;

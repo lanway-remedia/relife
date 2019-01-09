@@ -5,13 +5,13 @@
   height: 61px;
   background: transparent;
   right: 50px;
-  z-index: 100;
+  z-index: $zindex-lv-1;
   bottom: 100px;
   @media screen and (max-width: 767px) {
     width: 52px;
     height: 40px;
     right: 10px;
-    z-index: 100;
+    z-index: $zindex-lv-1;
     text-align: center;
   }
   @media screen and (min-width: 767px) {
