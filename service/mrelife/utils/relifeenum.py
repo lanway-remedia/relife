@@ -8,6 +8,10 @@ class MessageCode(Enum):
     SU001 = 'SU001'  # Success
     FA001 = 'FA001'  # Error
 
+    US001 = 'US001' #create successfully
+    US002 = 'US002' #add  new user failly. Invalid Data
+    US003 = 'US003' #add  new user failly.
+
     OS001 = 'OS001'  # get outletstore's information detail successfully
     OS002 = 'OS002'  # get outletstore's information detail failly
     OS003 = 'OS003'  # add new a outletstore  successfully
@@ -38,7 +42,6 @@ class MessageCode(Enum):
     OSC011 = 'OSC011'  # Not updated Oultetstore Contact : Invalid Data
     OSC012 = 'OSC012'  # Not updated Outletstore Contact: Outletstore Contact not found
     OSC013 = 'OSC013'  # Not deleted Outletstore Contact: Outletstore Contact not found
-
 
     OSCR001 = 'OSCR001'  # get outletstore contact reply's information detail successfully
     OSCR002 = 'OSCR002'  # get outletstore contact reply's information detail failly
