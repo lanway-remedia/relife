@@ -10,6 +10,7 @@ from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from mrelife.utils.response import (response_200)
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import Event, EventContact, EventContactReply
@@ -30,7 +31,8 @@ class EventViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         self.queryset = Event.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
-        return super(EventViewSet, self).list(request)
+        response = super(EventViewSet, self).list(request)
+        return response_200('', '', response.data)
 
     def retrieve(self, request, pk=None):
         try:

@@ -11,6 +11,7 @@ from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from mrelife.utils.response import (response_200)
 
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.eventcontactreplys.serializers import \
@@ -34,7 +35,8 @@ class EventContactReplyViewSet(viewsets.ModelViewSet):
         self.queryset = EventContactReply.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         if not IsAdmin(request.user):
             self.queryset = self.queryset.filter(create_user_id=request.user.id)
-        return super(EventContactReplyViewSet, self).list(request)
+        response = super(EventContactReplyViewSet, self).list(request)
+        return response_200('', '', response.data)
 
     def retrieve(self, request, pk=None):
         try:

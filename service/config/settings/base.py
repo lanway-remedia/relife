@@ -62,6 +62,7 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
     # 'django.contrib.humanize', # Handy template tags
     'django.contrib.admin',
+    'drf_yasg'
 ]
 THIRD_PARTY_APPS = [
     'rest_framework',
@@ -370,6 +371,10 @@ CURRENTSITUATION = (
     (4, "工事に着手している"),
     (5, "すでに完成している"),
     (6, "その他"),
+)
+STATUS = (
+    (1, "new contact"),
+    (2, "responded"),
 )
 JWT_AUTH = {
     'JWT_VERIFY_EXPIRATION': False

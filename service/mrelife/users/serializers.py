@@ -90,7 +90,7 @@ class UserRequestSerializer(ModelSerializer):
     group = serializers.PrimaryKeyRelatedField(queryset=Group.objects.all(), required=False, allow_null=True)
     class Meta:
         model = User
-        fields =  '__all__'
+        exclude = ('groups',)
     def validate_group(self, group):
         try:
            if(IsStore(self.context.get('user'))):

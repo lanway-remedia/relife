@@ -10,6 +10,6 @@ router = routers.SimpleRouter()
 router.register(r'', views.OutletStoreContactViewSet)
 
 urlpatterns = [
-    path('', include(router.urls))
-
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('<int:pk>/update_status/', views.OutletStoreUpdatestatus.as_view(), name="update_status"),
+    path('', include(router.urls)),
+]

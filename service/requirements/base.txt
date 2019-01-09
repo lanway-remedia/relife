@@ -26,6 +26,7 @@ django-rest-swagger # https://django-rest-swagger.readthedocs.io/en/latest/
 
 # Advanced Filter
 django-filter
+drf_yasg
 django-url-filter # http://django-url-filter.readthedocs.io/
 django_inlinecss
 

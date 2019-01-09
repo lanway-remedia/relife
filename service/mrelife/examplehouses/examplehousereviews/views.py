@@ -10,6 +10,7 @@ from rest_framework.decorators import action, list_route, permission_classes
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from mrelife.utils.response import (response_200)
 from rest_framework.views import APIView
 
 from mrelife.commons.common_fnc import CommonFuntion
@@ -30,7 +31,8 @@ class ExampleHouseReviewViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         self.queryset = ExampleHouseReview.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
-        return super(ExampleHouseReviewViewSet, self).list(request)
+        response = super(ExampleHouseReviewViewSet, self).list(request)
+        return response_200('', '', response.data)
 
     def retrieve(self, request, pk=None):
         try:
@@ -100,6 +102,7 @@ class ExampleHouseReviewViewSet(viewsets.ModelViewSet):
             self.queryset=[]
             self.queryset = ExampleHouseReview.objects.filter(
                 example_house_id=example_house_id)
-            return super(ExampleHouseReviewViewSet, self).list(request)
+            response = super(ExampleHouseReviewViewSet, self).list(request)
+            return response_200('', '', response.data)
         except Exception as e:
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.EHR002.value, ""), status=status.HTTP_404_NOT_FOUND)

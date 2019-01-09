@@ -18,6 +18,7 @@ from mrelife.exhibitions.exhibitioncontacts.serializers import \
 from mrelife.exhibitions.models import ExhibitionContact
 from mrelife.utils.relifeenum import MessageCode
 from mrelife.utils.exhibition_permission import ExhibitionContactPermission
+from mrelife.utils.response import (response_200)
 
 
 class ExhibitionContactViewSet(viewsets.ModelViewSet):
@@ -31,7 +32,8 @@ class ExhibitionContactViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         self.queryset = ExhibitionContact.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
-        return super(ExhibitionContactViewSet, self).list(request)
+        response = super(ExhibitionContactViewSet, self).list(request)
+        return response_200('', '', response.data)
 
     def retrieve(self, request, pk=None):
         try:
