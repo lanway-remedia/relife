@@ -41,8 +41,8 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     img_thumbnail = serializers.CharField(max_length=800, allow_blank=True, allow_null=True, read_only=True)
     img_large = serializers.FileField(max_length=None, use_url=True, allow_null=True,
                                       allow_empty_file=True, required=False)
-    latitude = serializers.CharField(allow_blank=True, required=False, allow_null=True)
-    longitude = serializers.CharField(allow_blank=True, required=False, allow_null=True)
+    latitude = serializers.FloatField(required=False )
+    longitude = serializers.FloatField(required=False)
     zipcode = serializers.CharField(max_length=8, allow_blank=True, allow_null=True)
     address = serializers.CharField(max_length=800)
     city_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
@@ -61,7 +61,7 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     city = CitySerializer(read_only=True)
     create_user = UserSerializer(read_only=True)
     is_active = serializers.BooleanField(default=True, read_only=True)
-    business = OutletStoreBusinessSerializer(many=True, read_only=False,required=False)
+    business = OutletStoreBusinessSerializer(many=True, read_only=True,required=False)
 
     class Meta:
         model = OutletStore
