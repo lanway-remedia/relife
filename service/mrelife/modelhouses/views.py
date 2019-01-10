@@ -36,6 +36,7 @@ from mrelife.utils.order_model_house_permission import (OrderMHUserListPermissio
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.relifeenum import MessageCode
 from mrelife.utils.response import response_200, response_201, response_404
+from mrelife.attributes.models import SearchHistory
 
 
 class ModelHouseViewSet(ModelViewSet):
@@ -46,11 +47,21 @@ class ModelHouseViewSet(ModelViewSet):
     pagination_class = LimitOffsetPagination
 
     def list(self, request, *args, **kwargs):
-        try:
-            response = super(ModelHouseViewSet, self).list(request, *args, **kwargs)
-            return response_200('MH200', '', response.data)
-        except Http404:
-            return response_404('MH404')
+        queryset = ModelHouse.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
+        keyword = request.GET.get('keyword')
+        if keyword is not None:
+            Sobject = SearchHistory.objects.filter(key_search=keyword)
+            if not Sobject:
+                p = SearchHistory.objects.create(key_search=keyword, num_result=1, created=datetime.now(), updated=datetime.now())
+                p.save()
+            else:
+                Sobject = SearchHistory.objects.get(key_search=keyword)
+                Sobject.num_result += 1
+                Sobject.updated = datetime.now()
+                Sobject.save()
+            self.queryset = queryset.filter(Q(title__contains=keyword) | Q(content__contains=keyword))
+        response = super(ModelHouseViewSet, self).list(request)
+        return response_200('MH200', '', response.data)
 
     def retrieve(self, request, *args, **kwargs):
         try:

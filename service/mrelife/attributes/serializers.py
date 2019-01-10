@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from mrelife.attributes.models import Contruction, PriceRange, Floor, Style, HouseHoldIncome, HouseHoldSize,Commitment
-
+from mrelife.attributes.models import Contruction, PriceRange, Floor, Style, HouseHoldIncome, HouseHoldSize,Commitment,SearchHistory
+from mrelife.users.models import User
+from mrelife.users.serializers import UserSerializer
 
 class ContructionSerializer(serializers.ModelSerializer):
     # validate title is unique
@@ -59,6 +60,10 @@ class CommitmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Commitment
         fields = ('id', 'title', 'order')
+class SearchHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SearchHistory
+        fields = ('id', 'key_search','num_result')
 
 class HouseHoldIncomeSerializer(serializers.ModelSerializer):
     # validate title is unique
