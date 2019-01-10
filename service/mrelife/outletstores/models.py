@@ -7,7 +7,7 @@ from django.core.files.storage import default_storage as storage
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import (CASCADE, SET_NULL, BooleanField, CharField,
                               DateTimeField, ForeignKey, ImageField,
-                              IntegerField, Model, TextField)
+                              IntegerField, Model, TextField,FloatField)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image
@@ -23,8 +23,8 @@ class OutletStore(Model):
     content = TextField()
     img_thumbnail = CharField(max_length=800, null=True)
     img_large = ImageField(upload_to='outletimag/', null=True, blank=True)
-    latitude = TextField(null=True)
-    longitude = TextField(null=True)
+    latitude = FloatField(null=True)
+    longitude = FloatField(null=True)
     zipcode = CharField(max_length=8, null=True)
     address = CharField(max_length=800)
     city = ForeignKey(City, related_name="outlet_dict", on_delete=CASCADE, null=True, blank=True)
