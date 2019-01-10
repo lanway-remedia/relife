@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 
 from django.conf import settings
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
@@ -10,14 +11,15 @@ from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from mrelife.utils.response import (response_200)
 
+from mrelife.attributes.models import SearchHistory
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import Event, EventContact, EventContactReply
 from mrelife.events.serializers import EventContactReplySerializer, EventContactSerializer, EventSerializer
 from mrelife.utils.event_permission import EventPermission
 from mrelife.utils.groups import IsAdmin
 from mrelife.utils.relifeenum import MessageCode
+from mrelife.utils.response import response_200
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -30,7 +32,20 @@ class EventViewSet(viewsets.ModelViewSet):
     lookup_value_regex = '[^/]+'
 
     def list(self, request):
-        self.queryset = Event.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
+        queryset = Event.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
+        keyword = request.GET.get('keyword')
+        if keyword is not None:
+            Sobject = SearchHistory.objects.filter(key_search=keyword)
+            if not Sobject:
+                p = SearchHistory.objects.create(key_search=keyword, num_result=1,
+                                                 created=datetime.now(), updated=datetime.now())
+                p.save()
+            else:
+                Sobject = SearchHistory.objects.get(key_search=keyword)
+                Sobject.num_result += 1
+                Sobject.updated = datetime.now()
+                Sobject.save()
+            self.queryset = queryset.filter(Q(title__contains=keyword) | Q(content__contains=keyword))
         response = super(EventViewSet, self).list(request)
         return response_200('', '', response.data)
 
@@ -68,9 +83,9 @@ class EventViewSet(viewsets.ModelViewSet):
                 raise KeyError
             queryset = Event.objects.filter(is_active=settings.IS_ACTIVE)
             if not IsAdmin(request.user):
-                queryset=queryset.filter(create_user_id=request.user.id)
+                queryset = queryset.filter(create_user_id=request.user.id)
             eventObj = get_object_or_404(queryset, pk=pk)
-            serializer = EventSerializer(eventObj, data=request.data,partial=True)
+            serializer = EventSerializer(eventObj, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())

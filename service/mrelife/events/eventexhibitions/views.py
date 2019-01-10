@@ -28,8 +28,8 @@ class EventExhibitionViewSet(viewsets.ModelViewSet):
     permission_classes = (EventExhibitionPermission,)
     lookup_field = 'pk'
     lookup_value_regex = '[^/]+'
-
     def list(self, request):
+
         self.queryset = EventExhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         response = super(EventExhibitionViewSet, self).list(request)
         return response_200('', '', response.data)

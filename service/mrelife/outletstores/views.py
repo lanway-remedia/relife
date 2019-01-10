@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from django.db.models import Q
 
 from django.conf import settings
 from django.http import Http404
@@ -18,13 +19,14 @@ from mrelife.outletstores.models import OutletStore, OutletStoreContact,OutletSt
 from mrelife.outletstores.serializers import OutletStoreSerializer
 from mrelife.utils import result
 from mrelife.utils.groups import GroupUser, IsAdmin, IsStore, IsSub
+from mrelife.attributes.models import SearchHistory
 from mrelife.utils.outlet_store_permission import OutletStorePermission
 from mrelife.utils.relifeenum import MessageCode
 from mrelife.utils.response import (response_200)
 from django.http import HttpResponse 
 from url_filter.integrations.drf import DjangoFilterBackend
 from mrelife.utils.custom_exception import CustomException
-from django.db.models import Q
+
 
 class OutletStoreViewSet(viewsets.ModelViewSet):
     queryset = OutletStore.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
@@ -39,8 +41,17 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
         self.queryset = OutletStore.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         keyword= request.GET.get('keyword')
         if keyword is not None:
+            Sobject=SearchHistory.objects.filter(key_search=keyword)
+            if not Sobject:
+               p= SearchHistory.objects.create(key_search=keyword,num_result=1,created=datetime.now(), updated=datetime.now())
+               p.save()
+            else:
+                Sobject=SearchHistory.objects.get(key_search=keyword)
+                Sobject.num_result+=1
+                Sobject.updated=datetime.now()
+                Sobject.save()
             self.queryset = self.queryset.filter(Q(title__contains=keyword) | Q(
-                title__contains=keyword) )
+                content__contains=keyword) )
         response = super(OutletStoreViewSet, self).list(request)
         return response_200('', '', response.data)
 

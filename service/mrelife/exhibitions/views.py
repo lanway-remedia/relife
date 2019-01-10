@@ -3,6 +3,7 @@ import re
 
 from django.conf import settings
 from django.db import transaction
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
@@ -22,7 +23,7 @@ from mrelife.tags.models import Tag
 from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
 from mrelife.utils.exhibition_permission import ExhibitionPermission
-
+from mrelife.attributes.models import SearchHistory
 
 class EhibitionViewSet(viewsets.ModelViewSet):
 
@@ -32,10 +33,21 @@ class EhibitionViewSet(viewsets.ModelViewSet):
     lookup_field = 'pk'
     lookup_value_regex = '[^/]+'
     permission_classes = (ExhibitionPermission,)
-
     def list(self, request, *args, **kwargs):
-        self.queryset = Exhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by("-updated")
-        response = super(EhibitionViewSet, self).list(request, *args, **kwargs)
+        queryset = Exhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
+        keyword = request.GET.get('keyword')
+        if keyword is not None:
+            Sobject = SearchHistory.objects.filter(key_search=keyword)
+            if not Sobject:
+                p = SearchHistory.objects.create(key_search=keyword, num_result=1, created=datetime.now(), updated=datetime.now())
+                p.save()
+            else:
+                Sobject = SearchHistory.objects.get(key_search=keyword)
+                Sobject.num_result += 1
+                Sobject.updated = datetime.now()
+                Sobject.save()
+            self.queryset = queryset.filter(Q(title__contains=keyword) | Q(content__contains=keyword))
+        response = super(EhibitionViewSet, self).list(request)
         return response_200('', '', response.data)
 
     def retrieve(self, request, pk=None):
