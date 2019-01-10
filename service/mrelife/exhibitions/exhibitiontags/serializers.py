@@ -17,9 +17,9 @@ class ExhibitionTagSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     exhibition_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     tag_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
-    is_active = serializers.BooleanField(default=True)
     exhibition = ExhibitionItemSerializer(read_only=True)
     tag = TagSerializer(read_only=True)
+    is_active = serializers.BooleanField(default=True,read_only=False)
 
     class Meta:
         model = ExhibitionTag

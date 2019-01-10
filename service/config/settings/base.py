@@ -1,9 +1,10 @@
+import environ
 from celery.schedules import crontab
+
 """
 Base settings to build other settings files upon.
 """
 
-import environ
 
 ROOT_DIR = environ.Path(__file__) - 3  # (mrelife/config/settings/base.py - 3 = mrelife/)
 APPS_DIR = ROOT_DIR.path('mrelife')
@@ -61,12 +62,14 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
     # 'django.contrib.humanize', # Handy template tags
     'django.contrib.admin',
+    'drf_yasg'
 ]
 THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework_jwt',
     'rest_framework.authtoken',
     'rest_framework_swagger',
+    'django_inlinecss',
     # Filter on URL
     'url_filter',
     'corsheaders',
@@ -172,7 +175,7 @@ STATICFILES_FINDERS = [
 MEDIA_ROOT = str(APPS_DIR('media'))
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'
-
+URL_IMAGE='http://18.179.32.241:8000'
 # TEMPLATES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
@@ -271,7 +274,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    # 'EXCEPTION_HANDLER': 'mrelife.utils.exceptionhanders.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'mrelife.utils.exceptionhanders.custom_exception_handler',
     # 'DEFAULT_FILTER_BACKENDS': ('rest_framework_filters.backends.DjangoFilterBackend',),
     # 'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
     # 'DEFAULT_FILTER_BACKENDS': ('url_filter.integrations.drf.DjangoFilterBackend',),
@@ -306,11 +309,73 @@ IS_ACTIVE = 1
 IS_INACTIVE = 0
 SUB_CATEGORY = 2
 ROOT_CATEGORY = 1
-DISTRICT = 2
-CITY = 1
+CITY = 2
+REGION = 1
 CORS_ORIGIN_ALLOW_ALL = True
 
-
+HOUSEHOLDSIZE = (
+    (1, "1名〜2名"),
+    (2, "3名〜4名"),
+    (3, "5名〜6名"),
+    (4, "7名以上"),
+)
+ACREAGE = (
+    (1, "20坪以下"),
+    (2, "20坪台"),
+    (3, "30坪台"),
+    (4, "40坪台"),
+    (5, "50坪台"),
+    (6, "60坪台"),
+    (7, "70坪台"),
+    (8, "80坪台"),
+    (9, "90坪以上"),
+)
+CONSTRUCTIONPOSITIONTYPE = (
+    (1, "現住所と同じ"),
+    (2, "未定"),
+    (3, "予定地を入力"),
+)
+CONSTRUCTIONDURATION = (
+    (1, "3ヵ月以内"),
+    (2, "6ヵ月以内"),
+    (3, "1年以内"),
+    (4, "1～2年以内"),
+    (5, "2～3年以内"),
+    (6, "未定"),
+)
+BUDGET = (
+    (1, "1500万未満"),
+    (2, "1500万〜3000万"),
+    (3, "3000万〜6000万"),
+    (4, "6000万以上"),
+)
+HOUSEHOLDINCOME = (
+    (1, "350万未満以下"),
+    (2, "350万〜500万未満"),
+    (3, "500万〜800万未満"),
+    (4, "800万〜1000万未満"),
+    (5, "1000万〜1500万未満"),
+    (6, "1500万〜2000万未満"),
+    (7, "2000万以上"),
+)
+CONSTRUCTION_TYPE = (
+    (1, "新規"),
+    (2, "建て替え"),
+    (3, "リフォーム"),
+    (4, "リノベーション"),
+)
+CURRENTSITUATION = (
+    (1, "住宅・リフォーム・リノベの検討を始めた"),
+    (2, "住宅・リフォーム・リノベ情報収集をしている（個別の会社とはまだ接触していない）"),
+    (3, "工務店・ハウスメーカーと契約した"),
+    (4, "工事に着手している"),
+    (5, "すでに完成している"),
+    (6, "その他"),
+)
+STATUS = (
+    (1, "new contact"),
+    (2, "responded"),
+)
 JWT_AUTH = {
     'JWT_VERIFY_EXPIRATION': False
 }

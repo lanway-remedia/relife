@@ -1,49 +1,66 @@
 """
     Example house
 """
+from datetime import datetime
+
+from django.conf import settings
+from django.db.models import Q
 from django.http import Http404
 from rest_framework.decorators import detail_route
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
-from url_filter.integrations.drf import DjangoFilterBackend
 
-from mrelife.examplehouses.models import ExampleHouse, ExampleHouseCommitment, ExampleHouseStyle, ExampleHouseTag
-from mrelife.examplehouses.serializers import (
-    ExampleHouseNestedNameOnlySerializer,
-    ExampleHouseNestedSerializer,
-    ExampleHouseSerializer
-)
+from mrelife.attributes.models import SearchHistory
+from mrelife.examplehouses.models import (ExampleHouse, ExampleHouseCommitment,
+                                          ExampleHouseStyle, ExampleHouseTag)
+from mrelife.examplehouses.serializers import (ExampleHouseNestedNameOnlySerializer,
+                                               ExampleHouseNestedSerializer,
+                                               ExampleHouseSerializer)
 from mrelife.outletstores.models import OutletStore
 from mrelife.tags.models import Tag
-from mrelife.utils.groups import IsStore, IsSub
 from mrelife.utils.ex_house_permission import ExampleHousePermission
-from mrelife.utils.response import response_404, response_201, response_200
+from mrelife.utils.groups import IsStore, IsSub
+from mrelife.utils.response import response_200, response_201, response_404
+from url_filter.integrations.drf import DjangoFilterBackend
 
 
 class ExampleHouseViewSet(ModelViewSet):
     queryset = ExampleHouse.objects.all()
     serializer_class = ExampleHouseSerializer
-    permission_classes = (IsAuthenticated, ExampleHousePermission,)
+    permission_classes = (ExampleHousePermission,)
     parser_class = (FormParser, MultiPartParser, JSONParser)
     pagination_class = LimitOffsetPagination
     filter_backends = [DjangoFilterBackend]
-    filter_fields = ['store_id']
+    filter_fields = ['store_id', 'status_flag', 'contruction',
+                     'price_range', 'floor', 'household_size', 'household_income', 'styles']
 
     def list(self, request, *args, **kwargs):
         """
             Can filter store_id by adding parameter on url
             GET: ?store_id=INT
         """
-        try:
-            self.serializer_class = ExampleHouseNestedNameOnlySerializer
-            response = super(ExampleHouseViewSet, self).list(request, *args, **kwargs)
-            return response_200('EX200', '', response.data)
-        except Http404:
-            return response_404('EX404')
+        self.permission_classes = (AllowAny, )
+        self.serializer_class = ExampleHouseNestedNameOnlySerializer
+        queryset = ExampleHouse.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
+        keyword = request.GET.get('keyword')
+        if keyword is not None:
+            Sobject = SearchHistory.objects.filter(key_search=keyword)
+            if not Sobject:
+                p = SearchHistory.objects.create(key_search=keyword, num_result=1, created=datetime.now(), updated=datetime.now())
+                p.save()
+            else:
+                Sobject = SearchHistory.objects.get(key_search=keyword)
+                Sobject.num_result += 1
+                Sobject.updated = datetime.now()
+                Sobject.save()
+            self.queryset = queryset.filter(Q(title__contains=keyword) | Q(content__contains=keyword))
+        response = super(ExampleHouseViewSet, self).list(request)
+        return response_200('EX200', '', response.data)
 
     def retrieve(self, request, *args, **kwargs):
+        self.permission_classes = (AllowAny, )
         try:
             self.serializer_class = ExampleHouseNestedSerializer
             response = super(ExampleHouseViewSet, self).retrieve(request, *args, **kwargs)

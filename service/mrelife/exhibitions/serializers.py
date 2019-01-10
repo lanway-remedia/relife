@@ -3,15 +3,17 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from mrelife.events.serializers import EventExhibitionSerializer
-from mrelife.exhibitions.models import Exhibition, ExhibitionContact, ExhibitionContactReply, ExhibitionTag
-from mrelife.locations.models import District
-from mrelife.locations.serializers import DistrictSerializer
+from mrelife.exhibitions.models import (Exhibition, ExhibitionContact,
+                                        ExhibitionContactReply, ExhibitionTag)
+from mrelife.locations.models import City
+from mrelife.locations.serializers import CitySerializer
 from mrelife.users.models import User
 from mrelife.users.serializers import UserSerializer
 
 
 class ExhibitionContactReplySerializer(serializers.ModelSerializer):
     create_user = UserSerializer(read_only=True)
+
     class Meta:
         model = ExhibitionContactReply
         fields = '__all__'
@@ -19,7 +21,7 @@ class ExhibitionContactReplySerializer(serializers.ModelSerializer):
 
 class ExhibitionContactSerializer(serializers.ModelSerializer):
 
-    exhibition_contact_reply = ExhibitionContactReplySerializer(many=True,read_only=True)
+    exhibition_contact_reply = ExhibitionContactReplySerializer(many=True, read_only=True)
     create_user = UserSerializer(read_only=True)
 
     class Meta:
@@ -43,41 +45,30 @@ class ExhibitionSerializer(serializers.ModelSerializer):
     latitude = serializers.CharField()
     longtitude = serializers.CharField()
     address = serializers.CharField(max_length=800)
-    district_id = serializers.IntegerField(write_only=True, required=False, allow_null=False, default=0)
+    city_id = serializers.IntegerField(write_only=True, required=False, allow_null=False, default=0)
     zipcode = serializers.CharField(max_length=255, allow_blank=True)
     num_attend = serializers.IntegerField()
     start_time = serializers.DateTimeField(input_formats=['%Y/%m/%d', ], format="%Y/%m/%d", required=True)
     end_time = serializers.DateTimeField(input_formats=['%Y/%m/%d', ], format="%Y/%m/%d", required=True)
-    is_active = serializers.BooleanField(default=True)
-    exhibition_contact = ExhibitionContactSerializer(many=True, read_only=True, required=False)
     exhibition_event = EventExhibitionSerializer(many=True, read_only=True, required=False)
     exhibition_tag = ExhibitionTagSerializer(many=True, read_only=True, required=False)
-    #create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False, default=0)
-    district = DistrictSerializer(read_only=True)
+    city = CitySerializer(read_only=True)
     create_user = UserSerializer(read_only=True)
+    is_active = serializers.BooleanField(default=True, read_only=True)
 
     class Meta:
         model = Exhibition
-        fields = ('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'district_id', 'longtitude', 'address', 'district', 'zipcode', 'num_attend', 'start_time', 'end_time',
-                  'create_user', 'is_active', 'exhibition_tag', 'exhibition_contact', 'exhibition_event')
+        fields = ('id', 'title', 'content', 'img_thumbnail', 'img_large', 'latitude', 'city_id', 'longtitude', 'address', 'city', 'zipcode', 'num_attend', 'start_time', 'end_time',
+                  'create_user', 'is_active', 'exhibition_tag',  'exhibition_event')
 
-    def validate_district_id(self, district_id):
+    def validate_city_id(self, city_id):
         try:
-            item = District.objects.get(id=district_id)
+            item = City.objects.get(id=city_id)
             if(not item.is_active):
                 raise
         except Exception as e:
             raise serializers.ValidationError(e)
-        return district_id
-
-    # def validate_create_user_id(self, create_user_id):
-    #     try:
-    #         item = User.objects.get(id=create_user_id)
-    #         if(not item.is_active):
-    #             raise
-    #     except Exception as e:
-    #         raise serializers.ValidationError(e)
-    #     return create_user_id
+        return city_id
 
     def validate_img_large(self, img_large):
         try:

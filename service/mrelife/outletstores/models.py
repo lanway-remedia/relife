@@ -7,30 +7,39 @@ from django.core.files.storage import default_storage as storage
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import (CASCADE, SET_NULL, BooleanField, CharField,
                               DateTimeField, ForeignKey, ImageField,
-                              IntegerField, Model, TextField)
+                              IntegerField, Model, TextField,FloatField)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image
 
-from mrelife.locations.models import District
+from mrelife.locations.models import City
 
 
 class OutletStore(Model):
     title = CharField(max_length=255)
+    slogan_title = CharField(max_length=255, null=True)
+    slogan_content = CharField(max_length=255, null=True)
+    type = IntegerField(default=1)
     content = TextField()
     img_thumbnail = CharField(max_length=800, null=True)
     img_large = ImageField(upload_to='outletimag/', null=True, blank=True)
-    latitude = TextField(null=True)
-    longitude = TextField(null=True)
+    latitude = FloatField(null=True)
+    longitude = FloatField(null=True)
+    zipcode = CharField(max_length=8, null=True)
     address = CharField(max_length=800)
-    district = ForeignKey(District, related_name="outlet_dict", on_delete=CASCADE, null=True, blank=True)
+    city = ForeignKey(City, related_name="outlet_dict", on_delete=CASCADE, null=True, blank=True)
     tel = CharField(max_length=13)
     email = CharField(max_length=100)
-    zipcode = CharField(max_length=8, null=True)
-    home_page = CharField(max_length=255, null=True)
-    traffic = CharField(max_length=255, null=True)
+    establish = DateTimeField(auto_now_add=False, null=True)
+    charter_capital = IntegerField(default=1)
+    employee_total = IntegerField(default=1)
+    qualification = CharField(max_length=255, null=True)
+    permit_number = CharField(max_length=255, null=True)
+    construction_area = CharField(max_length=255, null=True)
+    construction_result = CharField(max_length=255, null=True)
+    min_price = IntegerField(default=1)
+    max_price = IntegerField(default=1)
     time_serving = CharField(max_length=255, null=True)
-    regular_holiday = CharField(max_length=255, null=True)
     create_user = ForeignKey('users.User', on_delete=CASCADE, null=True)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=False)
@@ -92,35 +101,37 @@ class OutletStore(Model):
 
 
 class OutletStoreContact(Model):
-    outlet_store = ForeignKey(OutletStore, related_name='outlet_store_contact', on_delete=CASCADE)
-    create_user = ForeignKey('users.User', on_delete=CASCADE)
-    comment = CharField(max_length=255)
+    outlet_store = ForeignKey(OutletStore, related_name='contacts', on_delete=CASCADE)
+    name = CharField(max_length=255)
+    name_kana = CharField(max_length=255)
+    zipcode = CharField(max_length=8)
+    address = CharField(max_length=800)
+    email = CharField(max_length=255)
+    tel = CharField(max_length=13)
+    age = IntegerField(default=0)
+    household_size = CharField(max_length=255, choices=settings.HOUSEHOLDSIZE, default='1名〜2名')
+    acreage = CharField(max_length=255, choices=settings.ACREAGE, default='20坪以下')
+    construction_position_type = CharField(max_length=255, choices=settings.CONSTRUCTIONPOSITIONTYPE, default='現住所と同じ')
+    construction_position = CharField(max_length=255)
+    construction_duration = CharField(max_length=255, choices=settings.CONSTRUCTIONDURATION, default='3ヵ月以内')
+    budget = CharField(max_length=255, choices=settings.BUDGET, default='1500万未満')
+    household_income = CharField(max_length=255, choices=settings.HOUSEHOLDINCOME, default='350万未満以下')
+    construction_type = CharField(max_length=255, choices=settings.CONSTRUCTION_TYPE, default='新規')
+    current_situation = CharField(max_length=255, choices=settings.CURRENTSITUATION, default='住宅・リフォーム・リノベの検討を始めた')
+    content = TextField()
+    status = IntegerField(choices=settings.STATUS, default=1) 
     is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
+    created = DateTimeField(auto_now_add=True)
+    updated = DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'outlet_store_contact'
         ordering = ['created', ]
 
-
-class OutletStoreContactReply(Model):
-    outlet_store_contact = ForeignKey(OutletStoreContact, related_name='outlet_store_contact_relpy', on_delete=CASCADE)
-    user = ForeignKey('users.User', on_delete=CASCADE)
-    comment = CharField(max_length=255)
-    is_active = BooleanField(default=True)
-    created = DateTimeField(auto_now_add=False, blank=True)
-    updated = DateTimeField(auto_now_add=False, blank=True)
-
-    class Meta:
-        db_table = 'outlet_store_contact_reply'
-        ordering = ['created', ]
-
-
 class OutletStoreReview(Model):
     rating = IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
     review = TextField()
-    outlet_store = ForeignKey(OutletStore, related_name='outlet_store_review', on_delete=CASCADE)
+    outlet_store = ForeignKey(OutletStore, related_name='reviews', on_delete=CASCADE)
     create_user = ForeignKey('users.User', related_name='create_user_outletstore_review', on_delete=CASCADE)
     update_user = ForeignKey('users.User', related_name='update_user_outletstore_review', on_delete=CASCADE)
     is_active = BooleanField(default=True)
@@ -129,4 +140,16 @@ class OutletStoreReview(Model):
 
     class Meta:
         db_table = 'outlet_store_review'
+        ordering = ['created', ]
+
+
+class OutletStoreBusiness(Model):
+    outlet_store = ForeignKey(OutletStore, related_name='business', on_delete=CASCADE)
+    business = IntegerField(default=1)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+
+    class Meta:
+        db_table = 'outlet_store_business'
         ordering = ['created', ]

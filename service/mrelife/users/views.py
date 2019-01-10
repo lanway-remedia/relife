@@ -2,6 +2,8 @@
     User Module
     By Bin Nguyen
 """
+from datetime import datetime
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
@@ -11,31 +13,38 @@ from django.db.models import Q
 from django.http import Http404
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from rest_framework import status
 from rest_framework.decorators import list_route
+from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
-from url_filter.integrations.drf import DjangoFilterBackend
 
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import ResetPasswordSerializer
+from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.file_managements.serializers import FileSerializer
 from mrelife.outletstores.models import OutletStore
-from mrelife.users.serializers import (
-    PasswordSerializer,
-    ProfileSerializer,
-    ShowProfileSerializer,
-    UserSerializer,
-    UserWithoutRequireInfoSerializer
-)
-from mrelife.utils.groups import GroupUser, IsStore
+from mrelife.outletstores.serializers import OutletStoreSerializer
+from mrelife.users.serializers import (PasswordSerializer, ProfileSerializer,
+                                       ShowProfileSerializer,
+                                       UserRequestSerializer, UserSerializer,
+                                       UserShowSerializer,
+                                       UserWithoutRequireInfoSerializer)
+from mrelife.utils.bc_store_owner_permission import BecomStoreOwnerPermision
+from mrelife.utils.groups import GroupUser, IsStore,GroupSub
 from mrelife.utils.querys import get_or_none
+from mrelife.utils.relifeenum import MessageCode
 from mrelife.utils.relifepermissions import AdminOrStoreOrDenyPermission
-from mrelife.utils.response import response_200, response_201, response_400, response_404, response_405, response_503
+from mrelife.utils.response import (response_200, response_201, response_400,
+                                    response_404, response_405, response_503)
 from mrelife.utils.validates import email_exist
-
+from url_filter.integrations.drf import DjangoFilterBackend
+from django.utils.decorators import method_decorator
+from drf_yasg.utils import swagger_auto_schema
 User = get_user_model()
 
 
@@ -50,7 +59,7 @@ class UserVs(ModelViewSet):
     # user
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['group_id', 'username', 'first_name', 'last_name', 'store_id']
-
+    @method_decorator(name='create', decorator=swagger_auto_schema(request_body=UserRequestSerializer))
     def list(self, request, *args, **kwargs):
         """
             Can filter group_id, username by adding parameter on url
@@ -74,40 +83,63 @@ class UserVs(ModelViewSet):
             return response_404('US404')
 
     def create(self, request, *args, **kwargs):
-        """
-            POST:
-                mail: str require
-                username: str require
-                password1: str require
-                password2: str require
-                group: int
-                store: int
-                other field is optional
-        """
         try:
-            response = super(UserVs, self).create(request, *args, **kwargs)
-            user = User.objects.get(pk=response.data['id'])
-        except Http404:
-            return response_404('US404')
-        group = request.user.group
-        if not IsStore(request.user):
-            try:
-                group = Group.objects.get(pk=int(request.data.get('group')))
-            except Exception:
-                group = GroupUser()
-            try:
-                store = OutletStore.objects.get(pk=int(request.data.get('store')))
-            except Exception:
-                store = None
-        else:
-            store = request.user.store
-        user.group = group
-        user.store = store
-        user.save()
-        response.data['group'] = group.id
-        if store is not None:
-            response.data['store'] = store.id
-        return response_201('US', '', response.data)
+            data=request.data
+            print(data)
+            serializer = UserRequestSerializer(data=data, context={'user': request.user})
+            if serializer.is_valid():
+                serializer.save()
+                user = User.objects.get(id=serializer.data['id'])
+                user.set_password(user.password)
+                user.save()
+                if not (user.group):
+                    user.group=GroupUser()
+                    if IsStore(request.user):
+                        user.group=GroupSub()
+                    user.save()
+                return Response(CommonFuntion.resultResponse(True, UserShowSerializer(user).data, MessageCode.BSO003.value, {}), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.BSO003.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        except Exception as e:
+                return Response(CommonFuntion.resultResponse(False, "", MessageCode.BSO004.value, {}), status=status.HTTP_400_BAD_REQUEST)
+
+        # """
+        #  POST:
+        #         mail: str require
+        #         username: str require
+        #         first_name:  str require
+        #         last_name :  str require
+        #         password1: str require
+        #         password2: str require
+        #         birth_date: str
+        #         address: str
+        #         group: int
+        #         store: int
+        #         other field is optional
+        # """
+        # try:
+        #     response = super(UserVs, self).create(request, *args, **kwargs)
+        #     user = User.objects.get(pk=response.data['id'])
+        # except Http404:
+        #     return response_404('US404')
+        # group = request.user.group
+        # if not IsStore(request.user):
+        #     try:
+        #         group = Group.objects.get(pk=int(request.data.get('group')))
+        #     except Exception:
+        #         group = GroupUser()
+        #     try:
+        #         store = OutletStore.objects.get(pk=int(request.data.get('store')))
+        #     except Exception:
+        #         store = None
+        # else:
+        #     store = request.user.store
+        # user.group = group
+        # user.store = store
+        # user.save()
+        # response.data['group'] = group.id
+        # if store is not None:
+        #     response.data['store'] = store.id
+        # return response_201('US', '', response.data)
 
     def update(self, request, *args, **kwargs):
         """
@@ -233,3 +265,20 @@ class ProfileVs(CreateModelMixin, ListModelMixin, GenericViewSet):
         user.set_password(serializer.data['password1'])
         user.save()
         return response_200('US014', '', serializer.data)
+
+
+class BecomeOwner(GenericAPIView, CreateModelMixin):
+    serializer_class = OutletStoreSerializer
+    permission_classes = (IsAuthenticated, BecomStoreOwnerPermision)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            serializer = OutletStoreSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                                created=datetime.now(), updated=datetime.now())
+                User.objects.filter(id=request.user.id).update(store_id=serializer.data['id'], group_id=2)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.BSO003.value, {}), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.BSO010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        except Exception as e:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.BSO004.value, {}), status=status.HTTP_400_BAD_REQUEST)

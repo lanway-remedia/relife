@@ -1,22 +1,25 @@
+import re
 from datetime import datetime
 
 from django.conf import settings
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.authentication import (BasicAuthentication,
-                                           SessionAuthentication)
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from mrelife.attributes.models import SearchHistory
 from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import Event, EventContact, EventContactReply
-from mrelife.events.serializers import (EventContactReplySerializer,
-                                        EventContactSerializer,
-                                        EventSerializer)
+from mrelife.events.serializers import EventContactReplySerializer, EventContactSerializer, EventSerializer
+from mrelife.utils.event_permission import EventPermission
+from mrelife.utils.groups import IsAdmin
 from mrelife.utils.relifeenum import MessageCode
+from mrelife.utils.response import response_200
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -24,20 +27,43 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
     serializer_class = EventSerializer
     pagination_class = LimitOffsetPagination
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (EventPermission,)
+    lookup_field = 'pk'
+    lookup_value_regex = '[^/]+'
 
     def list(self, request):
-        self.queryset = Event.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
-        return super(EventViewSet, self).list(request)
+        queryset = Event.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
+        keyword = request.GET.get('keyword')
+        if keyword is not None:
+            Sobject = SearchHistory.objects.filter(key_search=keyword)
+            if not Sobject:
+                p = SearchHistory.objects.create(key_search=keyword, num_result=1,
+                                                 created=datetime.now(), updated=datetime.now())
+                p.save()
+            else:
+                Sobject = SearchHistory.objects.get(key_search=keyword)
+                Sobject.num_result += 1
+                Sobject.updated = datetime.now()
+                Sobject.save()
+            self.queryset = queryset.filter(Q(title__contains=keyword) | Q(content__contains=keyword))
+        response = super(EventViewSet, self).list(request)
+        return response_200('', '', response.data)
 
     def retrieve(self, request, pk=None):
         try:
-            queryset = Event.objects.all()
+            parten = "^[0-9]+$"
+            if not re.findall(parten, str(pk)):
+                raise KeyError
+            queryset = Event.objects.filter(is_active=settings.IS_ACTIVE)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = EventSerializer(outletstoreObject)
             return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV001.value, ""), status=status.HTTP_200_OK)
+        except KeyError:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+        except Http404:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV002.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV002.value, e), status=status.HTTP_404_NOT_FOUND)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV002.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def create(self, request):
         try:
@@ -45,26 +71,41 @@ class EventViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV003.value, ""), status=status.HTTP_201_CREATED)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV003.value, ""), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV004.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV004.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         try:
-            queryset = Event.objects.all()
-            event_obj = get_object_or_404(queryset, pk=pk)
-            serializer = EventSerializer(event_obj, data=request.data)
+            parten = "^[0-9]+$"
+            if not re.findall(parten, str(pk)):
+                raise KeyError
+            queryset = Event.objects.filter(is_active=settings.IS_ACTIVE)
+            if not IsAdmin(request.user):
+                queryset = queryset.filter(create_user_id=request.user.id)
+            eventObj = get_object_or_404(queryset, pk=pk)
+            serializer = EventSerializer(eventObj, data=request.data, partial=True)
             if serializer.is_valid():
-                serializer.save(create_user_id=request.user.id)
+                serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
+                                created=datetime.now(), updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV005.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV006.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        except KeyError:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+        except Http404:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV012.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV006.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV006.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         try:
-            queryset = Event.objects.all()
+            parten = "^[0-9]+$"
+            if not re.findall(parten, str(pk)):
+                raise KeyError
+            queryset = Event.objects.filter(is_active=settings.IS_ACTIVE)
+            if not IsAdmin(request.user):
+                queryset = queryset.filter(create_user_id=request.user.id)
             event_obj = get_object_or_404(queryset, pk=pk)
             data = {"is_active": settings.IS_INACTIVE}
             serializer = EventSerializer(event_obj, data=data, partial=True)
@@ -72,13 +113,14 @@ class EventViewSet(viewsets.ModelViewSet):
                 serializer.save(updated=datetime.now())
                 eventContactObject = EventContact.objects.filter(is_active=1, event_id=pk)
                 if(eventContactObject):
-                    CommonFuntion.update_active(eventContactObject)
                     for item in eventContactObject:
-                        eventContactReplyObject = EventContactReply.objects.filter(
-                            is_active=1, event_contact_reply=eventContactObject.id)
-                        if(eventContactReplyObject):
-                            CommonFuntion.update_active(eventContactReplyObject)
+                        EventContactReply.objects.filter(is_active=1, event_contact_reply=eventContactObject.id).update(
+                            is_active=settings.IS_INACTIVE, updated=datetime.now())
+                eventContactObject.update(is_active=settings.IS_INACTIVE, updated=datetime.now())
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV007.value, ""), status=status.HTTP_200_NO_CONTENT)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV008.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+        except KeyError:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+        except Http404:
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV013.value, {}), status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV008.value, e), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV008.value, {}), status=status.HTTP_400_BAD_REQUEST)

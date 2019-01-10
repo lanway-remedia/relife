@@ -1,8 +1,12 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
+from rest_framework import serializers
 from rest_framework.serializers import (CharField, ModelSerializer, Serializer,
                                         ValidationError)
 
 from mrelife.outletstores.models import OutletStore
+from mrelife.utils.groups import GroupUser, IsStore,GroupSub
 from mrelife.utils.validates import email_exist
 
 User = get_user_model()
@@ -78,3 +82,35 @@ class PasswordSerializer(Serializer):
         if attrs['password1'] != attrs['password2']:
             raise ValidationError("US002")
         return attrs
+
+
+class UserRequestSerializer(ModelSerializer):
+    store = serializers.PrimaryKeyRelatedField(
+        queryset=OutletStore.objects.filter(is_active=1), required=False, allow_null=True)
+    group = serializers.PrimaryKeyRelatedField(queryset=Group.objects.all(), required=False, allow_null=True)
+    class Meta:
+        model = User
+        exclude = ('groups',)
+    def validate_group(self, group):
+        try:
+           if(IsStore(self.context.get('user'))):
+                if group:
+                    if not group==GroupSub():
+                        print(group)
+                        raise serializers.ValidationError("not permission! create")
+        except KeyError as e:
+            pass
+        return group
+class GroupShowSerializer(ModelSerializer):
+
+    class Meta:
+        model = Group
+        fields = ('id', 'name')
+
+
+class UserShowSerializer(ModelSerializer):
+    store = OutletStoreSerializer(read_only=True)
+    group=GroupShowSerializer(read_only=True)
+    class Meta:
+        model = User
+        exclude = ('groups', 'user_permissions')

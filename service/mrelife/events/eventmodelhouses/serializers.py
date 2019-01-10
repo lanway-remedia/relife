@@ -1,57 +1,48 @@
 from rest_framework import serializers
 
-from mrelife.events.models import Event, EventContact, EventExhibition, EventModelHouse,EventContactReply
+from mrelife.events.models import Event, EventModelHouse
+from mrelife.modelhouses.models import ModelHouse
 from mrelife.users.models import User
 from mrelife.users.serializers import UserSerializer
 
 
-class EventContactSerializer(serializers.ModelSerializer):
+class EventSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EventContact
+        model = Event
         fields = '__all__'
 
-class EventContactReplySerializer(serializers.ModelSerializer):
+
+class ModelhouseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EventContactReply
-        fields = '__all__'
-class EventExhibitionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EventExhibition
+        model = ModelHouse
         fields = '__all__'
 
 
 class EventModelHouseSerializer(serializers.ModelSerializer):
+
+    event_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
+    event = EventSerializer(read_only=True)
+    modelhouse_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
+    modelhouse = ModelhouseSerializer(read_only=True)
+    is_active = serializers.BooleanField(default=True, read_only=True)
+
     class Meta:
         model = EventModelHouse
-        fields = '__all__'
-
-
-# class EventSerializer(serializers.ModelSerializer):
-
-#     id = serializers.IntegerField(read_only=True)
-#     title = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
-#     content = serializers.CharField()
-#     url = serializers.CharField(max_length=255, allow_blank=True, allow_null=True)
-#     start_time = serializers.DateTimeField(input_formats=['%Y/%m/%d', ], format="%Y/%m/%d", required=True)
-#     end_time = serializers.DateTimeField(input_formats=['%Y/%m/%d', ], format="%Y/%m/%d", required=True)
-#     is_active = serializers.BooleanField(default=True)
-#     model_houses = EventModelHouseSerializer(many=True, read_only=True, required=False)
-#     event_exhibition = EventExhibitionSerializer(many=True, read_only=True, required=False)
-#     event_contact = EventContactSerializer(many=True, read_only=True, required=False)
-#     create_user_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
-#     create_user = UserSerializer(read_only=True)
-
-#     class Meta:
-#         model = Event
-#         fields = ('id', 'title', 'content', 'url', 'start_time', 'end_time','create_user_id',
-#                   'create_user', 'is_active', 'model_houses', 'event_exhibition',
-#                   'event_contact')
-
-#     def validate(self, data):
-#         # Check that the start time, end time.
-#         try:
-#             if data['end_time'] < data['start_time']:
-#                 raise serializers.ValidationError("Start time must be greater than end time")
-#         except KeyError as e:
-#             pass
-#         return data
+        fields = ('id', 'event_id', 'event', 'modelhouse_id', 'modelhouse', 'is_active')
+    
+    def validate_event_id(self, event_id):
+        try:
+            item = Event.objects.filter(is_active=1).get(id=event_id)
+            if(not item):
+                raise
+        except Exception as e:
+            raise serializers.ValidationError(e)
+        return event_id
+    def validate_modelhouse_id(self, modelhouse_id):
+        try:
+            item = ModelHouse.objects.filter(is_active=1).get(id=modelhouse_id)
+            if(not item):
+                raise
+        except Exception as e:
+            raise serializers.ValidationError(e)
+        return modelhouse_id

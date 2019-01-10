@@ -1,0 +1,76 @@
+{% load inlinecss  static %}
+{% inlinecss "css/email.css" %}
+<html>
+<head>
+ <title>Contact outlet store</title>
+</head>
+<body >
+    <div class="content">
+	<div class="header">
+        <a class="header-logo-inner" href="http://relf.jp/builder/%E4%BD%8F%E5%AE%85%E5%B7%A5%E6%88%BF%E3%82%B3%E3%82%A4%E3%82%BA%E3%83%9F/">
+			<img class="header-logo-img" src="{{domain}}/static/images/logo.png" alt="Re:style" />
+			<span class="header-logo-text">暮らしづくりのコンシェルジュ</span>
+        </a>
+    </div>
+	<div>
+	</div>
+	<div class="title">
+	<p style="text-align: center; font-size:25px">Thanks for your contact</p>
+	<p style="text-align: center;"> if you have any questions, Call us 016777</p>
+	
+	</div>
+
+<p class="textitle"><img class="icontile" src="{{domain}}/static/images/icontitle.png" alt="Re:style" /> yours Infomation contact<p>
+	
+<table class="tablecontext">
+
+<tr>
+<td><p style="color:blue;"> <strong>お名前:</strong></p></td><td>{{name}}</td>
+</tr>
+<tr>
+<td class="trchil"><p style="color:blue;"> <strong>ふりがな:</strong></p></td><td>{{name_kana}}</td>
+</tr>
+<tr>
+<td><p style="color:blue;"> <strong>ご住所:</strong></p></td><td>{{zipcode}}/{{address}}</td>
+</tr>
+<tr>
+<td class="trchil"><p style="color:blue;"> <strong>メールアドレス:</strong></p></td><td>{{email}}</td>
+</tr>
+<tr>
+<td ><p style="color:blue;"> <strong>電話番号:</strong></p></td><td>{{tel}}</td>
+</tr>
+<tr class="trchil">
+<td><p style="color:blue;"> <strong>年齢:</strong></p></td><td>{{age}}</td>
+</tr>
+<tr>
+<td><p style="color:blue;"> <strong>家族構成:</strong></p></td><td>{{household_size}}</td>
+</tr>
+<tr>
+<td class="trchil"><p style="color:blue;"> <strong>希望の広さ（敷地面積:</strong></p></td><td>{{acreage}}</td>
+</tr>
+<tr>
+<td><p style="color:blue;"> <strong>建設予定地:</strong></p></td><td>{{construction_position_type}}/{{construction_position}}</td>
+</tr>
+<tr class="trchil">
+<td><p style="color:blue;"> <strong>建設予定時期:</strong></p></td><td>{{construction_duration}}</td>
+</tr>
+<tr>
+<td><p style="color:blue;"> <strong>予算:</strong></p></td><td>{{budger}}</td>
+</tr>
+<tr class="trchil">
+<td><p style="color:blue;"> <strong>世帯年収:</strong></p></td><td>{{household_income}}</td>
+</tr>
+<tr>
+<td><p style="color:blue;"> <strong>建設内容:</strong></p></td><td>{{construction_type}}</td>
+</tr>
+<tr class="trchil">
+<td><p style="color:blue;"> <strong>現在の状況:</strong></p></td><td>content</td>
+</tr>
+</table>
+<div class="footer">
+<div style="margin:auto; text-align:center"><img class="imagefoot"  src="{{domain}}/static/images/images/logorelifefoot.png" alt="Re:style" />
+	</div></div>
+</div>
+
+</body>
+{% endinlinecss %}

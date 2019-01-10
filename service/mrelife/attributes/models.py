@@ -4,9 +4,9 @@ from django.db.models import (
     CharField,
     IntegerField,
     Model,
-    DateTimeField
+    DateTimeField,
+    ForeignKey
 )
-
 # Create your models here.
 
 
@@ -50,6 +50,16 @@ class Style(Model):
     class Meta:
         db_table = 'style'
         ordering = ['created', ]
+
+class Style(Model):
+    title = CharField(unique=True, max_length=255)
+    order = IntegerField()
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+    class Meta:
+        db_table = 'style'
+        ordering = ['created', ]
 class Commitment(Model):
     title = CharField(unique=True, max_length=255)
     order = IntegerField()
@@ -77,4 +87,13 @@ class HouseHoldIncome(Model):
     updated = DateTimeField(auto_now_add=False, blank=True)
     class Meta:
         db_table = 'household_income'
+        ordering = ['created', ]
+class SearchHistory(Model):
+    key_search = CharField(unique=True,max_length=255)
+    num_result = IntegerField(default=1)
+    is_active = BooleanField(default=True)
+    created = DateTimeField(auto_now_add=False, blank=True)
+    updated = DateTimeField(auto_now_add=False, blank=True)
+    class Meta:
+        db_table = 'search_history'
         ordering = ['created', ]
