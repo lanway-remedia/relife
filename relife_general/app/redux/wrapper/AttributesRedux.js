@@ -43,6 +43,8 @@ const { Types, Creators } = createActions({
   attributePriceEditRequest: ['data'],
   attributePriceDeleteRequest: ['data'],
 
+  mostKeywordListRequest: ['data'],
+
   attributeSuccess: ['data'],
   attributeFailure: ['error']
 })
@@ -178,6 +180,10 @@ export const attributePriceDeleteRequest = state => {
   return { ...state, processing: true }
 }
 
+export const mostKeywordListRequest = state => {
+  return { ...state, processing: true }
+}
+
 export const attributeSuccess = (state, { data }) => {
   return { ...state, processing: false, data, error: null }
 }
@@ -223,6 +229,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ATTRIBUTE_PRICE_ADD_REQUEST]: attributePriceAddRequest,
   [Types.ATTRIBUTE_PRICE_EDIT_REQUEST]: attributePriceEditRequest,
   [Types.ATTRIBUTE_PRICE_DELETE_REQUEST]: attributePriceDeleteRequest,
+
+  [Types.MOST_KEYWORD_LIST_REQUEST]: mostKeywordListRequest,
 
   [Types.ATTRIBUTE_SUCCESS]: attributeSuccess,
   [Types.ATTRIBUTE_FAILURE]: attributeFailure

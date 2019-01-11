@@ -115,4 +115,8 @@ export default class AttributesService {
   deleteStyle(data) {
     return apiClient.delete(`/attributes/style/${data}`)
   }
+
+  listKeyword(data) {
+    return apiClient.get(`/attributes/search_history/get_most_keyword/${data}`)
+  }
 }

@@ -87,6 +87,19 @@ const AttributesSagas = {
       yield put(AttributeActions.attributeFailure(err))
     }
   },
+  *listMostKeywordSearch({ data }) {
+    try {
+      let response = yield call(attributesService.listKeyword, data)
+      yield put(
+        AttributeActions.attributeSuccess(
+          response.data,
+          (response.data.isGetKeyword = true)
+        )
+      )
+    } catch (err) {
+      yield put(AttributeActions.attributeFailure(err))
+    }
+  }
 }
 
 export default AttributesSagas

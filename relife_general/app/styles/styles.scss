@@ -37,8 +37,11 @@
 @import './components/outletStores/tabContent';
 
 //Containers
+//Containers/auths
 @import './containers/auths/loginPage';
 @import './containers/auths/forgotPasswordPage';
+
+//Containers/profile
 @import './containers/profiles/profile';
 
 //Containers/exampleHouse
