@@ -55,6 +55,9 @@ export default function* root() {
     takeLatest(ProfileTypes.CHANGE_PASS_REQUEST, ProfileSagas.changePass),
     takeLatest(ProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
 
+    takeLatest(ProfileTypes.BECOME_STORE_REQUEST, ProfileSagas.becomeStore),
+    takeLatest(ProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
+
     //Locations
     //List Location
     takeLatest(
