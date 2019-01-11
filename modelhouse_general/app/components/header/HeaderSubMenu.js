@@ -125,7 +125,7 @@ const mapStateToProps = state => {
   return {
     processing: state.locations.processing,
     data: state.locations.data,
-    dataKeyword: state.attributes.data
+    dataKeyword: state.mostSearched.data
   }
 }
 
@@ -133,7 +133,7 @@ const mapDispatchToProps = dispatch => ({
   locationListRequest: data =>
     dispatch(LocationActions.locationListRequest(data)),
   mostKeywordListRequest: dataKeyword =>
-    dispatch(MostSearchedActions.mostKeywordListRequest(dataKeyword)),
+    dispatch(MostSearchedActions.mostSearched(dataKeyword)),
 })
 
 HeaderSubMenu.propTypes = {
