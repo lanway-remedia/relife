@@ -33,7 +33,6 @@ class ExampleHouseList extends React.Component {
     if(this.props.data != nextProps.data) {
       let response = nextProps.data
       if (response.isGetList) {
-        console.log(response.data)
         this.setState({
           exampleHouseList: response.data.results,
           count: response.data.count
