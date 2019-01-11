@@ -47,7 +47,7 @@ class OutletStoreSerializer(serializers.ModelSerializer):
     address = serializers.CharField(max_length=800,required=False,)
     city_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
     tel = serializers.CharField(max_length=13,required=False)
-    email = serializers.EmailField(max_length=100, allow_null=True,required=False)
+    email = serializers.EmailField(max_length=100,allow_blank=True, allow_null=True,required=False)
     establish = serializers.DateTimeField(input_formats=['%Y/%m/%d', ], format="%Y/%m/%d", required=False)
     charter_capital = serializers.IntegerField(required=False,)
     employee_total = serializers.IntegerField(required=False,)

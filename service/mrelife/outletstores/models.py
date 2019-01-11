@@ -5,9 +5,19 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser, Group
 from django.core.files.storage import default_storage as storage
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import (CASCADE, SET_NULL, BooleanField, CharField,
-                              DateTimeField, ForeignKey, ImageField,
-                              IntegerField, Model, TextField,FloatField)
+from django.db.models import (
+    CASCADE,
+    SET_NULL,
+    BooleanField,
+    CharField,
+    DateTimeField,
+    FloatField,
+    ForeignKey,
+    ImageField,
+    IntegerField,
+    Model,
+    TextField
+)
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image
@@ -29,7 +39,7 @@ class OutletStore(Model):
     address = CharField(max_length=800)
     city = ForeignKey(City, related_name="outlet_dict", on_delete=CASCADE, null=True, blank=True)
     tel = CharField(max_length=13)
-    email = CharField(max_length=100,null=True)
+    email = CharField(max_length=100, null=True)
     establish = DateTimeField(auto_now_add=False, null=True)
     charter_capital = IntegerField(default=1)
     employee_total = IntegerField(default=1)
@@ -119,7 +129,7 @@ class OutletStoreContact(Model):
     construction_type = CharField(max_length=255, choices=settings.CONSTRUCTION_TYPE, default='新規')
     current_situation = CharField(max_length=255, choices=settings.CURRENTSITUATION, default='住宅・リフォーム・リノベの検討を始めた')
     content = TextField()
-    status = IntegerField(choices=settings.STATUS, default=1) 
+    status = IntegerField(choices=settings.STATUS, default=1)
     is_active = BooleanField(default=True)
     created = DateTimeField(auto_now_add=True)
     updated = DateTimeField(auto_now_add=True)
@@ -127,6 +137,7 @@ class OutletStoreContact(Model):
     class Meta:
         db_table = 'outlet_store_contact'
         ordering = ['created', ]
+
 
 class OutletStoreReview(Model):
     rating = IntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
