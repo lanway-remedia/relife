@@ -21,7 +21,7 @@ class Footer extends React.Component {
             <div className="footer-link-title">Re:Lifeについて</div>
             <ul className="footer-link">
               <li><Link to="/about_us/">Re:Lifeとは</Link></li>
-              <li><Link to="/form/form-builder/">建築会社・工務店さまへ</Link></li>
+              <li><Link to="/become-outler">建築会社・工務店さまへ</Link></li>
               <li><Link to="http://style.relf.jp/">Re:Style</Link></li>
             </ul>
             <div className="footer-link-title">注文住宅を検討の方へ</div>

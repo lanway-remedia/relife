@@ -1,10 +1,89 @@
-.contact-title {
+.single-title {
   font-size: 2.8rem;
   padding: 0 0 10px 0;
   border-bottom: double 4px #2e3230;
   margin: 0 0 30px 0;
+  span {
+    display: block;
+    font-size: 1.4rem;
+    color: #666;
+    margin: 15px 0 0 0
+  }
+
+  @media screen and (max-width: 767px) {
+    margin: 25px 10px 20px 10px;
+    font-size: 2.2rem;
+    line-height: 2.6rem;
+    padding: 0 0 5px 0;
+    border-bottom: double 4px #2e3230;
+  }
 }
 
+.single-content {
+  p {
+    font-size: 1.3rem;
+    @media screen and (max-width: 767px) {
+      font-size: 1.2rem;
+      margin: 0 15px;
+    }
+  }
+  .single-subtitle {
+    color: #057235;
+    font-size: 1.8rem;
+    margin: 25px 0 10px 0;
+    @media screen and (max-width: 767px) {
+      color: #057235;
+      font-size: 1.8rem;
+      margin: 25px 10px 10px 10px;
+    }
+  }
+  ol {
+    padding: 10px 0 0 20px;
+    li {
+      font-size: 1.3rem;
+    }
+  }
+}
 .contact-txt {
   font-size: 1.4rem;
+  @media screen and (max-width: 767px) {
+    margin: 0 10px 20px 10px;
+  }
+}
+
+.contact-subtitle-wrap {
+  .contact-subtitle-once {
+    &:nth-child(1) {
+      margin: 0 30px 40px 0;
+      width: calc(50% - 30px);
+      float: left;
+    }
+    &:nth-child(2) {
+      float: right;
+      width: calc(50% - 30px);
+      margin: 0 0 40px 30px;
+    }
+    &:nth-child(3), &:nth-child(4), &:nth-child(5) {
+      width: calc(100% / 3 - 30px);
+      float: left;
+      margin: 0 0 40px 0;
+    }
+    &:nth-child(4) {
+      margin: 0 45px 40px 45px;
+    }
+    .contact-subtitle {
+      color: #057235;
+      font-size: 1.8rem;
+    }
+    p {
+      float: right;
+      font-size: 1.4rem;
+      img {
+        float: right;
+        width: 82px;
+        height: auto;
+        margin-top: -10px;
+      }
+    }
+  }
 }
