@@ -100,6 +100,10 @@ export default function* root() {
       AttributeTypes.ATTRIBUTE_HOUSE_SIZE_LIST_REQUEST,
       AttributesSagas.listHouseSize
     ),
+    takeLatest(
+      AttributeTypes.MOST_KEYWORD_LIST_REQUEST,
+      AttributesSagas.listMostKeywordSearch
+    ),
 
     // Example House
     // Get List Example House

@@ -14,7 +14,7 @@ header {
       position: relative;
       background: #fff;
       box-shadow: 0px 0px 6px 2px rgba(0,0,0,0.08);
-      z-index: 1000;
+      z-index: $zindex-lv-4;
       display: inline-block;
 
       a.header-logo-inner:hover{
@@ -217,7 +217,7 @@ header {
 
       .drawer-btn {
         position: fixed;
-        z-index: 9999;
+        z-index: $zindex-lv-5;
         top: 0;
         right: 0;
         display: block;
@@ -263,7 +263,7 @@ header {
 }
 
 .react-drawer-drawer {
-  z-index: 999;
+  z-index: $zindex-lv-3;
   width: 65%;
   height: 100%;
   color: #222;
@@ -292,6 +292,27 @@ header {
           padding: .75rem;
         }
       }
+    }
+  }
+}
+
+.react-drawer-overlay {
+  z-index: $zindex-lv-3;
+}
+
+.drawer-open {
+  overflow: hidden;
+  .drawer-btn-icon {
+    background-color: transparent !important;
+    &:before {
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg);
+      top: 0 !important;
+    }
+    &:after {
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+      top: 0 !important;
     }
   }
 }

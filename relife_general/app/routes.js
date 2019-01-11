@@ -15,6 +15,7 @@ import BreadcrumbComponent from './components/BreadcrumbComponent'
 
 //homepage
 import HomePage from './containers/HomePage'
+
 //auths
 import RegisterPage from './containers/auths/RegisterPage'
 import LoginPage from './containers/auths/LoginPage'
@@ -31,6 +32,7 @@ import ExampleHouseViewPage from './containers/exampleHouse/ExampleHouseViewPage
 //outletStores
 import OutletStoresListPage from './containers/outletStores/OutletStoresListPage'
 import OutletStoresViewPage from './containers/outletStores/OutletStoresViewPage'
+import MapPage from './containers/outletStores/MapPage'
 
 import {StorageKeyConstants} from './constants'
 import 'react-toastify/dist/ReactToastify.css'
@@ -130,6 +132,10 @@ class Routes extends React.Component {
                         <Route
                             path="/builder/:id"
                             component={OutletStoresViewPage}
+                        />
+                        <Route
+                            path="/map"
+                            component={MapPage}
                         />
 
                     </Switch>

@@ -4,6 +4,7 @@ import { withRouter, Link } from 'react-router-dom'
 import { Form, Input } from'reactstrap'
 import I18nUtils from '../../utils/I18nUtils'
 import LocationActions from '../../redux/wrapper/LocationsRedux'
+import AttributesActions from '../../redux/wrapper/AttributesRedux'
 import PropTypes from 'prop-types'
 
 class HeaderSubMenu extends React.Component {
@@ -11,6 +12,7 @@ class HeaderSubMenu extends React.Component {
     super(props)
     this.state = {
       locationList: [],
+      keywordList: []
     }
   }
   getLocationList = () => {
@@ -22,7 +24,13 @@ class HeaderSubMenu extends React.Component {
     this.props.locationListRequest(data)
   }
 
+  getKeywordList = () => {
+    let number = 10
+    this.props.mostKeywordListRequest(number)
+  }
+
   componentDidMount() {
+    this.getKeywordList()
     this.getLocationList()
   }
 
@@ -36,10 +44,21 @@ class HeaderSubMenu extends React.Component {
         })
       }
     }
+
+    if (this.props.dataKeyword != nextProps.dataKeyword) {
+      let response = nextProps.dataKeyword
+      if (response.isGetKeyword == true) {
+        let data = response.data
+        this.setState({
+          keywordList: data
+        })
+      }
+    }
   }
 
   render () {
-    let {locationList} = this.state
+    let {locationList, keywordList} = this.state
+    console.log(keywordList)
     return (
       <div className="menu__second-level clearfix">
         <div className="mega-menu-inner-left">
@@ -79,18 +98,14 @@ class HeaderSubMenu extends React.Component {
           <div className="mega-menu-keyword-area">
             <div className="mega-menu-inner-title">{I18nUtils.t('search-keyword-most')}</div>
             <ul className="mega-keywords">
-              <li>
-                <Link to="">
-                  <span className="mega-keyword">地域密着</span>
-                  <span className="mega-keyword-count">72</span>
+            {keywordList.map((val, key) => (
+              <li key={key}>
+                <Link to={`/builder/keyword=${val.key_search}`}>
+                  <span className="mega-keyword">{val.key_search}</span>
+                  <span className="mega-keyword-count">{val.num_result}</span>
                 </Link>
               </li>
-              <li>
-                <Link to="">
-                  <span className="mega-keyword">地域密着</span>
-                  <span className="mega-keyword-count">72</span>
-                </Link>
-              </li>
+            ))}
             </ul>
           </div>
 
@@ -109,18 +124,23 @@ class HeaderSubMenu extends React.Component {
 const mapStateToProps = state => {
   return {
     processing: state.locations.processing,
-    data: state.locations.data
+    data: state.locations.data,
+    dataKeyword: state.attributes.data
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   locationListRequest: data =>
     dispatch(LocationActions.locationListRequest(data)),
+  mostKeywordListRequest: dataKeyword =>
+    dispatch(AttributesActions.mostKeywordListRequest(dataKeyword)),
 })
 
 HeaderSubMenu.propTypes = {
   locationListRequest : PropTypes.func,
-  data: PropTypes.object
+  data: PropTypes.object,
+  dataKeyword: PropTypes.object,
+  mostKeywordListRequest: PropTypes.func
 }
 
 export default connect(

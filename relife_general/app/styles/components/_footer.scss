@@ -14,7 +14,7 @@
       margin: 0 auto;
       left: 0;
       right: 0;
-      z-index: 100;
+      z-index: $zindex-lv-1;
 
       img{
         width: 175px;
@@ -180,7 +180,7 @@
         margin: 0 auto;
         left: 0;
         right: 0;
-        z-index: 100;
+        z-index: $zindex-lv-1;
 
         img {
           width: 110px;
