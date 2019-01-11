@@ -100,7 +100,7 @@ class HeaderSubMenu extends React.Component {
             <ul className="mega-keywords">
             {keywordList.map((val, key) => (
               <li key={key}>
-                <Link to={`/builder/keyword=${val.key_search}`}>
+                <Link to={`/builder?keyword=${val.key_search}`}>
                   <span className="mega-keyword">{val.key_search}</span>
                   <span className="mega-keyword-count">{val.num_result}</span>
                 </Link>
