@@ -1,0 +1,24 @@
+#map-container {
+  height: 550px;
+  padding-left: 0;
+  padding-right: 0;
+  overflow: hidden;
+  position: relative;
+  .info {
+    width: 200px;
+    margin: 10px 0 0 0;
+    a {
+      color: #057235;
+      text-decoration: underline;
+      margin: 0 0 5px 0;
+      display: block;
+      h3 {
+        font-size: 120%;
+        background: none;
+        padding: 0;
+        margin: 0;
+        width: auto;
+      }
+    }
+  }
+}
