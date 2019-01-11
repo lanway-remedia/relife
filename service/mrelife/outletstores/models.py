@@ -29,7 +29,7 @@ class OutletStore(Model):
     address = CharField(max_length=800)
     city = ForeignKey(City, related_name="outlet_dict", on_delete=CASCADE, null=True, blank=True)
     tel = CharField(max_length=13)
-    email = CharField(max_length=100)
+    email = CharField(max_length=100,null=True)
     establish = DateTimeField(auto_now_add=False, null=True)
     charter_capital = IntegerField(default=1)
     employee_total = IntegerField(default=1)
