@@ -44,7 +44,17 @@ const ProfileSagas = {
     } catch (err) {
       yield put(ProfileActions.profileFailure(err))
     }
+  },
+  *becomeStore ({ data }) {
+    try {
+      let response = yield call(profileService.becomeStore, data)
+      response.data.becomeStore = true
+      yield put(ProfileActions.profileSuccess(response.data))
+    } catch (err) {
+      yield put(ProfileActions.profileFailure(err))
+    }
   }
+
 }
 
 export default ProfileSagas

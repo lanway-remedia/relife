@@ -44,14 +44,15 @@
           font-size: 1.2rem;
           padding: 0 20px 20px 20px;
         }
-        input {
-          padding: 10px 15px;
-          line-height: 1.4rem;
-          width: 100%;
-          border-radius: 0;
-        }
         .contact_table_td_input {
           position: relative;
+          input {
+            padding: 20px 15px;
+            line-height: 1.4rem;
+            font-size: 1.4rem;
+            width: 100%;
+            border-radius: 0;
+          }
 
           textarea {
             padding: 10px 15px;

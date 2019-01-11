@@ -17,4 +17,7 @@ export default class ProfileService {
   changePass(data) {
     return apiClient.post(`/users/v1/profile/update_password/`, data)
   }
+  becomeStore(data) {
+    return apiClient.post(`/users/v1/profile/become_owner/`, data)
+  }
 }
