@@ -1,5 +1,5 @@
 /**
- * @author HaPV
+ * @author HANH TD
  */
 
 import React from 'react'
@@ -7,11 +7,9 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'reactstrap'
-import { bindActionCreators } from 'redux'
-import { show, hide } from 'redux-modal'
-import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
+
+import { ValidationForm } from 'react-bootstrap4-form-validation'
 import I18nUtils from '../../utils/I18nUtils'
-import ProfileNav from '../../components/ProfileNav'
 import ProfileActions from '../../redux/wrapper/ProfileRedux'
 import ContactTableTr from '../../components/outletStores/ContactTableTr'
 import ContactTableTh from '../../components/outletStores/ContactTableTh'
@@ -35,7 +33,6 @@ class ProfileBecomeOutlerPage extends React.Component {
     data.append('title', this.state.title)
     data.append('email', this.state.email)
     this.props.becomeStoreRequest(data)
-
   }
 
   handleChange = e => {
@@ -50,7 +47,7 @@ class ProfileBecomeOutlerPage extends React.Component {
         <Row className="lower-contents-inner clearfix">
           <Col xs="12" md="12" className="padding-0">
             <section className="main">
-              <h1 className="contact-title">
+              <h1 className="single-title">
                 {I18nUtils.t('become-store-page-title')}
               </h1>
               <p className="contact-txt">
@@ -175,7 +172,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   becomeStoreRequest: data =>
-  dispatch(ProfileActions.becomeStoreRequest(data)),
+    dispatch(ProfileActions.becomeStoreRequest(data)),
 })
 
 export default connect(
