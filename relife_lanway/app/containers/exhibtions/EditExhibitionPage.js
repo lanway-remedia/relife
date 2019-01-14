@@ -39,8 +39,8 @@ class EditExhibitionPage extends React.Component {
       startTime: '',
       endTime: '',
       content: '',
-      city: '',
-      district: ''
+      region: '',
+      city: ''
     }
     this.redirectToListPage = this.redirectToListPage.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -48,8 +48,8 @@ class EditExhibitionPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChangeFromDate = this.handleChangeFromDate.bind(this)
     this.handleChangeToDate = this.handleChangeToDate.bind(this)
+    this.handleSelectedRegion = this.handleSelectedRegion.bind(this)
     this.handleSelectedCity = this.handleSelectedCity.bind(this)
-    this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
   }
 
   handleChangeFromDate(date) {
@@ -85,8 +85,8 @@ class EditExhibitionPage extends React.Component {
           id: response.data.id,
           title: response.data.title,
           address: response.data.address,
-          city: response.data.district.city.id,
-          district: response.data.district.id,
+          region: response.data.city.region.id,
+          city: response.data.city.id,
           zipcode: response.data.zipcode,
           startTime: response.data.start_time,
           endTime: response.data.end_time,
@@ -117,15 +117,15 @@ class EditExhibitionPage extends React.Component {
     })
   }
 
-  handleSelectedCity = cityId => {
+  handleSelectedRegion = regionId => {
     this.setState({
-      city: cityId
+      region: regionId
     })
   }
 
-  handleSelectedDistrict = districtId => {
+  handleSelectedCity = cityId => {
     this.setState({
-      district: districtId
+      city: cityId
     })
   }
 
@@ -142,8 +142,8 @@ class EditExhibitionPage extends React.Component {
     data.append('start_time', moment(this.state.fromDate).format('YYYY/MM/DD'))
     data.append('end_time', moment(this.state.toDate).format('YYYY/MM/DD'))
     data.append('content', this.state.content)
-    data.append('district_id', this.state.district)
-    data.append('city', this.state.city)
+    data.append('city_id', this.state.city)
+    data.append('region', this.state.region)
 
     if (typeof this.state.thumbnailImage !== 'string') {
       data.append('img_large', this.state.thumbnailImage)
@@ -229,22 +229,22 @@ class EditExhibitionPage extends React.Component {
             </Col>
             <LocationsComponent
               required
+              onSelectedRegion={this.handleSelectedRegion}
               onSelectedCity={this.handleSelectedCity}
-              onSelectedDistrict={this.handleSelectedDistrict}
+              region={`${this.state.region}`}
               city={`${this.state.city}`}
-              district={`${this.state.district}`}
             />
             {/* <Col xs="12" md="6">
               <FormGroup>
-                <Label htmlFor="district">{I18nUtils.t('district')}</Label>
+                <Label htmlFor="city">{I18nUtils.t('city')}</Label>
                 <SelectGroup
-                  name="district"
-                  id="district"
+                  name="city"
+                  id="city"
                   required
                   errorMessage={I18nUtils.t('lb-select')}
                   onChange={this.handleChange}
                   value={
-                    this.state.district === null ? ' ' : this.state.district
+                    this.state.city === null ? ' ' : this.state.city
                   }
                 >
                   <option value="">{I18nUtils.t('lb-select')}</option>
@@ -255,14 +255,14 @@ class EditExhibitionPage extends React.Component {
             </Col>
             <Col xs="12" md="6">
               <FormGroup>
-                <Label htmlFor="city">{I18nUtils.t('city')}</Label>
+                <Label htmlFor="region">{I18nUtils.t('region')}</Label>
                 <SelectGroup
-                  name="city"
-                  id="city"
+                  name="region"
+                  id="region"
                   required
                   errorMessage={I18nUtils.t('lb-select')}
                   onChange={this.handleChange}
-                  value={this.state.city === null ? ' ' : this.state.city}
+                  value={this.state.region === null ? ' ' : this.state.region}
                 >
                   <option value="">{I18nUtils.t('lb-select')}</option>
                   <option value="1">Hoàng Mai</option>

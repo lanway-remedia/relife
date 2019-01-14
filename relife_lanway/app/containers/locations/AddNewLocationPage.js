@@ -18,7 +18,7 @@ class AddNewLocationPage extends React.Component {
     super(props)
     this.state = {
       data: [],
-      type: 1, //Type 1: City, 2: District
+      type: 1, //Type 1: Region, 2: City
       name: '',
       order: ''
     }

@@ -8,7 +8,7 @@
 @mixin default-hover {
   @include default-transition;
   &:hover {
-    opacity: 0.8;
+    oparegion: 0.8;
   }
 }
 @mixin text-overflow-multiple-lines($lines: 2) {
