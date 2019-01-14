@@ -2,6 +2,7 @@
   border: #f2f3f2 20px solid;
   margin-bottom: 100px;
     .contact_table_tr {
+      margin: 0;
       display: table;
       border-bottom: 1px solid #dadada;
       width: 100%;
@@ -58,6 +59,33 @@
             padding: 10px 15px;
             width: 100%;
             border: #dadada 1px solid;
+          }
+          .contact_table_select {
+            position: relative;
+            &:before {
+              z-index: 1;
+              position: absolute;
+              right: 22px;
+              top: 15px;
+              line-height: 43px;
+              pointer-events: none;
+              content: "";
+              border-top: 8px solid #057235;
+              border-right: 5px solid transparent;
+              border-bottom: 5px solid transparent;
+              border-left: 5px   solid transparent
+            }
+            select {
+              outline: none;
+              text-indent: 0.01px;
+              text-overflow: '';
+              background: none transparent;
+              vertical-align: middle;
+              font-size: inherit;
+              color: inherit;
+              -webkit-appearance: button;
+              border-radius: 0px;
+            }
           }
         }
 

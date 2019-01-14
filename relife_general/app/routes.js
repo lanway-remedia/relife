@@ -143,15 +143,15 @@ class Routes extends React.Component {
                         />
                         <Route
                             path="/privacy-policy"
-                            component={requireLogin(PrivacyPolicyPage)}
+                            component={PrivacyPolicyPage}
                         />
                         <Route
                             path="/rule"
-                            component={requireLogin(RulePage)}
+                            component={RulePage}
                         />
                         <Route
                             path="/contact"
-                            component={requireLogin(ContactPage)}
+                            component={ContactPage}
                         />
 
                     </Switch>

@@ -1,12 +1,15 @@
+/**
+ * @author HANH TD
+ */
+
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import {Row, Col} from 'reactstrap'
 import { PropTypes } from 'prop-types'
 import ContactTableTh from './ContactTableTh'
 import { TextInput } from 'react-bootstrap4-form-validation'
 import validator from 'validator'
-import I18nUtils from './../../utils/I18nUtils';
+import I18nUtils from './../../utils/I18nUtils'
 class ContactTableTr extends React.Component {
   render () {
     let { title, name, placeholder, required, onChange, value} = this.props

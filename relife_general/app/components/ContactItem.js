@@ -6,8 +6,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
-import I18nUtils from '../utils/I18nUtils'
-import { Container, Row, Col} from 'reactstrap'
 
 class ContactItem extends React.Component {
   render() {
@@ -27,7 +25,7 @@ class ContactItem extends React.Component {
 }
 ContactItem.propTypes = {
   title: PropTypes.string,
-  imgSrc: PropTypes.object,
+  imgSrc: PropTypes.string,
   content: PropTypes.string,
 }
 export default connect(
