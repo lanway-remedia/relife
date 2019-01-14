@@ -11,21 +11,21 @@ class LocationsComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      dataRegion: [],
       dataCity: [],
-      dataDistrict: [],
+      region: '',
       city: '',
-      district: '',
       required: false
     }
 
     this.getLocation = this.getLocation.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.handleUpdateDistrict = this.handleUpdateDistrict.bind(this)
+    this.handleUpdateCity = this.handleUpdateCity.bind(this)
     this.handleSendData = this.handleSendData.bind(this)
   }
 
   getLocation() {
-    const id = 1 // Type City
+    const id = 1 // Type Region
     this.props.locationGetRequest(id)
   }
 
@@ -49,25 +49,25 @@ class LocationsComponent extends Component {
       let response = nextProps.data
       if (response.listLocation) {
         this.setState({
-          dataCity: response.data
+          dataRegion: response.data
         })
       }
-      if (nextProps.city) {
+      if (nextProps.region) {
         for (let i = 0; i < response.data.length; i++) {
-          if (response.data[i].id === parseInt(nextProps.city)) {
-            const dataDistrict = response.data[i].districts
+          if (response.data[i].id === parseInt(nextProps.region)) {
+            const dataCity = response.data[i].cities
             this.setState({
-              dataDistrict: dataDistrict
+              dataCity: dataCity
             })
           }
         }
         this.setState({
-          city: nextProps.city
+          region: nextProps.region
         })
       }
-      if (nextProps.district) {
+      if (nextProps.city) {
         this.setState({
-          district: nextProps.district
+          city: nextProps.city
         })
       }
       if (nextProps.required) {
@@ -89,19 +89,19 @@ class LocationsComponent extends Component {
   }
 
   handleSendData = () => {
+    this.props.onSelectedRegion(this.state.region)
     this.props.onSelectedCity(this.state.city)
-    this.props.onSelectedDistrict(this.state.district)
   }
 
-  handleUpdateDistrict = () => {
+  handleUpdateCity = () => {
     const data = this.state
 
-    if (data.city !== '') {
-      for (let i = 0; i < data.dataCity.length; i++) {
-        if (data.dataCity[i].id === parseInt(data.city)) {
-          const dataDistrict = data.dataCity[i].districts
+    if (data.region !== '') {
+      for (let i = 0; i < data.dataRegion.length; i++) {
+        if (data.dataRegion[i].id === parseInt(data.region)) {
+          const dataCity = data.dataRegion[i].cities
           this.setState({
-            dataDistrict: dataDistrict
+            dataCity: dataCity
           })
         }
       }
@@ -109,29 +109,29 @@ class LocationsComponent extends Component {
   }
 
   render() {
-    const { dataCity, dataDistrict, city, district, required } = this.state
-    const isCity = city
+    const { dataRegion, dataCity, region, city, required } = this.state
+    const isRegion = region
     return (
       <React.Fragment>
         <Col xs="12" md="6">
           <FormGroup>
-            <Label for="city">{I18nUtils.t('city')}</Label>
+            <Label for="region">{I18nUtils.t('region')}</Label>
             {required && (
               <SelectGroup
                 type="select"
-                name="city"
-                id="city"
+                name="region"
+                id="region"
                 onChange={this.handleChange}
-                onMouseLeave={this.handleUpdateDistrict}
-                value={city}
+                onMouseLeave={this.handleUpdateCity}
+                value={region}
                 required={required}
                 errorMessage={I18nUtils.t('lb-select')}
               >
                 <option value="">{I18nUtils.t('lb-select')}</option>
-                {dataCity.map((city, key) => {
+                {dataRegion.map((region, key) => {
                   return (
-                    <option key={key} value={city.id}>
-                      {city.name}
+                    <option key={key} value={region.id}>
+                      {region.name}
                     </option>
                   )
                 })}
@@ -140,17 +140,17 @@ class LocationsComponent extends Component {
             {!required && (
               <Input
                 type="select"
-                name="city"
-                id="city"
+                name="region"
+                id="region"
                 onChange={this.handleChange}
-                onMouseLeave={this.handleUpdateDistrict}
-                value={city}
+                onMouseLeave={this.handleUpdateCity}
+                value={region}
               >
                 <option value="">{I18nUtils.t('lb-select')}</option>
-                {dataCity.map((city, key) => {
+                {dataRegion.map((region, key) => {
                   return (
-                    <option key={key} value={city.id}>
-                      {city.name}
+                    <option key={key} value={region.id}>
+                      {region.name}
                     </option>
                   )
                 })}
@@ -160,25 +160,25 @@ class LocationsComponent extends Component {
         </Col>
         <Col xs="12" md="6">
           <FormGroup>
-            <Label for="district">{I18nUtils.t('district')}</Label>
+            <Label for="city">{I18nUtils.t('city')}</Label>
             {required && (
               <SelectGroup
                 type="select"
-                name="district"
-                id="district"
+                name="city"
+                id="city"
                 onChange={this.handleChange}
-                value={district}
+                value={city}
                 required={required}
                 errorMessage={I18nUtils.t('lb-select')}
                 onMouseLeave={this.handleSendData}
               >
-                {isCity === '' ? (
-                  <option value="">{I18nUtils.t('lb-district')}</option>
+                {isRegion === '' ? (
+                  <option value="">{I18nUtils.t('lb-city')}</option>
                 ) : (
                   <option value="">{I18nUtils.t('lb-select')}</option>
                 )}
-                {dataDistrict.length > 0 &&
-                  dataDistrict.map((dis, key) => {
+                {dataCity.length > 0 &&
+                  dataCity.map((dis, key) => {
                     return (
                       <option key={key} value={dis.id}>
                         {dis.name}
@@ -190,19 +190,19 @@ class LocationsComponent extends Component {
             {!required && (
               <Input
                 type="select"
-                name="district"
-                id="district"
+                name="city"
+                id="city"
                 onChange={this.handleChange}
-                value={district}
+                value={city}
                 onMouseLeave={this.handleSendData}
               >
-                {isCity === '' ? (
-                  <option value="">{I18nUtils.t('lb-district')}</option>
+                {isRegion === '' ? (
+                  <option value="">{I18nUtils.t('lb-city')}</option>
                 ) : (
                   <option value="">{I18nUtils.t('lb-select')}</option>
                 )}
-                {dataDistrict.length > 0 &&
-                  dataDistrict.map((dis, key) => {
+                {dataCity.length > 0 &&
+                  dataCity.map((dis, key) => {
                     return (
                       <option key={key} value={dis.id}>
                         {dis.name}
@@ -220,16 +220,16 @@ class LocationsComponent extends Component {
 
 LocationsComponent.propTypes = {
   type: PropTypes.string,
+  region: PropTypes.string,
   city: PropTypes.string,
-  district: PropTypes.string,
   locationGetRequest: PropTypes.func,
   data: PropTypes.object,
   outletStoresData: PropTypes.object,
   exhibitionsData: PropTypes.object,
   required: PropTypes.bool,
+  onSelectedRegion: PropTypes.func,
   onSelectedCity: PropTypes.func,
-  onSelectedDistrict: PropTypes.func,
-  handleUpdateDistrict: PropTypes.func
+  handleUpdateCity: PropTypes.func
 }
 
 const mapStateToProps = state => {

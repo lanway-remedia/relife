@@ -33,15 +33,15 @@ class AddNewOutletStorePage extends React.Component {
       regularHoliday: '',
       timeServing: '',
       content: '',
-      city: '',
-      district: ''
+      region: '',
+      city: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.redirectToListPage = this.redirectToListPage.bind(this)
+    this.handleSelectedRegion = this.handleSelectedRegion.bind(this)
     this.handleSelectedCity = this.handleSelectedCity.bind(this)
-    this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
   }
 
   handleChange = e => {
@@ -56,15 +56,15 @@ class AddNewOutletStorePage extends React.Component {
     })
   }
 
-  handleSelectedCity = cityId => {
+  handleSelectedRegion = regionId => {
     this.setState({
-      city: cityId
+      region: regionId
     })
   }
 
-  handleSelectedDistrict = districtId => {
+  handleSelectedCity = cityId => {
     this.setState({
-      district: districtId
+      city: cityId
     })
   }
 
@@ -101,8 +101,8 @@ class AddNewOutletStorePage extends React.Component {
     data.append('regular_holiday', this.state.regularHoliday)
     data.append('time_serving', this.state.timeServing)
     data.append('content', this.state.content)
-    data.append('city', this.state.city)
-    data.append('district_id', this.state.district)
+    data.append('region', this.state.region)
+    data.append('city_id', this.state.city)
     data.append('img_large', this.state.thumbnailImage)
     this.props.outletStoreAddRequest(data)
   }
@@ -196,8 +196,8 @@ class AddNewOutletStorePage extends React.Component {
               </FormGroup>
             </Col>
             <LocationsComponent
+              onSelectedRegion={this.handleSelectedRegion}
               onSelectedCity={this.handleSelectedCity}
-              onSelectedDistrict={this.handleSelectedDistrict}
             />
             <Col xs="12" md="6">
               <FormGroup>

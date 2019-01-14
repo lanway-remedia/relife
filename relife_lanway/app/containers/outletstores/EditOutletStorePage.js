@@ -33,15 +33,15 @@ class EditOutletStorePage extends React.Component {
       regularHoliday: '',
       timeServing: '',
       content: '',
-      city: '',
-      district: ''
+      region: '',
+      city: ''
     }
     this.redirectToListPage = this.redirectToListPage.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleSelectedRegion = this.handleSelectedRegion.bind(this)
     this.handleSelectedCity = this.handleSelectedCity.bind(this)
-    this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
   }
 
   componentDidMount() {
@@ -63,8 +63,8 @@ class EditOutletStorePage extends React.Component {
           email: response.data.email,
           phone: response.data.tel,
           address: response.data.address,
-          city: response.data.district.city.id,
-          district: response.data.district.id,
+          region: response.data.city.region.id,
+          city: response.data.city.id,
           zipcode: response.data.zipcode,
           traffic: response.data.traffic,
           website: response.data.home_page,
@@ -97,15 +97,15 @@ class EditOutletStorePage extends React.Component {
     })
   }
 
-  handleSelectedCity = cityId => {
+  handleSelectedRegion = regionId => {
     this.setState({
-      city: cityId
+      region: regionId
     })
   }
 
-  handleSelectedDistrict = districtId => {
+  handleSelectedCity = cityId => {
     this.setState({
-      district: districtId
+      city: cityId
     })
   }
 
@@ -125,8 +125,8 @@ class EditOutletStorePage extends React.Component {
     data.append('regular_holiday', this.state.regularHoliday)
     data.append('time_serving', this.state.timeServing)
     data.append('content', this.state.content)
-    data.append('district_id', this.state.district)
-    data.append('city', this.state.city)
+    data.append('city_id', this.state.city)
+    data.append('region', this.state.region)
 
     if (typeof this.state.thumbnailImage !== 'string') {
       data.append('img_large', this.state.thumbnailImage)
@@ -146,8 +146,8 @@ class EditOutletStorePage extends React.Component {
     //   regular_holiday: this.state.regularHoliday,
     //   time_serving: this.state.timeServing,
     //   content: this.state.content,
-    //   district_id: this.state.district,
-    //   city: this.state.city
+    //   city_id: this.state.city,
+    //   region: this.state.region
     // }
 
     this.props.outletStoreEditRequest(data)
@@ -252,10 +252,10 @@ class EditOutletStorePage extends React.Component {
             </Col>
             <LocationsComponent
               required
+              onSelectedRegion={this.handleSelectedRegion}
               onSelectedCity={this.handleSelectedCity}
-              onSelectedDistrict={this.handleSelectedDistrict}
+              region={`${this.state.region}`}
               city={`${this.state.city}`}
-              district={`${this.state.district}`}
             />
             <Col xs="12" md="6">
               <FormGroup>

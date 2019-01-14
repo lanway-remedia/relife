@@ -155,11 +155,11 @@ class FilterGroupComponent extends Component {
                 </FormGroup>
               </Col>
             )}
-            {props.city && (
+            {props.region && (
               <Col xs="12" md="6">
                 <FormGroup>
-                  <Label for={'filterCity'}>{I18nUtils.t('city')}</Label>
-                  <Input type="select" name="filterCity" id="filterCity">
+                  <Label for={'filterRegion'}>{I18nUtils.t('region')}</Label>
+                  <Input type="select" name="filterRegion" id="filterRegion">
                     <option value="">{I18nUtils.t('lb-select')}</option>
                     <option value="">{I18nUtils.t('lb-enable')}</option>
                     <option value="">{I18nUtils.t('lb-disabled')}</option>
@@ -167,16 +167,16 @@ class FilterGroupComponent extends Component {
                 </FormGroup>
               </Col>
             )}
-            {props.district && (
+            {props.city && (
               <Col xs="12" md="6">
                 <FormGroup>
-                  <Label for={'filterDistrict'}>
-                    {I18nUtils.t('district')}
+                  <Label for={'filterCity'}>
+                    {I18nUtils.t('city')}
                   </Label>
                   <Input
                     type="select"
-                    name="filterDistrict"
-                    id="filterDistrict"
+                    name="filterCity"
+                    id="filterCity"
                   >
                     <option value="">{I18nUtils.t('lb-select')}</option>
                     <option value="">{I18nUtils.t('lb-enable')}</option>
