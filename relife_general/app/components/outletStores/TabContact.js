@@ -281,96 +281,96 @@ class TabContact extends React.Component {
             <div className="contact_table_tr">
               <ContactTableTh title={I18nUtils.t('household-size')} required={false} />
               <ContactRadio 
-                name="household_size" 
-                data={household_size} 
-                onChange={this.handleChange} 
-                value={this.state.household_size} 
+                name="household_size"
+                data={household_size}
+                onChange={this.handleChange}
+                value={this.state.household_size}
               />
             </div>
 
             <div className="contact_table_tr">
               <ContactTableTh title={I18nUtils.t('acreage')} required={false} />
               <ContactRadio 
-                name="acreage" 
-                data={acreage} 
-                onChange={this.handleChange} 
-                value={this.state.acreage} 
+                name="acreage"
+                data={acreage}
+                onChange={this.handleChange}
+                value={this.state.acreage}
               />
             </div>
 
             <div className="contact_table_tr">
               <ContactTableTh title={I18nUtils.t('construction-position-type')} required={false} />
               <ContactRadio 
-                name="construction_position_type" 
-                data={construction_position_type} 
-                onChange={this.handleChange} 
-                showAddress={showAddress} 
-                value={this.state.construction_position_type} 
+                name="construction_position_type"
+                data={construction_position_type}
+                onChange={this.handleChange}
+                showAddress={showAddress}
+                value={this.state.construction_position_type}
               />
             </div>
 
             <div className="contact_table_tr">
-              <ContactTableTh 
-                title={I18nUtils.t('construction-duration')} 
-                required={false} 
+              <ContactTableTh
+                title={I18nUtils.t('construction-duration')}
+                required={false}
               />
               <ContactRadio 
-                name="construction_duration" 
-                data={construction_duration} 
-                onChange={this.handleChange} 
+                name="construction_duration"
+                data={construction_duration}
+                onChange={this.handleChange}
                 value={this.state.construction_duration} 
               />
             </div>
 
             <div className="contact_table_tr">
-              <ContactTableTh 
+              <ContactTableTh
                 title={I18nUtils.t('budget')}
-                required={false} 
+                required={false}
               />
               <ContactRadio 
-                name="budget" 
-                data={budget} 
-                onChange={this.handleChange} 
-                value={this.state.budget} 
+                name="budget"
+                data={budget}
+                onChange={this.handleChange}
+                value={this.state.budget}
               />
             </div>
 
             <div className="contact_table_tr">
               <ContactTableTh 
                 title={I18nUtils.t('household-income')}
-                required={false} 
+                required={false}
               />
               <ContactRadio 
-                name="household_income" 
-                data={household_income} 
-                onChange={this.handleChange} 
-                value={this.state.household_income} 
+                name="household_income"
+                data={household_income}
+                onChange={this.handleChange}
+                value={this.state.household_income}
               />
             </div>
 
             <div className="contact_table_tr">
-              <ContactTableTh 
-                title={I18nUtils.t('construction-type')} 
-                required={false} 
+              <ContactTableTh
+                title={I18nUtils.t('construction-type')}
+                required={false}
               />
-              <ContactRadio 
-                name="construction_type" 
-                data={construction_type} 
-                onChange={this.handleChange} 
-                value={this.state.construction_type} 
+              <ContactRadio
+                name="construction_type"
+                data={construction_type}
+                onChange={this.handleChange}
+                value={this.state.construction_type}
               />
             </div>
 
             <div className="contact_table_tr">
               <ContactTableTh 
                 title={I18nUtils.t('current-situation')}
-                required={false} 
+                required={false}
               />
-              <ContactRadio 
-                name="current_situation" 
-                data={current_situation} 
-                onChange={this.handleChange} 
-                value={this.state.current_situation} 
+              <ContactRadio
+                name="current_situation"
+                data={current_situation}
+                onChange={this.handleChange}
+                value={this.state.current_situation}
               />
             </div>
 

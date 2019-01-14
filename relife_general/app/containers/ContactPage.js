@@ -7,7 +7,12 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import I18nUtils from '../utils/I18nUtils'
-import { Container, Row, Col} from 'reactstrap'
+import { Container, Row, Col, Button} from 'reactstrap'
+import ContactTableTr from '../components/outletStores/ContactTableTr'
+import ContactTableTh from '../components/outletStores/ContactTableTh'
+import ContactRadio from '../components/outletStores/ContactRadio'
+
+import { ValidationForm, SelectGroup } from 'react-bootstrap4-form-validation'
 import contactIcon01 from '../images/contact-icon01.jpg'
 import contactIcon02 from '../images/contact-icon02.jpg'
 import contactIcon03 from '../images/contact-icon03.jpg'
@@ -27,16 +32,39 @@ class ContactPage extends React.Component {
 
     }
   }
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleSubmit = e => {
+    e.preventDefault()
+    let data = new FormData()
+    data.append('name', this.state.name)
+    data.append('email', this.state.email)
+    data.append('tel', this.state.tel)
+    data.append('name', this.state.name)
+    data.append('area', this.state.area)
+    data.append('purpose', this.state.purpose)
+    data.append('content', this.state.content)
+    console.log(this.state)
+  }
+
   render () {
+    const purpose = [
+      {id:1, title: '注文住宅について'},
+      {id:2, title: '住宅のリノベーションについて'}
+    ]
     return (
-      <Container fluid className="lower-contents one-column">
+      <Container fluid className="lower-contents">
         <Row className="lower-contents-inner clearfix">
           <Col xs="12" md="12" className="padding-0">
-            <section className="main">
               <h1 className="single-title">
-                住まいづくりのコンシェルジュに無料で相談
+                {I18nUtils.t('contact-page-title')}
                 <span>
-                  あなたに合う工務店・建築会社を紹介しサポートします。
+                  {I18nUtils.t('contact-page-sub-title')}
                 </span>
               </h1>
               <div className="contact-subtitle-wrap clearfix">
@@ -65,10 +93,98 @@ class ContactPage extends React.Component {
                   imgSrc={contactIcon05}
                   content="工務店・建築会社との打ち合わせ日程の調整をします。後にお断りする際の代行もいたします。"
                 />
-                <div className="contact-body">
-                </div>
               </div>
-            </section>
+
+              <div className="tab-contact padding-0">
+                <ValidationForm
+                  onSubmit={this.handleSubmit}
+                  defaultErrorMessage={{ required: I18nUtils.t('validate-require')}}
+                >
+                  <ContactTableTr 
+                    title={I18nUtils.t('name')}
+                    name="name" 
+                    placeholder={I18nUtils.t('all-place-your-company-name2')}
+                    required
+                    onChange={this.handleChange}
+                    value={this.state.name}
+                  />
+                  <ContactTableTr 
+                    title={I18nUtils.t('email')}
+                    name="email" 
+                    placeholder={I18nUtils.t('all-place-name-email-test')}
+                    required
+                    onChange={this.handleChange}
+                    value={this.state.email}
+                  />
+                  <ContactTableTr 
+                    title={I18nUtils.t('tel')}
+                    name="tel"
+                    placeholder={I18nUtils.t('all-place-tel')}
+                    required={false}
+                    onChange={this.handleChange}
+                    value={this.state.tel}
+                  />
+                  <div className="contact_table_tr">
+                    <ContactTableTh
+                      title={I18nUtils.t('resident-area')}
+                      required
+                    />
+                    <div className="contact_table_td">
+                      <span className="contact_table_td_input">
+                        <div className="contact_table_select">
+                          <SelectGroup name="area" id="araa"
+                            value={this.state.area}
+                            required
+                            onChange={this.handleChange}
+                          >
+                            <option value="">{I18nUtils.t('all-place-area')}</option>
+                            <option value="0">Red</option>
+                            <option value="1">Green</option>
+                            <option value="2">Blue</option>
+                            <option value="3">Yellow</option>
+                          </SelectGroup>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="contact_table_tr">
+                    <ContactTableTh
+                      title={I18nUtils.t('things-consideration')}
+                      required={false}
+                    />
+                    <ContactRadio
+                      name="purpose"
+                      data={purpose}
+                      onChange={this.handleChange}
+                      value={this.state.purpose}
+                    />
+                  </div>
+                  <div className="contact_table_tr">
+                    <ContactTableTh 
+                      title={I18nUtils.t('contact-inquiry')}
+                      required={false}
+                    />
+                    <div className="contact_table_td">
+                      <span className="contact_table_td_input">
+                        <textarea
+                          name="content"
+                          placeholder={I18nUtils.t('all-place-comment')}
+                          cols="40"
+                          rows="10"
+                          onChange={this.handleChange}
+                          value={this.state.content}
+                        />
+                      </span>
+                    </div>
+                  </div>
+                  <p className="contact-button">
+                    <Button className="btn-default">
+                      {I18nUtils.t('confirm')}
+                    </Button>
+                  </p>
+                </ValidationForm>
+              </div>
           </Col>
         </Row>
       </Container>
@@ -78,9 +194,6 @@ class ContactPage extends React.Component {
 ContactPage.propTypes = {
   history: PropTypes.object,
   data: PropTypes.object,
-  show: PropTypes.func,
-  hide: PropTypes.func,
-  becomeStoreRequest: PropTypes.func,
 }
 
 const mapStateToProps = state => {
@@ -89,9 +202,8 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  // becomeStoreRequest: data =>
-  //   dispatch(ProfileActions.becomeStoreRequest(data)),
+const mapDispatchToProps = () => ({
+
 })
 
 export default connect(
