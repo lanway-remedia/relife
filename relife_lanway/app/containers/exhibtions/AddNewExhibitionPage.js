@@ -37,8 +37,8 @@ class AddNewExhibitionPage extends React.Component {
       address: '',
       zipcode: '',
       content: '',
-      city: '',
-      district: ''
+      region: '',
+      city: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -46,8 +46,8 @@ class AddNewExhibitionPage extends React.Component {
     this.redirectToListPage = this.redirectToListPage.bind(this)
     this.handleChangeFromDate = this.handleChangeFromDate.bind(this)
     this.handleChangeToDate = this.handleChangeToDate.bind(this)
+    this.handleSelectedRegion = this.handleSelectedRegion.bind(this)
     this.handleSelectedCity = this.handleSelectedCity.bind(this)
-    this.handleSelectedDistrict = this.handleSelectedDistrict.bind(this)
     // this.handleOnBlur = this.handleOnBlur.bind(this)
   }
 
@@ -75,15 +75,15 @@ class AddNewExhibitionPage extends React.Component {
     })
   }
 
-  handleSelectedCity = cityId => {
+  handleSelectedRegion = regionId => {
     this.setState({
-      city: cityId
+      region: regionId
     })
   }
 
-  handleSelectedDistrict = districtId => {
+  handleSelectedCity = cityId => {
     this.setState({
-      district: districtId
+      city: cityId
     })
   }
 
@@ -122,8 +122,8 @@ class AddNewExhibitionPage extends React.Component {
     data.append('address', this.state.address)
     data.append('zipcode', this.state.zipcode)
     data.append('content', this.state.content)
-    data.append('city', this.state.city)
-    data.append('district_id', this.state.district)
+    data.append('region', this.state.region)
+    data.append('city_id', this.state.city)
     data.append('start_time', moment(this.state.fromDate).format('YYYY/MM/DD'))
     data.append('end_time', moment(this.state.toDate).format('YYYY/MM/DD'))
     data.append('img_large', this.state.thumbnailImage)
@@ -223,8 +223,8 @@ class AddNewExhibitionPage extends React.Component {
             </Col>
             <LocationsComponent
               required
+              onSelectedRegion={this.handleSelectedRegion}
               onSelectedCity={this.handleSelectedCity}
-              onSelectedDistrict={this.handleSelectedDistrict}
             />
             <Col xs="12" md="6">
               <FormGroup>

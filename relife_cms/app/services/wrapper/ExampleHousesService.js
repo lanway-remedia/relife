@@ -6,9 +6,11 @@ import apiClient from '../../shared/apiClient'
 
 export default class ExampleHousesService {
   getHouseList(data) {
-    return apiClient.get(
-      `/examplehouses/v1/?limit=${data.limit}&offset=${data.offset}`
-    )
+    let search = new URLSearchParams(data)
+    return apiClient.get(`/examplehouses/v1/?${search.toString()}`)
+    // return apiClient.get(
+    //   `/examplehouses/v1/?limit=${data.limit}&offset=${data.offset}`
+    // )
   }
   getHouseById(data) {
     return apiClient.get(`/examplehouses/v1/${data}`)

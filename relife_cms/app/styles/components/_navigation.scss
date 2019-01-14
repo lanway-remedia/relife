@@ -1,15 +1,16 @@
 .sidebar {
-  position: absolute;
-  height: 100%;
-  top: 0;
-  left: 0;
-  min-height: calc(100vh - 124px);
+  // position: absolute;
+  // height: 100%;
+  // top: 0;
+  // left: 0;
+  // min-height: calc(100vh - 124px);
   z-index: 900;
   transition: 0.3s ease-in-out, width 0.3s ease-in-out;
   transform: translate(0, 0);
-  width: 215px;
-  padding: 30px 0 30px 15px;
+  width: 200px;
+  padding: 0 0 30px;
   overflow: hidden;
+  float: left;
 
   .sb-content {
     background: $bkg-white-color;

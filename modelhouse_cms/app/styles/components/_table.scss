@@ -1,0 +1,17 @@
+.table {
+  th {
+    text-align: center;
+    font-size: 0.625rem;
+    font-weight: normal;
+    background: #f6f6f6;
+
+    &:first-child {
+      text-align: left;
+    }
+  }
+  td,
+  th {
+    vertical-align: middle;
+    padding: 0.4375rem;
+  }
+}

@@ -4,7 +4,8 @@ import I18nUtils from '../utils/I18nUtils'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import StoreListModal from '../components/StoreListModal'
-import 'react-datepicker/dist/react-datepicker.css'
+import Select from 'react-select'
+// import AttributesComponent from './AttributesComponent'
 import {
   Row,
   Col,
@@ -25,7 +26,14 @@ const TIMEOUT = 0
 const initialState = {
   freeword: '',
   group: 0,
+  status: {},
   store: {},
+  contruction: {},
+  floor: {},
+  price: {},
+  style: {},
+  houseincome: {},
+  housesize: {},
   showStoreList: false
 }
 
@@ -34,36 +42,71 @@ class SearchCondition extends Component {
     super(props)
     this.state = {
       ...initialState,
+      dataStatus: [
+        {
+          value: 2,
+          label: I18nUtils.t('lb-select-vl')
+        },
+        {
+          value: 1,
+          label: I18nUtils.t('lb-enable')
+        },
+        {
+          value: 0,
+          label: I18nUtils.t('lb-disabled')
+        }
+      ],
       collapse: true,
       timeout: TIMEOUT
     }
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
     let params = new URLSearchParams(this.props.history.location.search)
+    let paramStatus = params.get('status_flag')
+    let statusVal = 0
+    if (paramStatus === 'true') {
+      statusVal = 1
+    } else {
+      statusVal = 0
+    }
+    console.log(paramStatus)
+    let status = this.state.dataStatus.find(item => item.value === statusVal)
+
     this.setState({
       freeword: params.get('freeword') || '',
       group: params.get('group') || 0,
+      status: status || this.state.dataStatus[0],
       store: params.get('store')
-        ? { id: params.get('store'), title: params.get('store_title') }
+        ? { value: params.get('store'), title: params.get('store_title') }
         : {},
       collapse: !!(
         params.get('freeword') ||
         params.get('group') ||
+        params.get('status_flag') ||
         params.get('store')
       ),
       timeout:
-        params.get('freeword') || params.get('group') || params.get('store')
+        params.get('freeword') ||
+        params.get('group') ||
+        params.get('status_flag') ||
+        params.get('store')
           ? 0
           : TIMEOUT
     })
   }
 
   onclickSubmit = () => {
-    let { freeword, group, store } = this.state
+    let { freeword, group, status, store } = this.state
     let parsed = {
       ...(freeword && { freeword: freeword }),
       ...(group && group != 0 && { group: group }),
+      ...(status &&
+        status.value != 2 &&
+        status.value != null && {
+          status_flag: status.value === 0 ? false : true
+        }),
       ...(store.id && { store: store.id }),
       ...(store.title && { store_title: store.title })
     }
@@ -77,10 +120,16 @@ class SearchCondition extends Component {
     this.setState(initialState)
   }
 
-  handleChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
+  handleChange = (e, name) => {
+    if (e.target) {
+      this.setState({
+        [e.target.name]: e.target.value
+      })
+    } else {
+      this.setState({
+        [name]: e
+      })
+    }
   }
 
   showStoreListHandle = () => {
@@ -113,16 +162,29 @@ class SearchCondition extends Component {
     )
   }
 
+  // selectOption = selectedOption => {
+  //   console.log(selectedOption)
+  // }
+
   render() {
-    let { hasFreeword, hasGroup, hasStore } = this.props
+    let {
+      hasFreeword,
+      hasGroup,
+      hasStore,
+      hasStatus
+      // hasAttribute
+    } = this.props
     let {
       showStoreList,
       collapse,
       freeword,
       group,
       store,
-      timeout
+      timeout,
+      status,
+      dataStatus
     } = this.state
+
     return (
       <div className="filter-group">
         <div className="filter-title">
@@ -205,6 +267,32 @@ class SearchCondition extends Component {
                         </FormGroup>
                       </Col>
                     )}
+                    {hasStatus && (
+                      <Col xs="12" md="4">
+                        <FormGroup className="react-select">
+                          <Label for="status">{I18nUtils.t('status')}</Label>
+                          <Select
+                            className="react-select-ops"
+                            classNamePrefix="rs-cus"
+                            isClearable={false}
+                            isSearchable={false}
+                            id="status"
+                            defaultValue={dataStatus[0]}
+                            value={status || dataStatus[0]}
+                            options={dataStatus}
+                            placeholder={I18nUtils.t('lb-select-vl')}
+                            onChange={e => this.handleChange(e, 'status')}
+                          />
+                        </FormGroup>
+                      </Col>
+                    )}
+                    {/* {hasAttribute && (
+                      <AttributesComponent
+                        selectOption={selectedOption =>
+                          this.selectOption(selectedOption)
+                        }
+                      />
+                    )} */}
                     <Col xs="12" md="12">
                       <div className="btns-group text-center mt-2">
                         <Button
@@ -238,7 +326,9 @@ SearchCondition.propTypes = {
   history: PropTypes.object,
   hasFreeword: PropTypes.object,
   hasGroup: PropTypes.bool,
-  hasStore: PropTypes.bool
+  hasStore: PropTypes.bool,
+  hasStatus: PropTypes.bool,
+  hasAttribute: PropTypes.bool
 }
 
 export default connect()(withRouter(SearchCondition))

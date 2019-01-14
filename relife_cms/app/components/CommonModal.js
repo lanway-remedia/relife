@@ -8,6 +8,7 @@ import I18nUtils from '../utils/I18nUtils'
 class CommonModal extends Component {
   static propTypes = {
     show: PropTypes.bool,
+    modalClass: PropTypes.string,
     headerClass: PropTypes.string,
     bodyClass: PropTypes.string,
     title: PropTypes.string,
@@ -24,6 +25,7 @@ class CommonModal extends Component {
   render() {
     let {
       show,
+      modalClass,
       headerClass,
       bodyClass,
       title,
@@ -36,7 +38,7 @@ class CommonModal extends Component {
     title = !title ? I18nUtils.t(DefaultValue.MODAL_NAME) : title
 
     return (
-      <Modal isOpen={show}>
+      <Modal isOpen={show} className={modalClass}>
         {title && <ModalHeader className={headerClass}>{title}</ModalHeader>}
         <ModalBody className={bodyClass}>
           <div className="message-body">{message}</div>

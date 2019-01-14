@@ -82,16 +82,17 @@ class ManageOutletStoreListPage extends React.Component {
         })
       }
 
-      if (response.messageCode === 'OS007' && response.isDeleteStore) {
-        this.props.show(ModalName.COMMON, {
-          message: (
-            <span className="text-success">
-              {I18nUtils.t('modal-del-success')}
-            </span>
-          )
-        })
-        this.forceUpdate(this.getOutletStore)
-      }
+      if (response.isDeleteStore)
+        if (response.messageCode === 'OS007') {
+          this.props.show(ModalName.COMMON, {
+            message: (
+              <span className="text-success">
+                {I18nUtils.t('modal-del-success')}
+              </span>
+            )
+          })
+          this.forceUpdate(this.getOutletStore)
+        }
     }
   }
 
