@@ -11,6 +11,7 @@ import { Container, Row, Col, Button} from 'reactstrap'
 import ContactTableTr from '../components/outletStores/ContactTableTr'
 import ContactTableTh from '../components/outletStores/ContactTableTh'
 import ContactRadio from '../components/outletStores/ContactRadio'
+import OutletStoreActions from '../redux/wrapper/OutletStoresRedux'
 
 import { ValidationForm, SelectGroup } from 'react-bootstrap4-form-validation'
 import contactIcon01 from '../images/contact-icon01.jpg'
@@ -45,11 +46,10 @@ class ContactPage extends React.Component {
     data.append('name', this.state.name)
     data.append('email', this.state.email)
     data.append('tel', this.state.tel)
-    data.append('name', this.state.name)
     data.append('area', this.state.area)
     data.append('purpose', this.state.purpose)
     data.append('content', this.state.content)
-    console.log(this.state)
+    this.props.outletStoresContactRequest(data)
   }
 
   render () {
@@ -194,16 +194,18 @@ class ContactPage extends React.Component {
 ContactPage.propTypes = {
   history: PropTypes.object,
   data: PropTypes.object,
+  outletStoresContactRequest: PropTypes.func,
 }
 
 const mapStateToProps = state => {
   return {
-    data: state.profile.data
+    data: state.outletStores.data,
   }
 }
 
-const mapDispatchToProps = () => ({
-
+const mapDispatchToProps = (dispatch) => ({
+  outletStoresContactRequest: data =>
+    dispatch(OutletStoreActions.outletStoresContactRequest(data)),
 })
 
 export default connect(

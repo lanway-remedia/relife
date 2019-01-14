@@ -37,6 +37,7 @@ import MapPage from './containers/outletStores/MapPage'
 import PrivacyPolicyPage from './containers/PrivacyPolicyPage'
 import RulePage from './containers/RulePage'
 import ContactPage from './containers/ContactPage'
+import AboutUsPage from './containers/AboutUsPage'
 
 import {StorageKeyConstants} from './constants'
 import 'react-toastify/dist/ReactToastify.css'
@@ -152,6 +153,10 @@ class Routes extends React.Component {
                         <Route
                             path="/contact"
                             component={ContactPage}
+                        />
+                        <Route
+                            path="/about-us"
+                            component={AboutUsPage}
                         />
 
                     </Switch>
