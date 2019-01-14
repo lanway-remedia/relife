@@ -15,6 +15,7 @@ import { OutletStoresTypes } from '../redux/wrapper/OutletStoresRedux'
 import { LocationTypes } from '../redux/wrapper/LocationsRedux'
 import { ExampleHouseTypes } from '../redux/wrapper/ExampleHousesRedux'
 import { AttributeTypes } from '../redux/wrapper/AttributesRedux'
+import { TagTypes } from '../redux/wrapper/TagsRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
@@ -25,6 +26,7 @@ import OutletStoresSagas from './wrapper/OutletStoresSagas'
 import LocationsSagas from './wrapper/LocationsSagas'
 import ExampleHousesSagas from './wrapper/ExampleHousesSagas'
 import AttributesSagas from './wrapper/AttributesSagas'
+import TagsSagas from './wrapper/TagsSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -202,6 +204,11 @@ export default function* root() {
       AttributesSagas.getHouseSize
     ),
     takeLatest(AttributeTypes.ATTRIBUTE_FAILURE, ErrorSagas.handleError),
+
+    //Tags
+    // Get List
+    takeLatest(TagTypes.TAG_LIST_REQUEST, TagsSagas.listTag),
+    takeLatest(TagTypes.TAG_FAILURE, ErrorSagas.handleError),
 
     //Locations
     //List Location

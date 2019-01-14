@@ -9,6 +9,7 @@ $input-border-radius: 0.1875rem;
 $input-padding-y: 4px;
 $input-padding-x: 10px;
 $input-bg: #f6f6f6;
+$input-focus-bg: #fff;
 $input-placeholder-color: #999;
 
 $btn-padding-y: 7px;
@@ -38,13 +39,16 @@ $modal-content-border-radius: 0;
 $navi: #49bcd5;
 $success: #007332;
 $secondary: #323935;
-// End override Bootstrap
 
-//Variable my page
+$container-max-widths: (
+  xl: 1270px
+);
+
+// End override Bootstrap
+// Variable my page
 $primary-color: #007332;
 $secondary-color: #2c9a5c;
 $tertiary-color: #069f4d;
-
 $bkg-primary-color: #007332;
 $bkg-secondary-color: #2c9a5c;
 $bkg-text-color: #323935;
@@ -54,22 +58,16 @@ $bkg-red-color: #f00;
 $bkg-black-color: #000;
 $bkg-white-color: #fff;
 $bkg-header-color: #3c8dbc;
-
 $border-color: #ccc;
 $border-color-2: #424945;
 $border-color-3: #323935;
-
 $radius: 0.1875rem;
-
 $text-primary-color: #007332;
 $text-color: #323935;
 $text-secondary-color: #111;
 $text-black-color: #000;
 $text-white-color: #fff;
-
 $text-menu-head: #ccc;
-
 $item-hover: #a2efdd;
-
 $font-W3: 'HiraKakuProW3', sans-serif;
 $font-W6: 'HiraKakuProW6', sans-serif;
