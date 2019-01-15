@@ -93,7 +93,7 @@ class SidebarFilterSP extends React.Component {
     this.setState({ collapse: !this.state.collapse })
   }
 
-  componentDidMount() {
+  componentWillMount() {
     let params = new URLSearchParams(this.props.history.location.search)
     let city = params.get('city')
     let keyword = params.get('keyword')
