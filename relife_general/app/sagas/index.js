@@ -103,6 +103,13 @@ export default function* root() {
       AttributeTypes.ATTRIBUTE_HOUSE_SIZE_LIST_REQUEST,
       AttributesSagas.listHouseSize
     ),
+
+    // Get List Commitment
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_COMMITMENT_LIST_REQUEST,
+      AttributesSagas.listCommitment
+    ),
+    // Get List Most Keyword Search
     takeLatest(
       AttributeTypes.MOST_KEYWORD_LIST_REQUEST,
       AttributesSagas.listMostKeywordSearch

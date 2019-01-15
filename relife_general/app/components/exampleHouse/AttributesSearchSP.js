@@ -4,6 +4,7 @@ import {withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { Form, FormGroup, Button, Collapse, CustomInput} from 'reactstrap'
 import AttributeActions from '../../redux/wrapper/AttributesRedux'
+import I18nUtils from '../../utils/I18nUtils'
 class AttributesSearchSP extends React.Component {
   constructor(props) {
     super(props)
@@ -14,6 +15,7 @@ class AttributesSearchSP extends React.Component {
       listStyle: [],
       listHouseSize: [],
       listHouseIncome: [],
+      listCommitment: [],
       collapse: false,
 
       priceRange: [],
@@ -22,6 +24,7 @@ class AttributesSearchSP extends React.Component {
       style: [],
       houseSize: [],
       houseIncome: [],
+      commitment: []
     }
     this.toggle = this.toggle.bind(this)
   }
@@ -39,6 +42,7 @@ class AttributesSearchSP extends React.Component {
     this.props.attributeHouseIncomeListRequest(data)
     this.props.attributeHouseSizeListRequest(data)
     this.props.attributePriceListRequest(data)
+    this.props.attributeCommitmentListRequest(data)
 
     let params = new URLSearchParams(this.props.history.location.search)
 
@@ -48,6 +52,7 @@ class AttributesSearchSP extends React.Component {
     let styleParams = params.get('styles__style__in')
     let houseSizeParams = params.get('household_size__in')
     let houseIncomeParams = params.get('household_income__in')
+    let commitmentParams = params.get('commitment__in')
 
     this.setState({
       priceRange: priceParams ? priceParams.split(',') : [],
@@ -56,6 +61,7 @@ class AttributesSearchSP extends React.Component {
       style: styleParams ? styleParams.split(',') : [],
       houseSize: houseSizeParams ? houseSizeParams.split(',') : [],
       houseIncome: houseIncomeParams ? houseIncomeParams.split(',') : [],
+      commitment: commitmentParams ? commitmentParams.split(',') : [],
     })
   }
 
@@ -102,6 +108,12 @@ class AttributesSearchSP extends React.Component {
           listHouseIncome: response.data
         })
       }
+      // list commitment
+      if (response.isGetListCommitment) {
+        this.setState({
+          listCommitment: response.data
+        })
+      }
     }
   }
 
@@ -117,6 +129,7 @@ class AttributesSearchSP extends React.Component {
       style: [],
       houseSize: [],
       houseIncome: [],
+      commitment: []
     })
     document.getElementById('frm-search-sp').reset()
     this.props.onPageLoad()
@@ -137,6 +150,8 @@ class AttributesSearchSP extends React.Component {
       itemChecked = this.state.houseSize
     } else if (name == 'houseIncome') {
       itemChecked = this.state.houseIncome
+    } else if (name == 'commitment') {
+      itemChecked = this.state.commitment
     }
 
     const value = e.target.value
@@ -153,13 +168,14 @@ class AttributesSearchSP extends React.Component {
   }
 
   onClickSubmit = () => {
-    let {priceRange, floor, construction, style, houseSize, houseIncome} = this.state
+    let {priceRange, floor, construction, style, houseSize, houseIncome, commitment} = this.state
     let priceParam = priceRange.join(',')
     let floorParam = floor.join(',')
     let constructionParam = construction.join(',')
     let styleParam = style.join(',')
     let houseSizeParam = houseSize.join(',')
     let houseIncomeParam = houseIncome.join(',')
+    let commitmentParam = commitment.join(',')
     let parsed = {
       ...(priceRange.length > 0 && { price_range__in: priceParam }),
       ...(floor.length > 0 && { floor__in: floorParam }),
@@ -167,6 +183,7 @@ class AttributesSearchSP extends React.Component {
       ...(style > 0 && { styles__style__in: styleParam }),
       ...(houseSize.length > 0 && { household_size__in: houseSizeParam }),
       ...(houseIncome.length > 0 && { household_income__in: houseIncomeParam }),
+      ...(commitment.length > 0 && { commitment__in: commitmentParam }),
     }
     let search = new URLSearchParams(parsed)
     this.props.history.push({
@@ -177,14 +194,14 @@ class AttributesSearchSP extends React.Component {
   }
 
   render() {
-    const { listConstruction, listFloor, listPrice, listStyle, listHouseSize, listHouseIncome, 
-      priceRange, floor, construction, style, houseSize, houseIncome
+    const { listConstruction, listFloor, listPrice, listStyle, listHouseSize, listHouseIncome, listCommitment, 
+      priceRange, floor, construction, style, houseSize, houseIncome, commitment
     } = this.state
     return (
       <div className="filter-group sp">
         <div className="filter-button-open" onClick={this.toggle}>
           <span>
-            さらに詳しく検索する
+            {I18nUtils.t('search-view-more')}
             <i className="fa fa-search" />
           </span>
         </div>
@@ -195,14 +212,14 @@ class AttributesSearchSP extends React.Component {
                 <div className="sidebar-search-choices">
                   {/* list price */}
                   <div className="sidebar-search-choices-inner">
-                    <div className="search-title">価格帯（価格）</div>
+                    <div className="search-title">{I18nUtils.t('price-range')}</div>
                     <FormGroup check>
                       {listPrice.map((val, key) => (
                         <CustomInput
                           key={key}
                           type="checkbox"
                           value={val.id}
-                          id={`${val.title}_sp`}
+                          id={`${val.title}_${val.id}_price_sp`}
                           label={val.title}
                           name="priceRange"
                           onChange={this.handleChange}
@@ -214,14 +231,14 @@ class AttributesSearchSP extends React.Component {
 
                   {/* listConstruction */}
                   <div className="sidebar-search-choices-inner">
-                    <div className="search-title">構造 </div>
+                    <div className="search-title">{I18nUtils.t('construction')}</div>
                     <FormGroup check>
                       {listConstruction.map((val, key) => (
                         <CustomInput
                           key={key}
                           type="checkbox"
                           value={val.id}
-                          id={`${val.title}_sp`}
+                          id={`${val.title}_${val.id}_construction_sp`}
                           label={val.title}
                           name="construction"
                           onChange={this.handleChange}
@@ -233,14 +250,14 @@ class AttributesSearchSP extends React.Component {
 
                   {/* list floor */}
                   <div className="sidebar-search-choices-inner">
-                    <div className="search-title">階数 </div>
+                    <div className="search-title">{I18nUtils.t('floor')}</div>
                     <FormGroup check>
                       {listFloor.map((val, key) => (
                         <CustomInput
                         key={key}
                         type="checkbox"
                         value={val.id}
-                        id={`${val.title}_sp`}
+                        id={`${val.title}_${val.title}_floor_sp`}
                         label={val.title}
                         name="floor"
                         onChange={this.handleChange}
@@ -252,14 +269,14 @@ class AttributesSearchSP extends React.Component {
 
                   {/* list style */}
                   <div className="sidebar-search-choices-inner">
-                    <div className="search-title">テイスト </div>
+                    <div className="search-title">{I18nUtils.t('taste')}</div>
                     <FormGroup check>
                       {listStyle.map((val, key) => (
                         <CustomInput
                           key={key}
                           type="checkbox"
                           value={val.id}
-                          id={`${val.title}_sp`}
+                          id={`${val.title}_${val.id}_taste_sp`}
                           label={val.title}
                           name="style"
                           onChange={this.handleChange}
@@ -269,16 +286,35 @@ class AttributesSearchSP extends React.Component {
                     </FormGroup>
                   </div>
 
+                  {/* list commitment */}
+                  <div className="sidebar-search-choices-inner">
+                    <div className="search-title">{I18nUtils.t('commitment')} </div>
+                    <FormGroup check>
+                      {listCommitment.map((val, key) => (
+                        <CustomInput
+                          key={key}
+                          type="checkbox"
+                          value={val.id}
+                          id={`${val.title}_${val.id}_commitment_sp`}
+                          label={val.title}
+                          name="commitment"
+                          onChange={this.handleChange}
+                          defaultChecked={commitment.includes(val.id.toString())}
+                        />
+                      ))}
+                    </FormGroup>
+                  </div>
+
                   {/* list house hold size */}
                   <div className="sidebar-search-choices-inner">
-                    <div className="search-title">世帯人数 </div>
+                    <div className="search-title">{I18nUtils.t('household-size1')}</div>
                     <FormGroup check>
                       {listHouseSize.map((val, key) => (
                         <CustomInput
                           key={key}
                           type="checkbox"
                           value={val.id}
-                          id={`${val.title}_sp`}
+                          id={`${val.title}_${val.id}_housesize_sp`}
                           label={val.title}
                           name="houseSize"
                           onChange={this.handleChange}
@@ -290,14 +326,14 @@ class AttributesSearchSP extends React.Component {
 
                   {/* list house hold income */}
                   <div className="sidebar-search-choices-inner">
-                    <div className="search-title">世帯年収 </div>
+                    <div className="search-title">{I18nUtils.t('household-income')}</div>
                     <FormGroup check> 
                       {listHouseIncome.map((val, key) => (
                         <CustomInput
                           key={key}
                           type="checkbox"
                           value={val.id}
-                          id={`${val.title}_sp`}
+                          id={`${val.title}_${val.id}_houseincome_sp`}
                           label={val.title}
                           name="houseIncome"
                           onChange={this.handleChange}
@@ -308,20 +344,20 @@ class AttributesSearchSP extends React.Component {
                   </div>
                 </div>
 
-                  <button 
+                  <Button 
                     type="button" 
                     onClick={this.handleResetForm} 
                     className="sidebar-clear-btn btn clear-button"
                   >
-                    入力値をリセット
-                  </button>
+                    {I18nUtils.t('search-clear')}
+                  </Button>
                   <Button 
                     type="button" 
                     onClick={this.onClickSubmit} 
                     className="sidebar-search-btn btn btn-default"
                   >
                     <i className="fa fa-search" />
-                    検索
+                    {I18nUtils.t('search')}
                   </Button>
               </Form>
               <div className="filter-button-close" onClick={this.toggle}>
@@ -344,6 +380,7 @@ AttributesSearchSP.propTypes = {
   attributeStyleListRequest: PropTypes.func,
   attributeHouseSizeListRequest: PropTypes.func,
   attributeHouseIncomeListRequest: PropTypes.func,
+  attributeCommitmentListRequest: PropTypes.func,
   history: PropTypes.object,
   onPageLoad: PropTypes.func,
 }
@@ -368,6 +405,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(AttributeActions.attributeHouseSizeListRequest(data)),
   attributeHouseIncomeListRequest: data =>
     dispatch(AttributeActions.attributeHouseIncomeListRequest(data)),
+  attributeCommitmentListRequest: data =>
+    dispatch(AttributeActions.attributeCommitmentListRequest(data)),
 })
 
 export default connect(
