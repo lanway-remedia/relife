@@ -97,10 +97,10 @@ class UserVs(ModelViewSet):
                     if IsStore(request.user):
                         user.group=GroupSub()
                     user.save()
-                return Response(CommonFuntion.resultResponse(True, UserShowSerializer(user).data, MessageCode.BSO003.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.BSO003.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return Response(CommonFuntion.resultResponse(True, UserShowSerializer(user).data, MessageCode.US111.value, {}), status=status.HTTP_200_OK)
+            return Response(CommonFuntion.resultResponse(False, "", MessageCode.US222.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except Exception as e:
-                return Response(CommonFuntion.resultResponse(False, "", MessageCode.BSO004.value, {}), status=status.HTTP_400_BAD_REQUEST)
+                return Response(CommonFuntion.resultResponse(False, {"err":e}, MessageCode.US333.value, {}), status=status.HTTP_400_BAD_REQUEST)
 
         # """
         #  POST:
@@ -281,4 +281,4 @@ class BecomeOwner(GenericAPIView, CreateModelMixin):
                 return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.BSO003.value, {}), status=status.HTTP_200_OK)
             return Response(CommonFuntion.resultResponse(False, "", MessageCode.BSO010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.BSO004.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return Response(CommonFuntion.resultResponse(False, {"err":e}, MessageCode.BSO004.value, {}), status=status.HTTP_400_BAD_REQUEST)

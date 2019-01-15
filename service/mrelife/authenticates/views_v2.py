@@ -15,7 +15,7 @@ from rest_framework_jwt.views import JSONWebTokenAPIView
 from mrelife.authenticates.mails import auth_mail
 from mrelife.authenticates.serializers import LoginSerializer, RegisterV2Serializer
 from mrelife.utils.groups import GroupUser
-from mrelife.utils.response import response_200, response_201, response_400, response_404, response_503
+from mrelife.utils.response import response_200, response_201, response_400, response_404, response_503,response_405
 from mrelife.utils.validates import email_exist
 from mrelife.authenticates.lanway_portal import lanway_register
 jwt_response_payload_handler = api_settings.JWT_RESPONSE_PAYLOAD_HANDLER
@@ -43,7 +43,7 @@ class JWTLoginView(JSONWebTokenAPIView):
 
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
-            return response_400('AU003', '', serializer.errors)
+            return response_405('AU003', '', serializer.errors)
         user = serializer.object.get('user') or request.user
         token = serializer.object.get('token')
         response_data = jwt_response_payload_handler(token, user, request)
@@ -81,7 +81,7 @@ class RegisterV2View(APIView):
         serializer = self.serializer_class(data=request.data)
         # validate
         if not serializer.is_valid():
-            response_400('RG004', '', serializer.errors)
+            response_405('RG004', '', serializer.errors)
 
         created, detail = lanway_register({
             "last_name": serializer.data['last_name'],
