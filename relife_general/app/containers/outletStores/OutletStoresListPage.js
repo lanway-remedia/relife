@@ -59,7 +59,7 @@ class OutletStoresListPage extends React.Component {
     })
     this.props.outletStoresListRequest(data)
   }
-  componentDidMount() {
+  componentWillMount() {
     this.getLocationList()
     this.getStoreList()
   }

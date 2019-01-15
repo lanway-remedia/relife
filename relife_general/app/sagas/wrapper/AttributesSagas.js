@@ -87,6 +87,19 @@ const AttributesSagas = {
       yield put(AttributeActions.attributeFailure(err))
     }
   },
+  *listCommitment({ data }) {
+    try {
+      let response = yield call(attributesService.listCommitment, data)
+      yield put(
+        AttributeActions.attributeSuccess(
+          response.data,
+          (response.data.isGetListCommitment = true)
+        )
+      )
+    } catch (err) {
+      yield put(AttributeActions.attributeFailure(err))
+    }
+  },
   *listMostKeywordSearch({ data }) {
     try {
       let response = yield call(attributesService.listKeyword, data)

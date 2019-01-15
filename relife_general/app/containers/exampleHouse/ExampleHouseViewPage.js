@@ -22,7 +22,7 @@ class ExampleHouseViewPage extends React.Component {
     const id = this.props.match.params.id
     this.props.exampleHousesGetRequest(id)
   }
-  componentDidMount() {
+  componentWillMount() {
     document.body.classList.add('example-house-view')
     this.getExampleHouse()
   }

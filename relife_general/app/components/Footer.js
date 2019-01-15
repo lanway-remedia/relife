@@ -7,6 +7,7 @@ import instaIcon from '../images/insta-icon.png'
 import pinIcon from '../images/pin-icon.png'
 import twiIcon from '../images/twi-icon.png'
 import lanwayLogo from '../images/lanway-logo.png'
+import I18nUtils from '../utils/I18nUtils'
 class Footer extends React.Component {
   render() {
     return (
@@ -18,18 +19,18 @@ class Footer extends React.Component {
         </div>
         <div className="footer-inner clearfix">
           <div className="fl clearfix">
-            <div className="footer-link-title">Re:Lifeについて</div>
+            <div className="footer-link-title">{I18nUtils.t('about-relife')}</div>
             <ul className="footer-link">
-              <li><Link to="/about_us/">Re:Lifeとは</Link></li>
-              <li><Link to="/form/form-builder/">建築会社・工務店さまへ</Link></li>
-              <li><Link to="http://style.relf.jp/">Re:Style</Link></li>
+              <li><Link to="/about-us/">{I18nUtils.t('what-is-relife')}</Link></li>
+              <li><Link to="/become-outler">{I18nUtils.t('company-store')}</Link></li>
+              <li><Link to="http://style.relf.jp/">{I18nUtils.t('re-style')}</Link></li>
             </ul>
-            <div className="footer-link-title">注文住宅を検討の方へ</div>
+            <div className="footer-link-title">{I18nUtils.t('for-order-house')}</div>
             <ul className="footer-link">
-              <li><Link to="/builder/">建築会社・工務店を探す</Link></li>
-              <li><Link to="/example/">建築実例を見る</Link></li>
-              <li><Link to="/contact/">注文住宅を相談する</Link></li>
-              <li><Link to="http://style.relf.jp/">専門家コラムを読む</Link></li>
+              <li><Link to="/builder/">{I18nUtils.t('find-company-store')}</Link></li>
+              <li><Link to="/example/">{I18nUtils.t('view-example-house')}</Link></li>
+              <li><Link to="/contact/">{I18nUtils.t('consult-an-order-house')}</Link></li>
+              <li><Link to="http://style.relf.jp/">{I18nUtils.t('read-style')}</Link></li>
             </ul>
           </div>
           <div className="footer-sns clearfix">
@@ -64,16 +65,16 @@ class Footer extends React.Component {
               <img src={lanwayLogo} alt="Lanway" />
             </div>
             <ul className="footer-bottom-link">
-              <li><a href="http://remedia.lanway.jp/">運営会社</a></li>
-              <li><Link to="/privacypolicy/">プライバシーポリシー</Link></li>
-              <li><Link to="/rule/">利用規約</Link></li>
+              <li><a href="http://remedia.lanway.jp/">{I18nUtils.t('operating-company')}</a></li>
+              <li><Link to="/privacy-policy/">{I18nUtils.t('privacy-policy')}</Link></li>
+              <li><Link to="/rule/">{I18nUtils.t('rule-page-title')}</Link></li>
             </ul>
-            <div className="copyright pc">© 2018 LanWay Inc.</div>
+            <div className="copyright pc">{I18nUtils.t('copy-right-company')}</div>
           </div>
         </div>
 
         <div className="footer-sp sp">
-          <div className="copyright">© 2018 LanWay Inc.</div>
+          <div className="copyright">{I18nUtils.t('copy-right-company')}</div>
         </div>
       </footer>
     )

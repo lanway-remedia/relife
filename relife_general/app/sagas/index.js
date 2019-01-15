@@ -55,6 +55,9 @@ export default function* root() {
     takeLatest(ProfileTypes.CHANGE_PASS_REQUEST, ProfileSagas.changePass),
     takeLatest(ProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
 
+    takeLatest(ProfileTypes.BECOME_STORE_REQUEST, ProfileSagas.becomeStore),
+    takeLatest(ProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
+
     //Locations
     //List Location
     takeLatest(
@@ -100,6 +103,13 @@ export default function* root() {
       AttributeTypes.ATTRIBUTE_HOUSE_SIZE_LIST_REQUEST,
       AttributesSagas.listHouseSize
     ),
+
+    // Get List Commitment
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_COMMITMENT_LIST_REQUEST,
+      AttributesSagas.listCommitment
+    ),
+    // Get List Most Keyword Search
     takeLatest(
       AttributeTypes.MOST_KEYWORD_LIST_REQUEST,
       AttributesSagas.listMostKeywordSearch

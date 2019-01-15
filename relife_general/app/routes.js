@@ -34,6 +34,11 @@ import OutletStoresListPage from './containers/outletStores/OutletStoresListPage
 import OutletStoresViewPage from './containers/outletStores/OutletStoresViewPage'
 import MapPage from './containers/outletStores/MapPage'
 
+import PrivacyPolicyPage from './containers/PrivacyPolicyPage'
+import RulePage from './containers/RulePage'
+import ContactPage from './containers/ContactPage'
+import AboutUsPage from './containers/AboutUsPage'
+
 import {StorageKeyConstants} from './constants'
 import 'react-toastify/dist/ReactToastify.css'
 import defaultAvatar from './images/user.png'
@@ -136,6 +141,22 @@ class Routes extends React.Component {
                         <Route
                             path="/map"
                             component={MapPage}
+                        />
+                        <Route
+                            path="/privacy-policy"
+                            component={PrivacyPolicyPage}
+                        />
+                        <Route
+                            path="/rule"
+                            component={RulePage}
+                        />
+                        <Route
+                            path="/contact"
+                            component={ContactPage}
+                        />
+                        <Route
+                            path="/about-us"
+                            component={AboutUsPage}
                         />
 
                     </Switch>

@@ -58,7 +58,6 @@ class HeaderSubMenu extends React.Component {
 
   render () {
     let {locationList, keywordList} = this.state
-    console.log(keywordList)
     return (
       <div className="menu__second-level clearfix">
         <div className="mega-menu-inner-left">

@@ -35,6 +35,7 @@
 
 //Components/Outletstores
 @import './components/outletStores/tabContent';
+@import './components/outletStores/tabContact';
 
 //Containers
 //Containers/auths
@@ -43,6 +44,8 @@
 
 //Containers/profile
 @import './containers/profiles/profile';
+@import './containers/profiles/becomeOutler';
+
 
 //Containers/exampleHouse
 @import './containers/exampleHouse/exampleHouseListPage';
@@ -51,6 +54,8 @@
 //Containers/outletStores
 @import './containers/outletStores/outletStoresListPage';
 @import './containers/outletStores/outletStoresViewPage';
+
+@import './containers/aboutUsPage';
 
 //Common
 @import 'common';

@@ -19,7 +19,7 @@ class OutletStoresViewPage extends React.Component {
     this.props.outletStoresGetRequest(id)
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getOutletStore()
   }
 

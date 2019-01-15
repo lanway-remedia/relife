@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { Row, Col, Button, Input} from 'reactstrap'
+import I18nUtils from '../../utils/I18nUtils'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import ContactTableTr from './ContactTableTr'
 import ContactTableTh from './ContactTableTh'
@@ -189,26 +190,26 @@ class TabContact extends React.Component {
         <Col xs="12" md="12" className="tab-contact padding-0">
           <ValidationForm
             onSubmit={this.handleSubmit}
-            defaultErrorMessage={{ required: '必須項目に記入もれがあります。'}}
+            defaultErrorMessage={{ required: I18nUtils.t('validate-require')}}
           >
             <ContactTableTr 
-              title="お名前" 
+              title={I18nUtils.t('name')}
               name="name" 
-              placeholder="山田太郎" 
+              placeholder={I18nUtils.t('all-place-name')}
               required 
               onChange={this.handleChange}
               value={this.state.name}
             />
             <ContactTableTr 
-              title="ふりがな" 
+              title={I18nUtils.t('name-kana')}
               name="name_kana" 
-              placeholder="ヤマダタロウ" 
+              placeholder={I18nUtils.t('all-place-name-kana')}
               required 
               onChange={this.handleChange}
               value={this.state.name_kana}
             />
             <div className="contact_table_tr">
-              <ContactTableTh title="ご住所" required />
+              <ContactTableTh title={I18nUtils.t('address-1')} required />
               <div className="contact_table_td">
                 <div className="addressbar">
                   <p>〒</p>
@@ -229,11 +230,11 @@ class TabContact extends React.Component {
                         value={this.state.zip2}
                     />
                   </p>
-                  <p className="attention">※半角で入力してください。住所が自動で入力されます</p>
+                  <p className="attention">※{I18nUtils.t('address-attention')}</p>
                   <TextInput 
                     type="text"
                     name="address"
-                    placeholder="自動で入力されます"
+                    placeholder={I18nUtils.t('all-place-address')}
                     onChange={this.handleChange}
                     value={this.state.address}
                   />
@@ -242,24 +243,24 @@ class TabContact extends React.Component {
             </div>
 
             <ContactTableTr 
-              title="メールアドレス" 
-              name="email" 
-              placeholder="test@test.co.jp" 
-              required 
-              onChange={this.handleChange} 
+              title={I18nUtils.t('email')}
+              name="email"
+              placeholder={I18nUtils.t('all-place-name-email-test')}
+              required
+              onChange={this.handleChange}
               value={this.state.email}
             />
-            <ContactTableTr 
-              title="電話番号" 
-              name="tel" 
-              placeholder="ハイフンなどの入力は不要です" 
-              required 
+            <ContactTableTr
+              title={I18nUtils.t('tel')}
+              name="tel"
+              placeholder={I18nUtils.t('all-place-tel')}
+              required
               onChange={this.handleChange}
               value={this.state.tel}
             />
 
             <div className="contact_table_tr">
-              <ContactTableTh title="年齢" required={false} />
+              <ContactTableTh title={I18nUtils.t('age')} required={false} />
               <div className="contact_table_td">
                 <span className="contact_table_td_input">
                   <Input 
@@ -273,113 +274,113 @@ class TabContact extends React.Component {
                     value={this.state.age}
                   />
                 </span>
-                歳
+                {I18nUtils.t('age1')}
               </div>
             </div>
 
             <div className="contact_table_tr">
-              <ContactTableTh title="家族構成" required={false} />
+              <ContactTableTh title={I18nUtils.t('household-size')} required={false} />
               <ContactRadio 
-                name="household_size" 
-                data={household_size} 
-                onChange={this.handleChange} 
-                value={this.state.household_size} 
+                name="household_size"
+                data={household_size}
+                onChange={this.handleChange}
+                value={this.state.household_size}
               />
             </div>
 
             <div className="contact_table_tr">
-              <ContactTableTh title="希望の広さ（敷地面積）" required={false} />
+              <ContactTableTh title={I18nUtils.t('acreage')} required={false} />
               <ContactRadio 
-                name="acreage" 
-                data={acreage} 
-                onChange={this.handleChange} 
-                value={this.state.acreage} 
+                name="acreage"
+                data={acreage}
+                onChange={this.handleChange}
+                value={this.state.acreage}
               />
             </div>
 
             <div className="contact_table_tr">
-              <ContactTableTh title="建設予定地" required={false} />
+              <ContactTableTh title={I18nUtils.t('construction-position-type')} required={false} />
               <ContactRadio 
-                name="construction_position_type" 
-                data={construction_position_type} 
-                onChange={this.handleChange} 
-                showAddress={showAddress} 
-                value={this.state.construction_position_type} 
+                name="construction_position_type"
+                data={construction_position_type}
+                onChange={this.handleChange}
+                showAddress={showAddress}
+                value={this.state.construction_position_type}
               />
             </div>
 
             <div className="contact_table_tr">
-              <ContactTableTh 
-                title="建設予定時期" 
-                required={false} 
+              <ContactTableTh
+                title={I18nUtils.t('construction-duration')}
+                required={false}
               />
               <ContactRadio 
-                name="construction_duration" 
-                data={construction_duration} 
-                onChange={this.handleChange} 
+                name="construction_duration"
+                data={construction_duration}
+                onChange={this.handleChange}
                 value={this.state.construction_duration} 
               />
             </div>
 
             <div className="contact_table_tr">
-              <ContactTableTh 
-                title="予算" 
-                required={false} 
+              <ContactTableTh
+                title={I18nUtils.t('budget')}
+                required={false}
               />
               <ContactRadio 
-                name="budget" 
-                data={budget} 
-                onChange={this.handleChange} 
-                value={this.state.budget} 
+                name="budget"
+                data={budget}
+                onChange={this.handleChange}
+                value={this.state.budget}
               />
             </div>
 
             <div className="contact_table_tr">
               <ContactTableTh 
-                title="世帯年収" 
-                required={false} 
+                title={I18nUtils.t('household-income')}
+                required={false}
               />
               <ContactRadio 
-                name="household_income" 
-                data={household_income} 
-                onChange={this.handleChange} 
-                value={this.state.household_income} 
+                name="household_income"
+                data={household_income}
+                onChange={this.handleChange}
+                value={this.state.household_income}
+              />
+            </div>
+
+            <div className="contact_table_tr">
+              <ContactTableTh
+                title={I18nUtils.t('construction-type')}
+                required={false}
+              />
+              <ContactRadio
+                name="construction_type"
+                data={construction_type}
+                onChange={this.handleChange}
+                value={this.state.construction_type}
               />
             </div>
 
             <div className="contact_table_tr">
               <ContactTableTh 
-                title="建設内容" 
-                required={false} 
+                title={I18nUtils.t('current-situation')}
+                required={false}
               />
-              <ContactRadio 
-                name="construction_type" 
-                data={construction_type} 
-                onChange={this.handleChange} 
-                value={this.state.construction_type} 
-              />
-            </div>
-
-            <div className="contact_table_tr">
-              <ContactTableTh 
-                title="現在の状況" 
-                required={false} 
-              />
-              <ContactRadio 
-                name="current_situation" 
-                data={current_situation} 
-                onChange={this.handleChange} 
-                value={this.state.current_situation} 
+              <ContactRadio
+                name="current_situation"
+                data={current_situation}
+                onChange={this.handleChange}
+                value={this.state.current_situation}
               />
             </div>
 
             <div className="contact_table_tr">
-              <ContactTableTh title="お問い合わせ・ご相談" required={false} />
+              <ContactTableTh title={I18nUtils.t('question')} required={false} />
               <div className="contact_table_td">
                 <span className="contact_table_td_input">
                   <textarea
                     name="content"
-                    placeholder="ご希望やご質問があれば自由にお書きください"
+                    placeholder={I18nUtils.t('all-place-question')}
                     cols="40"
                     rows="10"
                     onChange={this.handleChange}
@@ -390,46 +391,46 @@ class TabContact extends React.Component {
             </div>
 
             <p className="form-text">
-              ご入力頂いた個人情報は、Re:Life運営元である株式会社ランウェイ・リメディアのプライバシーポリシーに則って厳重に管理します。
+              {I18nUtils.t('privacy-policy-text-1')}
               <br />
-              Re:Lifeの
+              {I18nUtils.t('re-life')}
               <Link 
                 to="/privacypolicy/"
                 target="_blank"
               >
-              プライバシーポリシー
+              {I18nUtils.t('privacy-policy')}
               </Link>
-              についてはリンク先をご覧ください。
+              {I18nUtils.t('privacy-policy-text-2')}
             </p>
 
             <p className="contact-button">
               <Button className="btn-default">
-                確認画面
+                {I18nUtils.t('confirm')}
               </Button>
             </p>
             
             <p className="form-text">
               <b>
-                Re:Life（本サイト）の資料請求における個人情報の取扱いについて
+              {I18nUtils.t('privacy-policy-text-3')}
               </b>
               <br />
-              ●本サイトは、株式会社ランウェイ・リメディアが窓口となり、お客様からの資料請求について、住宅会社に対して資料の送付希望をお伝えするものです。
+              ●{I18nUtils.t('privacy-policy-text-3-1')}
               <br />
-              ●本フォームからお客様が記入・登録された個人情報は、資料送付・電子メール送信・電話連絡などの目的で株式会社ランウェイ・リメディアと、資料請求先の住宅会社が利用・保管します。
+              ●{I18nUtils.t('privacy-policy-text-3-2')}
               <br />
-              ●資料請求先住宅会社が保管する個人情報の取扱いについては、各住宅会社に直接お問合せください。
+              ●{I18nUtils.t('privacy-policy-text-3-3')}
             </p>
 
             <p className="form-text">
-              上記とは別に株式会社ランウェイ・リメディアでは本サイトを円滑に運用するために、お客様の個人情報をサービスご利用の控えとして一定期間保管いたします。
+              {I18nUtils.t('privacy-policy-text-4')}
               <br />
-              ご記入の内容が不明瞭で資料をお送りできない場合、その他当社が本サービスを円滑に運用するために必要な範囲において、直接株式会社ランウェイ・リメディアから確認のご連絡をさせていただくことがありますので、あらかじめご了承ください。
+              {I18nUtils.t('privacy-policy-text-5')}
               <br />
-              また、資料請求内容等は集計処理のうえ、個人を特定できない形で統計として活用させていただきます。
+              {I18nUtils.t('privacy-policy-text-6')}
               <br />
-              株式会社ランウェイ・リメディアの
-              <Link to="/privacypolicy" target="_blank">プライバシーポリシー</Link>
-              をご覧ください。
+              {I18nUtils.t('privacy-policy-text-7')}
+              <Link to="/privacypolicy" target="_blank">{I18nUtils.t('privacy-policy')}</Link>
+              {I18nUtils.t('privacy-policy-text-8')}
             </p>
           </ValidationForm>
         </Col>

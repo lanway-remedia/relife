@@ -93,7 +93,7 @@ class SidebarFilterSP extends React.Component {
     this.setState({ collapse: !this.state.collapse })
   }
 
-  componentDidMount() {
+  componentWillMount() {
     let params = new URLSearchParams(this.props.history.location.search)
     let city = params.get('city')
     let keyword = params.get('keyword')
@@ -174,7 +174,7 @@ class SidebarFilterSP extends React.Component {
                           <CustomInput
                           key={key}
                           type="checkbox" 
-                          id={`${val.title}_sp`}
+                          id={`${val.title}_${val.id}_type__sp`}
                           label={val.title}
                           value={val.id}
                           name="type"
@@ -192,7 +192,7 @@ class SidebarFilterSP extends React.Component {
                           <CustomInput
                           key={key}
                           type="checkbox" 
-                          id={`${val.title}_sp`}
+                          id={`${val.title}_${val.id}_business_sp`}
                           label={val.title}
                           value={val.id}
                           name="business"

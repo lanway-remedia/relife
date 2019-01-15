@@ -1,10 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
 import {withRouter} from 'react-router-dom'
-import { Form, Input, FormGroup, Button } from 'reactstrap'
+import PropTypes from 'prop-types'
+import { Form, Input, FormGroup, Button, CustomInput } from 'reactstrap'
 import I18nUtils from '../../utils/I18nUtils'
-import { CustomInput } from 'reactstrap'
 
 class SidebarFilterPC extends React.Component {
   constructor(props) {
@@ -89,7 +88,7 @@ class SidebarFilterPC extends React.Component {
     this.props.onPageLoad()
   }
 
-  componentDidMount() {
+  componentWillMount() {
     let params = new URLSearchParams(this.props.history.location.search)
     let city = params.get('city')
     let keyword = params.get('keyword')
@@ -109,7 +108,7 @@ class SidebarFilterPC extends React.Component {
   }
 
   render () {
-    let {locationList} = this.props
+    const {locationList} = this.props
     let {city, keyword, type, business, min_price, max_price} = this.state
     const dataType = [
       { 'id': 1, 'title': 'ハウスメーカー'},
@@ -121,6 +120,7 @@ class SidebarFilterPC extends React.Component {
       { 'id': 2, 'title': 'リフォーム'},
       { 'id': 3, 'title': 'リノベーション'},
     ]
+
     return (
       <section className="side pc">
         <Form id="frm-search-pc">
@@ -165,14 +165,14 @@ class SidebarFilterPC extends React.Component {
             <FormGroup check>
               {dataType.map((val, key) => (
                 <CustomInput
-                key={key}
-                type="checkbox" 
-                id={`${val.title}_pc`}
-                label={val.title}
-                value={val.id}
-                name="type"
-                onChange={this.handleChange}
-                defaultChecked={type.includes(val.id.toString())}
+                  key={key}
+                  type="checkbox"
+                  value={val.id}
+                  id={`${val.title}_${val.id}_type_pc`}
+                  label={val.title}
+                  name="type"
+                  onChange={this.handleChange}
+                  defaultChecked={type.includes(val.id.toString())}
                 />
               ))}
             </FormGroup>
@@ -187,7 +187,7 @@ class SidebarFilterPC extends React.Component {
                 <CustomInput
                 key={key}
                 type="checkbox" 
-                id={`${val.title}_pc`}
+                id={`${val.title}_${val.id}_business_pc`}
                 label={val.title}
                 value={val.id}
                 name="business"

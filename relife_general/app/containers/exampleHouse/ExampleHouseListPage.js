@@ -36,6 +36,7 @@ class ExampleHouseListPage extends React.Component {
     let style = params.get('styles__style__in')
     let houseSize = params.get('household_size__in')
     let houseIncome = params.get('household_income__in')
+    let commitment = params.get('commitment__in')
     let data = {
       offset: (page - 1) * limit,
       limit: limit,
@@ -46,6 +47,7 @@ class ExampleHouseListPage extends React.Component {
       ...(style && { styles__style__in: style }),
       ...(houseSize && { household_size__in: houseSize }),
       ...(houseIncome && { household_income__in: houseIncome }),
+      ...(commitment && { commitment__in: commitment }),
     }
 
     this.setState({
@@ -55,7 +57,7 @@ class ExampleHouseListPage extends React.Component {
     this.props.exampleHousesListRequest(data)
   }
 
-  componentDidMount() {
+  componentWillMount() {
     document.body.classList.add('example-house-list')
     this.getListExampleHouse()
   }

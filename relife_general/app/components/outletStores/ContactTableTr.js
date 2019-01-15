@@ -1,11 +1,15 @@
+/**
+ * @author HANH TD
+ */
+
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import {Row, Col} from 'reactstrap'
 import { PropTypes } from 'prop-types'
 import ContactTableTh from './ContactTableTh'
 import { TextInput } from 'react-bootstrap4-form-validation'
 import validator from 'validator'
+import I18nUtils from './../../utils/I18nUtils'
 class ContactTableTr extends React.Component {
   render () {
     let { title, name, placeholder, required, onChange, value} = this.props
@@ -20,10 +24,10 @@ class ContactTableTr extends React.Component {
                   type="email"
                   name={name}
                   placeholder={placeholder}
-                  required
+                  required={required}
                   validator={validator.isEmail} 
                   errorMessage={{
-                    validator: 'メールアドレスの形式が正しくないようです。'
+                    validator: I18nUtils.t('validate-email')
                   }}
                   onChange={onChange}
                   value={value}
@@ -33,7 +37,7 @@ class ContactTableTr extends React.Component {
                   type="text"
                   name={name}
                   placeholder={placeholder}
-                  required
+                  required={required}
                   onChange={onChange}
                   value={value}
                 />
