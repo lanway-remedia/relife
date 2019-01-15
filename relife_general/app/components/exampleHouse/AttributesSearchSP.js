@@ -31,7 +31,7 @@ class AttributesSearchSP extends React.Component {
   toggle = () => {
     this.setState({ collapse: !this.state.collapse })
   }
-  componentDidMount() {
+  componentWillMount() {
     let data = {
       limit: '',
       offset: '' 

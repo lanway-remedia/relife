@@ -57,7 +57,7 @@ class ExampleHouseListPage extends React.Component {
     this.props.exampleHousesListRequest(data)
   }
 
-  componentDidMount() {
+  componentWillMount() {
     document.body.classList.add('example-house-list')
     this.getListExampleHouse()
   }

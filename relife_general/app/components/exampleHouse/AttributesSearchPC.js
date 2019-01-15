@@ -28,7 +28,7 @@ class AttributesSearchPC extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     let data = {
       limit: '',
       offset: '' 
