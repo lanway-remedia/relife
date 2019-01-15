@@ -303,6 +303,8 @@
   "validate-field-3": "Username more than 3 characters.",
   "validate-pass": "Password should be at least 8 characters and contains at least one upper case letter.",
 
+  "login-denied": "Access Denied! You can't login",
+
   "CM001": "Something wrong.",
 
   "AU001": "Sorry, you are not allowed to access this function.",

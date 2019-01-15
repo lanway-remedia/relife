@@ -71,7 +71,6 @@ class SearchCondition extends Component {
     } else {
       statusVal = 0
     }
-    console.log(paramStatus)
     let status = this.state.dataStatus.find(item => item.value === statusVal)
 
     this.setState({
@@ -167,13 +166,7 @@ class SearchCondition extends Component {
   // }
 
   render() {
-    let {
-      hasFreeword,
-      hasGroup,
-      hasStore,
-      hasStatus
-      // hasAttribute
-    } = this.props
+    let { hasFreeword, hasGroup, hasStore, hasStatus } = this.props
     let {
       showStoreList,
       collapse,

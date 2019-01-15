@@ -13,6 +13,9 @@ import I18nUtils from '../../utils/I18nUtils'
 import { ValidationForm, TextInput } from 'react-bootstrap4-form-validation'
 import { Button, FormGroup, Label } from 'reactstrap'
 import AppUtils from '../../utils/AppUtils'
+import { bindActionCreators } from 'redux'
+import { show, hide } from 'redux-modal'
+import { ModalName } from '../../constants'
 import logo from '../../images/form-logo.png'
 
 class LoginPage extends React.Component {
@@ -34,7 +37,14 @@ class LoginPage extends React.Component {
     if (this.props.data != nextProps.data) {
       let data = nextProps.data.data
       if (data.token) {
-        AppUtils.login(this.props.history, data.token, '/')
+        console.log(typeof data.user.group)
+        if (data.user.group === 3 || data.user.group === 4) {
+          this.props.show(ModalName.COMMON, {
+            message: (
+              <span className="text-danger">{I18nUtils.t('login-denied')}</span>
+            )
+          })
+        } else AppUtils.login(this.props.history, data.token, '/')
       }
     }
   }
@@ -131,7 +141,9 @@ LoginPage.propTypes = {
   history: PropTypes.object,
   data: PropTypes.object,
   processing: PropTypes.bool,
-  loginRequest: PropTypes.func
+  loginRequest: PropTypes.func,
+  show: PropTypes.func,
+  hide: PropTypes.func
 }
 
 const mapStateToProps = state => {
@@ -142,6 +154,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({ show, hide }, dispatch),
   loginRequest: data => dispatch(AuthsActions.loginRequest(data))
 })
 
