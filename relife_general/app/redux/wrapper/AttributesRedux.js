@@ -42,7 +42,6 @@ export const attributeContructionListRequest = state => {
   return { ...state, processing: true }
 }
 
-
 export const attributeFloorListRequest = state => {
   return { ...state, processing: true }
 }
