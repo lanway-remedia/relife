@@ -13,13 +13,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from mrelife.attributes.models import SearchHistory
-from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import Event, EventContact, EventContactReply
 from mrelife.events.serializers import EventContactReplySerializer, EventContactSerializer, EventSerializer
 from mrelife.utils.event_permission import EventPermission
 from mrelife.utils.groups import IsAdmin
 from mrelife.utils.relifeenum import MessageCode
-from mrelife.utils.response import response_200
+from mrelife.utils.response import response_200, response_201, response_400, response_404, response_405
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -47,7 +46,7 @@ class EventViewSet(viewsets.ModelViewSet):
                 Sobject.save()
             self.queryset = queryset.filter(Q(title__contains=keyword) | Q(content__contains=keyword))
         response = super(EventViewSet, self).list(request)
-        return response_200('', '', response.data)
+        return response_200('DT003', '', response.data)
 
     def retrieve(self, request, pk=None):
         try:
@@ -57,13 +56,11 @@ class EventViewSet(viewsets.ModelViewSet):
             queryset = Event.objects.filter(is_active=settings.IS_ACTIVE)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = EventSerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV001.value, ""), status=status.HTTP_200_OK)
+            return response_200(MessageCode.EV001.value,{},serializer.data)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EV009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV002.value, {}), status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV002.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_404(MessageCode.EV002.value,{},{})
 
     def create(self, request):
         try:
@@ -71,10 +68,10 @@ class EventViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV003.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return response_200(MessageCode.EV003.value,{},serializer.data)
+            return response_405(MessageCode.EV010.value,serializer.errors,{})
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV004.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EV004.value,{},{})
 
     def update(self, request, pk=None):
         try:
@@ -89,14 +86,14 @@ class EventViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV005.value, ""), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return response_200(MessageCode.EV005.value,{},serializer.data)
+            return response_405(MessageCode.EV011.value,serializer.errors,{})
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EV009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV012.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EV012.value,{},{})
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV006.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EV006.value,{},{})
 
     def destroy(self, request, pk=None):
         try:
@@ -117,10 +114,10 @@ class EventViewSet(viewsets.ModelViewSet):
                         EventContactReply.objects.filter(is_active=1, event_contact_reply=eventContactObject.id).update(
                             is_active=settings.IS_INACTIVE, updated=datetime.now())
                 eventContactObject.update(is_active=settings.IS_INACTIVE, updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EV007.value, ""), status=status.HTTP_200_NO_CONTENT)
+                return response_200(MessageCode.EV007.value,{},serializer.data)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EV009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV013.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EV013.value,{},{})
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EV008.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EV008.value,{},{})

@@ -31,7 +31,7 @@ class ExhibitionTagViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         self.queryset = ExhibitionTag.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         response = super(ExhibitionTagViewSet, self).list(request, *args, **kwargs)
-        return response_200('DT003', '', response.data)
+        return response_200(MessageCode.DT003.value, {}, response.data)
 
     def retrieve(self, request, pk=None):
         try:

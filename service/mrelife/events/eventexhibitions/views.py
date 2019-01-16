@@ -10,9 +10,8 @@ from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from mrelife.utils.response import (response_200)
+from mrelife.utils.response import response_200, response_201, response_400, response_404, response_405
 
-from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.eventexhibitions.serializers import EventExhibitionSerializer
 from mrelife.events.models import EventExhibition
 from mrelife.utils.event_permission import EventExhibitionPermission
@@ -32,7 +31,7 @@ class EventExhibitionViewSet(viewsets.ModelViewSet):
 
         self.queryset = EventExhibition.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         response = super(EventExhibitionViewSet, self).list(request)
-        return response_200('', '', response.data)
+        return response_200(MessageCode.DT003.value, {}, response.data)
 
     def retrieve(self, request, pk=None):
         try:
@@ -42,11 +41,11 @@ class EventExhibitionViewSet(viewsets.ModelViewSet):
             queryset = EventExhibition.objects.filter(is_active=settings.IS_ACTIVE)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = EventExhibitionSerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVE001.value, {}), status=status.HTTP_200_OK)
+            return response_200(MessageCode.EVE001.value,{},serializer.data)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVE009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EVE009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVE002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EVE002.value,{},{})
 
     def create(self, request):
         try:
@@ -54,10 +53,10 @@ class EventExhibitionViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVE003.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVE010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return response_200(MessageCode.EVE003.value,{},serializer.data)
+            return response_405(MessageCode.EVE010.value,serializer.errors,{})
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVE004.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EVE004.value,{},{})
 
     def update(self, request, pk=None):
         try:
@@ -69,12 +68,12 @@ class EventExhibitionViewSet(viewsets.ModelViewSet):
             serializer = EventExhibitionSerializer(event_obj, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVE005.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVE011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return response_200(MessageCode.EVE005.value,{},serializer.data)
+            return response_405(MessageCode.EVE011.value,serializer.errors,{})
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVE009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EVE009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVE012.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EVE012.value,{},{})
 
     def destroy(self, request, pk=None):
         try:
@@ -87,9 +86,9 @@ class EventExhibitionViewSet(viewsets.ModelViewSet):
             serializer = EventExhibitionSerializer(event_obj, data=data, partial=True)
             if(serializer.is_valid()):
                 serializer.save(updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EVE007.value, {}), status=status.HTTP_200_NO_CONTENT)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVE008.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return response_200(MessageCode.EVE007.value,{},serializer.data)
+            return response_405(MessageCode.EVE008.value,serializer.errors,{})
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVE009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EVE009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EVE013.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return  response_404(MessageCode.EVE013.value,{},{})

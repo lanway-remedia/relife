@@ -54,7 +54,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             self.queryset = self.queryset.filter(Q(title__contains=keyword) | Q(
                 content__contains=keyword) )
         response = super(OutletStoreViewSet, self).list(request)
-        return response_200('DT003', '', response.data)
+        return response_200(MessageCode.DT003.value, {}, response.data)
 
     def retrieve(self, request, *args, **kwargs):
         try:
