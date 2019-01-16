@@ -11,6 +11,7 @@ import {} from 'reactstrap'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import I18nUtils from '../utils/I18nUtils'
+import { StorageKeyConstants } from '../constants'
 
 class Navigation extends React.Component {
   constructor(props) {
@@ -23,6 +24,12 @@ class Navigation extends React.Component {
   }
 
   render() {
+    let groupId = localStorage.getItem(StorageKeyConstants.GROUP)
+    let storeId = localStorage.getItem(StorageKeyConstants.STORE)
+    let isStore = false
+    if (groupId === '2') {
+      isStore = true
+    }
     return (
       <div className="sidebar">
         <div className="sb-content">
@@ -42,12 +49,22 @@ class Navigation extends React.Component {
               </li>
               <li className="mn-head">{I18nUtils.t('mnh-store')}</li>
               <li className="item">
-                <Link
-                  to="/manage-outlet-store-list"
-                  title={I18nUtils.t('mni-store-list')}
-                >
-                  {I18nUtils.t('mni-store-list')}
-                </Link>
+                {isStore && (
+                  <Link
+                    to={`/edit-outlet-store/${storeId}`}
+                    title={I18nUtils.t('mni-store-detail')}
+                  >
+                    {I18nUtils.t('mni-store-detail')}
+                  </Link>
+                )}
+                {!isStore && (
+                  <Link
+                    to="/manage-outlet-store-list"
+                    title={I18nUtils.t('mni-store-list')}
+                  >
+                    {I18nUtils.t('mni-store-list')}
+                  </Link>
+                )}
               </li>
               <li className="mn-head">{I18nUtils.t('mnh-ehouse')}</li>
               <li className="item">

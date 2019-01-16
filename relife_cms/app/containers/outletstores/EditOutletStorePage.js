@@ -25,6 +25,7 @@ import 'froala-editor/js/froala_editor.pkgd.min.js'
 import 'froala-editor/css/froala_style.min.css'
 import 'froala-editor/css/froala_editor.pkgd.min.css'
 import FroalaEditor from 'react-froala-wysiwyg'
+import { StorageKeyConstants } from '../../constants'
 
 class EditOutletStorePage extends React.Component {
   constructor(props) {
@@ -77,8 +78,8 @@ class EditOutletStorePage extends React.Component {
           email: response.data.email,
           phone: response.data.tel,
           address: response.data.address,
-          city: response.data.district.city.id,
-          district: response.data.district.id,
+          city: response.data.city.region.id,
+          district: response.data.city.id,
           zipcode: response.data.zipcode,
           traffic: response.data.traffic,
           website: response.data.home_page,
@@ -179,6 +180,12 @@ class EditOutletStorePage extends React.Component {
   render() {
     let { thumbnailImage, data } = this.state
 
+    let groupId = localStorage.getItem(StorageKeyConstants.GROUP)
+    let isStore = false
+    if (groupId !== '2') {
+      isStore = true
+    }
+
     const config = {
       imageUploadURL:
         'https://d2t3gximuwdg8x.cloudfront.net/api/file-managements/v1/upload/',
@@ -226,20 +233,25 @@ class EditOutletStorePage extends React.Component {
               <Row>
                 <Col xs="12" md="12">
                   <div className="btns-group text-center mb-4">
-                    <Button
-                      onClick={() => this.handleDelete(this.state.id)}
-                      color="secondary"
-                    >
-                      {I18nUtils.t('delete')}
-                    </Button>
+                    {isStore && (
+                      <Button
+                        onClick={() => this.handleDelete(this.state.id)}
+                        color="secondary"
+                      >
+                        {I18nUtils.t('delete')}
+                      </Button>
+                    )}
+
                     <Button color="success">{I18nUtils.t('btn-save')}</Button>
-                    <Button
-                      title={I18nUtils.t('ots-title-back-list')}
-                      onClick={this.redirectToListPage}
-                      color="danger"
-                    >
-                      {I18nUtils.t('btn-back')}
-                    </Button>
+                    {isStore && (
+                      <Button
+                        title={I18nUtils.t('ots-title-back-list')}
+                        onClick={this.redirectToListPage}
+                        color="danger"
+                      >
+                        {I18nUtils.t('btn-back')}
+                      </Button>
+                    )}
                   </div>
                 </Col>
                 <Col xs="12" md="12">
@@ -405,20 +417,25 @@ class EditOutletStorePage extends React.Component {
                 </Col>
                 <Col xs="12" md="12" className="mt-3">
                   <div className="btns-group text-center">
-                    <Button
-                      onClick={() => this.handleDelete(this.state.id)}
-                      color="secondary"
-                    >
-                      {I18nUtils.t('delete')}
-                    </Button>
+                    {isStore && (
+                      <Button
+                        onClick={() => this.handleDelete(this.state.id)}
+                        color="secondary"
+                      >
+                        {I18nUtils.t('delete')}
+                      </Button>
+                    )}
+
                     <Button color="success">{I18nUtils.t('btn-save')}</Button>
-                    <Button
-                      title={I18nUtils.t('ots-title-back-list')}
-                      onClick={this.redirectToListPage}
-                      color="danger"
-                    >
-                      {I18nUtils.t('btn-back')}
-                    </Button>
+                    {isStore && (
+                      <Button
+                        title={I18nUtils.t('ots-title-back-list')}
+                        onClick={this.redirectToListPage}
+                        color="danger"
+                      >
+                        {I18nUtils.t('btn-back')}
+                      </Button>
+                    )}
                   </div>
                 </Col>
               </Row>

@@ -50,6 +50,7 @@
   "mnh-store": "工務店管理",
   "mni-store-add": "工務店新規作成",
   "mni-store-list": "工務店一覧管理",
+  "mni-store-detail": "Detail Outlet Store",
   "mnh-ehouse": "建築実例管理",
   "mni-ehouse-add": "建築実例新規作成",
   "mni-ehouse-list": "建築実例一覧管理",
@@ -301,6 +302,8 @@
   "validate-field-0": "フィルドには必ず情報を入力しください。",
   "validate-field-3": "ユーザーネームは３字以外でなければなりません。",
   "validate-pass": "パスワードは8文字以上で、少なくとも1文字が含まれている必要があります。",
+
+  "login-denied": "Access Denied! You can't login",
 
   "CM001": "エラーが発生されました。",
 
@@ -573,6 +576,7 @@
   "US014": "パスワードが変更されました。",
   "US015": "ユーザーが作成されました。",
   "US016": "ユーザーが変更されました。",
+  "US222": "User can't permission",
   "US404": "ユーザーが見つかりません。",
 
   "MS001": "メールが送信できません。",
