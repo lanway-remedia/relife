@@ -48,7 +48,7 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                 Sobject.save()
             self.queryset = queryset.filter(Q(title__contains=keyword) | Q(content__contains=keyword))
         response = super(EhibitionViewSet, self).list(request)
-        return response_200('', '', response.data)
+        return response_200(MessageCode.DT003.value, {}, response.data)
 
     def retrieve(self, request, pk=None):
         try:

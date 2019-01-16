@@ -30,7 +30,7 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
     def list(self, request):
         self.queryset = ExhibitionContactReply.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         response = super(ExhibitionContactReplyViewSet, self).list(request)
-        return response_200(MessageCode.DT003, '', response.data)
+        return response_200(MessageCode.DT003, {}, response.data)
 
     def retrieve(self, request, pk=None):
         try:
