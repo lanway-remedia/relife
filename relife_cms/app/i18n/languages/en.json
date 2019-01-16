@@ -51,6 +51,7 @@
   "mnh-store": "Outlet Store Management",
   "mni-store-add": "Add new Outlet Store",
   "mni-store-list": "Manage Outlet Store List",
+  "mni-store-detail": "Detail Outlet Store",
   "mnh-ehouse": "Example House Management",
   "mni-ehouse-add": "Add new Example House",
   "mni-ehouse-list": "Manage Example House List",
@@ -576,6 +577,7 @@
   "US014": "Thay đổi mật khẩu thành công",
   "US015": "User added successfully",
   "US016": "User updated successfully",
+  "US222": "User can't permission",
   "US404": "Not found",
 
   "MS001": "không thể gửi mail",

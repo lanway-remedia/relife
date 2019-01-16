@@ -37,14 +37,20 @@ class LoginPage extends React.Component {
     if (this.props.data != nextProps.data) {
       let data = nextProps.data.data
       if (data.token) {
-        console.log(typeof data.user.group)
         if (data.user.group === 3 || data.user.group === 4) {
           this.props.show(ModalName.COMMON, {
             message: (
               <span className="text-danger">{I18nUtils.t('login-denied')}</span>
             )
           })
-        } else AppUtils.login(this.props.history, data.token, '/')
+        } else
+          AppUtils.login(
+            this.props.history,
+            data.token,
+            data.user.group,
+            data.user.store.id,
+            '/'
+          )
       }
     }
   }
