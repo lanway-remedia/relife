@@ -18,7 +18,6 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from mrelife.utils.response import (response_200)
 
-from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import Event, EventModelHouse
 from mrelife.modelhouses.models import (ModelHouse, ModelHouseMedia,
                                         ModelHouseOutletStore, ModelHouseTag,
@@ -35,7 +34,7 @@ from mrelife.utils.order_model_house_permission import (OrderMHUserListPermissio
                                                         OrderMHViewadminPermission)
 from mrelife.utils.querys import get_or_none
 from mrelife.utils.relifeenum import MessageCode
-from mrelife.utils.response import response_200, response_201, response_404
+from mrelife.utils.response import response_200, response_201, response_400, response_404, response_405
 from mrelife.attributes.models import SearchHistory
 
 
@@ -321,7 +320,7 @@ class OrderModelHouseViewSet(ModelViewSet):
     def list(self, request):
         self.queryset = OrderModelHouse.objects.filter(is_active=settings.IS_ACTIVE).order_by("-updated")
         response = super(OrderModelHouseViewSet, self).list(request)
-        return response_200('', '', response.data)
+        return response_200(MessageCode.DT003.value, {}, response.data)
 
     def retrieve(self, request, pk=None):
         try:
@@ -331,19 +330,19 @@ class OrderModelHouseViewSet(ModelViewSet):
             queryset = OrderModelHouse.objects.filter(is_active=settings.IS_ACTIVE)
             orderModelObject = get_object_or_404(queryset, pk=pk)
             serializer = OrderModelHouseSerializer(orderModelObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH001.value, {}), status=status.HTTP_200_OK)
+            return response_200(MessageCode.OMH001.value,{},serializer.data)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.OMH009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.OMH002.value,{},{})
 
     def create(self, request):
         serializer = OrderModelHouseSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                             created=datetime.now(), updated=datetime.now())
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH003.value, {}), status=status.HTTP_200_OK)
-        return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH004.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+            return response_200(MessageCode.OMH003.value,{},serializer.data)
+        return response_405(MessageCode.OMH004.value,serializer.errors,{}) 
 
     def update(self, request, pk=None):
         try:
@@ -356,12 +355,12 @@ class OrderModelHouseViewSet(ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH005.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH006.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return response_200(MessageCode.OMH005.value,{},serializer.data)
+            return response_405(MessageCode.OMH006.value,serializer.errors,{}) 
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.OMH009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH012.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.OMH012.value,{},{})
 
     def destroy(self, request, pk=None):
         try:
@@ -374,11 +373,11 @@ class OrderModelHouseViewSet(ModelViewSet):
             serializer = OrderModelHouseSerializer(orderModelObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.OMH007.value, {}), status=status.HTTP_200_OK)
+            return response_200(MessageCode.OMH007.value,{},serializer.data)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.OMH009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH013.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.OMH013.value,{},{})
 
     @list_route(methods=['GET'], pagination_class=LimitOffsetPagination)
     def selfGetlistBooking(self, request):
@@ -390,16 +389,22 @@ class updateStatus(GenericAPIView, UpdateModelMixin):
     queryset = OrderModelHouse.objects.filter(is_active=settings.IS_ACTIVE)
     serializer_class = OrderModelHouseStatusSerializer
     permission_classes = (IsAuthenticated,)
-
+    lookup_field = 'pk'
+    lookup_value_regex = '[^/]+'
     def put(self, request, pk=None, *args, **kwargs):
         try:
+            parten = "^[0-9]+$"
+            if not re.findall(parten, str(pk)):
+                raise KeyError
             request.data['create_user_id'] = request.user.id
             queryset = OrderModelHouse.objects.all().filter(is_active=1)
             orderModelObject = get_object_or_404(queryset, pk=pk)
             serializer = OrderModelHouseSerializer(orderModelObject, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, OrderModelHouseSerializer(orderModelObject).data, MessageCode.OMH009.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH010.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.OMH010.value, {}), status=status.HTTP_404_NOT_FOUND)
+                return response_200(MessageCode.OMH009.value,{},OrderModelHouseSerializer(orderModelObject).data)
+            return response_405(MessageCode.OMH010.value,serializer.errors,{})
+        except Http404:
+            return response_404(MessageCode.OMH013.value,{},{})
+        except KeyError as e:
+            return response_400(MessageCode.OMH009.value,{},{})
