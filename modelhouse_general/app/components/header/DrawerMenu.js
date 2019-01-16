@@ -13,12 +13,12 @@ class DrawerMenu extends React.Component {
         <ul className="drawer-menu-right">
           <li>
             <Link to="/builder">
-              {I18nUtils.t('find-company-store')}
+              {I18nUtils.t('exhibition')}
             </Link>
           </li>
           <li>
             <Link to="/example">
-              {I18nUtils.t('view-example-house')}
+              {I18nUtils.t('model-house')}
             </Link>
           </li>
           <li>
@@ -43,7 +43,7 @@ class DrawerMenu extends React.Component {
           </li>
           <li>
             <Link to="/form-builder">
-              {I18nUtils.t('company-store')}
+              {I18nUtils.t('form-house-maker')}
             </Link>
           </li>
           <li>

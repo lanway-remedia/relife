@@ -6,7 +6,7 @@
 
   "forgot-text": "メールアドレスを入力して送信ボタンをクリックください。",
 
-  "header-logo-text": "暮らしづくりのコンシェルジュ",
+  "header-logo-text": "住宅展示場・モデルハウス",
   "login": "ログイン",
   "login-title": "一般的なシステムログイン",
   "register": "新規会員登録",
@@ -73,9 +73,10 @@
   "all-place-password": "パスワード",
   "all-place-confirmPassword": "パスワード認証",
 
-  "top-map-title-1" : "建築会社・工務店を",
+  "top-map-title-1" : "モデルハウスを",
   "top-map-title-2" : "地域から探す",
-  "top-map-text" : "全国の建築会社・工務店を6,000件以上掲載しています。",
+  "top-map-text" : "全国のモデルハウスを300件以上掲載しています。",
+  "search-from-map": "地図からを探す",
 
   "btn-change-avatar": "画像変更",
 
@@ -93,6 +94,25 @@
   "search": "検索",
   "search-from-price": "予算から建築実績を探す",
   "search-from-performance": "こだわりから建築実績を探す",
+
+  "about-relife": "Re:Lifeについて",
+  "what-is-relife": "Re:Lifeとは",
+  "company-store": "建築会社・工務店さまへ",
+  "re-style": "Re:Style",
+  "for-order-house": "注文住宅を検討の方へ",
+  "find-company-store": "建築会社・工務店を探す",
+  "view-example-house": "建築実例を見る",
+  "consult-an-order-house": " 注文住宅を相談する",
+  "read-style": "専門家コラムを読む",
+  "operating-company": "運営会社",
+  "copy-right-company": "© 2018 LanWay Inc.",
+
+  "exhibition": "住宅展示場",
+  "model-house": "モデルハウス",
+  "form-house-maker": "ハウスメーカー・工務店さまへ",
+
+  "model-house-intro": "モデルハウス紹介",
+  "model-house-search-text": "こだわり住まいのさまざまな情報を、注文住宅の事例からお探しできます。",
 
   "validate-email": "メールアドレスが正しくありません。",
   "validate-field-0": "フィルドには必ず情報を入力しください。",

@@ -17,7 +17,8 @@ export default () => {
     profile: require('./wrapper/ProfileRedux').reducer,
     locations: require('./wrapper/LocationsRedux').reducer,
     outletStores: require('./wrapper/OutletStoresRedux').reducer,
-    mostSearched: require('./wrapper/MostSearchedRedux').reducer
+    mostSearched: require('./wrapper/MostSearchedRedux').reducer,
+    modelHouses: require('./wrapper/ModelHousesRedux').reducer
   })
 
   return configureStore(rootReducer, rootSaga)

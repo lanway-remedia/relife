@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col } from 'reactstrap'
+import { Container, Row } from 'reactstrap'
 import { withRouter, Link } from 'react-router-dom'
 import I18nUtils from '../../utils/I18nUtils'
 import logo from '../../images/logo.png'

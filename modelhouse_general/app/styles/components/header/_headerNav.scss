@@ -35,17 +35,14 @@
       }
 
       &:first-child {
-        width: 150px;
-        margin: 0 0 0 10%;
+        width: 100px;
+        margin: 0 0 0 50%;
       }
 
-      &:nth-child(2) {
-        width: 93px;
-      }
 
       &:last-child {
-        width: 95px;
-        border-right: none;
+        width: 113px;
+        border-right: 1px solid #dadada;
       }
 
       &:hover {

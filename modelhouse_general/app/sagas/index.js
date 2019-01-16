@@ -13,6 +13,7 @@ import { ProfileTypes } from '../redux/wrapper/ProfileRedux'
 import { LocationTypes } from '../redux/wrapper/LocationsRedux'
 import { OutletStoresTypes } from '../redux/wrapper/OutletStoresRedux'
 import { MostSearchedTypes } from '../redux/wrapper/MostSearchedRedux'
+import { ModelHousesTypes } from '../redux/wrapper/ModelHousesRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
@@ -21,6 +22,7 @@ import ProfileSagas from './wrapper/ProfileSagas'
 import LocationsSagas from './wrapper/LocationsSagas'
 import OutletStoresSagas from './wrapper/OutletStoresSagas'
 import MostSearchedSagas from './wrapper/MostSearchedSagas'
+import ModelHousesSagas from './wrapper/ModelHousesSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -85,6 +87,12 @@ export default function* root() {
     takeLatest(
       MostSearchedTypes.FAILURE,
       ErrorSagas.handleError
+    ),
+
+    // Model houses
+    takeLatest(
+      ModelHousesTypes.MODEL_HOUSES_LIST_REQUEST,
+      ModelHousesSagas.listHouses
     ),
   ]
 }
