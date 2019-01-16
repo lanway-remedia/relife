@@ -62,7 +62,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             parten = "^[0-9]+$"
             if not re.findall(parten, str(pk)):
                 raise KeyError
-            queryset = OutletStore.objects.all().filter(is_active=1).filter(is_active=settings.IS_ACTIVE).order_by("-updated")
+            queryset = OutletStore.objects.all().filter(is_active=settings.IS_ACTIVE).filter(is_active=settings.IS_ACTIVE).order_by("-updated")
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = OutletStoreSerializer(outletstoreObject)
             return response_200(MessageCode.OS001.value,{},serializer.data)
@@ -104,13 +104,13 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             parten = "^[0-9]+$"
             if not re.findall(parten, str(pk)):
                 raise KeyError
-            queryset = OutletStore.objects.filter(is_active=1)
+            queryset = OutletStore.objects.filter(is_active=settings.IS_ACTIVE)
             if(IsStore(request.user)):
                 queryset=None
                 store=request.user.store
                 if store:
                     if store.id==int(pk):
-                        queryset = OutletStore.objects.filter( is_active=1,pk=pk)
+                        queryset = OutletStore.objects.filter( is_active=settings.IS_ACTIVE,pk=pk)
                 if not queryset:
                     exception = CustomException()
                     exception.set_error_code(status.HTTP_401_UNAUTHORIZED, "", "")
@@ -133,9 +133,13 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             parten = "^[0-9]+$"
             if not re.findall(parten, str(pk)):
                 raise KeyError
-            queryset = OutletStore.objects.filter(is_active=1)
+            queryset = OutletStore.objects.filter(is_active=settings.IS_ACTIVE)
             if(IsStore(request.user)):
-                queryset = OutletStore.objects.filter(create_user_id=request.user.id, is_active=1,pk=pk)
+                queryset=None
+                store=request.user.store
+                if store:
+                    if store.id==int(pk):
+                        queryset = OutletStore.objects.filter( is_active=settings.IS_ACTIVE,pk=pk)
                 if not queryset:
                     exception = CustomException()
                     exception.set_error_code(status.HTTP_401_UNAUTHORIZED, "", "")
@@ -145,7 +149,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             serializer = OutletStoreSerializer(outletstoreObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
-                outletContact = OutletStoreContact.objects.filter(is_active=1, outlet_store_id=outletstoreObject.id).update(
+                outletContact = OutletStoreContact.objects.filter(is_active=settings.IS_ACTIVE, outlet_store_id=outletstoreObject.id).update(
                     is_active=settings.IS_INACTIVE, updated=datetime.now())
                 outbusiness=OutletStoreBusiness.objects.filter(outlet_store_id=pk).update(is_active=settings.IS_INACTIVE, updated=datetime.now())
                 return  response_200(MessageCode.OS007.value,{},serializer.data)
