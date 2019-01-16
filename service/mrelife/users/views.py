@@ -68,14 +68,13 @@ class UserVs(ModelViewSet):
         """
         group = request.user.group
         if IsStore(request.user):  # group store admin
-            self.queryset = User.objects.filter(group=group)
+            self.queryset = User.objects.filter(store_id=request.user.store_id)
         name = request.GET.get('name')
         if name is not None:
             self.queryset = self.queryset.filter(Q(username__contains=name) | Q(
                 first_name__contains=name) | Q(last_name__contains=name))
         response = super(UserVs, self).list(request, *args, **kwargs)
         return response_200('US200', '', response.data)
-
     def retrieve(self, request, *args, **kwargs):
         try:
             return super(UserVs, self).retrieve(request, *args, **kwargs)
