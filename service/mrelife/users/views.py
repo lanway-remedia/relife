@@ -59,7 +59,6 @@ class UserVs(ModelViewSet):
     # user
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['group_id', 'username', 'first_name', 'last_name', 'store_id']
-    @method_decorator(name='create', decorator=swagger_auto_schema(request_body=UserRequestSerializer))
     def list(self, request, *args, **kwargs):
         """
             Can filter group_id, username by adding parameter on url

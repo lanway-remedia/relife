@@ -7,6 +7,10 @@ class MessageCode(Enum):
     AU003 = 'AU003'  # Email or password incorrect
     SU001 = 'SU001'  # Success
     FA001 = 'FA001'  # Error
+
+    US111 = 'US111'  # create successfully
+    US222 = 'US222'  # add  new user failly. Invalid Data
+    US333 = 'US333'  # add  new user failly.
     
     DT001 = 'DT001'  # data: invalid input
     DT002 = 'DT002'  # data not found
