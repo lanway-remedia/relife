@@ -109,7 +109,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
                 queryset=None
                 store=request.user.store
                 if store:
-                    if store.id==pk:
+                    if store.id==int(pk):
                         queryset = OutletStore.objects.filter( is_active=1,pk=pk)
                 if not queryset:
                     exception = CustomException()
