@@ -43,14 +43,24 @@ class LoginPage extends React.Component {
               <span className="text-danger">{I18nUtils.t('login-denied')}</span>
             )
           })
-        } else
-          AppUtils.login(
-            this.props.history,
-            data.token,
-            data.user.group,
-            data.user.store.id,
-            '/'
-          )
+        } else {
+          if (data.user.store)
+            AppUtils.login(
+              this.props.history,
+              data.token,
+              data.user.group,
+              data.user.store.id,
+              '/'
+            )
+          else
+            AppUtils.login(
+              this.props.history,
+              data.token,
+              data.user.group,
+              null,
+              '/'
+            )
+        }
       }
     }
   }
