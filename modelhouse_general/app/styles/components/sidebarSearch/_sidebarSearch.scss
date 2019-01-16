@@ -25,7 +25,7 @@
       input {
         &.field {
           width: 100%;
-          background: #f2f3f2;
+          background: $bkg-white-color-1;
           border: none !important;
           font-size: 1.2rem;
           padding: 23px 10px;
@@ -101,7 +101,7 @@
             -webkit-border-radius: 3px;
             -moz-border-radius: 3px;
             border-radius: 3px;
-            background: #f2f3f2;
+            background: $bkg-white-color-1;
           }
         }
       }
@@ -178,8 +178,8 @@
     padding: 4px 0;
     margin: 0 auto 10px auto;
     display: block;
-    background: #f2f3f2;
-    border: 1px solid #f2f3f2;
+    background: $bkg-white-color-1;
+    border: 1px solid $bkg-white-color-1;
     border-radius: 0;
     color: $bkg-text-default-color;
     &:hover {

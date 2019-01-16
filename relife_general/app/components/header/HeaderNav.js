@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import I18nUtils from '../../utils/I18nUtils'
-
 import HeaderSubMenu from './HeaderSubMenu'
 class HeaderNav extends React.Component {
   constructor(props) {

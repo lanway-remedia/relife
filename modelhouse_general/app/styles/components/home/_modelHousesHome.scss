@@ -1,0 +1,143 @@
+.top-result {
+  padding-left: 0px;
+  padding-right: 0px;
+
+  @media screen and (max-width: 767px) {
+    padding: 60px 0 0 0;
+  }
+  /*start .top-result-inner */
+  .top-result-inner {
+    .top-result-title {
+      text-align: center;
+      font-size: 2.8rem;
+
+      @media screen and (max-width: 767px) {
+        font-size: 1.8rem;
+      }
+
+      &::after {
+        display: block;
+        width: 32px;
+        margin: 0 auto;
+        content: url('../images/title-dot.png');
+        transform: scale(0.5);
+        -webkit-transform: scale(0.5);
+        text-align: center;
+      }
+    }
+
+    .top-result-text {
+      text-align: center;
+      font-size: 1.2rem;
+      margin: 0 0 40px 0;
+
+      @media screen and (max-width: 767px) {
+        font-size: 1.0rem;
+        margin: 0 auto 30px auto;
+        width: 90%;
+      }
+    }
+  } /*end .top-result-inner */
+
+  .top-modelhouse {
+    max-width: 1000px;
+    margin: 0 auto 30px auto;
+    padding-left: 0;
+    padding-right: 0;
+    .top-modelhouse-inner {
+      margin: 0 0 60px 0;
+      .top-modelhouse-once {
+        display: block;
+        position: relative;
+        float: left;
+        border-right: solid $bkg-white-color-1 1px;
+        border-bottom: solid $bkg-white-color-1 1px;
+        height: 317px;
+        padding: 0;
+        &:nth-child(4n) {
+          border-right:none;
+        }
+        a {
+          text-decoration: none;
+          &:hover {
+            .top-modelhouse-once-maker-title, 
+            .top-modelhouse-once-title,
+            .top-modelhouse-once-bottom {
+              color: $bkg-green-color;
+              transition-duration: 0.3s;
+            }
+          }
+          .top-modelhouse-once-img {
+            overflow: hidden;
+            img {
+              width: 100%;
+              transition-duration: 0.3s;
+              &:hover {
+                transform: scale(1.1);
+                transition-duration: 0.3s;
+              }
+            }
+          }
+          .top-modelhouse-once-maker-title {
+            display: block;
+            margin: 20px 20px 0 20px;
+            font-size: 1.2rem;
+            color: $text-color;
+          }
+
+          .top-modelhouse-once-title {
+            margin: 5px 20px 0 20px;
+            font-size: 1.4rem;
+            color: $text-color;
+          }
+          .top-modelhouse-once-bottom {
+            display: block;
+            margin: 5px 20px 40px 20px;
+            font-size: 1.2rem;
+            color: $text-color;
+          }
+        }
+
+        a {
+          &.connected-post {
+            position: absolute;
+            font-size: 1.2rem;
+            bottom: 15px;
+            margin: -10px 20px;
+            color: #666;
+            &:hover {
+              color: $bkg-green-color;
+              transition-duration: 0.3s;
+            }
+          }
+        }
+      }
+    }
+
+    .detail-btn-wrap {
+      width: 100%;
+      text-align: center;
+      margin: 0 0 80px 0;
+      .detail-btn {
+        display: inline-block;
+        text-align: center;
+        margin: 0 5px;
+        a {
+          color: #fff;
+          font-size: 1.4rem;
+          padding: 15px 150px;
+          background: #057235;
+          text-decoration: none;
+          transition-duration: 0.3s;
+          @media screen and (max-width:767px){
+            padding: 15px 100px;
+          }
+          &:hover {
+            background: $bkg-green-color-hover;
+            transition-duration: 0.3s;
+          }
+        }
+      }
+    }
+  } /* end .top-modelhouse */
+}
