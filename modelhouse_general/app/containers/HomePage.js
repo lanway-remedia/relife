@@ -10,6 +10,8 @@ import {withRouter} from 'react-router-dom'
 import BackGround from '../components/home/BackGround'
 import TopMap from '../components/home/TopMap'
 import ModelHousesHome from '../components/home/ModelHousesHome'
+import ExhibitionsHome from '../components/home/ExhibitionsHome'
+import ExhibitionsTabs from '../components/home/ExhibitionsTabs'
 import 'font-awesome/css/font-awesome.css'
 class HomePage extends React.Component {
     constructor(props) {
@@ -21,7 +23,9 @@ class HomePage extends React.Component {
         return [
             <BackGround key="1" />,
             <TopMap key="2" />,
-            <ModelHousesHome key="3" />
+            <ModelHousesHome key="3" />,
+            <ExhibitionsHome key="4" />,
+            <ExhibitionsTabs key="5" />
         ]
     }
 }

@@ -151,7 +151,6 @@ ModelHousesHome.propTypes = {
   location: PropTypes.object,
   data: PropTypes.object,
   modelHousesListRequest: PropTypes.func,
-  locationListRequest : PropTypes.func,
 }
 
 const mapStateToProps = state => {

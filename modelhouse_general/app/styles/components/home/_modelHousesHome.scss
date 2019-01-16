@@ -41,15 +41,17 @@
 
   .top-modelhouse {
     max-width: 1000px;
-    margin: 0 auto 100px auto;
+    margin: 0 auto 30px auto;
+    padding-left: 0;
+    padding-right: 0;
     .top-modelhouse-inner {
       margin: 0 0 60px 0;
       .top-modelhouse-once {
         display: block;
         position: relative;
         float: left;
-        border-right: solid #f2f3f2 1px;
-        border-bottom: solid #f2f3f2 1px;
+        border-right: solid $bkg-white-color-1 1px;
+        border-bottom: solid $bkg-white-color-1 1px;
         height: 317px;
         padding: 0;
         &:nth-child(4n) {
@@ -80,19 +82,19 @@
             display: block;
             margin: 20px 20px 0 20px;
             font-size: 1.2rem;
-            color: #222;
+            color: $text-color;
           }
 
           .top-modelhouse-once-title {
             margin: 5px 20px 0 20px;
             font-size: 1.4rem;
-            color: #222;
+            color: $text-color;
           }
           .top-modelhouse-once-bottom {
             display: block;
             margin: 5px 20px 40px 20px;
             font-size: 1.2rem;
-            color: #222;
+            color: $text-color;
           }
         }
 

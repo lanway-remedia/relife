@@ -110,10 +110,16 @@
   "exhibition": "住宅展示場",
   "model-house": "モデルハウス",
   "form-house-maker": "ハウスメーカー・工務店さまへ",
+  "nation-wide": "全国",
 
   "model-house-intro": "モデルハウス紹介",
   "model-house-search-text": "こだわり住まいのさまざまな情報を、注文住宅の事例からお探しできます。",
 
+  "exhibitions-intro": "住宅展示場紹介",
+  "exhibitions-intro-text": "こだわり住まいのさまざまな情報を、注文住宅の事例からお探しできます。",
+
+  "event-info" : "イベント情報",
+  "event-info-text": "全国の住宅展示場で催している家族で楽しめるイベントをまとめてご紹介。",
   "validate-email": "メールアドレスが正しくありません。",
   "validate-field-0": "フィルドには必ず情報を入力しください。",
   "validate-field-3": "ユーザーネームは３字以外でなければなりません。",

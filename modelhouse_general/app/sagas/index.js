@@ -14,6 +14,7 @@ import { LocationTypes } from '../redux/wrapper/LocationsRedux'
 import { OutletStoresTypes } from '../redux/wrapper/OutletStoresRedux'
 import { MostSearchedTypes } from '../redux/wrapper/MostSearchedRedux'
 import { ModelHousesTypes } from '../redux/wrapper/ModelHousesRedux'
+import { ExhibitionsTypes } from '../redux/wrapper/ExhibitionsRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
@@ -23,6 +24,7 @@ import LocationsSagas from './wrapper/LocationsSagas'
 import OutletStoresSagas from './wrapper/OutletStoresSagas'
 import MostSearchedSagas from './wrapper/MostSearchedSagas'
 import ModelHousesSagas from './wrapper/ModelHousesSagas'
+import ExhibitionsSagas from './wrapper/ExhibitionsSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -94,5 +96,15 @@ export default function* root() {
       ModelHousesTypes.MODEL_HOUSES_LIST_REQUEST,
       ModelHousesSagas.listHouses
     ),
+
+    //Exhibitions
+    takeLatest(
+      ExhibitionsTypes.EXHIBITIONS_LIST_REQUEST,
+      ExhibitionsSagas.listExhibitions
+    ),
+    takeLatest(
+      ExhibitionsTypes.EXHIBITIONS_LIST_BY_REGION_REQUEST,
+      ExhibitionsSagas.listExhibitionsByRegion
+    )
   ]
 }

@@ -12,7 +12,7 @@ var express  = require('express');
 var compression = require('compression');
 var app = express();
 
-var SERVER_PORT = 3030;
+var SERVER_PORT = 3000;
 
 if (isDev) {
   new WebpackDevServer(webpack(config), {
