@@ -127,6 +127,7 @@ class OutletStoreViewSet(viewsets.ModelViewSet):
             return  response_405(MessageCode.OS011.value,serializer.errors,{}) 
         except KeyError:
             return   response_400(MessageCode.OS009.value,{},{}) 
+        except Http404:
             return   response_404(MessageCode.OS012.value,{},{})
     def destroy(self, request, pk=None):
         try:
