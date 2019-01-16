@@ -7,12 +7,16 @@ class MessageCode(Enum):
     AU003 = 'AU003'  # Email or password incorrect
     SU001 = 'SU001'  # Success
     FA001 = 'FA001'  # Error
+    
     DT001 = 'DT001'  # data: invalid input
     DT002 = 'DT002'  # data not found
+    DT003 ='DT003'  # data: get list successfully
+
 
     US001 = 'US001'  # create successfully
     US002 = 'US002'  # add  new user failly. Invalid Data
     US003 = 'US003'  # add  new user failly.
+
 
     OS001 = 'OS001'  # get outletstore's information detail successfully
     OS002 = 'OS002'  # get outletstore's information detail failly
@@ -30,6 +34,7 @@ class MessageCode(Enum):
     BSO003 = 'BSO003'  # register become store owner successfully
     BSO004 = 'BSO004'  # register become store owner failly
     BSO010 = 'BSO010'  # Not register become store: Invalid Data
+    
 
     CM001 = 'CM001'  # get Commitment's information detail successfully
     CM002 = 'CM002'  # get Commitment's information detail failly
