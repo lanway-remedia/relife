@@ -22,5 +22,12 @@ def custom_exception_handler(exc, context):
             'messageParams': data,
             'data': None
         }
+    if (response.status_code == 404):
+        response.data = {
+            'status': False,
+            'messageCode': MessageCode.DT002.value,
+            'messageParams': {},
+            'data': None
+        }
 
     return response
