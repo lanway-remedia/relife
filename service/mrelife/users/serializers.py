@@ -105,7 +105,6 @@ class UserRequestSerializer(ModelSerializer):
 
     def validate(self, data):
         try:
-            # raise ValidationError({"store": ['store not None']})
             user_create=self.context.get('user')
             data['store']=None
             group=data['group']
