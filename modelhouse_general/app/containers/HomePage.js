@@ -25,7 +25,7 @@ class HomePage extends React.Component {
             <TopMap key="2" />,
             <ModelHousesHome key="3" />,
             <ExhibitionsHome key="4" />,
-            <ExhibitionsTabs key="5" />
+            <ExhibitionsTabs key="5" />,
         ]
     }
 }
