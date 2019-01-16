@@ -107,20 +107,19 @@ class UserRequestSerializer(ModelSerializer):
         try:
             # raise ValidationError({"store": ['store not None']})
             user_create=self.context.get('user')
+            data['store']=None
+            group=data['group']
             if(IsAdmin(user_create)):
-                
-                if  data['group'] == GroupUser() or data['group'] == GroupAdmin :
-                    raise serializers.ValidationError({"store": ['store not None2']})
-                    # data['store'] = None
+                if group == GroupAdmin() or group==GroupUser():
+                    data['store']=None
                 else:
                     store=None
                     try:
                         store=data['store']
                     except Exception as e:
                         pass
-                    if True:
-                        if not store:
-                            raise serializers.ValidationError({"store": ['store not None222']})
+                    if not store:
+                        raise serializers.ValidationError({"store": ['store not None']})
             if(IsStore(user_create)):
                 data['group']=GroupSub()
                 data['store']=user_create.store

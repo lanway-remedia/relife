@@ -83,7 +83,6 @@ class UserVs(ModelViewSet):
     def create(self, request, *args, **kwargs):
         try:
             data=request.data
-            print(data)
             serializer = UserRequestSerializer(data=data, context={'user': request.user})
             if serializer.is_valid():
                 serializer.save()
