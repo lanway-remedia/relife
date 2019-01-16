@@ -734,7 +734,23 @@ class SearchHistoryViewSet(viewsets.ModelViewSet):
             return response_405(MessageCode.CM010.value, serializer.errors, {})
         except Exception as e:
             return response_400(MessageCode.CM004.value, {}, {})
-
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        """
+        Get detail Search history
+        """
+        try:
+            parten = "^[0-9]+$"
+            if not re.findall(parten, str(pk)):
+                raise KeyError
+            partial = kwargs.pop('partial', False)
+            queryset = SearchHistory.objects.all().filter(is_active=settings.IS_ACTIVE)
+            instance = get_object_or_404(queryset, pk=pk)
+            serializer = self.get_serializer(instance)
+            return response_200(MessageCode.CM001.value, {}, serializer.data)
+        except KeyError:
+            return response_400(MessageCode.CM009.value, {}, {})
+        except Http404:
+            return response_404(MessageCode.CM012.value, {}, {})
     def update(self, request, pk=None, *args, **kwargs):
         """
         Update a Search history attribute.
@@ -786,23 +802,6 @@ class SearchHistoryViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return response_200(MessageCode.CM008.value, {}, serializer.data)
 
-    def retrieve(self, request, pk=None, *args, **kwargs):
-        """
-        Get detail Search history
-        """
-        try:
-            parten = "^[0-9]+$"
-            if not re.findall(parten, str(pk)):
-                raise KeyError
-            partial = kwargs.pop('partial', False)
-            queryset = SearchHistory.objects.all().filter(is_active=settings.IS_ACTIVE)
-            instance = get_object_or_404(queryset, pk=pk)
-            serializer = self.get_serializer(instance)
-            return response_200(MessageCode.CM001.value, {}, serializer.data)
-        except KeyError:
-            return response_400(MessageCode.CM009.value, {}, {})
-        except Http404:
-            return response_404(MessageCode.CM012.value, {}, {})
     @list_route(methods=['GET'], pagination_class=LimitOffsetPagination, url_path="get_most_keyword/(?P<number_keyword>[^/]+)")
     def get_most_keyword(self, request,number_keyword=None):
         """
