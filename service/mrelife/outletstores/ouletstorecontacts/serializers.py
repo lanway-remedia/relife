@@ -11,7 +11,7 @@ from mrelife.users.serializers import UserSerializer
 
 
 class OutletStoreContactSerializer(serializers.ModelSerializer):
-    outlet_store_id = serializers.IntegerField(write_only=True, required=False, allow_null=False)
+    outlet_store_id = serializers.IntegerField(write_only=True, required=True, allow_null=False)
     outlet_store = OutletStoreSerializer(read_only=True)
     name = serializers.CharField(max_length=255)
     name_kana=serializers.CharField(max_length=255)
@@ -20,7 +20,7 @@ class OutletStoreContactSerializer(serializers.ModelSerializer):
     email=serializers.EmailField()
     tel=serializers.CharField(max_length=255)
     age=serializers.IntegerField()
-    household_size=serializers.ChoiceField(choices=settings.HOUSEHOLDSIZE,default='現住所と同じ' )
+    # household_size=serializers.ChoiceField(choices=settings.HOUSEHOLDSIZE,default='現住所と同じ' )
     acreage = serializers.ChoiceField(choices=settings.ACREAGE,default='20坪以下')
     construction_position_type = serializers.ChoiceField(choices=settings.CONSTRUCTIONPOSITIONTYPE,default='現住所と同じ' )
     construction_position = serializers.CharField(max_length=255)
