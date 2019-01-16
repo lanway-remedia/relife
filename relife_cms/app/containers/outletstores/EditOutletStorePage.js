@@ -18,6 +18,15 @@ import { show, hide } from 'redux-modal'
 import { ModalName } from '../../constants'
 import { bindActionCreators } from 'redux'
 
+// Require Editor JS files.
+import 'froala-editor/js/froala_editor.pkgd.min.js'
+
+// Require Editor CSS files.
+import 'froala-editor/css/froala_style.min.css'
+import 'froala-editor/css/froala_editor.pkgd.min.css'
+import FroalaEditor from 'react-froala-wysiwyg'
+import { StorageKeyConstants } from '../../constants'
+
 class EditOutletStorePage extends React.Component {
   constructor(props) {
     super(props)
@@ -40,6 +49,7 @@ class EditOutletStorePage extends React.Component {
     }
     this.redirectToListPage = this.redirectToListPage.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleModelChange = this.handleModelChange.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -68,8 +78,8 @@ class EditOutletStorePage extends React.Component {
           email: response.data.email,
           phone: response.data.tel,
           address: response.data.address,
-          city: response.data.district.city.id,
-          district: response.data.district.id,
+          city: response.data.city.region.id,
+          district: response.data.city.id,
           zipcode: response.data.zipcode,
           traffic: response.data.traffic,
           website: response.data.home_page,
@@ -95,6 +105,12 @@ class EditOutletStorePage extends React.Component {
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
+    })
+  }
+
+  handleModelChange = content => {
+    this.setState({
+      content: content
     })
   }
 
@@ -158,29 +174,37 @@ class EditOutletStorePage extends React.Component {
       data.append('img_large', this.state.thumbnailImage)
     }
 
-    // let data = {
-    //   id: this.state.id,
-    //   latitude: 111111,
-    //   longitude: 111111,
-    //   title: this.state.title,
-    //   email: this.state.email,
-    //   tel: this.state.phone,
-    //   address: this.state.address,
-    //   zipcode: this.state.zipcode,
-    //   traffic: this.state.traffic,
-    //   home_page: this.state.website,
-    //   regular_holiday: this.state.regularHoliday,
-    //   time_serving: this.state.timeServing,
-    //   content: this.state.content,
-    //   district_id: this.state.district,
-    //   city: this.state.city
-    // }
-
     this.props.outletStoreEditRequest(data)
   }
 
   render() {
     let { thumbnailImage, data } = this.state
+
+    let groupId = localStorage.getItem(StorageKeyConstants.GROUP)
+    let isStore = false
+    if (groupId !== '2') {
+      isStore = true
+    }
+
+    const config = {
+      imageUploadURL:
+        'https://d2t3gximuwdg8x.cloudfront.net/api/file-managements/v1/upload/',
+      imageUploadMethod: 'POST',
+      events: {
+        'froalaEditor.image.uploaded': (e, editor, response) => {
+          response = JSON.parse(response)
+          editor.image.insert(
+            response.data.url,
+            true,
+            null,
+            editor.image.get(),
+            null
+          )
+          return false
+        }
+      }
+    }
+
     return (
       <Container fluid className="edit-outletstore">
         <Helmet>
@@ -209,20 +233,25 @@ class EditOutletStorePage extends React.Component {
               <Row>
                 <Col xs="12" md="12">
                   <div className="btns-group text-center mb-4">
-                    <Button
-                      onClick={() => this.handleDelete(this.state.id)}
-                      color="secondary"
-                    >
-                      {I18nUtils.t('delete')}
-                    </Button>
+                    {isStore && (
+                      <Button
+                        onClick={() => this.handleDelete(this.state.id)}
+                        color="secondary"
+                      >
+                        {I18nUtils.t('delete')}
+                      </Button>
+                    )}
+
                     <Button color="success">{I18nUtils.t('btn-save')}</Button>
-                    <Button
-                      title={I18nUtils.t('ots-title-back-list')}
-                      onClick={this.redirectToListPage}
-                      color="danger"
-                    >
-                      {I18nUtils.t('btn-back')}
-                    </Button>
+                    {isStore && (
+                      <Button
+                        title={I18nUtils.t('ots-title-back-list')}
+                        onClick={this.redirectToListPage}
+                        color="danger"
+                      >
+                        {I18nUtils.t('btn-back')}
+                      </Button>
+                    )}
                   </div>
                 </Col>
                 <Col xs="12" md="12">
@@ -377,34 +406,36 @@ class EditOutletStorePage extends React.Component {
                 <Col xs="12" md="12">
                   <FormGroup>
                     <Label htmlFor="content">{I18nUtils.t('content')}</Label>
-                    <TextInput
-                      name="content"
+                    <FroalaEditor
                       id="content"
-                      multiline
-                      required
-                      value={this.state.content}
-                      onChange={this.handleChange}
-                      rows="5"
-                      placeholder={I18nUtils.t('all-place-input')}
+                      tag="textarea"
+                      config={config}
+                      model={this.state.content}
+                      onModelChange={this.handleModelChange}
                     />
                   </FormGroup>
                 </Col>
                 <Col xs="12" md="12" className="mt-3">
                   <div className="btns-group text-center">
-                    <Button
-                      onClick={() => this.handleDelete(this.state.id)}
-                      color="secondary"
-                    >
-                      {I18nUtils.t('delete')}
-                    </Button>
+                    {isStore && (
+                      <Button
+                        onClick={() => this.handleDelete(this.state.id)}
+                        color="secondary"
+                      >
+                        {I18nUtils.t('delete')}
+                      </Button>
+                    )}
+
                     <Button color="success">{I18nUtils.t('btn-save')}</Button>
-                    <Button
-                      title={I18nUtils.t('ots-title-back-list')}
-                      onClick={this.redirectToListPage}
-                      color="danger"
-                    >
-                      {I18nUtils.t('btn-back')}
-                    </Button>
+                    {isStore && (
+                      <Button
+                        title={I18nUtils.t('ots-title-back-list')}
+                        onClick={this.redirectToListPage}
+                        color="danger"
+                      >
+                        {I18nUtils.t('btn-back')}
+                      </Button>
+                    )}
                   </div>
                 </Col>
               </Row>

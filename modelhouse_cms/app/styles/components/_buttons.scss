@@ -1,0 +1,18 @@
+.btn {
+  &.btn-success {
+    &:hover,
+    &:focus,
+    &:not(:disabled):not(.disabled):active {
+      background: $bkg-secondary-color;
+      border-color: transparent;
+    }
+  }
+  &.btn-secondary {
+    &:hover,
+    &:focus,
+    &:not(:disabled):not(.disabled):active {
+      background: #888;
+      border-color: transparent;
+    }
+  }
+}

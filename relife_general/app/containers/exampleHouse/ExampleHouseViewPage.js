@@ -1,118 +1,165 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import exh01 from '../../images/exh-01.jpg'
-import exhItem01 from '../../images/exh-item-01.jpg'
-import fbShare from '../../images/fb-share.png'
-import twShare from '../../images/tw-share.png'
-import ggShare from '../../images/gg-share.png'
-import hatebuShare from '../../images/hatebu-share.png'
-import rssShare from '../../images/rss-share.png'
-import amebloShare from '../../images/ameblo-share.png'
-import lineShare from '../../images/line-share.png'
+import { Container, Row, Col } from 'reactstrap'
+
+import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
+import I18nUtils from '../../utils/I18nUtils'
+import ShareHouse from '../../components/exampleHouse/ShareHouse'
+
 class ExampleHouseViewPage extends React.Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props)
+    this.state = {
+      exampleHouse: [],
+      outletStore: [],
+      listExampleHouseByStore: []
+    }
+  }
+
+  getExampleHouse = () => {
+    const id = this.props.match.params.id
+    this.props.exampleHousesGetRequest(id)
+  }
+  componentWillMount() {
     document.body.classList.add('example-house-view')
+    this.getExampleHouse()
   }
 
   componentWillUnmount() {
     document.body.classList.remove('example-house-view')
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data != nextProps.data) {
+      let response = nextProps.data
+      if (response.data === undefined || response.data.length == 0) {
+        this.props.history('/example')
+      } else if (response.isGetHouse) {
+        this.setState({
+          exampleHouse: response.data
+        })
+        let storeId = response.data.store.id
+        let dataHouseByStoreId = {
+          limit: '',
+          store_id :storeId,
+          offset: ''
+        }
+        this.props.exampleHousesListByStoreRequest(dataHouseByStoreId)
+      }
+      if(response.isListHouseByStore){
+        this.setState({
+          listExampleHouseByStore: response.data
+        })
+      }
+    }
+  }
+
   render() {
+    let {exampleHouse, listExampleHouseByStore } = this.state
+    let isTags
+    let ex_tags = exampleHouse.ex_tags
+    if (!ex_tags || ex_tags === undefined) isTags = false
+
+    let company_id
+    if (exampleHouse.store) {
+      company_id = exampleHouse.store.id
+    }
     return (
-      <div className="lower-contents">
-        <div className="lower-contents-inner clearfix">
-          <section className="main">
-            <h1 className="page-title detail-title"> 
-              ゆっくりとした時間が流れる家
-            </h1>
+      <Container fluid className="lower-contents one-column">
+        <Row className="lower-contents-inner clearfix">
+          <Col md="12" xs="12" style={{padding:`0`}}>
+            <section className="main">
+              <h1 className="page-title detail-title"> 
+                {exampleHouse.title}
+              </h1>
 
-            <div className="example-detail-company-name">
-              株式会社クレアホーム
-            </div>
-
-            <div className="detail-img">
-              <img src={exh01} />
-            </div>
-
-            <ul className="detail-keywords-link">
-              <li><Link to="">かわいい</Link></li>
-              <li><Link to="">アフターフォロー</Link></li>
-              <li><Link to="">アフターメンテナンス</Link></li>
-              <li><Link to="">二階建て</Link></li>
-            </ul>
-
-            <div className="example-detail">
-            </div>
-
-            <div className="detail-btn-wrap clearfix">
-              <div className="detail-btn">
-                <Link to="">この建築実例の会社案内</Link>
+              <div className="example-detail-company-name">
+                {exampleHouse.store ? exampleHouse.store.title : ''}
               </div>
-            </div>
 
-            <h2 className="detail-subtitle">この工務店の建築実例</h2>
+              <div className="detail-img">
+                <img src={exampleHouse.img_large} />
+              </div>
+              {isTags && (
+                <ul className="detail-keywords-link">
+                    {ex_tags.map((val, key) => (
+                      <li key={key}>
+                        <Link to="">{val}</Link>
+                      </li>
+                    ))}
+                </ul>
+              )}
+              <div className="example-detail" dangerouslySetInnerHTML={{ __html: exampleHouse.content}} />
 
-            <div className="detail-list clearfix">
-              <Link to="" className="detail-list-once">
-                <div className="detail-list-once-img">
-                  <img src={exhItem01} alt="exh-item" />
+              <div className="detail-btn-wrap clearfix">
+                <div className="detail-btn">
+                  <Link to={'/builder/'+company_id}>{I18nUtils.t('go-to-store')}</Link>
                 </div>
+              </div>
 
-                <h3 className="detail-list-once-title">
-                  室内を見渡すのが楽しくなる、開放的な住まい
-                </h3>
+              <h2 className="detail-subtitle">{I18nUtils.t('house-related')}</h2>
 
-                <div className="detail-list-once-company-area">東京都西東京市</div>
-
-                <div className="detail-list-once-company">株式会社クレアホームの施工事例</div>
-              </Link>
-            </div>
-
-            <div className="share-body cf">
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={fbShare} />
-                </Link>
-              </div>
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={twShare} />
-                </Link>
-              </div>
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={ggShare} />
-                </Link>
-              </div>
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={hatebuShare} />
-                </Link>
-              </div>
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={amebloShare} />
-                </Link>
-              </div>
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={rssShare} />
-                </Link>
-              </div>
-              <div className="share-body-block">
-                <Link to="/">
-                  <img src={lineShare} />
-                </Link>
-              </div>
-            </div>
-          </section>
-        </div>
-      </div>
+              <Row className="detail-list clearfix">
+                {listExampleHouseByStore.map((val, key) => {
+                  if (val.id != exampleHouse.id) {
+                    return (
+                      <Col xs="6" md="3" key={key} style={{padding:`0`}}>
+                        <Link to={'/example/' +val.id} className="detail-list-once">
+                          <div className="detail-list-once-img">
+                            <img src={val.img_large} alt="exh-item" />
+                          </div>
+                          <h3 className="detail-list-once-title">
+                            {val.title}
+                          </h3>
+                          <div className="detail-list-once-company-area">
+                            {val.store ? (val.store.address ? val.store.address : '') : ''}
+                          </div>
+                          <div className="detail-list-once-company">
+                            {val.store ? val.store.title : ''}
+                          </div>
+                        </Link>
+                      </Col>
+                    )
+                  }
+                })}
+              </Row>
+              <ShareHouse />
+            </section>
+          </Col>
+        </Row>
+      </Container>
     )
   }
 }
 
-export default connect()(withRouter(ExampleHouseViewPage))
+ExampleHouseViewPage.propTypes = {
+  exampleHousesGetRequest: PropTypes.func,
+  exampleHousesListByStoreRequest: PropTypes.func,
+  history: PropTypes.object,
+  match: PropTypes.object,
+  processing: PropTypes.bool,
+  data: PropTypes.object,
+  dataHouseByStore: PropTypes.object,
+  dataStore: PropTypes.object,
+  response: PropTypes.object
+}
+
+const mapStateToProps = state => {
+  return {
+    processing : state.exampleHouses.processing,
+    data : state.exampleHouses.data,
+    dataHouseByStore: state.exampleHouses.data
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  exampleHousesGetRequest : data => dispatch(ExampleHousesActions.exampleHousesGetRequest(data)),
+  exampleHousesListByStoreRequest : dataHouseByStore => dispatch(ExampleHousesActions.exampleHousesListByStoreRequest(dataHouseByStore)),
+}) 
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ExampleHouseViewPage))

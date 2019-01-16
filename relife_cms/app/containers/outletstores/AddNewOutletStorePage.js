@@ -20,6 +20,14 @@ import { ModalName } from '../../constants'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
 
+// Require Editor JS files.
+import 'froala-editor/js/froala_editor.pkgd.min.js'
+
+// Require Editor CSS files.
+import 'froala-editor/css/froala_style.min.css'
+import 'froala-editor/css/froala_editor.pkgd.min.css'
+import FroalaEditor from 'react-froala-wysiwyg'
+
 class AddNewOutletStorePage extends React.Component {
   constructor(props) {
     super(props)
@@ -40,6 +48,7 @@ class AddNewOutletStorePage extends React.Component {
       district: ''
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleModelChange = this.handleModelChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.redirectToListPage = this.redirectToListPage.bind(this)
@@ -50,6 +59,12 @@ class AddNewOutletStorePage extends React.Component {
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
+    })
+  }
+
+  handleModelChange = content => {
+    this.setState({
+      content: content
     })
   }
 
@@ -78,7 +93,7 @@ class AddNewOutletStorePage extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.data !== nextProps.data) {
       let data = nextProps.data
-      if (data.isAddStore && data.messageCode === 'OS002') {
+      if (data.isAddStore && data.messageCode === 'OS003') {
         this.props.show(ModalName.COMMON, {
           message: (
             <span className="text-success">
@@ -86,6 +101,7 @@ class AddNewOutletStorePage extends React.Component {
             </span>
           )
         })
+        this.props.history.push('/manage-outlet-store-list')
       }
     }
   }
@@ -113,6 +129,25 @@ class AddNewOutletStorePage extends React.Component {
 
   render() {
     let { thumbnailImage } = this.state
+
+    const config = {
+      imageUploadURL:
+        'https://d2t3gximuwdg8x.cloudfront.net/api/file-managements/v1/upload/',
+      imageUploadMethod: 'POST',
+      events: {
+        'froalaEditor.image.uploaded': (e, editor, response) => {
+          response = JSON.parse(response)
+          editor.image.insert(
+            response.data.url,
+            true,
+            null,
+            editor.image.get(),
+            null
+          )
+          return false
+        }
+      }
+    }
     return (
       <Container fluid className="add-new-outletstore">
         <Helmet>
@@ -277,15 +312,12 @@ class AddNewOutletStorePage extends React.Component {
                 <Col xs="12" md="12">
                   <FormGroup>
                     <Label htmlFor="content">{I18nUtils.t('content')}</Label>
-                    <TextInput
-                      name="content"
+                    <FroalaEditor
                       id="content"
-                      multiline
-                      required
-                      value={this.state.content}
-                      onChange={this.handleChange}
-                      rows="5"
-                      placeholder={I18nUtils.t('all-place-input')}
+                      tag="textarea"
+                      config={config}
+                      model={this.state.content}
+                      onModelChange={this.handleModelChange}
                     />
                   </FormGroup>
                 </Col>

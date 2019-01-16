@@ -71,6 +71,8 @@ class ListAccountsPage extends React.Component {
         this.forceUpdate(this.getUserList())
       }
     }
+
+    return null
   }
 
   addUser = () => {

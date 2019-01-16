@@ -40,19 +40,19 @@ class ManageLocationListPage extends React.Component {
       count: 0,
       page: 0,
       limit: 0,
-      type: 1, //Type locations (1: City, 2: District)
+      type: 1, //Type locations (1: Region, 2: City)
       locationList: [],
       collapse: false,
       id: '',
       name: '',
       order: '',
-      city: ''
+      region: ''
     }
     this.toggle = this.toggle.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.redirectToAddNew = this.redirectToAddNew.bind(this)
-    this.addNewDistrictDialog = this.addNewDistrictDialog.bind(this)
-    this.handleAddDistrict = this.handleAddDistrict.bind(this)
+    this.addNewCityDialog = this.addNewCityDialog.bind(this)
+    this.handleAddCity = this.handleAddCity.bind(this)
     this.handleDialogEdit = this.handleDialogEdit.bind(this)
     this.handleEditSubmit = this.handleEditSubmit.bind(this)
     this.okDeleteFunction = this.okDeleteFunction.bind(this)
@@ -116,7 +116,7 @@ class ManageLocationListPage extends React.Component {
             )
           )
         }
-        if (this.state.city) {
+        if (this.state.region) {
           this.setState({
             type: 1
           })
@@ -146,11 +146,11 @@ class ManageLocationListPage extends React.Component {
     this.setState({ collapse: !this.state.collapse })
   }
 
-  addNewDistrictDialog = city => {
+  addNewCityDialog = region => {
     const formAdd = (
       <ValidationForm
         className="popup-location col-no-mg"
-        onSubmit={this.handleAddDistrict}
+        onSubmit={this.handleAddCity}
       >
         <Row>
           <Col xs="12" md="12">
@@ -200,30 +200,30 @@ class ManageLocationListPage extends React.Component {
       modalClass: 'center-modal hide-footer',
       title: I18nUtils.formatMessage(
         { id: 'modal-loc-add-header' },
-        { name: city.name }
+        { name: region.name }
       ),
       message: formAdd,
       hideCloseButton: true
     })
 
     this.setState({
-      city: city.id
+      region: region.id
     })
   }
 
-  handleAddDistrict = e => {
+  handleAddCity = e => {
     e.preventDefault()
     let data = new FormData()
-    data.append('type', '2') // Type District
+    data.append('type', '2') // Type City
     data.append('name', this.state.name)
     data.append('name_en', this.state.name)
     data.append('order', this.state.order)
-    data.append('city', this.state.city)
+    data.append('region', this.state.region)
     this.props.locationAddRequest(data)
     this.props.hide(ModalName.COMMON)
   }
 
-  handleDialogEdit = city => {
+  handleDialogEdit = region => {
     const formAdd = (
       <ValidationForm
         className="popup-location col-no-mg"
@@ -237,7 +237,7 @@ class ManageLocationListPage extends React.Component {
                 type="text"
                 name="name"
                 id="name"
-                defaultValue={city.name}
+                defaultValue={region.name}
                 placeholder={I18nUtils.t('all-place-input')}
                 onChange={this.handleChange}
                 required
@@ -251,7 +251,7 @@ class ManageLocationListPage extends React.Component {
                 type="text"
                 name="order"
                 id="order"
-                defaultValue={city.order}
+                defaultValue={region.order}
                 placeholder={I18nUtils.t('all-place-input')}
                 onChange={this.handleChange}
                 required
@@ -279,21 +279,21 @@ class ManageLocationListPage extends React.Component {
       modalClass: 'center-modal hide-footer',
       title: I18nUtils.formatMessage(
         { id: 'modal-loc-edit-header' },
-        { name: city.name }
+        { name: region.name }
       ),
       message: formAdd,
       hideCloseButton: true
     })
 
-    if (city.city)
+    if (region.region)
       this.setState({
-        id: city.id,
+        id: region.id,
         type: 2,
-        city: city.city
+        region: region.region
       })
     else
       this.setState({
-        id: city.id
+        id: region.id
       })
   }
 
@@ -301,51 +301,51 @@ class ManageLocationListPage extends React.Component {
     e.preventDefault()
     let data = new FormData()
 
-    data.append('type', this.state.type) // Type Location // 1: City, 2 : District
+    data.append('type', this.state.type) // Type Location // 1: Region, 2 : City
     data.append('id', this.state.id)
     data.append('name', e.target.name.value)
     data.append('name_en', e.target.name.value)
     data.append('order', e.target.order.value)
-    if (this.state.type === 2) data.append('city', this.state.city)
+    if (this.state.type === 2) data.append('region', this.state.region)
 
     this.props.locationEditRequest(data)
     this.props.hide(ModalName.COMMON)
   }
 
-  handleDelete = city => {
+  handleDelete = region => {
     this.props.show(ModalName.COMMON, {
       bodyClass: 'text-center',
       title: I18nUtils.formatMessage(
         { id: 'modal-del-header' },
-        { name: city.name }
+        { name: region.name }
       ),
       message: I18nUtils.t('modal-del-body'),
-      okFunction: () => this.okDeleteFunction(city)
+      okFunction: () => this.okDeleteFunction(region)
     })
   }
 
-  okDeleteFunction = city => {
-    let type = 1 // Type 1: City
-    if (city.city) {
+  okDeleteFunction = region => {
+    let type = 1 // Type 1: Region
+    if (region.region) {
       const originLocationList = this.state.locationList
       for (let i = 0; i < originLocationList.length; i++) {
-        if (originLocationList[i].id === city.city) {
-          originLocationList[i].districts = originLocationList[
+        if (originLocationList[i].id === region.region) {
+          originLocationList[i].cities = originLocationList[
             i
-          ].districts.filter(c => c.id !== city.id)
+          ].cities.filter(c => c.id !== region.id)
           this.setState({ locationList: originLocationList })
         }
       }
-      type = 2 // Type 2: District
+      type = 2 // Type 2: City
     } else {
       const originLocationList = this.state.locationList
-      const locationList = originLocationList.filter(c => c.id !== city.id)
-      this.setState({ locationList, name: city.name })
+      const locationList = originLocationList.filter(c => c.id !== region.id)
+      this.setState({ locationList, name: region.name })
     }
 
     let data = {
-      id: city.id,
-      type: type //Type Location (1: City, 2: District)
+      id: region.id,
+      type: type //Type Location (1: Region, 2: City)
     }
 
     this.props.locationDeleteRequest(data)
@@ -398,33 +398,33 @@ class ManageLocationListPage extends React.Component {
                   </td>
                 </tr>
               )}
-              {locationList.map((city, key) => {
+              {locationList.map((region, key) => {
                 return (
                   <tr key={key}>
                     <td>{(page - 1) * limit + key + 1}</td>
                     <td className="name-style">
                       <div className="clearfix">
-                        {city.name}
-                        {city.districts.length !== 0 && (
+                        {region.name}
+                        {region.cities.length !== 0 && (
                           <Button
                             color="primary"
                             onClick={this.toggle}
                             size="sm"
                             className="float-right"
-                            id={'loc-' + city.id}
+                            id={'loc-' + region.id}
                           >
                             {I18nUtils.t('loc-dis-showhide')}
                           </Button>
                         )}
                       </div>
 
-                      {city.districts.length !== 0 && (
+                      {region.cities.length !== 0 && (
                         <UncontrolledCollapse
-                          toggler={'loc-' + city.id}
+                          toggler={'loc-' + region.id}
                           // isOpen={this.state.collapse}
                         >
                           <ListGroup className="mt-3 clearfix">
-                            {city.districts.map((dis, idex) => {
+                            {region.cities.map((dis, idex) => {
                               return (
                                 <ListGroupItem key={idex}>
                                   {dis.name}
@@ -458,7 +458,7 @@ class ManageLocationListPage extends React.Component {
                         </UncontrolledCollapse>
                       )}
                     </td>
-                    <td>{city.order}</td>
+                    <td>{region.order}</td>
                     <td>
                       <Button
                         title={I18nUtils.t('loc-add-dis')}
@@ -466,7 +466,7 @@ class ManageLocationListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.addNewDistrictDialog(city)}
+                        onClick={() => this.addNewCityDialog(region)}
                       >
                         <i className="fa fa-plus" />
                       </Button>
@@ -476,7 +476,7 @@ class ManageLocationListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.handleDialogEdit(city)}
+                        onClick={() => this.handleDialogEdit(region)}
                       >
                         <i className="fa fa-edit" />
                       </Button>
@@ -486,7 +486,7 @@ class ManageLocationListPage extends React.Component {
                         outline
                         size="sm"
                         className="btn-act"
-                        onClick={() => this.handleDelete(city)}
+                        onClick={() => this.handleDelete(region)}
                       >
                         <i className="fa fa-trash" />
                       </Button>
@@ -515,7 +515,7 @@ ManageLocationListPage.propTypes = {
   name: PropTypes.string,
   id: PropTypes.string,
   order: PropTypes.string,
-  city: PropTypes.string,
+  region: PropTypes.string,
   locationList: PropTypes.object
 }
 

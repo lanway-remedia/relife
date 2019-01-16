@@ -25,6 +25,7 @@ import StoreListModal from '../../components/StoreListModal'
 import UsersActions from '../../redux/wrapper/UsersRedux'
 import I18nUtils from '../../utils/I18nUtils'
 import { Helmet } from 'react-helmet'
+import { StorageKeyConstants } from '../../constants'
 
 class AddUserPage extends React.Component {
   constructor(props) {
@@ -111,15 +112,31 @@ class AddUserPage extends React.Component {
   }
 
   addUser = () => {
-    let data = {
-      username: this.state.username,
-      email: this.state.email,
-      password: this.state.password,
-      store: this.state.store.id,
-      group: this.state.group,
-      first_name: this.state.fname,
-      last_name: this.state.lname
+    let groupId = localStorage.getItem(StorageKeyConstants.GROUP)
+    let storeId = localStorage.getItem(StorageKeyConstants.STORE)
+    let data = {}
+    if (groupId !== '2') {
+      data = {
+        username: this.state.username,
+        email: this.state.email,
+        password: this.state.password,
+        store: this.state.store.id,
+        group: this.state.group,
+        first_name: this.state.fname,
+        last_name: this.state.lname
+      }
+    } else {
+      data = {
+        username: this.state.username,
+        email: this.state.email,
+        password: this.state.password,
+        store: storeId,
+        group: 3,
+        first_name: this.state.fname,
+        last_name: this.state.lname
+      }
     }
+
     this.props.addUserRequest(data)
   }
 
@@ -135,6 +152,8 @@ class AddUserPage extends React.Component {
       fname,
       lname
     } = this.state
+
+    let groupId = localStorage.getItem(StorageKeyConstants.GROUP)
 
     return (
       <Container fluid className="user-edit-profile">
@@ -258,47 +277,56 @@ class AddUserPage extends React.Component {
                     />
                   </FormGroup>
                 </Col>
-                <Col xs="12" md="6">
-                  <FormGroup>
-                    <Label for="group">{I18nUtils.t('group-selection')}</Label>
-                    <Input
-                      type="select"
-                      name="group"
-                      id="group"
-                      onChange={this.handleChange}
-                      value={group}
-                    >
-                      <option value={4}>{I18nUtils.t('group-4')}</option>
-                      <option value={3}>{I18nUtils.t('group-3')}</option>
-                      <option value={2}>{I18nUtils.t('group-2')}</option>
-                      <option value={1}>{I18nUtils.t('group-1')}</option>
-                    </Input>
-                  </FormGroup>
-                </Col>
-                <Col xs="12" md="6">
-                  <FormGroup>
-                    <Label for="store">{I18nUtils.t('store-selection')}</Label>
-                    <InputGroup>
-                      <Input
-                        type="text"
-                        name="store"
-                        id="store"
-                        value={store.title || ''}
-                        disabled
-                      />
-                      <InputGroupAddon addonType="append">
-                        <Button
-                          type="button"
-                          color="secondary"
-                          disabled={group == 1 || group == 4}
-                          onClick={this.showStoreListHandle}
+                {groupId !== '2' && (
+                  <React.Fragment>
+                    <Col xs="12" md="6">
+                      <FormGroup>
+                        <Label for="group">
+                          {I18nUtils.t('group-selection')}
+                        </Label>
+
+                        <Input
+                          type="select"
+                          name="group"
+                          id="group"
+                          onChange={this.handleChange}
+                          value={group}
                         >
+                          <option value={4}>{I18nUtils.t('group-4')}</option>
+                          <option value={3}>{I18nUtils.t('group-3')}</option>
+                          <option value={2}>{I18nUtils.t('group-2')}</option>
+                          <option value={1}>{I18nUtils.t('group-1')}</option>
+                        </Input>
+                      </FormGroup>
+                    </Col>
+                    <Col xs="12" md="6">
+                      <FormGroup>
+                        <Label for="store">
                           {I18nUtils.t('store-selection')}
-                        </Button>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </FormGroup>
-                </Col>
+                        </Label>
+                        <InputGroup>
+                          <Input
+                            type="text"
+                            name="store"
+                            id="store"
+                            value={store.title || ''}
+                            disabled
+                          />
+                          <InputGroupAddon addonType="append">
+                            <Button
+                              type="button"
+                              color="secondary"
+                              disabled={group == 1 || group == 4}
+                              onClick={this.showStoreListHandle}
+                            >
+                              {I18nUtils.t('store-selection')}
+                            </Button>
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </FormGroup>
+                    </Col>
+                  </React.Fragment>
+                )}
                 <Col xs="12" md="12">
                   <div className="btns-group text-center">
                     <Button color="success" onClick={this.addUser}>

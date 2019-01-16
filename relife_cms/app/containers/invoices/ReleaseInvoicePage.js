@@ -6,7 +6,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Container, Button, Table } from 'reactstrap'
+import {
+  Container,
+  Button,
+  Table,
+  FormGroup,
+  Col,
+  Row,
+  Label,
+  Input,
+  Collapse,
+  Form
+} from 'reactstrap'
 import { Helmet } from 'react-helmet'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
@@ -18,6 +29,8 @@ import PaginationComponent from '../../components/PaginationComponent'
 // import { toast } from 'react-toastify'
 // import { DefaultValue } from '../../constants'
 
+const TIMEOUT = 0
+
 class ReleaseInvoicePage extends React.Component {
   constructor(props) {
     super(props)
@@ -25,6 +38,8 @@ class ReleaseInvoicePage extends React.Component {
       count: 0,
       page: 0,
       limit: 0,
+      timeout: TIMEOUT,
+      collapse: false,
       title: 'Invoice 01',
       dataList: [],
       exampleData: [
@@ -172,8 +187,19 @@ class ReleaseInvoicePage extends React.Component {
     })
   }
 
+  handleShowHideForm = () => {
+    this.setState(
+      {
+        timeout: TIMEOUT
+      },
+      () => {
+        this.setState({ collapse: !this.state.collapse })
+      }
+    )
+  }
+
   render() {
-    let { page, limit, count, exampleData } = this.state
+    let { page, limit, count, exampleData, collapse, timeout } = this.state
 
     return (
       <Container fluid className="manage-invoice-list">
@@ -182,6 +208,72 @@ class ReleaseInvoicePage extends React.Component {
         </Helmet>
         <div className="page-title">
           <h1>{I18nUtils.t('inv-page-title')}</h1>
+        </div>
+        <div className="filter-group">
+          <div className="filter-title">
+            <h4 onClick={this.handleShowHideForm}>
+              {I18nUtils.t('lb-ad-search')}
+            </h4>
+          </div>
+          <div className="filter-body">
+            <Collapse isOpen={collapse} timeout={timeout}>
+              <Form onSubmit={this.handleSubmit} ref={f => (this.form = f)}>
+                <Row>
+                  <Col xs="12" md="4">
+                    <FormGroup>
+                      <Label for="title">{I18nUtils.t('title')}</Label>
+                      <Input
+                        type="text"
+                        name="title"
+                        id="title"
+                        onChange={this.handleChange}
+                        placeholder={I18nUtils.t('all-place-input')}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="12" md="4">
+                    <FormGroup>
+                      <Label for="title">{I18nUtils.t('email')}</Label>
+                      <Input
+                        type="email"
+                        name="email"
+                        id="email"
+                        onChange={this.handleChange}
+                        placeholder={I18nUtils.t('all-place-input')}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="12" md="4">
+                    <FormGroup>
+                      <Label for="title">{I18nUtils.t('phone')}</Label>
+                      <Input
+                        type="text"
+                        name="phone"
+                        id="phone"
+                        onChange={this.handleChange}
+                        placeholder={I18nUtils.t('all-place-input')}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="12" md="12">
+                    <div className="btns-group text-center mt-2">
+                      <Button color="secondary" onClick={this.handleResetForm}>
+                        {I18nUtils.t('reset')}
+                      </Button>
+                      <Button color="success" onClick={this.onclickSubmit}>
+                        {I18nUtils.t('search')}
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+              </Form>
+            </Collapse>
+            {!collapse && (
+              <span className="lb-showhide text-success active">
+                {I18nUtils.t('lb-showhide')}
+              </span>
+            )}
+          </div>
         </div>
         <div className="box-group">
           <div className="box-content">

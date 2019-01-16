@@ -1,0 +1,105 @@
+.pagetop {
+  position: fixed;
+  display: block;
+  width: 86px;
+  height: 61px;
+  background: transparent;
+  right: 50px;
+  z-index: $zindex-lv-1;
+  bottom: 100px;
+  @media screen and (max-width: 767px) {
+    width: 52px;
+    height: 40px;
+    right: 10px;
+    z-index: $zindex-lv-1;
+    text-align: center;
+  }
+  @media screen and (min-width: 767px) {
+    &:hover {
+      &:before , &:after {
+        top: 15%;
+        transition-duration: 0.3s;
+      }
+    }
+  }
+
+  &:before {
+    left: 42%;
+    top: 25%;
+    -webkit-transform: skew(135deg, 45deg);
+    -ms-transform: skew(135deg, 45deg);
+    transform: skew(135deg, 45deg);
+    content: '';
+    position: absolute;
+    width: 3%;
+    height: 23%;
+    background-color: $bkg-green-color;
+    transition-duration: 0.3s;
+
+    @media screen and (max-width: 767px) {
+      left: 44%;
+      top: 0%;
+      -webkit-transform: skew(135deg, 45deg);
+      -ms-transform: skew(135deg, 45deg);
+      transform: skew(135deg, 45deg);
+      content: '';
+      position: absolute;
+      width: 3%;
+      height: 18%;
+      background-color: $bkg-green-color;
+    }
+  }
+
+  &:after {
+    left: 56%;
+    top: 25%;
+    -webkit-transform: skew(45deg, 135deg);
+    -ms-transform: skew(45deg, 135deg);
+    transform: skew(45deg, 135deg);
+    content: '';
+    position: absolute;
+    width: 3%;
+    height: 23%;
+    background-color: $bkg-green-color;
+    transition-duration: 0.3s;
+
+    @media screen and (max-width: 767px) {
+      left: 55%;
+      top: 0%;
+      -webkit-transform: skew(45deg, 135deg);
+      -ms-transform: skew(45deg, 135deg);
+      transform: skew(45deg, 135deg);
+      content: '';
+      position: absolute;
+      width: 3%;
+      height: 18%;
+      background-color: $bkg-green-color;
+    }
+  }
+
+  span {
+    display: inline-block;
+    padding: 35px 13px 10px 15px;
+    color: $bkg-green-color;
+    font-size: 1.1rem;
+    text-decoration: none;
+    border: solid 1px rgba(255,255,255,0);
+    transition-duration: 0.3s;
+
+    @media screen and (max-width: 767px) {
+      display: inline-block;
+      padding: 14px 4px 5px 5px;
+      color: $bkg-green-color;
+      font-size: 0.8rem;
+    }
+
+    &:hover {
+      border: 1px solid $bkg-green-color;
+      transition-duration: 0.3s;
+      cursor: pointer;
+      @media screen and (max-width: 767px) {
+        border:none;
+      }
+    }
+  }
+}
