@@ -2,11 +2,10 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from rest_framework import serializers
-from rest_framework.serializers import (CharField, ModelSerializer, Serializer,
-                                        ValidationError)
+from rest_framework.serializers import CharField, ModelSerializer, Serializer, ValidationError
 
 from mrelife.outletstores.models import OutletStore
-from mrelife.utils.groups import GroupUser, IsStore,GroupSub
+from mrelife.utils.groups import GroupAdmin, GroupSub, GroupUser, IsAdmin, IsStore
 from mrelife.utils.validates import email_exist
 
 User = get_user_model()
@@ -88,19 +87,46 @@ class UserRequestSerializer(ModelSerializer):
     store = serializers.PrimaryKeyRelatedField(
         queryset=OutletStore.objects.filter(is_active=1), required=False, allow_null=True)
     group = serializers.PrimaryKeyRelatedField(queryset=Group.objects.all(), required=False, allow_null=True)
+
     class Meta:
         model = User
         exclude = ('groups',)
+
     def validate_group(self, group):
         try:
-           if(IsStore(self.context.get('user'))):
+            if(IsStore(self.context.get('user'))):
                 if group:
-                    if not group==GroupSub():
+                    if not group == GroupSub():
                         print(group)
                         raise serializers.ValidationError("not permission! create")
         except KeyError as e:
             pass
         return group
+
+    def validate(self, data):
+        try:
+            user_create=self.context.get('user')
+            data['store']=None
+            group=data['group']
+            if(IsAdmin(user_create)):
+                if group == GroupAdmin() or group==GroupUser():
+                    data['store']=None
+                else:
+                    store=None
+                    try:
+                        store=data['store']
+                    except Exception as e:
+                        pass
+                    if not store:
+                        raise serializers.ValidationError({"store": ['store not None']})
+            if(IsStore(user_create)):
+                data['group']=GroupSub()
+                data['store']=user_create.store
+        except KeyError as e:
+            pass
+        return data
+
+
 class GroupShowSerializer(ModelSerializer):
 
     class Meta:
@@ -110,7 +136,8 @@ class GroupShowSerializer(ModelSerializer):
 
 class UserShowSerializer(ModelSerializer):
     store = OutletStoreSerializer(read_only=True)
-    group=GroupShowSerializer(read_only=True)
+    group = GroupShowSerializer(read_only=True)
+
     class Meta:
         model = User
         exclude = ('groups', 'user_permissions')
