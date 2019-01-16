@@ -17,7 +17,11 @@ class HomePage extends React.Component {
 
     render() {
         return [
-            <BackGround key="1" />
+            <BackGround key="1" />,
+            <TopMap key="2" />,
+            <ModelHousesHome key="3" />,
+            <ExhibitionsHome key="4" />,
+            <ExhibitionsTabs key="5" />,
         ]
     }
 }

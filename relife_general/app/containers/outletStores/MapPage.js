@@ -51,12 +51,12 @@ class MapPage extends React.Component {
 
   render() {
     const {storeList} = this.state
-    let latCenter = 35.823201 
-    let lngCenter = 137.653148
-    if (storeList[0]) {
-      latCenter = storeList[0].latitude
-      lngCenter = storeList[0].longitude
-    }
+    // let latCenter = 35.823201 
+    // let lngCenter = 137.653148
+    // if (storeList[0]) {
+    //   latCenter = storeList[0].latitude
+    //   lngCenter = storeList[0].longitude
+    // }
 
     const MapWithAMarkerClusterer = compose(
       withProps({

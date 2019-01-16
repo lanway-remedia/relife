@@ -18,6 +18,8 @@ import ForgotPasswordPage from './containers/auths/ForgotPasswordPage'
 import ProfileInfoPage from './containers/profiles/ProfileInfoPage'
 import ProfileEditPage from './containers/profiles/ProfileEditPage'
 import ProfileChangePassPage from './containers/profiles/ProfileChangePassPage'
+//modelhouse
+import ModelhouseListPage from './containers/modelhouses/ModelhouseListPage'
 
 import { StorageKeyConstants } from './constants'
 
@@ -94,6 +96,10 @@ class Routes extends React.Component {
                   <Route
                     path="/profile-change-password"
                     component={requireLogin(ProfileChangePassPage)}
+                  />
+                  <Route
+                    path="/modelhouses"
+                    component={requireLogin(ModelhouseListPage)}
                   />
                 </Switch>
               </div>

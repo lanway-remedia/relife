@@ -1,5 +1,5 @@
 .header {
-  background: $bkg-white-color-1;
+  background: #f2f3f2;
   &.sp {
     background: #fff;
   }
@@ -25,7 +25,7 @@
           .btn {
             color: $text-color;
             text-transform: uppercase;
-            background: $bkg-white-color-1;
+            background: #f2f3f2;
             font-weight: bold;
             padding: 10px 10px 10px 20px;
             border-radius: 0px;
@@ -207,7 +207,7 @@
   z-index: $zindex-lv-3;
   width: 65%;
   height: 100%;
-  color: $text-color;
+  color: #222;
   background-color: #fff;
   overflow: hidden;
   padding: 55px 0;
@@ -227,7 +227,7 @@
         display: block;
         text-indent: 15px;
         a {
-          color: $text-color;
+          color: #222;
           font-size: 1.2rem;
           display: block;
           padding: .75rem;

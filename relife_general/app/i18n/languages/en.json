@@ -175,6 +175,9 @@
   "search": "検索",
   "search-from-price": "予算から建築実績を探す",
   "search-from-performance": "こだわりから建築実績を探す",
+  "view-performance-house": "注文住宅の建築実績を見る",
+  "view-performance-house-text": "こだわり住まいのさまざまな情報を、注文住宅の事例からお探しできます。",
+
 
   "validate-email": "メールアドレスの形式が正しくないようです。",
   "validate-require": "必須項目に記入もれがあります。",

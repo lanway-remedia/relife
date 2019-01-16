@@ -50,5 +50,4 @@ export default class AttributesService {
   listKeyword(data) {
     return apiClient.get(`/attributes/search_history/get_most_keyword/${data}`)
   }
-
 }

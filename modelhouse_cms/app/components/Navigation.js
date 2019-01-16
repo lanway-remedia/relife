@@ -42,6 +42,18 @@ class Navigation extends React.Component {
                   {I18nUtils.t('mni-cpass')}
                 </Link>
               </li>
+
+              <li className="mn-head">{I18nUtils.t('mnh-modelhouse')}</li>
+              <li className="item">
+                <Link to="/add-modelhouse" title={I18nUtils.t('mni-modelhouse-add')}>
+                  {I18nUtils.t('mni-modelhouse-add')}
+                </Link>
+              </li>
+              <li className="item">
+                <Link to="/modelhouses" title={I18nUtils.t('mni-modelhouse-list')}>
+                  {I18nUtils.t('mni-modelhouse-list')}
+                </Link>
+              </li>
             </ul>
           </PerfectScrollbar>
         </div>

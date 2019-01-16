@@ -9,7 +9,7 @@ import { withRouter, Link } from 'react-router-dom'
 import { Container, Row, Col} from 'reactstrap'
 import Slider from 'react-slick'
 import ExampleHousesActions from '../../redux/wrapper/ExampleHousesRedux'
-
+import I18nUtils from '../../utils/I18nUtils'
 class ExampleHouseList extends React.Component {
   constructor(props) {
     super(props)
@@ -69,8 +69,8 @@ class ExampleHouseList extends React.Component {
       <Container fluid className="top-result">
         <Row className="top-result-inner">
           <Col md="12" xs="12">
-            <h2 className="top-result-title">注文住宅の建築実績を見る</h2>
-            <p className="top-result-text">こだわり住まいのさまざまな情報を、注文住宅の事例からお探しできます。</p>
+            <h2 className="top-result-title">{I18nUtils.t('view-performance-house')}</h2>
+            <p className="top-result-text">{I18nUtils.t('view-performance-house-text')}</p>
           </Col>
         </Row>
         <div className="slider-wrap">

@@ -55,6 +55,9 @@
   "mni-ehouse-list": "建築実例一覧管理",
   "mnh-inv": "請求書管理",
   "mni-inv-release": "請求書発行",
+  "mnh-modelhouse": "モデルハウス",
+  "mni-modelhouse-add": "モデルハウス新規作成",
+  "mni-modelhouse-list": "モデルハウス一覧管理",
 
   "ots-parent-title": "工務店管理",
   "otsl-page-title": "工務店一覧管理",

@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import homeIcon from '../images/home-icon.png'
+// import {Breadcrumb, BreadcrumbItem } from 'reactstrap'
+// import homeIcon from '../images/home-icon.png'
 class BreadcrumbComponent extends React.Component {
   render() {
     return (
