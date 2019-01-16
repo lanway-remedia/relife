@@ -9,12 +9,11 @@ from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 
-from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.events.models import EventExhibition
 from mrelife.exhibitions.exhibitiontags.serializers import \
     ExhibitionTagSerializer
 from mrelife.exhibitions.models import ExhibitionTag
-from mrelife.utils.response import (response_200)
+from mrelife.utils.response import response_200, response_201, response_400, response_404, response_405
 from mrelife.utils import result
 from mrelife.utils.exhibition_permission import ExhibitionPermission
 from mrelife.utils.relifeenum import MessageCode
@@ -32,7 +31,7 @@ class ExhibitionTagViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         self.queryset = ExhibitionTag.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         response = super(ExhibitionTagViewSet, self).list(request, *args, **kwargs)
-        return response_200('', '', response.data)
+        return response_200('DT003', '', response.data)
 
     def retrieve(self, request, pk=None):
         try:
@@ -42,21 +41,21 @@ class ExhibitionTagViewSet(viewsets.ModelViewSet):
             queryset = ExhibitionTag.objects.all()
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = ExhibitionTagSerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXT001.value, {}), status=status.HTTP_200_OK)
+            return response_200(MessageCode.EXT001.value,{},serializer.data)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXT009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EXT009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXT002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EXT002.value,{},{})
 
     def create(self, request):
         try:
             serializer = ExhibitionTagSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save(is_active=settings.IS_ACTIVE, created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXT003.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXT010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return response_200(MessageCode.EXT003.value,{},serializer.data)
+            return response_405(MessageCode.EXT010.value,serializer.errors,{})
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXT002.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EXT002.value,serializer.errors,{})
 
     def update(self, request, pk=None):
         try:
@@ -68,12 +67,12 @@ class ExhibitionTagViewSet(viewsets.ModelViewSet):
             serializer = ExhibitionTagSerializer(event_obj, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXT005.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXT011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return response_200(MessageCode.EXT005.value,{},serializer.data)
+            return response_405(MessageCode.EXT011.value,serializer.errors,{})
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXT009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EXT009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXT012.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EXT012.value,{},{})
 
     def destroy(self, request, pk=None):
         try:
@@ -86,9 +85,9 @@ class ExhibitionTagViewSet(viewsets.ModelViewSet):
             serializer = ExhibitionTagSerializer(exhibitionObject, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save(updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXT008.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXT009.value, serializer.errors), status=status.HTTP_404_BAD_REQUEST)
+                return response_200(MessageCode.EXT008.value,{},serializer.data)
+            return response_405(MessageCode.EXT009.value,serializer.errors,{})
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXT009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EXT009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXT013.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EXT013.value,{},{})

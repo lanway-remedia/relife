@@ -10,9 +10,8 @@ from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from mrelife.utils.response import (response_200)
+from mrelife.utils.response import response_200, response_201, response_400, response_404, response_405
 
-from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.exhibitions.exhibitioncontactreplys.serializers import ExhibitionContactReplySerializer
 from mrelife.exhibitions.models import ExhibitionContactReply
 from mrelife.utils.relifeenum import MessageCode
@@ -31,7 +30,7 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
     def list(self, request):
         self.queryset = ExhibitionContactReply.objects.filter(is_active=settings.IS_ACTIVE).order_by('-updated')
         response = super(ExhibitionContactReplyViewSet, self).list(request)
-        return response_200('', '', response.data)
+        return response_200(MessageCode.DT003, '', response.data)
 
     def retrieve(self, request, pk=None):
         try:
@@ -41,11 +40,11 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
             queryset = ExhibitionContactReply.objects.all()
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = ExhibitionContactReplySerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXCR001.value, {}), status=status.HTTP_200_OK)
+            return response_200(MessageCode.EXCR001.value,{},serializer.data)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EXCR009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EXCR002.value,{},{})
 
     def create(self, request):
         try:
@@ -53,10 +52,10 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXCR003.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
-        except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+                return response_200(MessageCode.EXCR003.value,{},serializer.data)
+            return response_405(MessageCode.EXCR010.value,serializer.errors,{})
+        except Exception as e:
+            return response_400(MessageCode.EXCR008.value,{e},{})
 
     def update(self, request, pk=None):
         try:
@@ -68,12 +67,12 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
             serializer = ExhibitionContactReplySerializer(event_obj, data=request.data)
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id)
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXCR005.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return response_200(MessageCode.EXCR005.value,{},serializer.data)
+            return response_405(MessageCode.EXCR011.value,serializer.errors,{})
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EXCR009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR012.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EXCR012.value,{},{})
 
     def destroy(self, request, pk=None):
         try:
@@ -86,9 +85,9 @@ class ExhibitionContactReplyViewSet(viewsets.ModelViewSet):
             serializer = ExhibitionContactReplySerializer(event_obj, data=data, partial=True)
             if(serializer.is_valid()):
                 serializer.save(updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXCR007.value, {}), status=status.HTTP_200_NO_CONTENT)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR008.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return response_200(MessageCode.EXCR007.value,{},serializer.data)
+            return response_405(MessageCode.EXCR008.value,serializer.errors,{})
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EXCR009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXCR013.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EXCR013.value,{},{})

@@ -12,13 +12,12 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from mrelife.commons.common_fnc import CommonFuntion
 from mrelife.exhibitions.exhibitioncontacts.serializers import \
     ExhibitionContactSerializer
 from mrelife.exhibitions.models import ExhibitionContact
 from mrelife.utils.relifeenum import MessageCode
 from mrelife.utils.exhibition_permission import ExhibitionContactPermission
-from mrelife.utils.response import (response_200)
+from mrelife.utils.response import response_200, response_201, response_400, response_404, response_405
 
 
 class ExhibitionContactViewSet(viewsets.ModelViewSet):
@@ -43,11 +42,11 @@ class ExhibitionContactViewSet(viewsets.ModelViewSet):
             queryset = ExhibitionContact.objects.filter(is_active=settings.IS_ACTIVE)
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = ExhibitionContactSerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXC001.value, {}), status=status.HTTP_200_OK)
+            return  response_200(MessageCode.EXC001.value,{},serializer.data)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EXC009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EXC002.value,{},{})
 
     def create(self, request):
         try:
@@ -55,10 +54,10 @@ class ExhibitionContactViewSet(viewsets.ModelViewSet):
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id, is_active=settings.IS_ACTIVE,
                                 created=datetime.now(), updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXC003.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return  response_200(MessageCode.EXC003.value,{},serializer.data)
+            return response_405(MessageCode.EXC010.value,serializer.errors,{}) 
         except Exception as e:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC004.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return   response_400(MessageCode.EXC004.value,{},{})
 
     def update(self, request, pk=None):
         try:
@@ -70,12 +69,12 @@ class ExhibitionContactViewSet(viewsets.ModelViewSet):
             serializer = ExhibitionContactSerializer(exhibitionCObjet, data=request.data)
             if serializer.is_valid():
                 serializer.save(create_user_id=request.user.id)
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXC005.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC011.value, serializer.errors), status=status.HTTP_405_BAD_REQUEST)
+                return  response_200(MessageCode.EXC005.value,{},serializer.data)
+            return response_405(MessageCode.EXC011.value,serializer.errors,{})
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EXC009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC012.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EXC012.value,{},{})
 
     def destroy(self, request, pk=None):
         try:
@@ -88,8 +87,8 @@ class ExhibitionContactViewSet(viewsets.ModelViewSet):
             serializer = ExhibitionContactSerializer(exhibitionCObjet, data=data, partial=True)
             if(serializer.is_valid()):
                 serializer.save(updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EXC007.value, ""), status=status.HTTP_200_NO_CONTENT)
+                return  response_200(MessageCode.EXC007.value,{},serializer.data)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EXC009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EXC013.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EXC013.value,{},{})

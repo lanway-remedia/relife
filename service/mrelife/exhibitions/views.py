@@ -12,9 +12,8 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from mrelife.utils.response import (response_200)
 
-from mrelife.commons.common_fnc import CommonFuntion
+
 from mrelife.events.models import EventExhibition
 from mrelife.exhibitions.models import (Exhibition, ExhibitionContact,
                                         ExhibitionContactReply, ExhibitionTag)
@@ -24,6 +23,7 @@ from mrelife.utils import result
 from mrelife.utils.relifeenum import MessageCode
 from mrelife.utils.exhibition_permission import ExhibitionPermission
 from mrelife.attributes.models import SearchHistory
+from mrelife.utils.response import response_200, response_201, response_400, response_404, response_405
 
 class EhibitionViewSet(viewsets.ModelViewSet):
 
@@ -58,11 +58,11 @@ class EhibitionViewSet(viewsets.ModelViewSet):
             queryset = Exhibition.objects.all()
             outletstoreObject = get_object_or_404(queryset, pk=pk)
             serializer = ExhibitionSerializer(outletstoreObject)
-            return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX001.value, {}), status=status.HTTP_200_OK)
+            return response_200( MessageCode.EX001.value, '', serializer.data)
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EX009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX002.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EX002.value,{},{})
 
     @transaction.atomic
     def create(self, request):
@@ -82,11 +82,11 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                 queryset = Exhibition.objects.all()
                 outletstoreObject = get_object_or_404(queryset, pk=serializer.data['id'])
                 serializer = ExhibitionSerializer(outletstoreObject)
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX003.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX010.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return response_200( MessageCode.EX003.value, '', serializer.data)
+            return response_405(MessageCode.EX010.value,serializer.errors,{})
         except Exception as e:
             transaction.set_rollback(True)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX004.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EX004.value,{},{})
 
     @transaction.atomic
     def update(self, request, pk=None):
@@ -119,15 +119,15 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                 queryset = Exhibition.objects.all()
                 outletstoreObject = get_object_or_404(queryset, pk=serializer.data['id'])
                 serializer = ExhibitionSerializer(outletstoreObject)
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX005.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX011.value, serializer.errors), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+                return response_200(MessageCode.EX005.value,{},serializer.data)
+            return response_405(MessageCode.EX011.value,serializer.errors,{}) 
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EX009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX012.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EX012.value,{},{})
         except Exception as e:
             transaction.set_rollback(True)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX006.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EX006.value,{},{}) 
 
     @transaction.atomic
     def destroy(self, request, pk=None):
@@ -151,12 +151,12 @@ class EhibitionViewSet(viewsets.ModelViewSet):
                     is_active=settings.IS_INACTIVE, updated=datetime.now())
                 ExhibitionTag.objects.select_related().filter(exhibition_id=pk).update(
                     is_active=settings.IS_INACTIVE, updated=datetime.now())
-                return Response(CommonFuntion.resultResponse(True, serializer.data, MessageCode.EX007.value, {}), status=status.HTTP_200_OK)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX008.value, serializer.errors), status=status.HTTP_400_BAD_REQUEST)
+                return response_200(MessageCode.EX007.value,{},serializer.data)
+            return response_405(MessageCode.EX008.value,serializer.errors,{}) 
         except KeyError:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX009.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EX009.value,{},{})
         except Http404:
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX013.value, {}), status=status.HTTP_404_NOT_FOUND)
+            return response_404(MessageCode.EX013.value,{},{})
         except Exception as e:
             transaction.set_rollback(True)
-            return Response(CommonFuntion.resultResponse(False, "", MessageCode.EX008.value, {}), status=status.HTTP_400_BAD_REQUEST)
+            return response_400(MessageCode.EX008.value,{},{})
