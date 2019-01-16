@@ -11,6 +11,8 @@ import { SetLanguageTypes } from '../redux/wrapper/SetLanguageRedux'
 import { AuthsTypes } from '../redux/wrapper/AuthsRedux'
 import { ProfileTypes } from '../redux/wrapper/ProfileRedux'
 import { LocationTypes } from '../redux/wrapper/LocationsRedux'
+import { ExampleHousesTypes } from '../redux/wrapper/ExampleHousesRedux'
+import { OutletStoresTypes } from '../redux/wrapper/OutletStoresRedux'
 /* ------------- Sagas ------------- */
 import ErrorSagas from './wrapper/ErrorSagas'
 import LanguageSagas from './wrapper/LanguageSagas'
@@ -19,6 +21,8 @@ import ProfileSagas from './wrapper/ProfileSagas'
 import LocationsSagas from './wrapper/LocationsSagas'
 import { AttributeTypes } from '../redux/wrapper/AttributesRedux'
 import AttributesSagas from './wrapper/AttributesSagas'
+import ExampleHousesSagas from './wrapper/ExampleHousesSagas'
+import OutletStoresSagas from './wrapper/OutletStoresSagas'
 /* ------------- Connect Types To Sagas ------------- */
 export default function* root() {
   yield [
@@ -49,6 +53,9 @@ export default function* root() {
       ProfileSagas.editProfileAvatar
     ),
     takeLatest(ProfileTypes.CHANGE_PASS_REQUEST, ProfileSagas.changePass),
+    takeLatest(ProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
+
+    takeLatest(ProfileTypes.BECOME_STORE_REQUEST, ProfileSagas.becomeStore),
     takeLatest(ProfileTypes.PROFILE_FAILURE, ErrorSagas.handleError),
 
     //Locations
@@ -96,5 +103,50 @@ export default function* root() {
       AttributeTypes.ATTRIBUTE_HOUSE_SIZE_LIST_REQUEST,
       AttributesSagas.listHouseSize
     ),
+
+    // Get List Commitment
+    takeLatest(
+      AttributeTypes.ATTRIBUTE_COMMITMENT_LIST_REQUEST,
+      AttributesSagas.listCommitment
+    ),
+    // Get List Most Keyword Search
+    takeLatest(
+      AttributeTypes.MOST_KEYWORD_LIST_REQUEST,
+      AttributesSagas.listMostKeywordSearch
+    ),
+
+    // Example House
+    // Get List Example House
+    takeLatest(
+      ExampleHousesTypes.EXAMPLE_HOUSES_LIST_REQUEST,
+      ExampleHousesSagas.getHouseList
+    ),
+    takeLatest(
+      ExampleHousesTypes.EXAMPLE_HOUSES_GET_REQUEST,
+      ExampleHousesSagas.getHouseById
+    ),
+    takeLatest(
+      ExampleHousesTypes.EXAMPLE_HOUSES_LIST_BY_STORE_REQUEST,
+      ExampleHousesSagas.getHouseByStoreId
+    ),
+
+    //Outlet Stores
+    // Get Outlet Store
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORES_GET_REQUEST,
+      OutletStoresSagas.getStores
+    ),
+
+    // Get List Outlet Store
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORES_LIST_REQUEST,
+      OutletStoresSagas.listStores
+    ),
+
+    // Contact Outlet Store
+    takeLatest(
+      OutletStoresTypes.OUTLET_STORES_CONTACT_REQUEST,
+      OutletStoresSagas.contactStores
+    )
   ]
 }

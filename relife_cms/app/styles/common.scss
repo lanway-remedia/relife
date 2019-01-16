@@ -12,7 +12,15 @@
       z-index: 800;
       transition: 0.3s ease-in-out, width 0.3s ease-in-out;
       // margin-left: 350px;
-      margin-left: 230px;
+      // margin-left: 230px;
+      max-width: 930px;
+      margin-left: auto;
+      //float: right;
+
+      @media screen and (max-width: 1199px) {
+        margin-left: 200px;
+        max-width: none;
+      }
     }
   }
 }
@@ -100,6 +108,7 @@ a:focus {
     height: 24px;
     text-align: center;
     margin: 0 0 5px;
+    min-width: 50px;
 
     &.last-child,
     &:last-child {
@@ -108,7 +117,9 @@ a:focus {
   }
 }
 
-.content {
+.content,
+.main-content,
+.container {
   &:after {
     content: '';
     display: block;
@@ -135,6 +146,7 @@ a:focus {
 }
 
 .form-datepicker {
+  z-index: 11;
   .react-datepicker__triangle {
     display: none;
   }
@@ -187,4 +199,137 @@ a:focus {
 
 .fr-box.fr-basic .fr-element {
   min-height: 150px;
+}
+
+.react-select {
+  .react-select-ops {
+    &:hover {
+      .rs-cus__control {
+        background: $bkg-text-color;
+
+        .rs-cus__single-value {
+          color: $text-white-color;
+        }
+      }
+
+      .rs-cus__clear-indicator {
+        color: $text-white-color;
+        cursor: pointer;
+      }
+    }
+
+    .rs-cus__control {
+      &.rs-cus__control--is-focused {
+        background: $bkg-text-color;
+
+        .rs-cus__single-value {
+          color: $text-white-color;
+        }
+      }
+    }
+
+    .css-vj8t7z,
+    .css-2o5izw {
+      min-height: 32px;
+      background-color: $input-bg;
+
+      &:hover {
+        background-color: $bkg-text-color;
+
+        .rs-cus__input {
+          color: $text-white-color;
+        }
+      }
+    }
+
+    .css-2o5izw {
+      border-color: #80bdff;
+      outline: 0;
+      -webkit-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      -moz-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+
+      &:hover,
+      &:focus,
+      &:active {
+        background-color: $bkg-text-color;
+        border-color: #80bdff;
+        outline: 0;
+        -webkit-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        -moz-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+
+        .css-1ep9fjw {
+          color: #fff;
+        }
+
+        &.css-15k3avv {
+          background-color: #f6f6f6;
+          border-color: #80bdff;
+          outline: 0;
+          -webkit-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+          -moz-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+      }
+    }
+    .css-1ep9fjw,
+    .css-1uq0kb5 {
+      padding: 5px;
+    }
+
+    .rs-cus__dropdown-indicator {
+      background: url('../images/indicator.png') no-repeat center;
+      width: 30px;
+      height: 30px;
+      .css-19bqh2r {
+        display: none;
+      }
+    }
+
+    .rs-cus__indicator-separator {
+      display: none;
+    }
+
+    .rs-cus__control {
+      &.rs-cus__option--is-focused {
+        background: $bkg-text-color;
+      }
+    }
+
+    .rs-cus__menu {
+      margin: 0;
+      border-radius: 0;
+      border: 0 none;
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
+      background: $bkg-text-color;
+      z-index: 20;
+
+      .rs-cus__menu-list {
+        padding: 0;
+      }
+
+      .rs-cus__option {
+        color: $text-white-color;
+        user-select: none;
+        border-top: 1px solid #ccc;
+        padding: 7px 10px;
+        font-size: 12px;
+        cursor: pointer;
+
+        &.rs-cus__option--is-focused {
+          background-color: $bkg-secondary-color;
+        }
+
+        &.rs-cus__option--is-selected {
+          background: $bkg-secondary-color;
+        }
+      }
+
+      .rs-cus__menu-notice--no-options {
+        color: $text-white-color;
+      }
+    }
+  }
 }

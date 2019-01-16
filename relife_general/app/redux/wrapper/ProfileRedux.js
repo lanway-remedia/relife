@@ -10,6 +10,7 @@ const { Types, Creators } = createActions({
   editProfileRequest: ['data'],
   editProfileAvatarRequest: ['data'],
   changePassRequest: ['data'],
+  becomeStoreRequest: ['data'],
   profileSuccess: ['data'],
   profileFailure: ['error'],
 
@@ -44,6 +45,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.EDIT_PROFILE_REQUEST]: request,
   [Types.EDIT_PROFILE_AVATAR_REQUEST]: request,
   [Types.CHANGE_PASS_REQUEST]: request,
+  [Types.BECOME_STORE_REQUEST]: request,
   [Types.PROFILE_SUCCESS]: success,
   [Types.PROFILE_FAILURE]: failure
 })

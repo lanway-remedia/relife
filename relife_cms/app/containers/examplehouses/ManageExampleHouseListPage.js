@@ -6,18 +6,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import {
-  Container,
-  Button,
-  Table,
-  Collapse,
-  Form,
-  Row,
-  Col,
-  Input,
-  FormGroup,
-  Label
-} from 'reactstrap'
+import { Container, Button, Table } from 'reactstrap'
 import { Helmet } from 'react-helmet'
 import { bindActionCreators } from 'redux'
 import { show, hide } from 'redux-modal'
@@ -27,6 +16,7 @@ import I18nUtils from '../../utils/I18nUtils'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
 import { DefaultValue } from '../../constants'
+import SearchCondition from './../../components/SearchCondition'
 
 const TIMEOUT = 0
 
@@ -52,10 +42,18 @@ class ManageExampleHouseListPage extends React.Component {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
+    let title = params.get('freeword')
+    let status = params.get('status_flag')
+    let store_id = params.get('store')
     let data = {
       offset: (page - 1) * limit,
       limit: limit,
-      page: page
+      page: page,
+      ...(title && { title: title }),
+      ...(status && {
+        status_flag: status
+      }),
+      ...(store_id && { store_id: store_id })
     }
     this.setState({
       page: data.page,
@@ -69,7 +67,6 @@ class ManageExampleHouseListPage extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.dataExamples)
     if (this.props.dataExamples != nextProps.dataExamples) {
       let response = nextProps.dataExamples
       if (response.isGetHouseList) {
@@ -152,20 +149,8 @@ class ManageExampleHouseListPage extends React.Component {
     )
   }
 
-  handleResetForm = e => {
-    e.preventDefault()
-    console.log(e)
-    console.log('reset form')
-  }
-
-  onclickSubmit = e => {
-    e.preventDefault()
-    console.log(e)
-    console.log('submit form')
-  }
-
   render() {
-    let { page, limit, dataList, count, collapse, timeout } = this.state
+    let { page, limit, dataList, count } = this.state
     let { location } = this.props
     let isSearch
     if (location.search === '' || location.search === '?') isSearch = false
@@ -183,7 +168,13 @@ class ManageExampleHouseListPage extends React.Component {
             </Button>
           </h1>
         </div>
-        <div className="filter-group">
+        <SearchCondition
+          hasFreeword={{ title: I18nUtils.t('title') }}
+          hasStore
+          hasStatus
+          hasAttribute
+        />
+        {/* <div className="filter-group">
           <div className="filter-title">
             <h4 onClick={this.handleShowHideForm}>
               {I18nUtils.t('lb-ad-search')}
@@ -248,7 +239,7 @@ class ManageExampleHouseListPage extends React.Component {
               </span>
             )}
           </div>
-        </div>
+        </div> */}
         <div className="box-group">
           {isSearch && (
             <div className="box-title">

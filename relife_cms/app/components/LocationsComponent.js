@@ -49,7 +49,7 @@ class LocationsComponent extends Component {
       if (nextProps.city) {
         for (let i = 0; i < response.data.length; i++) {
           if (response.data[i].id === parseInt(nextProps.city)) {
-            const dataDistrict = response.data[i].districts
+            const dataDistrict = response.data[i].cities
             this.setState({
               dataDistrict: dataDistrict
             })
@@ -93,7 +93,7 @@ class LocationsComponent extends Component {
     if (data.city !== '') {
       for (let i = 0; i < data.dataCity.length; i++) {
         if (data.dataCity[i].id === parseInt(data.city)) {
-          const dataDistrict = data.dataCity[i].districts
+          const dataDistrict = data.dataCity[i].cities
           this.setState({
             dataDistrict: dataDistrict
           })

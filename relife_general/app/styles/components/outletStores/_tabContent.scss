@@ -1,0 +1,24 @@
+.tab-content {
+  padding: 50px 0;
+  border-top: none;
+  border-bottom: none;
+  background-color: #ffffff;
+  top: 0;
+  left: 0;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: $zindex-lv-1;
+
+  .tab-content-item {
+    margin-right: 0;
+    margin-left: 0;
+    padding: 0;
+    @import './components/outletStores/tabIntro';
+    @import './components/outletStores/tabContact';
+    .tab-house {
+      padding: 0;
+    }
+  }
+}

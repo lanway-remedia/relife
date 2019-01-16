@@ -27,7 +27,7 @@ import I18nUtils from '../../utils/I18nUtils'
 import TableHeadComponent from '../../components/TableHeadComponent'
 import PaginationComponent from '../../components/PaginationComponent'
 import { toast } from 'react-toastify'
-import { DefaultValue } from '../../constants'
+import { DefaultValue, StorageKeyConstants } from '../../constants'
 
 const TIMEOUT = 0
 
@@ -53,11 +53,24 @@ class ManageOutletStoreListPage extends React.Component {
     let params = new URLSearchParams(this.props.history.location.search)
     let page = params.get('page') * 1 || DefaultValue.PAGE
     let limit = params.get('limit') * 1 || DefaultValue.LIMIT
-    let data = {
-      offset: (page - 1) * limit,
-      limit: limit,
-      page: page
+    let data = {}
+    let groupId = localStorage.getItem(StorageKeyConstants.GROUP)
+    let storeId = localStorage.getItem(StorageKeyConstants.STORE)
+    if (groupId === '2') {
+      data = {
+        offset: (page - 1) * limit,
+        storeId: storeId,
+        limit: limit,
+        page: page
+      }
+    } else {
+      data = {
+        offset: (page - 1) * limit,
+        limit: limit,
+        page: page
+      }
     }
+
     this.setState({
       page: data.page,
       limit: data.limit
@@ -82,17 +95,20 @@ class ManageOutletStoreListPage extends React.Component {
         })
       }
 
-      if (response.messageCode === 'OS007' && response.isDeleteStore) {
-        this.props.show(ModalName.COMMON, {
-          message: (
-            <span className="text-success">
-              {I18nUtils.t('modal-del-success')}
-            </span>
-          )
-        })
-        this.forceUpdate(this.getOutletStore)
-      }
+      if (response.isDeleteStore)
+        if (response.messageCode === 'OS007') {
+          this.props.show(ModalName.COMMON, {
+            message: (
+              <span className="text-success">
+                {I18nUtils.t('modal-del-success')}
+              </span>
+            )
+          })
+          this.forceUpdate(this.getOutletStore)
+        }
     }
+
+    return null
   }
 
   handleDelete = store => {
@@ -161,6 +177,7 @@ class ManageOutletStoreListPage extends React.Component {
     let isSearch
     if (location.search === '' || location.search === '?') isSearch = false
     else isSearch = true
+
     return (
       <Container fluid className="manage-outletstore-list">
         <Helmet>
@@ -264,7 +281,7 @@ class ManageOutletStoreListPage extends React.Component {
                   )}
                   {storeList.map((store, key) => {
                     return (
-                      <tr key={key}>
+                      <tr key={store.id}>
                         <td>{(page - 1) * limit + key + 1}</td>
                         <td>
                           <img
@@ -317,6 +334,7 @@ ManageOutletStoreListPage.propTypes = {
   location: PropTypes.object,
   processing: PropTypes.bool,
   data: PropTypes.object,
+  dataProfile: PropTypes.object,
   outletStoreListRequest: PropTypes.func,
   outletStoreDeleteRequest: PropTypes.func,
   show: PropTypes.func,

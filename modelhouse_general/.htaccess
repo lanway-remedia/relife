@@ -1,0 +1,11 @@
+RewriteEngine On
+RewriteBase /
+RewriteCond %{HTTP_HOST} ^13\.231\.16\.121$
+RewriteRule ^(.*)$ https://staging.travel.dkaigai.jp/$1 [L,R=301]
+
+RewriteEngine On
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
+RewriteRule ^ - [L]
+
+RewriteRule ^ /index.html [L]

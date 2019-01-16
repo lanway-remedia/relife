@@ -8,12 +8,14 @@ import PropTypes from 'prop-types'
 import {Route, Redirect, withRouter, Switch} from 'react-router-dom'
 import {ToastContainer} from 'react-toastify'
 //header
-import Header from './components/Header'
+import Header from './components/header/Header'
+import PageTop from './components/PageTop'
 import Footer from './components/Footer'
-//breadcrumb
-import Breadcrumb from './components/Breadcrumb'
+import BreadcrumbComponent from './components/BreadcrumbComponent'
+
 //homepage
 import HomePage from './containers/HomePage'
+
 //auths
 import RegisterPage from './containers/auths/RegisterPage'
 import LoginPage from './containers/auths/LoginPage'
@@ -27,6 +29,15 @@ import ProfileBookingHistoryPage from './containers/profiles/ProfileBookingHisto
 //exampleHouse
 import ExampleHouseListPage from './containers/exampleHouse/ExampleHouseListPage'
 import ExampleHouseViewPage from './containers/exampleHouse/ExampleHouseViewPage'
+//outletStores
+import OutletStoresListPage from './containers/outletStores/OutletStoresListPage'
+import OutletStoresViewPage from './containers/outletStores/OutletStoresViewPage'
+import MapPage from './containers/outletStores/MapPage'
+
+import PrivacyPolicyPage from './containers/PrivacyPolicyPage'
+import RulePage from './containers/RulePage'
+import ContactPage from './containers/ContactPage'
+import AboutUsPage from './containers/AboutUsPage'
 
 import {StorageKeyConstants} from './constants'
 import 'react-toastify/dist/ReactToastify.css'
@@ -82,7 +93,7 @@ class Routes extends React.Component {
                         name={username}
                         image={userimage}
                     />
-                    <Breadcrumb />
+                    <BreadcrumbComponent />
                     <Switch>
                         <Route path="/login" component={LoginPage} />
                         <Route path="/forgot-password" component={ForgotPasswordPage} />
@@ -112,14 +123,44 @@ class Routes extends React.Component {
                             component={requireLogin(ProfileBookingHistoryPage)}
                         />
                         <Route
-                            path="/example"
+                            exact path="/example"
                             component={ExampleHouseListPage}
                         />
                         <Route
-                            path="/example-view"
+                            path="/example/:id"
                             component={ExampleHouseViewPage}
                         />
+                        <Route
+                            exact path="/builder"
+                            component={OutletStoresListPage}
+                        />
+                        <Route
+                            path="/builder/:id"
+                            component={OutletStoresViewPage}
+                        />
+                        <Route
+                            path="/map"
+                            component={MapPage}
+                        />
+                        <Route
+                            path="/privacy-policy"
+                            component={PrivacyPolicyPage}
+                        />
+                        <Route
+                            path="/rule"
+                            component={RulePage}
+                        />
+                        <Route
+                            path="/contact"
+                            component={ContactPage}
+                        />
+                        <Route
+                            path="/about-us"
+                            component={AboutUsPage}
+                        />
+
                     </Switch>
+                    <PageTop />
                     <Footer />
                 </React.Fragment>
                 ) : (
