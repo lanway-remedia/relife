@@ -75,27 +75,29 @@ class Routes extends React.Component {
             </Switch>
           ) : (
             <div className="main-wrapper">
-              <Navigation />
-              <div className="main-content">
-                <Switch>
-                  <Route
-                    exact
-                    path="/"
-                    component={requireLogin(ProfileInfoPage)}
-                  />
-                  <Route
-                    path="/profile"
-                    component={requireLogin(ProfileInfoPage)}
-                  />
-                  <Route
-                    path="/profile-edit"
-                    component={requireLogin(ProfileEditPage)}
-                  />
-                  <Route
-                    path="/profile-change-password"
-                    component={requireLogin(ProfileChangePassPage)}
-                  />
-                </Switch>
+              <div className="container">
+                <Navigation />
+                <div className="main-content">
+                  <Switch>
+                    <Route
+                      exact
+                      path="/"
+                      component={requireLogin(ProfileInfoPage)}
+                    />
+                    <Route
+                      path="/profile"
+                      component={requireLogin(ProfileInfoPage)}
+                    />
+                    <Route
+                      path="/profile-edit"
+                      component={requireLogin(ProfileEditPage)}
+                    />
+                    <Route
+                      path="/profile-change-password"
+                      component={requireLogin(ProfileChangePassPage)}
+                    />
+                  </Switch>
+                </div>
               </div>
             </div>
           )}

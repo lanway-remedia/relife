@@ -65,6 +65,11 @@ header {
         @include no-border;
         min-width: 10rem;
 
+        @media screen and (max-width: 767px) {
+          min-width: 0;
+          padding: 10px;
+        }
+
         &:focus {
           box-shadow: none;
         }
@@ -80,6 +85,9 @@ header {
           position: relative;
           left: -8px;
           font-weight: 600;
+          @media screen and (max-width: 767px) {
+            left: -4px;
+          }
         }
 
         span {
@@ -91,6 +99,9 @@ header {
           -webkit-line-clamp: 1;
           vertical-align: middle;
           -webkit-box-orient: vertical;
+          @media screen and (max-width: 767px) {
+            display: none;
+          }
         }
       }
 
@@ -110,6 +121,14 @@ header {
         padding: 0;
         border-top: 1px solid $border-color-2;
 
+        @media screen and (max-width: 767px) {
+          min-width: 10rem;
+          left: auto !important;
+          right: 0;
+          top: 52px !important;
+          transform: none !important;
+        }
+
         .dropdown-item {
           padding: 17px 20px;
           color: $text-white-color;
@@ -121,6 +140,23 @@ header {
           &:focus {
             background: $bkg-secondary-color;
             outline: none;
+          }
+
+          &.dd-access {
+            span {
+              text-align: center;
+              margin: 0 0 0 3px;
+              background: #007332;
+              color: #fff;
+              -webkit-border-radius: 100%;
+              -moz-border-radius: 100%;
+              border-radius: 100%;
+              font-size: 9px;
+              width: 16px;
+              height: 16px;
+              line-height: 16px;
+              display: inline-block;
+            }
           }
         }
 
@@ -135,6 +171,9 @@ header {
       height: 32px;
       border-radius: 100%;
       margin-left: 8px;
+      @media screen and (max-width: 767px) {
+        margin: 0;
+      }
     }
   }
 

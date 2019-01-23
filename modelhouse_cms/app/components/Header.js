@@ -95,7 +95,7 @@ class Header extends React.Component {
   render() {
     return (
       <header>
-        <Container fluid>
+        <Container>
           <Row>
             <Col xs="12" sm="9">
               <div className="col-logo">
@@ -147,6 +147,20 @@ class Header extends React.Component {
                       />
                     </DropdownToggle>
                     <DropdownMenu>
+                      <DropdownItem className="d-none d-sm-block d-md-none">
+                        {this.state.name}
+                      </DropdownItem>
+                      <DropdownItem divider />
+                      <DropdownItem className="d-none d-sm-block d-md-none dd-access">
+                        <i className="fa fa-bell-o" aria-hidden="true" />
+                        <span>3</span>
+                      </DropdownItem>
+                      <DropdownItem divider />
+                      <DropdownItem className="d-none d-sm-block d-md-none dd-access">
+                        <i className="fa fa-envelope-o" aria-hidden="true" />
+                        <span>8</span>
+                      </DropdownItem>
+                      <DropdownItem divider />
                       <DropdownItem onClick={this.changeToEdit}>
                         {I18nUtils.t('asetting')}
                       </DropdownItem>
@@ -157,7 +171,7 @@ class Header extends React.Component {
                     </DropdownMenu>
                   </ButtonDropdown>
                 </div>
-                <div className="box-noti box-full">
+                <div className="box-noti box-full d-none d-md-block">
                   <Link
                     to="/"
                     title={I18nUtils.formatMessage(
@@ -169,7 +183,7 @@ class Header extends React.Component {
                     <i className="fa fa-bell-o" aria-hidden="true" />
                   </Link>
                 </div>
-                <div className="box-mail box-full">
+                <div className="box-mail box-full d-none d-md-block">
                   <Link
                     to="/"
                     title={I18nUtils.formatMessage(
